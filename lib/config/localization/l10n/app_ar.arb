@@ -1,0 +1,22 @@
+{
+  "@@locale": "ar",
+  "appName": "أكاديمية تاج الوقار",
+  "@appName": {
+    "description": "The title of the application"
+  },
+  "loginButton": "تسجيل الدخول",
+  "@loginButton": {
+    "description": "Text for the login button"
+  },
+  "emailHint": "البريد الإلكتروني",
+  "welcomeMessage": "مرحباً بك، {userName}!",
+  "@welcomeMessage": {
+    "description": "A welcome message that includes the user's name.",
+    "placeholders": {
+      "userName": {
+        "type": "String",
+        "example": "أحمد"
+      }
+    }
+  }
+}
