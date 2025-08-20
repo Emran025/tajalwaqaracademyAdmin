@@ -6,17 +6,22 @@ import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_units.dart';
+import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_info_entity.dart';
+import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
+import 'package:tajalwaqaracademy/features/TeachersManagement/domain/entities/teacher_list_item_entity.dart';
 
-import '../../features/HalqasManagement/data/models/halqa.dart';
-import '../../features/StudentsManagement/data/models/follow_up_plan_model.dart';
-import '../../features/StudentsManagement/data/models/plan_detail_model.dart';
-import '../../features/StudentsManagement/data/models/tracking_detail_model.dart';
-import '../../features/StudentsManagement/data/models/tracking_model.dart';
-import '../../features/StudentsManagement/domain/entities/follow_up_plan_entity.dart';
-import '../../features/StudentsManagement/domain/entities/halqa_entity.dart';
-import '../../features/StudentsManagement/domain/entities/plan_detail_entity.dart';
-import '../../features/StudentsManagement/domain/entities/student_entity.dart';
-import '../../features/TeachersManagement/domain/entities/teacher_entity.dart';
+import '../../../features/StudentsManagement/data/models/follow_up_plan_model.dart';
+import '../../../features/StudentsManagement/data/models/plan_detail_model.dart';
+import '../../../features/StudentsManagement/data/models/tracking_detail_model.dart';
+import '../../../features/StudentsManagement/data/models/tracking_model.dart';
+import '../../../features/StudentsManagement/domain/entities/follow_up_plan_entity.dart';
+import '../../../features/StudentsManagement/domain/entities/halqa_entity.dart';
+import '../../../features/StudentsManagement/domain/entities/plan_detail_entity.dart';
+import '../../../features/StudentsManagement/domain/entities/student_entity.dart';
+import '../../../features/TeachersManagement/domain/entities/teacher_entity.dart';
+import '../../features/HalaqasManagement/domain/entities/halqa.dart';
+import '../models/attendance_type.dart';
+import '../models/report_frequency.dart';
 import 'tracking_unit_detail.dart';
 
 // ملاحظة: ستحتاج إلى استيراد نماذج البيانات الخاصة بك
@@ -26,9 +31,9 @@ import 'tracking_unit_detail.dart';
 // 1. الخطة الدراسية للطالب (FollowUpPlanModel)
 // ----------------------------------------------------
 final FollowUpPlanModel studentPlan = FollowUpPlanModel(
-  planId: 55,
-  studentId: 101,
-  frequency: 'daily',
+  planId: "55",
+  serverPlanId: "plan_12345",
+  frequency: Frequency.daily,
   createdAt: '2025-07-20T10:00:00Z',
   updatedAt: '2025-07-20T10:00:00Z',
   details: [
@@ -57,10 +62,10 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم الأول: 21-09-2023 (أداء ضعيف ومتأخر) ---
   TrackingModel(
     id: 1001,
-    planId: 55, // <-- يجب أن يطابق planId في الخطة
     date: '2025-07-21',
     note: 'بداية أسبوع غير موفقة، كان الطالب مشتتاً.',
     behaviorNote: 3, // (من 5)
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-21T18:00:00Z',
     updatedAt: '2025-07-21T18:00:00Z',
     details: [
@@ -71,10 +76,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[1], // مثال: سورة البقرة
         toTrackingUnitId: trackingUnitDetail[1],
         actualAmount: 0, // لم يحفظ شيئًا
-        comment: 'لم يتمكن من الحفظ بسبب الإرهاق.',
+         status: 'completed', comment:  'لم يتمكن من الحفظ بسبب الإرهاق.',
         score: 2, // (من 5)
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
+        uuid: '0026',
       ),
       TrackingDetailModel(
         id: 2002,
@@ -83,10 +89,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[40], // مثال: من صفحة 40
         toTrackingUnitId: trackingUnitDetail[48], // إلى صفحة 48
         actualAmount: 8, // المطلوب 10، أنجز 8 فقط
-        comment: 'المراجعة كانت متقطعة وبها أخطاء.',
+         status: 'completed', comment:  'المراجعة كانت متقطعة وبها أخطاء.',
         score: 3,
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
+        uuid: '0001',
       ),
       TrackingDetailModel(
         id: 2003,
@@ -95,10 +102,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[100],
         toTrackingUnitId: trackingUnitDetail[110],
         actualAmount: 10, // أنجز المطلوب
-        comment: 'التلاوة كانت جيدة.',
+         status: 'completed', comment:  'التلاوة كانت جيدة.',
         score: 4,
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
+        uuid: '0002',
       ),
     ],
   ),
@@ -106,10 +114,10 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم الثاني: 22-09-2023 (أداء ممتاز وتفوق) ---
   TrackingModel(
     id: 1002,
-    planId: 55,
     date: '2025-07-22',
     note: 'يوم استثنائي، أظهر الطالب تركيزًا عاليًا.',
     behaviorNote: 5,
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-22T18:00:00Z',
     updatedAt: '2025-07-22T18:00:00Z',
     details: [
@@ -120,10 +128,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[283],
         toTrackingUnitId: trackingUnitDetail[283],
         actualAmount: 2, // المطلوب 1، لكنه أنجز 2 لتعويض الأمس
-        comment: 'حفظ متقن للصفحة المقررة وصفحة إضافية.',
+         status: 'completed', comment:  'حفظ متقن للصفحة المقررة وصفحة إضافية.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
+        uuid: '0003',
       ),
       TrackingDetailModel(
         id: 2005,
@@ -132,10 +141,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[50],
         toTrackingUnitId: trackingUnitDetail[60],
         actualAmount: 11, // تجاوز المطلوب
-        comment: 'مراجعة ممتازة وثابتة.',
+         status: 'completed', comment:  'مراجعة ممتازة وثابتة.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
+        uuid: '0004',
       ),
       TrackingDetailModel(
         id: 2006,
@@ -144,10 +154,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[111],
         toTrackingUnitId: trackingUnitDetail[121],
         actualAmount: 10,
-        comment: 'تلاوة خاشعة ومؤثرة.',
+         status: 'completed', comment:  'تلاوة خاشعة ومؤثرة.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
+        uuid: '0005',
       ),
     ],
   ),
@@ -155,7 +166,7 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم الثالث: 23-09-2023 (أداء جيد ومطابق للخطة) ---
   TrackingModel(
     id: 1003,
-    planId: 55,
+    attendanceTypeId: AttendanceType.present,
     date: '2025-07-23',
     note: 'أداء مستقر، التزم بالخطة المحددة.',
     behaviorNote: 4,
@@ -169,10 +180,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[284],
         toTrackingUnitId: trackingUnitDetail[284],
         actualAmount: 1, // أنجز المطلوب بالضبط
-        comment: 'حفظ جيد.',
+         status: 'completed', comment:  'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-23T18:00:00Z',
         updatedAt: '2025-07-23T18:00:00Z',
+        uuid: '0006',
       ),
       TrackingDetailModel(
         id: 2008,
@@ -181,10 +193,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[61],
         toTrackingUnitId: trackingUnitDetail[70],
         actualAmount: 10, // أنجز المطلوب بالضبط
-        comment: 'مراجعة جيدة.',
+         status: 'completed', comment:  'مراجعة جيدة.',
         score: 4,
         createdAt: '2025-07-23T18:00:00Z',
         updatedAt: '2025-07-23T18:00:00Z',
+        uuid: '0007',
       ),
     ],
   ),
@@ -193,7 +206,7 @@ final List<TrackingModel> studentTrackings = [
   // The following data is an addition to the previous data.
   TrackingModel(
     id: 1004,
-    planId: 55,
+    attendanceTypeId: AttendanceType.present,
     date: '2025-07-24',
     note: 'يوم مستقر، تم الالتزام بالخطة.',
     behaviorNote: 4,
@@ -207,10 +220,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[285],
         toTrackingUnitId: trackingUnitDetail[285],
         actualAmount: 1, // أنجز المطلوب
-        comment: 'حفظ جيد.',
+         status: 'completed', comment:  'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-24T18:00:00Z',
         updatedAt: '2025-07-24T18:00:00Z',
+        uuid: '0008',
       ),
       TrackingDetailModel(
         id: 2010,
@@ -219,10 +233,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[71],
         toTrackingUnitId: trackingUnitDetail[80],
         actualAmount: 10, // أنجز المطلوب
-        comment: 'المراجعة تمت بشكل جيد.',
+         status: 'completed', comment:  'المراجعة تمت بشكل جيد.',
         score: 4,
         createdAt: '2025-07-24T18:00:00Z',
         updatedAt: '2025-07-24T18:00:00Z',
+        uuid: '0009',
       ),
     ],
   ),
@@ -230,7 +245,7 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم الخامس: 25-07-2025 (تراجع بسيط) ---
   TrackingModel(
     id: 1005,
-    planId: 55,
+    attendanceTypeId: AttendanceType.present,
     date: '2025-07-25',
     note: 'كان الطالب متعباً قليلاً.',
     behaviorNote: 3,
@@ -244,10 +259,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[286],
         toTrackingUnitId: trackingUnitDetail[286],
         actualAmount: 1, // أنجز المطلوب
-        comment: 'حفظ جيد.',
+         status: 'completed', comment:  'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-25T18:00:00Z',
         updatedAt: '2025-07-25T18:00:00Z',
+        uuid: '0010',
       ),
       TrackingDetailModel(
         id: 2012,
@@ -256,10 +272,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[81],
         toTrackingUnitId: trackingUnitDetail[88],
         actualAmount: 8, // تقصير بصفحتين
-        comment: 'لم يكمل المراجعة المقررة.',
+         status: 'completed', comment:  'لم يكمل المراجعة المقررة.',
         score: 3,
         createdAt: '2025-07-25T18:00:00Z',
         updatedAt: '2025-07-25T18:00:00Z',
+        uuid: '0011',
       ),
       TrackingDetailModel(
         id: 2013,
@@ -268,10 +285,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[122],
         toTrackingUnitId: trackingUnitDetail[132],
         actualAmount: 10,
-        comment: '',
+        comment: '', status: 'completed',
         score: 4,
         createdAt: '2025-07-25T18:00:00Z',
         updatedAt: '2025-07-25T18:00:00Z',
+        uuid: '0012',
       ),
     ],
   ),
@@ -279,10 +297,11 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم السادس: 26-07-2025 (يوم تعويضي جيد) ---
   TrackingModel(
     id: 1006,
-    planId: 55,
+
     date: '2025-07-26',
     note: 'تركيز عالٍ ورغبة في تعويض الأمس.',
     behaviorNote: 5,
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-26T18:00:00Z',
     updatedAt: '2025-07-26T18:00:00Z',
     details: [
@@ -293,10 +312,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[287],
         toTrackingUnitId: trackingUnitDetail[287],
         actualAmount: 1,
-        comment: 'حفظ متقن.',
+         status: 'completed', comment:  'حفظ متقن.',
         score: 5,
         createdAt: '2025-07-26T18:00:00Z',
         updatedAt: '2025-07-26T18:00:00Z',
+        uuid: '0013',
       ),
       TrackingDetailModel(
         id: 2015,
@@ -305,10 +325,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[89],
         toTrackingUnitId: trackingUnitDetail[100],
         actualAmount: 12, // تعويض عن تقصير الأمس وزيادة
-        comment: 'راجع المقرر وزيادة لتعويض الأمس.',
+         status: 'completed', comment:  'راجع المقرر وزيادة لتعويض الأمس.',
         score: 5,
         createdAt: '2025-07-26T18:00:00Z',
         updatedAt: '2025-07-26T18:00:00Z',
+        uuid: '0014',
       ),
     ],
   ),
@@ -316,10 +337,10 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم السابع: 27-07-2025 (محاكاة يوم غياب) ---
   TrackingModel(
     id: 1007,
-    planId: 55,
     date: '2025-07-27',
     note: 'غياب الطالب لظرف طارئ.',
     behaviorNote: 1, // سلوك منخفض لأنه لم يحضر
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-27T18:00:00Z',
     updatedAt: '2025-07-27T18:00:00Z',
     details: [], // لا يوجد تفاصيل لأنه كان غائبًا
@@ -328,10 +349,11 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم الثامن: 28-07-2025 (عودة بعد الغياب وأداء ضعيف) ---
   TrackingModel(
     id: 1008,
-    planId: 55,
+
     date: '2025-07-28',
     note: 'العقل ما زال متأثراً بالغياب.',
     behaviorNote: 2,
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-28T18:00:00Z',
     updatedAt: '2025-07-28T18:00:00Z',
     details: [
@@ -342,10 +364,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[288],
         toTrackingUnitId: trackingUnitDetail[288],
         actualAmount: 0, // لم يحفظ
-        comment: 'لم يستطع التركيز في الحفظ.',
+         status: 'completed', comment:  'لم يستطع التركيز في الحفظ.',
         score: 1,
         createdAt: '2025-07-28T18:00:00Z',
         updatedAt: '2025-07-28T18:00:00Z',
+        uuid: '0015',
       ),
       TrackingDetailModel(
         id: 2017,
@@ -354,10 +377,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[101],
         toTrackingUnitId: trackingUnitDetail[105],
         actualAmount: 5, // تقصير كبير
-        comment: 'مراجعة ضعيفة.',
+         status: 'completed', comment:  'مراجعة ضعيفة.',
         score: 2,
         createdAt: '2025-07-28T18:00:00Z',
         updatedAt: '2025-07-28T18:00:00Z',
+        uuid: '0016',
       ),
     ],
   ),
@@ -368,10 +392,11 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم التاسع: 29-07-2025 (استعادة مستوى) ---
   TrackingModel(
     id: 1009,
-    planId: 55,
+
     date: '2025-07-29',
     note: 'بدأ يستعيد تركيزه.',
     behaviorNote: 4,
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-29T18:00:00Z',
     updatedAt: '2025-07-29T18:00:00Z',
     details: [
@@ -382,10 +407,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[288],
         toTrackingUnitId: trackingUnitDetail[288],
         actualAmount: 1, // حفظ مقرر اليوم
-        comment: 'تم حفظ مقرر اليوم لتعويض أمس.',
+         status: 'completed', comment:  'تم حفظ مقرر اليوم لتعويض أمس.',
         score: 4,
         createdAt: '2025-07-29T18:00:00Z',
         updatedAt: '2025-07-29T18:00:00Z',
+        uuid: '0017',
       ),
       TrackingDetailModel(
         id: 2019,
@@ -394,10 +420,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[106],
         toTrackingUnitId: trackingUnitDetail[115],
         actualAmount: 10,
-        comment: 'مراجعة جيدة.',
+         status: 'completed', comment:  'مراجعة جيدة.',
         score: 4,
         createdAt: '2025-07-29T18:00:00Z',
         updatedAt: '2025-07-29T18:00:00Z',
+        uuid: '0018',
       ),
     ],
   ),
@@ -405,10 +432,11 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم العاشر: 30-07-2025 (أداء ممتاز) ---
   TrackingModel(
     id: 1010,
-    planId: 55,
+
     date: '2025-07-30',
     note: 'يوم رائع، حماس عالي.',
     behaviorNote: 5,
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-30T18:00:00Z',
     updatedAt: '2025-07-30T18:00:00Z',
     details: [
@@ -419,10 +447,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[289],
         toTrackingUnitId: trackingUnitDetail[290],
         actualAmount: 2, // تجاوز المطلوب
-        comment: 'حفظ صفحتين بإتقان.',
+         status: 'completed', comment:  'حفظ صفحتين بإتقان.',
         score: 5,
         createdAt: '2025-07-30T18:00:00Z',
         updatedAt: '2025-07-30T18:00:00Z',
+        uuid: '0019',
       ),
     ],
   ),
@@ -430,10 +459,11 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم الحادي عشر: 31-07-2025 (تشتت) ---
   TrackingModel(
     id: 1011,
-    planId: 55,
+
     date: '2025-07-31',
     note: 'عانى من التشتت الذهني.',
     behaviorNote: 3,
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-31T18:00:00Z',
     updatedAt: '2025-07-31T18:00:00Z',
     details: [
@@ -444,10 +474,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[116],
         toTrackingUnitId: trackingUnitDetail[122],
         actualAmount: 7, // تقصير
-        comment: 'مراجعة غير مكتملة.',
+         status: 'completed', comment:  'مراجعة غير مكتملة.',
         score: 2,
         createdAt: '2025-07-31T18:00:00Z',
         updatedAt: '2025-07-31T18:00:00Z',
+        uuid: '0020',
       ),
       TrackingDetailModel(
         id: 2022,
@@ -456,10 +487,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[133],
         toTrackingUnitId: trackingUnitDetail[138],
         actualAmount: 5, // تقصير
-        comment: 'تلاوة سريعة.',
+         status: 'completed', comment:  'تلاوة سريعة.',
         score: 3,
         createdAt: '2025-07-31T18:00:00Z',
         updatedAt: '2025-07-31T18:00:00Z',
+        uuid: '0021',
       ),
     ],
   ),
@@ -467,10 +499,11 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم الثاني عشر: 01-08-2025 (يوم قياسي) ---
   TrackingModel(
     id: 1012,
-    planId: 55,
+
     date: '2025-08-01',
     note: 'أداء قياسي لتعويض كل التقصير السابق.',
     behaviorNote: 5,
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-08-01T18:00:00Z',
     updatedAt: '2025-08-01T18:00:00Z',
     details: [
@@ -481,10 +514,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[291],
         toTrackingUnitId: trackingUnitDetail[291],
         actualAmount: 1,
-        comment: '',
+        comment: '',  status: 'completed',
         score: 5,
         createdAt: '2025-08-01T18:00:00Z',
         updatedAt: '2025-08-01T18:00:00Z',
+        uuid: '0022',
       ),
       TrackingDetailModel(
         id: 2024,
@@ -493,10 +527,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[123],
         toTrackingUnitId: trackingUnitDetail[143],
         actualAmount: 20, // ضعف المقرر
-        comment: 'مراجعة جزء كامل بإتقان.',
+         status: 'completed', comment:  'مراجعة جزء كامل بإتقان.',
         score: 5,
         createdAt: '2025-08-01T18:00:00Z',
         updatedAt: '2025-08-01T18:00:00Z',
+        uuid: '0023',
       ),
     ],
   ),
@@ -504,10 +539,11 @@ final List<TrackingModel> studentTrackings = [
   // --- اليوم الثالث عشر: 02-08-2025 (ختام مستقر) ---
   TrackingModel(
     id: 1013,
-    planId: 55,
+
     date: '2025-08-02',
     note: 'عودة إلى المسار الصحيح.',
     behaviorNote: 4,
+    attendanceTypeId: AttendanceType.present,
     createdAt: '2025-08-02T18:00:00Z',
     updatedAt: '2025-08-02T18:00:00Z',
     details: [
@@ -518,10 +554,11 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[292],
         toTrackingUnitId: trackingUnitDetail[292],
         actualAmount: 1,
-        comment: '',
+        comment: '', status: 'completed',
         score: 4,
         createdAt: '2025-08-02T18:00:00Z',
         updatedAt: '2025-08-02T18:00:00Z',
+        uuid: '0024',
       ),
       TrackingDetailModel(
         id: 2026,
@@ -530,70 +567,189 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[144],
         toTrackingUnitId: trackingUnitDetail[153],
         actualAmount: 10,
-        comment: '',
+        comment: '', status: 'completed',
         score: 4,
         createdAt: '2025-08-02T18:00:00Z',
         updatedAt: '2025-08-02T18:00:00Z',
+        uuid: '0025',
       ),
     ],
   ),
 ];
 
+final StudentInfoEntity fakeStudentInfo = StudentInfoEntity(
+  studentDetailEntity: fakeStudent,
+  assignedHalaqa: AssignedHalaqasEntity(
+    id: "H001",
+    name: "حلقة النور",
+    avatar: "",
+    enrolledAt: "2025-07-08 22:21:36",
+  ),
+  followUpPlan: FollowUpPlanEntity(
+    planId: "P1001",
+    serverPlanId: "1",
+    frequency: Frequency.onceAWeek,
+    updatedAt: "2025-06-28T12:00:00Z",
+    createdAt: "2025-01-10T09:00:00Z",
+    details: [
+      PlanDetailEntity(
+        type: TrackingType.memorization,
+        unit: TrackingUnit.page,
+        amount: 5,
+      ),
+      PlanDetailEntity(
+        type: TrackingType.review,
+        unit: TrackingUnit.juz,
+        amount: 1,
+      ),
+      PlanDetailEntity(
+        type: TrackingType.recitation,
+        unit: TrackingUnit.halfHizb,
+        amount: 2,
+      ),
+    ],
+  ),
+);
+final List<StudentInfoEntity> fakeStudentsInfos = [
+  fakeStudentInfo,
+  fakeStudentInfo,
+  fakeStudentInfo,
+];
 
-final List<StudentDetailEntity> fakeStudents = [
-  StudentDetailEntity(
-    id: "2001",
-    name: "خالد عبد الله",
-    avatar: "assets/images/u2.png",
-    status: ActiveStatus.active,
+final StudentDetailEntity fakeStudent = StudentDetailEntity(
+  id: "1",
+  name: "خالد عبد الله",
+  avatar: "assets/images/u2.png",
+  status: ActiveStatus.active,
+  gender: Gender.male,
+  birthDate: "2003-05-14",
+  email: "khaled.abdullah@email.com",
+  phone: "771234567",
+  phoneZone: 967,
+  whatsAppPhone: "771234567",
+  whatsAppZone: 967,
+  qualification: "ثانوية عامة",
+  experienceYears: 2,
+  country: "اليمن",
+  residence: "صنعاء القديمة",
+  city: "صنعاء",
+  availableTime: const TimeOfDay(hour: 16, minute: 0),
+  stopReasons: "",
+  memorizationLevel: "10",
+  bio: "طالب مجتهد يشارك بانتظام في جميع الأنشطة القرآنية.",
+  createdAt: "2024-09-01T10:00:00Z",
+  updatedAt: "2025-06-28T12:30:00Z",
+);
+
+final List<StudentListItemEntity> fakeStudents = [
+  StudentListItemEntity(
+    id: '001',
+    name: 'أحمد العلي',
     gender: Gender.male,
-    birthDate: "2003-05-14",
-    email: "khaled.abdullah@email.com",
-    phone: "771234567",
-    phoneZone: 967,
-    whatsAppPhone: "771234567",
-    whatsAppZone: 967,
-    qualification: "ثانوية عامة",
-    experienceYears: 2,
-    country: "اليمن",
-    residence: "صنعاء القديمة",
-    city: "صنعاء",
-    availableTime: const TimeOfDay(hour: 16, minute: 0),
-    stopReasons: "",
-    bio: "طالب مجتهد يشارك بانتظام في جميع الأنشطة القرآنية.",
-    createdAt: "2024-09-01T10:00:00Z",
-    updatedAt: "2025-06-28T12:30:00Z",
-    assignedHalaqa: AssignedHalaqasEntity(
-      id: "H001",
-      name: "حلقة النور",
-      avatar: "",
-    ),
-    followUpPlan: FollowUpPlanEntity(
-      planId: "P1001",
-      studentId: "2001",
-      frequency: "أسبوعي",
-      updatedAt: "2025-06-28T12:00:00Z",
-      createdAt: "2025-01-10T09:00:00Z",
-      details: [
-        PlanDetailEntity(
-          type: TrackingType.memorization,
-          unit: TrackingUnit.page,
-          amount: 5,
-        ),
-        PlanDetailEntity(
-          type: TrackingType.review,
-          unit: TrackingUnit.juz,
-          amount: 1,
-        ),
-        PlanDetailEntity(
-          type: TrackingType.recitation,
-          unit: TrackingUnit.halfHizb,
-          amount: 2,
-        ),
-      ],
-    ),
+    avatar: '',
+    country: 'اليمن',
+    city: 'صنعاء',
+    status: ActiveStatus.active,
+  ),
+  StudentListItemEntity(
+    id: '002',
+    name: 'سارة محمد',
+    gender: Gender.female,
+    country: 'اليمن',
+    city: 'عدن',
+    status: ActiveStatus.inactive,
+    avatar: 'assets/images/u2.png',
+  ),
+  StudentListItemEntity(
+    id: '003',
+    name: 'خالد سعيد',
+    gender: Gender.male,
+    country: 'اليمن',
+    city: 'إب',
+    avatar: 'assets/images/u2.png',
+    status: ActiveStatus.inactive,
+  ),
+  StudentListItemEntity(
+    id: '004',
+    name: 'منى عبد الرحمن',
+    gender: Gender.female,
+    country: 'اليمن',
+    city: 'تعز',
+    avatar: 'assets/images/u1.png',
+    status: ActiveStatus.active,
+  ),
+  StudentListItemEntity(
+    id: '005',
+    name: 'فاطمة حسن',
+    gender: Gender.female,
+    country: 'اليمن',
+    city: 'الحديدة',
+    status: ActiveStatus.inactive,
+    avatar: 'assets/images/u2.png',
   ),
 ];
+final List<StudentDetailEntity> fakeStudents1 = [
+  fakeStudent,
+  fakeStudent,
+  fakeStudent,
+  fakeStudent,
+];
+
+final List<TeacherListItemEntity> fakeTeachers = [
+  TeacherListItemEntity(
+    id: '001',
+    name: 'أحمد العلي',
+    gender: Gender.male,
+    avatar: '',
+    country: 'اليمن',
+    city: 'صنعاء',
+    status: ActiveStatus.active,
+  ),
+  TeacherListItemEntity(
+    id: '002',
+    name: 'سارة محمد',
+    gender: Gender.female,
+    country: 'اليمن',
+    city: 'عدن',
+    status: ActiveStatus.inactive,
+    avatar: 'assets/images/u2.png',
+  ),
+  TeacherListItemEntity(
+    id: '003',
+    name: 'خالد سعيد',
+    gender: Gender.male,
+    country: 'اليمن',
+    city: 'إب',
+    avatar: 'assets/images/u2.png',
+    status: ActiveStatus.inactive,
+  ),
+  TeacherListItemEntity(
+    id: '004',
+    name: 'منى عبد الرحمن',
+    gender: Gender.female,
+    country: 'اليمن',
+    city: 'تعز',
+    avatar: 'assets/images/u1.png',
+    status: ActiveStatus.active,
+  ),
+  TeacherListItemEntity(
+    id: '005',
+    name: 'فاطمة حسن',
+    gender: Gender.female,
+    country: 'اليمن',
+    city: 'الحديدة',
+    status: ActiveStatus.inactive,
+    avatar: 'assets/images/u2.png',
+  ),
+  // required super.id,
+  // required super.name,
+  // required super.gender,
+  // required super.avatar,
+  // required super.country,
+  // required super.city,
+  // required super.status,
+];
+
 final List<TeacherDetailEntity> fakeTeachers1 = [
   TeacherDetailEntity(
     id: '001',
@@ -608,8 +764,8 @@ final List<TeacherDetailEntity> fakeTeachers1 = [
     qualification: 'بكالوريوس شريعة',
     experienceYears: 10,
     country: 'اليمن',
-    residence: 'اليمن',
     city: 'صنعاء',
+    residence: 'اليمن',
     availableTime: TimeOfDay(hour: 16, minute: 0),
     status: ActiveStatus.active,
     stopReasons: '',
@@ -632,22 +788,18 @@ final List<TeacherDetailEntity> fakeTeachers1 = [
     qualification: 'ماجستير دراسات إسلامية',
     experienceYears: 8,
     country: 'اليمن',
-    residence: 'اليمن',
     city: 'عدن',
-    availableTime: TimeOfDay(hour: 17, minute: 30),
     status: ActiveStatus.inactive,
-    stopReasons: '',
     avatar: 'assets/images/u2.png',
+    availableTime: TimeOfDay(hour: 17, minute: 30),
+    residence: 'اليمن',
+    stopReasons: '',
     bio: "خبرة لخمس سنوات",
     halqas: [],
     createdAt: "${DateTime.now()}",
     updatedAt: "${DateTime.now()}",
   ),
   TeacherDetailEntity(
-    id: '003',
-    name: 'خالد سعيد',
-    gender: Gender.male,
-    birthDate: '1978-07-10',
     email: 'khaled.saeed@email.com',
     phone: "771234563",
     phoneZone: 967,
@@ -655,22 +807,23 @@ final List<TeacherDetailEntity> fakeTeachers1 = [
     whatsAppZone: 967,
     qualification: 'دكتوراه فقه',
     experienceYears: 15,
+    id: '003',
+    name: 'خالد سعيد',
+    gender: Gender.male,
+    birthDate: '1978-07-10',
     country: 'اليمن',
-    residence: 'اليمن',
     city: 'إب',
-    availableTime: TimeOfDay(hour: 15, minute: 0),
-    status: ActiveStatus.inactive,
-    stopReasons: '',
     avatar: 'assets/images/u2.png',
+    status: ActiveStatus.inactive,
+    residence: 'اليمن',
+    availableTime: TimeOfDay(hour: 15, minute: 0),
+    stopReasons: '',
     bio: "خبرة لخمس سنوات",
     halqas: [],
     createdAt: "${DateTime.now()}",
     updatedAt: "${DateTime.now()}",
   ),
   TeacherDetailEntity(
-    id: '004',
-    name: 'منى عبد الرحمن',
-    gender: Gender.female,
     birthDate: '1990-11-05',
     email: 'mona.abd@email.com',
     phone: "771234564",
@@ -679,22 +832,22 @@ final List<TeacherDetailEntity> fakeTeachers1 = [
     whatsAppZone: 967,
     qualification: 'بكالوريوس لغة عربية',
     experienceYears: 6,
+    id: '004',
+    name: 'منى عبد الرحمن',
+    gender: Gender.female,
     country: 'اليمن',
-    residence: 'اليمن',
     city: 'تعز',
-    availableTime: TimeOfDay(hour: 18, minute: 0),
-    status: ActiveStatus.active,
-    stopReasons: '',
     avatar: 'assets/images/u1.png',
+    status: ActiveStatus.active,
+    availableTime: TimeOfDay(hour: 18, minute: 0),
+    residence: 'اليمن',
+    stopReasons: '',
     bio: "خبرة لخمس سنوات",
     halqas: [],
     createdAt: "${DateTime.now()}",
     updatedAt: "${DateTime.now()}",
   ),
   TeacherDetailEntity(
-    id: '005',
-    name: 'فاطمة حسن',
-    gender: Gender.female,
     birthDate: '1982-09-18',
     email: 'fatima.hassan@email.com',
     phone: "771234565",
@@ -703,13 +856,16 @@ final List<TeacherDetailEntity> fakeTeachers1 = [
     whatsAppZone: 967,
     qualification: 'ماجستير تفسير',
     experienceYears: 12,
+    id: '005',
+    name: 'فاطمة حسن',
+    gender: Gender.female,
     country: 'اليمن',
-    residence: 'اليمن',
     city: 'الحديدة',
-    availableTime: TimeOfDay(hour: 14, minute: 30),
     status: ActiveStatus.inactive,
-    stopReasons: '',
     avatar: 'assets/images/u2.png',
+    residence: 'اليمن',
+    stopReasons: '',
+    availableTime: TimeOfDay(hour: 14, minute: 30),
     bio: "خبرة لخمس سنوات",
     halqas: [],
     createdAt: "${DateTime.now()}",

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
 
 class Avatar extends StatelessWidget {

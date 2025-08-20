@@ -5,9 +5,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tajalwaqaracademy/config/di/injection.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/core/constants/countries_names.dart';
-import 'package:tajalwaqaracademy/core/errors/error_model.dart';
+import 'package:tajalwaqaracademy/core/error/failures.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/core/models/countery_model.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
@@ -15,8 +15,8 @@ import 'package:tajalwaqaracademy/features/TeachersManagement/domain/entities/te
 import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/bloc/teacher_bloc.dart';
 import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/ui/screens/add_teachers_screen.dart';
 import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
-import 'package:tajalwaqaracademy/shared/widgets/taj.dart';
 
+import '../../../../../shared/widgets/caerd_tile.dart';
 import '../../../domain/entities/teacher_entity.dart';
 import 'teacher_profile_screen.dart';
 
@@ -79,7 +79,6 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
       // The screen is responsible for creating the BLoC and dispatching the initial event.
       create: (context) => sl<TeacherBloc>()..add(const WatchTeachersStarted()),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _showAddTeachersDialog,
           icon: Icon(Icons.add, color: AppColors.lightCream),
@@ -182,7 +181,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
                                 ),
                               );
                             }
-                            return _buildTeacherCard(filteredTeachers[i], ctx);
+                            return _buildTeacherCard(filteredTeachers[i]);
                           },
                         ),
                       );
@@ -205,10 +204,15 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
       style: GoogleFonts.cairo(color: AppColors.lightCream),
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColors.lightCream.withOpacity(0.1),
-        prefixIcon: Icon(Icons.search, color: AppColors.lightCream),
+        fillColor: Theme.of(
+          context,
+        ).colorScheme.primaryContainer.withOpacity(0.3),
+        prefixIcon: Icon(
+          Icons.search,
+          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
+        ),
         hintText: "ابحث عن معلم...",
-        hintStyle: GoogleFonts.cairo(color: AppColors.lightCream),
+        hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
           horizontal: 16,
@@ -223,49 +227,25 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
 
   // --- UNIFIED Teacher Card Widget ---
   // We only need one card widget that works with the TeacherDetailEntity from our domain.
-  Widget _buildTeacherCard(
-    TeacherListItemEntity teacher,
-    BuildContext context,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.accent12,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.accent70, width: 0.5),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
-        ],
-      ),
-      child: ListTile(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => TeacherProfileScreen(teacherId: teacher.id),
-            ),
-          );
-        },
-        contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-        shape: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
-        ),
-        leading: Avatar(gender: teacher.gender, pic: teacher.avatar),
-        title: Text(
-          teacher.name,
-          style: GoogleFonts.cairo(
-            fontWeight: FontWeight.bold,
-            color: AppColors.lightCream,
+  Widget _buildTeacherCard(TeacherListItemEntity teacher) {
+    return CustomListListTile(
+      title: teacher.name,
+      moreIcon: Icons.more_vert,
+      leading: Avatar(gender: teacher.gender, pic: teacher.avatar),
+      subtitle: "${teacher.country} - ${teacher.city}",
+      backgroundColor: AppColors.accent12,
+      hasMoreIcon: false,
+      tajLable: teacher.status.labelAr,
+      border: Border.all(color: AppColors.accent70, width: 0.5),
+      onMoreTab: () => {},
+      onListTilePressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => TeacherProfileScreen(teacherId: teacher.id),
           ),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Text(
-            "${teacher.country} - ${teacher.city}",
-            style: GoogleFonts.cairo(fontSize: 12, color: AppColors.lightCream),
-          ),
-        ),
-        trailing: StatusTag(status: teacher.status),
-      ),
+        );
+      },
+      onTajPressed: () {},
     );
   }
 }

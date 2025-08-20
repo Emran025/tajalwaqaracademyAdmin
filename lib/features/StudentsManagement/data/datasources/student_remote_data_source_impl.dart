@@ -4,6 +4,7 @@ import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_model.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_sync_response_model.dart';
 import '../../domain/entities/paginated_students_result.dart';
+import '../models/tracking_model.dart';
 import 'student_remote_data_source.dart';
 
 /// The concrete implementation of [StudentRemoteDataSource].
@@ -50,7 +51,7 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
     final List<StudentModel> students = studentsListJson
         .map(
           (studentJson) =>
-              StudentModel.fromJson(studentJson as Map<String, dynamic>),
+              StudentModel.fromMap(studentJson as Map<String, dynamic>),
         )
         .toList();
 
@@ -94,9 +95,28 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
   }
 
   @override
+  Future<StudentModel> getStudent(String studentId) async {
+    // The studentData is expected to be a UUID or similar identifier.
+    final responseJson = await _apiConsumer.get(
+      '${EndPoint.students}/$studentId', // Example: '/students/some-uuid'
+    );
+
+    // Validate the response format.
+    if (responseJson is! Map<String, dynamic>) {
+      throw const FormatException(
+        'Invalid student response format: Expected a student object map.',
+      );
+    }
+
+    // Parse and return the StudentModel.
+    return StudentModel.fromMap(responseJson);
+  }
+
+  @override
   Future<StudentModel> upsertStudent(Map<String, dynamic> studentData) async {
     // The API should handle both create (if no ID) and update (if ID exists)
     // with a single endpoint for simplicity.
+
     final responseJson = await _apiConsumer.post(
       EndPoint.studentsUpsert, // Example: '/students/upsert'
       data: studentData,
@@ -109,7 +129,7 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
     }
 
     // The server returns the final state of the object, which we parse and return.
-    return StudentModel.fromJson(responseJson);
+    return StudentModel.fromMap(responseJson);
   }
 
   @override
@@ -119,5 +139,56 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
       '${EndPoint.students}/$studentId', // Example: DELETE /students/some-uuid
     );
     // On a successful 2xx response, we expect no content, so the method returns void.
+  }
+
+  // =========================================================================
+  // Professional Implementation of getFollowUpTrackings
+  // =========================================================================
+
+  /// {@macro get_follow_up_trackings}
+  @override
+  Future<List<TrackingModel>> getFollowUpTrackings(String studentId) async {
+    // 1. Prepare the dynamic endpoint path by replacing the placeholder.
+    final String path = EndPoint.studentTrackings.replaceAll(
+      '{id}',
+      studentId.toString(),
+    );
+
+    // 2. Perform the API call. The ApiConsumer handles generic network errors.
+    final responseJson = await _apiConsumer.get(path);
+
+    // 3. Robustly validate the response structure.
+    // The API is expected to return a Map with a 'data' key.
+    if (responseJson is! Map<String, dynamic>) {
+      throw const FormatException(
+        'Invalid API response: Expected a root JSON object but got another type.',
+      );
+    }
+
+    // 4. Safely extract the list of data.
+    // This pattern prevents crashes if 'data' is missing or not a list.
+    final List<dynamic> trackingsListJson =
+        responseJson['data'] as List<dynamic>? ?? [];
+
+    // 5. Resiliently parse each item in the list into a TrackingModel.
+    // A single malformed item in the list will be ignored instead of
+    // crashing the entire process.
+    return trackingsListJson
+        .map((trackingJson) {
+          try {
+            if (trackingJson is! Map<String, dynamic>) {
+              // Log this malformed item for debugging purposes.
+              // For example: logger.warning('Skipping invalid item in tracking list: $trackingJson');
+              return null;
+            }
+            return TrackingModel.fromJson(trackingJson);
+          } catch (e) {
+            // Log the parsing error for a specific item.
+            // For example: logger.error('Failed to parse tracking item', error: e, stackTrace: stackTrace);
+            return [];
+          }
+        })
+        .whereType<TrackingModel>()
+        .toList();
   }
 }

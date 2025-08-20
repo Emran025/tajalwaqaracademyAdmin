@@ -28,9 +28,9 @@ final class TokenRefreshInterceptor extends QueuedInterceptorsWrapper {
     required FlutterSecureStorage secureStorage,
     required Dio dio,
     required Dio tokenRefreshDio,
-  })  : _secureStorage = secureStorage,
-        _dio = dio,
-        _tokenRefreshDio = tokenRefreshDio;
+  }) : _secureStorage = secureStorage,
+       _dio = dio,
+       _tokenRefreshDio = tokenRefreshDio;
 
   @override
   Future<void> onError(
@@ -40,8 +40,8 @@ final class TokenRefreshInterceptor extends QueuedInterceptorsWrapper {
     // We only handle 401 Unauthorized errors.
     // We also check that the error is not from the refresh token endpoint itself
     // to prevent an infinite retry loop.
-    if (err.response?.statusCode == 401 && !err.requestOptions.path.contains(EndPoint.refreshToken)) {
-      
+    if (err.response?.statusCode == 401 &&
+        !err.requestOptions.path.contains(EndPoint.refreshToken)) {
       // If a refresh operation is already in progress, wait for it to complete.
       if (_refreshCompleter != null) {
         try {
@@ -85,7 +85,7 @@ final class TokenRefreshInterceptor extends QueuedInterceptorsWrapper {
     final refreshToken = await _secureStorage.read(key: 'refresh_token');
     if (refreshToken == null) {
       // If there's no refresh token, the session is unrecoverable.
-      // This will trigger a global logout or re-authentication flow.
+      // This will trigger a global logOut or re-authentication flow.
       await _secureStorage.deleteAll();
       throw DioException(
         requestOptions: RequestOptions(path: ''),
@@ -113,7 +113,9 @@ final class TokenRefreshInterceptor extends QueuedInterceptorsWrapper {
       await _secureStorage.write(key: 'access_token', value: newAccessToken);
       if (newRefreshToken != null) {
         await _secureStorage.write(
-            key: 'refresh_token', value: newRefreshToken);
+          key: 'refresh_token',
+          value: newRefreshToken,
+        );
       }
     } on DioException {
       // If the refresh API call itself fails (e.g., 403 Forbidden),

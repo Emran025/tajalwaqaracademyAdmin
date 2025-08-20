@@ -1,28 +1,28 @@
-
+import '../../../../core/models/attendance_type.dart';
 import 'tracking_detail_entity.dart';
+import 'package:flutter/material.dart';
 
+@immutable
 class TrackingEntity {
   final String id;
-  final String planId;
   final DateTime date;
   final String note;
+  final  AttendanceType attendanceTypeId;
   final int behaviorNote;
   final DateTime createdAt;
   final DateTime updatedAt;
-  
+
   /// A list of detailed tracking items associated with this daily record.
   final List<TrackingDetailEntity> details;
 
-  TrackingEntity({
+ const TrackingEntity({
     required this.id,
-    required this.planId,
     required this.date,
     required this.note,
+    required this.attendanceTypeId,
     required this.behaviorNote,
     required this.createdAt,
     required this.updatedAt,
     required this.details,
   });
-
 }
-

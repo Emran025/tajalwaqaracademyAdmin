@@ -1,9 +1,13 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/errors/error_model.dart';
+import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/report_frequency.dart';
+import '../entities/follow_up_plan_entity.dart';
 import '../entities/student_entity.dart';
+import '../entities/student_info_entity.dart';
 import '../entities/student_list_item_entity.dart';
+import '../entities/tracking_entity.dart';
 
 /// Defines the abstract contract for the student data repository.
 ///
@@ -39,7 +43,7 @@ abstract interface class StudentRepository {
   /// Returns [Either<Failure, StudentDetailEntity>]:
   /// - Right(StudentDetailEntity) on success.
   /// - Left(Failure) if the student is not found or another error occurs.
-  Future<Either<Failure, StudentDetailEntity>> getStudentById(String studentId);
+  Future<Either<Failure, StudentInfoEntity>> getStudentById(String studentId);
 
   /// Creates a new student or updates an existing one.
   ///
@@ -61,5 +65,17 @@ abstract interface class StudentRepository {
   Future<Either<Failure, Unit>> setStudentStatus({
     required String studentId,
     required ActiveStatus newStatus,
+  });
+
+  Future<Either<Failure, FollowUpPlanEntity>> getFollowUpPlan(String studentId);
+  Future<Either<Failure, List<TrackingEntity>>> getFollowUpTrackings(
+    String studentId,
+  );
+
+  Future<Either<Failure, List<StudentListItemEntity>>> getFilteredStudents({
+    ActiveStatus? status,
+    int? halaqaId,
+    DateTime? trackDate,
+    Frequency? frequencyCode,
   });
 }

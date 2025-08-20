@@ -5,6 +5,7 @@ enum UserRole {
   powerAdmin(1, "Power Admin"),
   supervisor(2, "Supervisor"),
   teacher(3, "Teacher"),
+  halaqa(3, "Halaqa"),
   student(4, "Student"),
   unknown(0, "Unknown");
 
@@ -22,11 +23,15 @@ enum UserRole {
       case 'مدير عام':
         return UserRole.powerAdmin;
       case 'supervisor':
+      case 'admin':
       case 'مشرف':
         return UserRole.supervisor;
       case 'teacher':
       case 'معلم':
         return UserRole.teacher;
+      case 'halaqa':
+      case 'حلقة':
+        return UserRole.halaqa;
       case 'student':
       case 'طالب':
         return UserRole.student;

@@ -1,5 +1,12 @@
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/sync_queue_model.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_model.dart';
+
+import '../../../../core/models/active_status.dart';
+import '../../../../core/models/report_frequency.dart';
+import '../../../../core/models/sync_queue_model.dart';
+import '../models/assigned_halaqas_model.dart';
+import '../models/follow_up_plan_model.dart';
+import '../models/student_info_model.dart';
+import '../models/tracking_model.dart';
 
 /// Defines the abstract contract for the local data source of students.
 ///
@@ -20,8 +27,8 @@ abstract interface class StudentLocalDataSource {
   /// Intelligently applies a batch of remote changes (updates and deletes)
   /// to the local database within a single transaction.
   Future<void> applySyncBatch({
-    required List<StudentModel> updatedStudents,
-    required List<StudentModel> deletedStudents,
+    required List<StudentInfoModel> updatedStudents,
+    required List<StudentInfoModel> deletedStudents,
   });
 
   /// Queues a local change (create, update, delete) for later synchronization.
@@ -36,8 +43,8 @@ abstract interface class StudentLocalDataSource {
 
   /// Retrieves the timestamp of the most recently modified record.
   /// This is used for delta synchronization.
-  Future<int> getLastSyncTimestampFor();
-  Future<void> updateLastSyncTimestampFor(int timestamp);
+  Future<int> getLastSyncTimestampFor(String entityType);
+  Future<void> updateLastSyncTimestampFor(String entityType, int timestamp);
 
   /// Marks a specific sync operation as completed in the queue.
   Future<void> markOperationAsCompleted(int operationId);
@@ -62,7 +69,12 @@ abstract interface class StudentLocalDataSource {
   /// `ConflictAlgorithm.replace` to handle both insertion and update
   /// (upsert) in a single operation.
   /// Throws a [CacheException] if the upsert operation fails.
-  Future<void> upsertStudentPlan(StudentModel student);
+  Future<void> upsertHalqaStudent(
+    AssignedHalaqasModel student,
+    String studentId,
+  );
+  Future<void> upsertFollowUpPlans(FollowUpPlanModel student, String studentId);
+  Future<void> upsertStudentInfo(StudentInfoModel student);
 
   /// Performs a "soft delete" on a student record in the local database.
   ///
@@ -77,4 +89,54 @@ abstract interface class StudentLocalDataSource {
   /// @param studentId The unique identifier of the student.
   /// @returns A [StudentModel] representing the student.
   Future<StudentModel> getStudentById(String studentId);
+  Future<AssignedHalaqasModel> getAssignedHalaqa(String studentId);
+  Future<StudentInfoModel> getStudentInfoById(String studentId);
+  Future<FollowUpPlanModel> getFollowUpPlan(String studentId);
+
+  /// {@template get_local_follow_up_trackings}
+  /// Fetches the cached list of daily tracking records for a specific enrollment.
+  ///
+  /// - [enrollmentId]: The local database ID for the student's enrollment.
+  ///
+  /// Returns a `Future` that completes with a list of [TrackingModel].
+  /// The list will be empty if no cached data is found.
+  ///
+  /// Throws a [CacheException] if a database error occurs.
+  /// {@endtemplate}
+  Future<List<TrackingModel>> getFollowUpTrackings(String studentId);
+
+  /// {@template cache_follow_up_trackings}
+  /// Caches a list of daily tracking records.
+  ///
+  /// This method performs a "clean and write" operation within a single transaction:
+  /// it first deletes all existing tracking data for the given enrollment,
+  /// then inserts the new data. This ensures the cache is always a mirror of the latest server data.
+  ///
+  /// - [enrollmentId]: The local database ID for the student's enrollment.
+  /// - [trackings]: The list of [TrackingModel] objects to cache.
+  ///
+  /// Throws a [CacheException] if the database transaction fails.
+  /// {@endtemplate}
+  Future<void> cacheFollowUpTrackings({
+    required String studentId,
+    required List<TrackingModel> trackings,
+  });
+
+  /// Fetches a list of follow-up tracking records by their UUIDs.
+  /// This is useful for syncing operations where we need to
+  /// retrieve the full tracking data based on their unique identifiers.
+  Future<List<TrackingModel>> getFollowUpTrackingsByUuids({
+    required List<String> uuids,
+  });
+
+  Future<List<TrackingModel>> getFollowUpTrackingsByStudentIds({
+    required int studentId,
+  });
+  
+  Future<List<StudentModel>> getFilteredStudents({
+    ActiveStatus? status,
+    int? halaqaId,
+    DateTime? trackDate,
+    Frequency? frequencyCode,
+  });
 }

@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/core/constants/data.dart';
 import 'package:tajalwaqaracademy/core/models/report_frequency.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_entity.dart';
@@ -11,11 +9,15 @@ import 'package:tajalwaqaracademy/shared/func/date_format.dart';
 import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
 import 'package:tajalwaqaracademy/shared/widgets/frequency_selector.dart';
 import 'package:tajalwaqaracademy/shared/widgets/horizontal_calendar_date_picker.dart';
-import 'package:tajalwaqaracademy/shared/widgets/taj.dart';
 
+import '../../../../../config/di/injection.dart';
+import '../../../../../core/models/active_status.dart';
+import '../../../../../shared/widgets/caerd_tile.dart';
+import '../../bloc/student_bloc.dart';
 import '../../view_models/follow_up_report_bundle_entity.dart';
-import '../../../domain/factories/follow_up_report_factory.dart';
+import '../../view_models/factories/follow_up_report_factory.dart';
 import 'follow_up_report_dialog.dart';
+import 'student_profile_screen.dart';
 
 class StudentsContinuousMonitoring extends StatefulWidget {
   const StudentsContinuousMonitoring({super.key});
@@ -36,16 +38,28 @@ class _StudentsContinuousMonitoringState
   Frequency _freq = Frequency.daily; // التردد الافتراضي
 
   late TabController _tabController;
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
     students = [
-      ...fakeStudents,
-      ...fakeStudents,
-      ...fakeStudents,
-      ...fakeStudents,
+      ...fakeStudents1,
+      ...fakeStudents1,
+      ...fakeStudents1,
+      ...fakeStudents1,
     ];
     super.initState();
+    // Add a listener to the scroll controller to detect when the user reaches the end.
+  }
+
+  // This is the correct place to trigger the initial data fetch.
+  // We do it in the BlocProvider's create method.
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -86,7 +100,6 @@ class _StudentsContinuousMonitoringState
                 ),
               ),
 
-              // 3) إذا عندك تبز (Tabs) إبقى ضيف TabBar هنا
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -103,19 +116,12 @@ class _StudentsContinuousMonitoringState
                           children: [
                             Text(
                               "المتوقع",
-                              style: GoogleFonts.cairo(
-                                fontSize: 14,
-                                color: AppColors.lightCream87,
-                              ),
+                              style: Theme.of(context).textTheme.bodyLarge!,
                             ),
                             const SizedBox(width: 10),
                             Text(
                               "(31)",
-                              style: GoogleFonts.cairo(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.lightCream,
-                              ),
+                              style: Theme.of(context).textTheme.bodyLarge!,
                             ),
                           ],
                         ),
@@ -126,19 +132,12 @@ class _StudentsContinuousMonitoringState
                           children: [
                             Text(
                               "المرسل",
-                              style: GoogleFonts.cairo(
-                                fontSize: 14,
-                                color: AppColors.lightCream87,
-                              ),
+                              style: Theme.of(context).textTheme.bodyLarge!,
                             ),
                             const SizedBox(width: 10),
                             Text(
                               "(27)",
-                              style: GoogleFonts.cairo(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.lightCream,
-                              ),
+                              style: Theme.of(context).textTheme.bodyLarge!,
                             ),
                           ],
                         ),
@@ -149,19 +148,12 @@ class _StudentsContinuousMonitoringState
                           children: [
                             Text(
                               "المتبقي",
-                              style: GoogleFonts.cairo(
-                                fontSize: 14,
-                                color: AppColors.lightCream87,
-                              ),
+                              style: Theme.of(context).textTheme.bodyLarge!,
                             ),
                             const SizedBox(width: 10),
                             Text(
                               "(5)",
-                              style: GoogleFonts.cairo(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.lightCream,
-                              ),
+                              style: Theme.of(context).textTheme.bodyLarge!,
                             ),
                           ],
                         ),
@@ -181,12 +173,9 @@ class _StudentsContinuousMonitoringState
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                      // تاب1: قائمة التأخرين
-                      _buildLateStudentsList(),
-                      // تاب1: قائمة التأخرين
-                      _buildLateStudentsList(),
-                      // تاب1: قائمة التأخرين
-                      _buildLateStudentsList(),
+                      _buildStudentsList(),
+                      _buildStudentsList(),
+                      _buildStudentsList(),
                     ],
                   ),
                 ),
@@ -198,114 +187,135 @@ class _StudentsContinuousMonitoringState
     );
   }
 
+  Widget _buildStudentsList({
+    ActiveStatus? status ,
+    int? halaqaId,
+    DateTime? trackDate,
+    Frequency? frequencyCode,
+  }) {
+    return BlocProvider(
+      create: (context) => sl<StudentBloc>()
+        ..add(
+          FilteredStudents(
+            status: status,
+            halaqaId: halaqaId,
+            trackDate: trackDate,
+            frequencyCode: frequencyCode,
+          ),
+        ),
+
+      child: BlocBuilder<StudentBloc, StudentState>(
+        builder: (context, state) {
+          if (state.status == StudentStatus.loading && state.students.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.status == StudentStatus.failure && state.students.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Error: state.failure?.message'),
+                  ElevatedButton(
+                    onPressed: () => context.read<StudentBloc>().add(
+                      const StudentsRefreshed(),
+                    ),
+                    child: const Text('Try Again'),
+                  ),
+                ],
+              ),
+            );
+          }
+          if (state.status == StudentStatus.success && state.students.isEmpty) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                if (state.status == StudentStatus.success &&
+                    state.hasMorePages &&
+                    !state.isLoadingMore) {
+                  context.read<StudentBloc>().add(const StudentsRefreshed());
+                }
+              },
+              child: const Center(child: Text('No students found.')),
+            );
+          }
+          final filteredStudents = state.students;
+          // .where(
+          //   (t) => (status == ActiveStatus.unknown
+          //       ? t.status == t.status
+          //       : t.status == status),
+          // )
+          // .toList();
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<StudentBloc>().add(const StudentsRefreshed());
+              // The refresh completes when the BLoC emits a new state.
+            },
+            child: ListView.separated(
+              separatorBuilder: (_, __) => const SizedBox(height: 5),
+              controller: _scrollController, // Controller for "load more"
+              itemCount:
+                  filteredStudents.length + (state.isLoadingMore ? 1 : 0),
+              itemBuilder: (ctx, i) {
+                if (i >= filteredStudents.length) {
+                  // "Load More" indicator
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                return CustomListListTile(
+                  title: filteredStudents[i].name,
+                  moreIcon: Icons.more_vert,
+                  leading: Avatar(),
+                  subtitle: filteredStudents[i].status.labelAr,
+                  backgroundColor: AppColors.accent12,
+                  border: Border.all(color: AppColors.accent70, width: 0.5),
+                  onMoreTab: () => {},
+                  onListTilePressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => StudentProfileScreen(
+                          studentID: filteredStudents[i].id,
+                        ),
+                      ),
+                    );
+                  },
+                  onTajPressed: () {
+                    _showStudentReports(filteredStudents[i].name);
+                  },
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildSectionHeader(String text) {
     return Padding(
       padding: const EdgeInsets.only(top: 14, left: 8, right: 8),
-      child: Text(
-        text,
-        style: GoogleFonts.cairo(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: AppColors.lightCream,
-        ),
-      ),
+      child: Text(text, style: Theme.of(context).textTheme.bodyLarge!),
     );
   }
 
-  Widget _buildStudentCard(
-    StudentDetailEntity student,
-    void Function()? onPressed,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.accent12,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.accent70, width: 0.5),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
-        ],
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 18),
-        shape: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
-        ),
-        leading: Avatar(gender: student.gender, pic: student.avatar),
-        title: Text(
-          student.name,
-          style: GoogleFonts.cairo(
-            fontWeight: FontWeight.bold,
-            color: AppColors.lightCream,
-          ),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Text(
-            student.status.labelAr,
-            style: GoogleFonts.cairo(fontSize: 12, color: AppColors.lightCream),
-          ),
-        ),
-        onTap: () => {},
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextButton(
-              onPressed: () {
-                onPressed!();
-              },
-              child: StatusTag(lable: "تقرير"),
-            ),
-            IconButton(
-              icon: Icon(Icons.more_vert, color: AppColors.lightCream),
-              onPressed: () => {},
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // مثال: تبويب المتأخرين
-  Widget _buildLateStudentsList() {
-    return ListView.separated(
-      padding: EdgeInsets.zero,
-      itemCount: students.length,
-      separatorBuilder: (_, __) => SizedBox(height: 8),
-      itemBuilder: (_, i) {
-        return _buildStudentCard(students[i], () {
-          _showStudentReports(students[i]);
-        });
-      },
-    );
-  }
-
-  void _showStudentReports(StudentDetailEntity student) {
-    print("Step 1: Converting Models to Entities...");
+  void _showStudentReports(String studentName) {
     final planEntity = studentPlan.toEntity();
     final trackingEntities = studentTrackings
         .map((model) => model.toEntity())
         .toList();
-
-    // 2. إنشاء نسخة من المصنع (المعالج)
-    print("Step 2: Creating the factory instance...");
     final factory = FollowUpReportFactory();
-
-    // 3. استدعاء المصنع لإنشاء حزمة التقرير النهائية
-    // هذه هي الخطوة الجوهرية التي تقوم بكل الحسابات.
-    print("Step 3: Calling the factory to process entities...");
     final FollowUpReportBundleEntity reportBundle = factory.create(
       plan: planEntity,
       trackings: trackingEntities,
-      totalPendingReports: 2, // قيمة ثابتة للتجربة
+      totalPendingReports: 2,
     );
-    print("Step 4: Processing complete. Bundle is ready.");
 
     showDialog(
       context: context,
       builder: (_) =>
-          FollowUpReportDialog(studentName: student.name, bundle: reportBundle),
-
+          FollowUpReportDialog(studentName: studentName, bundle: reportBundle),
       //  StudentReports(name: student.name, report: logs),
     );
   }

@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 /// This entity includes all available information for a teacher, used when
 /// viewing a specific teacher's profile. It inherits core properties and
 /// adds detailed fields.
+
+@immutable
 class TeacherDetailEntity extends BaseTeacherEntity {
   final String birthDate;
   final String email;

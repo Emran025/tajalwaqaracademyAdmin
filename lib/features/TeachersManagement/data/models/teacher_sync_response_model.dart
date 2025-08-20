@@ -1,4 +1,6 @@
 
+import 'package:flutter/material.dart';
+
 import '../../../../core/models/pagination_info_model.dart';
 import 'teacher_model.dart'; // Assuming you have a PaginationInfo model here
 
@@ -9,6 +11,7 @@ import 'teacher_model.dart'; // Assuming you have a PaginationInfo model here
 /// - `updated`: Records to be created or updated locally.
 /// - `deleted`: Records to be marked as deleted locally.
 /// It also extracts crucial pagination and timestamp metadata for the sync engine.
+@immutable
 final class TeacherSyncResponseModel {
   /// A list of teacher models that were created or updated on the server.
   final List<TeacherModel> updated;

@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:tajalwaqaracademy/core/errors/exceptions.dart';
+import 'package:tajalwaqaracademy/core/error/exceptions.dart';
 import 'package:tajalwaqaracademy/features/auth/data/models/user_model.dart';
 import 'auth_local_data_source.dart';
 
@@ -48,7 +48,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   Future<void> cacheUser(UserModel userToCache) async {
     try {
       // 1. Convert the model to a JSON-compatible map.
-      final userMap = userToCache.toJson();
+      final userMap = userToCache.toDbMap();
       // 2. Encode the map into a JSON string.
       final userJsonString = json.encode(userMap);
       // 3. Persist the string in SharedPreferences.
@@ -83,7 +83,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       try {
         // Decode and parse the JSON string back into a UserModel.
         final userMap = json.decode(userJsonString) as Map<String, dynamic>;
-        return UserModel.fromJson(userMap);
+        return UserModel.fromDbMap(userMap);
       } catch (e) {
         // This can happen if the stored data is corrupted or the model has changed.
         throw CacheException(message: 'Failed to decode cached user: ${e.toString()}');

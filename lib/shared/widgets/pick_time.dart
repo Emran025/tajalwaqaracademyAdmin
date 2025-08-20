@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 
 class CustomTimePicker extends StatefulWidget {
   final void Function(TimeOfDay)? onTimeSelected;

@@ -9,6 +9,9 @@ import '../../../../core/models/gender.dart';
 ///
 /// It contains the core properties shared between the list view and the
 /// detailed view. Using [Equatable] for value-based equality.
+import 'package:flutter/material.dart';
+
+@immutable
 abstract class BaseTeacherEntity extends Equatable {
   final String id;
   final String name;

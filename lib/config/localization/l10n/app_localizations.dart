@@ -100,11 +100,11 @@ abstract class AppLocalizations {
   /// **'أكاديمية تاج الوقار'**
   String get appName;
 
-  /// Text for the login button
+  /// Text for the logIn button
   ///
   /// In ar, this message translates to:
   /// **'تسجيل الدخول'**
-  String get loginButton;
+  String get logInButton;
 
   /// No description provided for @emailHint.
   ///

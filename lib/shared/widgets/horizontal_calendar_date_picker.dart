@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 
 class HorizontalCalendarDatePicker extends StatefulWidget {
   /// Called whenever the user taps a date.
@@ -80,10 +80,6 @@ class _HorizontalCalendarDatePickerState
     final max = _scrollController.position.hasContentDimensions
         ? _scrollController.position.maxScrollExtent
         : double.infinity;
-    print(max);
-    print(rawOffset);
-    print(fullItemWidth);
-    print(screenWidth);
     final target = rawOffset.clamp(0.0, max);
 
     _scrollController.animateTo(
@@ -108,7 +104,7 @@ class _HorizontalCalendarDatePickerState
           final isSelected = _isSameDate(date, _selectedDate);
           final bgColor = isSelected
               ? AppColors.accent
-              : AppColors.mediumDark38;
+              : Theme.of(context).colorScheme.primaryContainer;
 
           return GestureDetector(
             onTap: () {
@@ -131,11 +127,8 @@ class _HorizontalCalendarDatePickerState
                 children: [
                   Text(
                     DateFormat('EEE', 'ar').format(date),
-                    style: GoogleFonts.cairo(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-
-                      color: AppColors.lightCream54,
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      color: AppColors.lightCream.withOpacity(0.75),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -149,10 +142,8 @@ class _HorizontalCalendarDatePickerState
                   ),
                   Text(
                     DateFormat('MMM', 'ar').format(date),
-                    style: GoogleFonts.cairo(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.lightCream54,
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      color: AppColors.lightCream.withOpacity(0.75),
                     ),
                   ),
                 ],

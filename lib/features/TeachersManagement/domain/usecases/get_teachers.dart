@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/errors/error_model.dart';
+import '../../../../core/error/failures.dart';
 import '../entities/teacher_list_item_entity.dart';
 import '../repositories/teacher_repository.dart';
 import 'usecase.dart';
@@ -34,6 +34,8 @@ class WatchTeachersUseCase
 }
 
 /// Parameters for the [WatchTeachersUseCase].
+
+@injectable
 class WatchTeachersParams extends Equatable {
   /// When `true`, it signals to the repository to force a background sync.
   /// This is useful for user-initiated "pull-to-refresh" actions.

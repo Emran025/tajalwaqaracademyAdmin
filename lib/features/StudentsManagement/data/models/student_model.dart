@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/follow_up_plan_model.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
 
 import '../../domain/entities/student_entity.dart';
-import 'assigned_halaqas_model.dart';
-
 /// The data model for a Student, serving as the data transfer object (DTO)
 /// for the data layer. It is a plain, immutable Dart object.
 ///
 /// This single model is capable of representing the full student data and can be
 /// transformed into either a lightweight [StudentListItemEntity] for lists or a
 /// complete [StudentDetailEntity] for profile views.
+
 @immutable
 final class StudentModel {
   final String id; // The UUID string
@@ -34,12 +32,11 @@ final class StudentModel {
   final ActiveStatus status;
   final String? stopReasons;
   final String? avatar;
-  final String? createdAt;
   final String? updatedAt;
+  final String? createdAt;
+  final String memorizationLevel;
   final String qualification;
   final bool isDeleted;
-  final AssignedHalaqasModel? assignedHalaqa; // <<< Single Halqa, not a list
-  final FollowUpPlanModel? followUpPlan; // <<< FollowUpPlan object
 
   const StudentModel({
     required this.id,
@@ -62,67 +59,23 @@ final class StudentModel {
     this.avatar,
     this.createdAt,
     this.updatedAt,
+    
+    required this.memorizationLevel,
     required this.qualification,
     required this.isDeleted,
-    this.assignedHalaqa, // Changed to singular
-    this.followUpPlan, // New property
   });
 
-  // /// Creates a [StudentModel] from a JSON map received from an API.
-  factory StudentModel.fromJson(Map<String, dynamic> json) {
-    // Safely parse the nested list of halqas.
-
-    final assignedHalaqa = AssignedHalaqasModel.fromJson(
-      json['assignedHalaqas'] as Map<String, dynamic>,
-    );
-
+  factory StudentModel.fromMap(Map<String, dynamic> map, {bool fromDb = false}) {
     return StudentModel(
-      id: json['uuid'] as String? ?? (json['id'] as int? ?? 0).toString(),
-      name: json['name'] as String? ?? 'Unknown Name',
-      gender: Gender.fromLabel(
-        json['gender'] as String? ?? Gender.male.labelAr.toLowerCase(),
-      ),
-      birthDate: json['birthDate'] as String? ?? '',
-      email: json['email'] as String? ?? '',
-      phone: json['phone'] as String? ?? '',
-      phoneZone: json['phoneZone'] as String?,
-      whatsappPhone: json['whatsappPhone'] as String?,
-      whatsappZone: json['whatsappZone'] as String?,
-      bio: json['bio'] as String?,
-      experienceYears: json['experienceYears'] as int? ?? 0,
-      country: json['country'] as String? ?? '',
-      residence: json['residence'] as String? ?? '',
-      city: json['city'] as String? ?? '',
-      availableTime: json['availableTime'] as String?,
-      status: ActiveStatus.fromLabel(json['status'] as String? ?? 'inactive'),
-      stopReasons: json['stopReasons'] as String?,
-      avatar: json['avatar'] as String?,
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
-      qualification: json['qualification'] as String? ?? '',
-      isDeleted: json['isDeleted'] as bool? ?? false,
-      assignedHalaqa: assignedHalaqa, // Convert to HalqaEntity
-      followUpPlan: json['followUpPlan'] != null
-          ? FollowUpPlanModel.fromJson(
-              json['followUpPlan'] as Map<String, dynamic>,
-            )
-          : null, // New
-    );
-  }
-
-  /// Creates a [StudentModel] from a JSON map received from an API.
-  factory StudentModel.fromDbMap(Map<String, dynamic> map) {
-    return StudentModel(
-      id: map['uuid'] as String? ?? (map['id'] as int? ?? 0).toString(),
+      id: (map['uuid'] as String?) ?? (map['id'] as int? ?? 0).toString(),
       name: map['name'] as String? ?? 'Unknown Name',
-      gender: Gender.fromLabel(
-        map['gender'] as String? ?? Gender.male.labelAr.toLowerCase(),
-      ),
+      gender: Gender.fromLabel(map['gender'] as String? ?? 'male'),
       birthDate: map['birthDate'] as String? ?? '',
       email: map['email'] as String? ?? '',
       phone: map['phone'] as String? ?? '',
       phoneZone: map['phoneZone'] as String?,
-      whatsappPhone: map['whatsapp'] as String?,
+      // التعامل مع الاختلاف في الأسماء
+      whatsappPhone: (map['whatsappPhone'] as String?) ?? (map['whatsapp'] as String?),
       whatsappZone: map['whatsappZone'] as String?,
       bio: map['bio'] as String?,
       experienceYears: map['experienceYears'] as int? ?? 0,
@@ -136,10 +89,42 @@ final class StudentModel {
       createdAt: map['createdAt'] as String?,
       updatedAt: map['updatedAt'] as String?,
       qualification: map['qualification'] as String? ?? '',
-      isDeleted:
-          (map['isDeleted'] as int) == 1, // Convert integer back to boolean
+      memorizationLevel: map['memorizationLevel'] as String? ?? '',
+      // التعامل مع اختلاف نوع البيانات
+      isDeleted: fromDb ? (map['isDeleted'] == 1) : (map['isDeleted'] as bool? ?? false),
     );
   }
+
+  // دالة موحدة لإنشاء خريطة (للـ API والـ DB)
+  Map<String, dynamic> toMap({bool forDb = false}) {
+    return {
+      'uuid': id,
+      'roleId': UserRole.student.id,
+      'name': name,
+      'gender': gender.labelAr,
+      'birthDate': birthDate,
+      'email': email,
+      'phone': phone,
+      'phoneZone': phoneZone,
+      if (forDb) 'whatsapp': whatsappPhone else 'whatsappPhone': whatsappPhone,
+      'whatsappZone': whatsappZone,
+      'bio': bio,
+      'qualification': qualification,
+      'experienceYears': experienceYears,
+      'country': country,
+      'residence': residence,
+      'city': city,
+      'availableTime': availableTime,
+      'status': status.labelAr,
+      'stopReasons': stopReasons,
+      'avatar': avatar,
+      'memorizationLevel': memorizationLevel,
+      'lastModified': DateTime.now().millisecondsSinceEpoch,
+      'isDeleted': forDb ? (isDeleted ? 1 : 0) : isDeleted,
+    };
+  }
+  
+
 
   /// Converts this data model into a lightweight [StudentListItemEntity].
   StudentListItemEntity toListItemEntity() {
@@ -178,75 +163,15 @@ final class StudentModel {
         hour: int.tryParse(timeParts[0]) ?? 0,
         minute: int.tryParse(timeParts[1]) ?? 0,
       ),
+      memorizationLevel: memorizationLevel ,
       stopReasons: stopReasons ?? '',
       bio: bio ?? '',
       createdAt: createdAt ?? '',
       updatedAt: updatedAt ?? '',
-      assignedHalaqa: assignedHalaqa?.toEntity(), // Convert to HalqaEntity
-      followUpPlan: followUpPlan?.toEntity(),
+
     ); // Convert to FollowUpPlanEntity    );
   }
 
-  /// Converts the [StudentModel] to a database map.
-  Map<String, dynamic> toJson() {
-    return {
-      'uuid': id,
-      'roleId': UserRole.student.id,
-      'name': name,
-      'gender': gender.labelAr,
-      'birthDate': birthDate,
-      'email': email,
-      'phone': phone,
-      'phoneZone': phoneZone,
-      'whatsappPhone': whatsappPhone,
-      'whatsappZone': whatsappZone,
-      'bio': bio,
-      'qualification': qualification,
-      'experienceYears': experienceYears,
-      'country': country,
-      'residence': residence,
-      'city': city,
-      'availableTime': availableTime,
-      'status': status.labelAr,
-      'stopReasons': stopReasons,
-      'avatar': avatar,
-      'memorizationLevel': null,
-      'lastModified': DateTime.parse(
-        updatedAt ?? "${DateTime.now()}",
-      ).millisecondsSinceEpoch,
-      'isDeleted': isDeleted,
-    };
-  }
-
-  Map<String, dynamic> toDbMap() {
-    return {
-      'uuid': id,
-      'roleId': UserRole.student.id,
-      'name': name,
-      'gender': gender.labelAr,
-      'birthDate': birthDate,
-      'email': email,
-      'phone': phone,
-      'phoneZone': phoneZone,
-      'whatsapp': whatsappPhone,
-      'whatsappZone': whatsappZone,
-      'bio': bio,
-      'qualification': qualification,
-      'experienceYears': experienceYears,
-      'country': country,
-      'residence': residence,
-      'city': city,
-      'availableTime': availableTime,
-      'status': status.labelAr,
-      'stopReasons': stopReasons,
-      'avatar': avatar,
-      'memorizationLevel': null,
-      'lastModified': DateTime.parse(
-        updatedAt ?? "${DateTime.now()}",
-      ).millisecondsSinceEpoch,
-      'isDeleted': isDeleted ? 1 : 0,
-    };
-  }
 
   /// Converts this data model into a domain [StudentEntity].
   /// ///
@@ -266,6 +191,7 @@ final class StudentModel {
       city: student.city,
       status: student.status,
       qualification: student.qualification,
+      memorizationLevel: student.memorizationLevel,
       isDeleted: false,
     );
   }

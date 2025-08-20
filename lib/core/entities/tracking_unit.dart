@@ -1,3 +1,4 @@
+
 class TrackingUnitDetail {
   final int id;
   final int unitId;
@@ -7,6 +8,7 @@ class TrackingUnitDetail {
   final String toSurah;
   final int toPage;
   final int toAyah;
+
 
   TrackingUnitDetail(
     this.id,

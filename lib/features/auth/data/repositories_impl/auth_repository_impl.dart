@@ -3,31 +3,26 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/entities/success_entity.dart';
-import '../../../../core/errors/exceptions.dart';
+import '../../../../core/error/exceptions.dart';
+import '../../../../core/error/failures.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
+import '../models/login_request_model.dart';
 import '../models/user_model.dart';
 
 import 'package:injectable/injectable.dart';
 
-
 import 'package:tajalwaqaracademy/core/network/network_info.dart';
 import 'package:tajalwaqaracademy/core/services/device_info_service.dart';
-import 'package:tajalwaqaracademy/features/auth/data/models/login_request_model.dart';
 import 'package:tajalwaqaracademy/features/auth/domain/entities/login_credentials_entity.dart';
-
 
 /// Orchestrates calls to [AuthRemoteDataSource], catches any
 /// [ServerException], and exposes a clean [Either]<String, T> API.
 /// Coordinates remote + local sources, and exposes
 /// a clean Either<String,T> API for network calls,
 /// plus async getters for cached data.
-
-
-
-
 
 /// The concrete implementation of the [AuthRepository] contract.
 ///
@@ -37,7 +32,8 @@ import 'package:tajalwaqaracademy/features/auth/domain/entities/login_credential
 @LazySingleton(as: AuthRepository)
 final class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;
-  final AuthLocalDataSource _localDataSource; // For caching tokens and user data
+  final AuthLocalDataSource
+  _localDataSource; // For caching tokens and user data
   final DeviceInfoService _deviceInfoService;
   final NetworkInfo _networkInfo;
 
@@ -46,15 +42,15 @@ final class AuthRepositoryImpl implements AuthRepository {
     required AuthLocalDataSource localDataSource,
     required DeviceInfoService deviceInfoService,
     required NetworkInfo networkInfo,
-  })  : _remoteDataSource = remoteDataSource,
-        _localDataSource = localDataSource,
-        _deviceInfoService = deviceInfoService,
-        _networkInfo = networkInfo;
+  }) : _remoteDataSource = remoteDataSource,
+       _localDataSource = localDataSource,
+       _deviceInfoService = deviceInfoService,
+       _networkInfo = networkInfo;
 
   @override
-  Future<Either<String, UserEntity>> login( { required
-    LoginCredentialsEntity credentials }
-  ) async {
+  Future<Either<Failure, UserEntity>> logIn({
+    required LogInCredentialsEntity credentials,
+  }) async {
     // This is the "wrapper" function that handles exceptions and network state.
     // It takes a function `body` which contains the core logic.
     return await _executeAuthOperation(() async {
@@ -62,15 +58,17 @@ final class AuthRepositoryImpl implements AuthRepository {
       final deviceInfo = await _deviceInfoService.getDeviceInfo();
 
       // 2. Create the complete request model from the domain entities.
-      final loginRequestModel = LoginRequestModel.fromEntities(
+      final logInRequestModel = LogInRequestModel.fromEntities(
         credentials: credentials,
         deviceInfo: deviceInfo,
       );
 
       // 3. Execute the remote call.
-      final authResponseModel = await _remoteDataSource.login( requestModel :loginRequestModel);
+      final authResponseModel = await _remoteDataSource.logIn(
+        requestModel: logInRequestModel,
+      );
 
-      // 4. Perform side effects: Cache the tokens and user data upon successful login.
+      // 4. Perform side effects: Cache the tokens and user data upon successful logIn.
       await _localDataSource.cacheAuthTokens(
         accessToken: authResponseModel.accessToken,
         refreshToken: authResponseModel.refreshToken,
@@ -89,30 +87,25 @@ final class AuthRepositoryImpl implements AuthRepository {
   /// specific logic.
   ///
   /// - [body]: A function that contains the core data-fetching and processing logic.
-  Future<Either<String, T>> _executeAuthOperation<T>(
+  Future<Either<Failure, T>> _executeAuthOperation<T>(
     Future<T> Function() body,
   ) async {
     // A. Pre-execution check: Fail fast if there is no internet connection.
-    if (!await _networkInfo.isConnected) {
-      return Left( 'No internet connection available.');
-    }
+    // if (!await _networkInfo.isConnected) {
+    //   return Left( 'No internet connection available.');
+    // }
 
     try {
       // B. Execute the main logic.
       final result = await body();
       return Right(result);
-     
-      
-      
     } on ServerException catch (e) {
-      return Left(e.errorModel.message);
+      return Left(DataFailure(message: e.message));
     }
   }
 
-
-
-    @override
-  Future<Either<String, UserEntity>> signUp({
+  @override
+  Future<Either<Failure, UserEntity>> signUp({
     required String email,
     required String password,
     required String phoneNumber,
@@ -155,10 +148,12 @@ final class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<String, SuccessEntity>> forgetPassword({
+  Future<Either<Failure, SuccessEntity>> forgetPassword({
     required String email,
   }) async {
-    final either = await _executeAuthOperation(() => _remoteDataSource.forgetPassword(email: email));
+    final either = await _executeAuthOperation(
+      () => _remoteDataSource.forgetPassword(email: email),
+    );
     either.fold((failure) => null, (user) => null);
 
     return either.map((successModel) {
@@ -168,18 +163,46 @@ final class AuthRepositoryImpl implements AuthRepository {
     });
   }
 
+  @override
+  Future<Either<Failure, SuccessEntity>> logOut() async {
+    // LogOut is primarily a local operation. It clears all session data.
+    // We don't need the _executeApiCall wrapper unless the API requires
+    // an explicit "invalidate token" call. For now, we assume it's local.
+    try {
+      // We call the `clear` method to remove all authentication data,
+      // including tokens and the cached user profile.
+      await _localDataSource.clear();
+
+      final either = await _executeAuthOperation(
+        () => _remoteDataSource.logOut(),
+      );
+      either.fold((failure) => null, (user) => null);
+
+      return either.map((successModel) {
+        final successEntity = successModel.toEntity();
+
+        return successEntity;
+      });
+    } on CacheException catch (e) {
+      // If clearing the cache fails, we return a CacheFailure.
+      return Left(CacheFailure(message: e.message));
+    }
+  }
+
   /// Returns the most recently cached user, or throws [CacheException]
   /// if no user is cached.
   /// - Returns: The cached [UserModel] if available.
   @override
-  Future<UserModel> getUserProfile() async {
+  Future<Either<Failure, UserEntity>> getUserProfile() async {
+    bool isLoggedin = await isLoggedIn();
+    if (!isLoggedin)
+      return Left(CacheFailure(message: 'Failed to get User Profile.'));
     final user = await _localDataSource.getUser();
     if (user == null) {
       throw CacheException(message: 'Failed to get User Profile.');
     }
-    return user;
+    return Right(user.toUserEntity());
   }
-
 
   /// Checks if the user is logged in by verifying if a user exists in the cache.
   /// This method is used to determine if the user has an active session.
@@ -190,25 +213,4 @@ final class AuthRepositoryImpl implements AuthRepository {
 
     return _localDataSource.isLoggedIn();
   }
-
-  @override
-
-  @override
-  Future<Either<String, Unit>> logout() async {
-    // Logout is primarily a local operation. It clears all session data.
-    // We don't need the _executeApiCall wrapper unless the API requires
-    // an explicit "invalidate token" call. For now, we assume it's local.
-    try {
-      // We call the `clear` method to remove all authentication data,
-      // including tokens and the cached user profile.
-      await _localDataSource.clear();
-      
-      // 'unit' is a special value from dartz representing a void success.
-      return const Right(unit);
-    } on CacheException catch (e) {
-      // If clearing the cache fails, we return a CacheFailure.
-      return Left( e.message);
-    }
-  }
-
 }

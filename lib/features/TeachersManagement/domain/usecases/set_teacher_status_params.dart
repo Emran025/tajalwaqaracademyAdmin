@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/features/TeachersManagement/domain/repositories/teacher_repository.dart';
 
-import '../../../../core/errors/error_model.dart';
+import '../../../../core/error/failures.dart';
 import 'usecase.dart';
 
 /// A domain layer use case responsible for changing a teacher's status.
@@ -35,6 +35,8 @@ class SetTeacherStatusUseCase implements UseCase<Unit, SetTeacherStatusParams> {
 }
 
 /// Encapsulates the parameters required for the [SetTeacherStatusUseCase].
+
+
 final class SetTeacherStatusParams  {
   final String teacherId;
   final ActiveStatus newStatus;

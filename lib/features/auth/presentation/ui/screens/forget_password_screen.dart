@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 
 import '../../../../../shared/widgets/custom_button.dart';
 import '../../bloc/auth_bloc.dart';
-import '../../bloc/auth_event.dart';
-import '../../bloc/auth_state.dart';
 // import '../../../../../core/constants/app_colors.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -154,7 +152,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           const SizedBox(height: 24),
                           BlocConsumer<AuthBloc, AuthState>(
                             listener: (context, state) {
-                              if (state is ForgetPasswordSuccess) {
+                              if (state.forgetPasswordStatus ==
+                                  ForgetPasswordStatus.success) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
@@ -162,15 +161,21 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                     ),
                                   ),
                                 );
-                                context.go('/login');
-                              } else if (state is ForgetPasswordFailure) {
+                                context.go('/logIn');
+                              } else if (state.forgetPasswordStatus ==
+                                  ForgetPasswordStatus.failure) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(state.message)),
+                                  SnackBar(
+                                    content: Text(
+                                      state.forgetPasswordFailure!.message,
+                                    ),
+                                  ),
                                 );
                               }
                             },
                             builder: (context, state) {
-                              return state is ForgetPasswordLoading
+                              return state.forgetPasswordStatus ==
+                                      ForgetPasswordStatus.submitting
                                   ? const CircularProgressIndicator(
                                       color: AppColors.lightCream,
                                     )

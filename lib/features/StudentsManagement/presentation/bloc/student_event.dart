@@ -30,6 +30,22 @@ final class StudentUpserted extends StudentEvent {
   List<Object> get props => [student];
 }
 
+/// Dispatched when the user performs an action to add or update a student.
+final class FilteredStudents extends StudentEvent {
+   final ActiveStatus? status;
+ final int? halaqaId;
+ final DateTime? trackDate;
+ final Frequency? frequencyCode;
+
+  const FilteredStudents({
+    this.status,
+    this.halaqaId,
+    this.trackDate,
+    this.frequencyCode,
+  });
+  
+}
+
 /// Internal event used to push updates from the data stream into the BLoC.
 final class _StudentsStreamUpdated extends StudentEvent {
   final Either<Failure, List<StudentListItemEntity>> update;
@@ -65,4 +81,15 @@ final class StudentStatusChanged extends StudentEvent {
   const StudentStatusChanged(this.studentId, this.newStatus);
   @override
   List<Object> get props => [studentId, newStatus];
+}
+
+
+/// Dispatched when the user navigates to a student's profile screen
+/// to fetch their detailed information.
+final class FollowUpReportFetched extends StudentEvent {
+  final String studentId;
+  const FollowUpReportFetched(this.studentId);
+
+  @override
+  List<Object> get props => [studentId];
 }

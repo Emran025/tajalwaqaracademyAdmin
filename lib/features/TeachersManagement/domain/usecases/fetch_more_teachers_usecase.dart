@@ -3,7 +3,7 @@
 // lib/features/teachers/domain/usecases/delete_teacher.dart
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/errors/error_model.dart';
+import 'package:tajalwaqaracademy/core/error/failures.dart';
 import 'package:tajalwaqaracademy/features/TeachersManagement/domain/usecases/usecase.dart';
 
 import '../repositories/teacher_repository.dart';

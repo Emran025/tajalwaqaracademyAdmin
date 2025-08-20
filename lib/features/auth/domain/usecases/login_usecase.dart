@@ -1,26 +1,20 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../core/error/failures.dart';
 import '../entities/login_credentials_entity.dart';
 import '../entities/user_entity.dart';
 import '../repositories/auth_repository.dart';
 import 'package:injectable/injectable.dart';
 
-
 @injectable
-class LoginUseCase {
+class LogInUseCase {
   final AuthRepository repository;
 
-  LoginUseCase(this.repository);
+  LogInUseCase(this.repository);
 
-  Future<Either<String,UserEntity>> call({
-    required
-LoginCredentialsEntity credentials ,
+  Future<Either<Failure, UserEntity>> call({
+    required LogInCredentialsEntity credentials,
   }) {
-    return repository.login(
-     credentials: credentials,
-    );
+    return repository.logIn(credentials: credentials);
   }
 }
-
-
-

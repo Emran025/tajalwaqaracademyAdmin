@@ -31,4 +31,5 @@ abstract interface class StudentSyncService {
   /// background. It should handle its own error logging and state management
   /// (e.g., preventing concurrent runs).
   Future<void> performSync({int initialPage = 1});
+  Future<void> performTrackingsSync({ required String studentId});
 }

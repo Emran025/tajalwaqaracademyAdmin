@@ -10,8 +10,8 @@ import '../models/user_model.dart';
 /// All methods throw [ServerException] carrying an [ErrorModel]
 /// if the API responds with an error payload.
 abstract class AuthRemoteDataSource {
-  /// Sends credentials to the `/login` endpoint.
-  Future<AuthResponseModel> login({ required LoginRequestModel requestModel});
+  /// Sends credentials to the `/logIn` endpoint.
+  Future<AuthResponseModel> logIn({required LogInRequestModel requestModel});
 
   /// Registers a new user via the `/signup` endpoint.
   Future<UserModel> signUp({
@@ -31,8 +31,9 @@ abstract class AuthRemoteDataSource {
     required String currentAddress,
   });
 
-
   /// Requests a password reset code.
   Future<SuccessModel> forgetPassword({required String email});
 
+  /// Requests a password reset code.
+  Future<SuccessModel> logOut();
 }

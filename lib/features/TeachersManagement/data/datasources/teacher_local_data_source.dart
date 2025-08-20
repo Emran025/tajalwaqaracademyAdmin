@@ -1,5 +1,5 @@
 
-import '../models/sync_queue_model.dart';
+import '../../../../core/models/sync_queue_model.dart';
 import '../models/teacher_model.dart';
 
 /// Defines the abstract contract for the local data source of teachers.

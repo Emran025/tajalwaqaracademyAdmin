@@ -1,139 +1,111 @@
-import 'package:tajalwaqaracademy/features/auth/domain/entities/user_entity.dart';
+part of 'auth_bloc.dart';
 
-import '../../../../core/entities/success_entity.dart';
-import '../../data/models/states_modle.dart';
-class AuthState {}
-
-final class AuthInitial extends AuthState {}
-
-final class UploadProfilePic extends AuthState {}
-
-/* 
-+---------------------------------------------------------------------------+
-|                           States of Sign In                               |
-+---------------------------------------------------------------------------+
- */
-
-final class LoginLoading extends AuthState {}
-
-final class LoginSuccess extends AuthState {
-  final UserEntity userEntity;
-
-  LoginSuccess({required this.userEntity});
+// Let's simplify the status enum for clarity
+enum AuthStatus {
+  initializing, // The initial state, while we are checking for a token.
+  authenticated, // The user is logged in.
+  unauthenticated, // The user is logged out or it's their first time.
 }
 
-final class LoginFailure extends AuthState {
-  final String message;
+enum LogInStatus { initial, loading, success, failure }
 
-  LoginFailure({required this.message});
+enum GetUserStatus { initial, loading, success, failure }
+
+enum ForgetPasswordStatus { initial, submitting, success, failure }
+
+final class AuthState extends Equatable {
+  final AuthStatus authStatus;
+
+  final LogInStatus status;
+  final UserEntity? user;
+  final Failure? failure;
+
+  // --- Details State Properties (New) ---
+  final GetUserStatus getUserStatus;
+  final UserEntity? selectedUser;
+  final Failure? getUserFailure;
+
+  // --- Operation State (New) ---
+  final Failure? logOutFailure;
+
+  // --- Operation State (New) ---
+  final ForgetPasswordStatus forgetPasswordStatus;
+  final SuccessEntity? successEntity;
+  final Failure? forgetPasswordFailure;
+
+  const AuthState({
+    this.authStatus = AuthStatus.initializing,
+    this.status = LogInStatus.initial,
+    this.user,
+    this.failure,
+
+    // New
+    this.getUserStatus = GetUserStatus.initial,
+    this.selectedUser,
+    this.getUserFailure,
+
+    // New
+    this.logOutFailure,
+
+    // New
+    this.forgetPasswordStatus = ForgetPasswordStatus.initial,
+    this.successEntity,
+    this.forgetPasswordFailure,
+    // New
+  });
+
+  AuthState copyWith({
+    LogInStatus? status,
+    AuthStatus? authStatus,
+    UserEntity? user,
+    Failure? failure,
+
+    // New
+    GetUserStatus? getUserStatus,
+    UserEntity? selectedUser,
+    Failure? getUserFailure,
+
+    // New
+    Failure? logOutFailure,
+
+    // New
+    ForgetPasswordStatus? forgetPasswordStatus,
+    SuccessEntity? successEntity,
+    Failure? forgetPasswordFailure,
+  }) {
+    return AuthState(
+      authStatus: authStatus ?? this.authStatus,
+      status: status ?? this.status,
+      user: user ?? this.user,
+      failure: failure ?? this.failure,
+      // New
+      getUserStatus: getUserStatus ?? this.getUserStatus,
+      selectedUser: selectedUser ?? this.selectedUser,
+      getUserFailure: getUserFailure ?? this.getUserFailure,
+
+      // New
+      logOutFailure: logOutFailure ?? this.logOutFailure,
+
+      // New
+      forgetPasswordStatus: forgetPasswordStatus ?? this.forgetPasswordStatus,
+      successEntity: successEntity ?? this.successEntity,
+      forgetPasswordFailure:
+          forgetPasswordFailure ?? this.forgetPasswordFailure,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    authStatus,
+    status,
+    user,
+    failure,
+    getUserStatus,
+    selectedUser,
+    getUserFailure,
+    logOutFailure,
+    forgetPasswordStatus,
+    successEntity,
+    forgetPasswordFailure,
+  ];
 }
-
-
-
-/* 
-+---------------------------------------------------------------------------+
-|                           States of Sign Up                               |
-+---------------------------------------------------------------------------+
-*/
-
-final class SignUpLoading extends AuthState {}
-
-final class SignUpSuccess extends AuthState {
-  final UserEntity userEntity;
-
-  SignUpSuccess({required this.userEntity});
-}
-
-final class SignUpFailure extends AuthState {
-  final String message;
-
-  SignUpFailure({required this.message});
-}
-
-
-
-
-
-/* 
-+---------------------------------------------------------------------------+
-|                           States of Ubdate PassWord                       |
-+---------------------------------------------------------------------------+
-*/
-
-final class ForgetPasswordLoading extends AuthState {}
-
-final class ForgetPasswordSuccess extends AuthState {
-  final SuccessEntity successEntity;
-
-  ForgetPasswordSuccess({required this.successEntity});
-}
-
-final class ForgetPasswordFailure extends AuthState {
-  final String message;
-
-  ForgetPasswordFailure({required this.message});
-}
-/* 
-+---------------------------------------------------------------------------+
-|                           States of counteris                             |
-+---------------------------------------------------------------------------+
-*/
-
-/* 
-+---------------------------------------------------------------------------+
-|                           States of States                                |
-+---------------------------------------------------------------------------+
-*/
-
-final class StatesLoading extends AuthState {}
-
-final class StatesSuccess extends AuthState {
-  final StatesModel statesModel;
-
-  StatesSuccess({required this.statesModel});
-}
-
-final class StatesFailure extends AuthState {
-  final String message;
-
-  StatesFailure({required this.message});
-}
-
-/* 
-+---------------------------------------------------------------------------+
-|                           States of Get Auth Date                         |
-+---------------------------------------------------------------------------+
-*/
-
-final class AuthLoading extends AuthState {}
-
-final class AuthSuccess extends AuthState {
-  final bool auth;
-
-  AuthSuccess({required this.auth});
-}
-
-final class AuthFailure extends AuthState {
-}
-
-/* 
-+---------------------------------------------------------------------------+
-|                           States of Get Auth Date                         |
-+---------------------------------------------------------------------------+
-*/
-
-final class GetUserLoading extends AuthState {}
-
-final class GetUserSuccess extends AuthState {
-  final UserEntity usreEntity;
-
-  GetUserSuccess({required this.usreEntity});
-}
-
-final class GetUserFailure extends AuthState {
-  final String message;
-
-  GetUserFailure({required this.message});
-}
-
-

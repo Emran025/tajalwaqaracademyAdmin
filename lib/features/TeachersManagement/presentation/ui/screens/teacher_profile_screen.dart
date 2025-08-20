@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 
 import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
@@ -37,12 +37,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
       create: (context) =>
           sl<TeacherBloc>()..add(TeacherDetailsFetched(widget.teacherId)),
       child: Scaffold(
-        backgroundColor: AppColors.darkBackground,
-        appBar: AppBar(
-          title: Text("الملف الشخصي"),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
+        appBar: AppBar(title: Text("الملف الشخصي"), elevation: 0),
         body: BlocBuilder<TeacherBloc, TeacherState>(
           builder: (context, status) {
             if (status.detailsStatus == TeacherDetailsStatus.failure) {
@@ -262,7 +257,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                 ),
               );
             } else {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),
@@ -274,7 +269,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
     return Container(
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.lightCream12,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.lightCream38),
       ),
@@ -330,7 +325,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
       margin: EdgeInsets.only(bottom: 12),
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       decoration: BoxDecoration(
-        color: AppColors.lightCream12,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

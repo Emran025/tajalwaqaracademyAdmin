@@ -1,14 +1,17 @@
 
 enum AttendanceType {
 
-  present('حاضر', 'present'),
-  absent('غائب', 'absent'),
-  other('UN', 'UN');
+  present(1 , 'حاضر', 'present'),
+  absent(2 , 'غائب', 'absent'),
+  other( 3, 'UN', 'UN');
 
+  final int id;
   final String labelAr;
   final String label;
-  const AttendanceType(this.labelAr, this.label);
-  static AttendanceType fromLabel(String label) {
+  const AttendanceType( this.id,  this.labelAr, this.label);
+  static AttendanceType fromId(int id) {
+    return AttendanceType.values.firstWhere((e) => e.id == id, orElse: () => absent);
+  }  static AttendanceType fromLabel(String label) {
     switch (label.toLowerCase()) {
       case 'حاضر':
       case 'present':

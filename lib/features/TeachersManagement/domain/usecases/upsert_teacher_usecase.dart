@@ -2,7 +2,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/errors/error_model.dart';
+import '../../../../core/error/failures.dart';
 import '../entities/teacher_entity.dart';
 import '../repositories/teacher_repository.dart';
 import 'usecase.dart';

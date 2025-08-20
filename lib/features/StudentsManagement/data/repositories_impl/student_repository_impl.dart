@@ -1,15 +1,21 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:tajalwaqaracademy/core/models/report_frequency.dart';
+import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_info_entity.dart';
 
-import '../../../../core/errors/error_model.dart';
-import '../../../../core/errors/exceptions.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/models/active_status.dart';
+import '../../domain/entities/follow_up_plan_entity.dart';
 import '../../domain/entities/student_entity.dart';
 import '../../domain/entities/student_list_item_entity.dart';
+import '../../domain/entities/tracking_entity.dart';
 import '../../domain/repositories/student_repository.dart';
 import '../datasources/student_local_data_source.dart';
+import '../models/follow_up_plan_model.dart';
 import '../models/student_model.dart';
+import '../models/tracking_model.dart';
 import '../services/student_sync_service.dart';
 
 @LazySingleton(as: StudentRepository)
@@ -28,8 +34,6 @@ final class StudentRepositoryImpl implements StudentRepository {
   Stream<Either<Failure, List<StudentListItemEntity>>> getStudents({
     bool forceRefresh = true,
   }) {
-    print('Fetching students with forceRefresh: $forceRefresh');
-
     // 1. If a refresh is forced, trigger the sync immediately.
     //    Otherwise, the sync might be triggered by other mechanisms (e.g., background job).
     if (forceRefresh) {
@@ -78,7 +82,7 @@ final class StudentRepositoryImpl implements StudentRepository {
       await _localDataSource.queueSyncOperation(
         uuid: student.id,
         operation: 'upsert',
-        payload: model.toDbMap(),
+        payload: model.toMap(forDb: true),
       );
 
       // 4. Trigger a sync attempt in the background.
@@ -113,16 +117,71 @@ final class StudentRepositoryImpl implements StudentRepository {
   }
 
   @override
-  Future<Either<Failure, StudentDetailEntity>> getStudentById(
+  Future<Either<Failure, StudentInfoEntity>> getStudentById(
     String studentId,
   ) async {
     // This method would typically fetch from the local data source first,
     // then potentially trigger a targeted remote fetch if needed.
     try {
-      final model = await _localDataSource.getStudentById(studentId);
-      return Right(model.toDetailEntity());
+      final model = await _localDataSource.getStudentInfoById(studentId);
+      return Right(model.toStudentInfoEntity());
     } on CacheException catch (e) {
       return Left(CacheFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<StudentListItemEntity>>> getFilteredStudents({
+    ActiveStatus? status,
+    int? halaqaId,
+    DateTime? trackDate,
+    Frequency? frequencyCode,
+  }) async {
+    // This method would typically fetch from the local data source first,
+    // then potentially trigger a targeted remote fetch if needed.
+    try {
+      final model = await _localDataSource.getFilteredStudents(
+        status: status,
+        halaqaId: halaqaId,
+        trackDate: trackDate,
+        frequencyCode: frequencyCode,
+      );
+
+      return Right(
+        model.map((toElement) => toElement.toListItemEntity()).toList(),
+      );
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, FollowUpPlanEntity>> getFollowUpPlan(
+    String studentId,
+  ) async {
+    try {
+      final FollowUpPlanModel planModel = await _localDataSource
+          .getFollowUpPlan(studentId);
+      return Right(planModel.toEntity());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<TrackingEntity>>> getFollowUpTrackings(
+    String studentId,
+  ) async {
+    try {
+      await _syncService.performTrackingsSync(studentId: studentId);
+      final List<TrackingModel> trackingModels = await _localDataSource
+          .getFollowUpTrackings(studentId);
+      final trackingEntities = trackingModels
+          .map((model) => model.toEntity())
+          .toList();
+      return Right(trackingEntities);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
     }
   }
 

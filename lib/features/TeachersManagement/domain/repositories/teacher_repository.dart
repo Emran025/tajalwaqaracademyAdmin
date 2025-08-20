@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../../core/errors/error_model.dart';
+import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
 import '../entities/teacher_entity.dart';
 import '../entities/teacher_list_item_entity.dart';

@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/core/entities/tracking_unit.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/view_models/follow_up_report_detail_entity.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/view_models/follow_up_report_entity.dart';

@@ -4,9 +4,9 @@
   "@appName": {
     "description": "The title of the application"
   },
-  "loginButton": "تسجيل الدخول",
-  "@loginButton": {
-    "description": "Text for the login button"
+  "logInButton": "تسجيل الدخول",
+  "@logInButton": {
+    "description": "Text for the logIn button"
   },
   "emailHint": "البريد الإلكتروني",
   "welcomeMessage": "مرحباً بك، {userName}!",

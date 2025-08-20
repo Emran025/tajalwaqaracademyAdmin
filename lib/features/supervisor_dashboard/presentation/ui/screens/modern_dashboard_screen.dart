@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 
 class ModernDashboardScreen extends StatefulWidget {
   const ModernDashboardScreen({super.key});
@@ -384,7 +384,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // تنفيذ إجراءات سريعة هنا
@@ -403,11 +403,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
             children: [
               Text(
                 "الإحصائيات العامة",
-                style: GoogleFonts.cairo(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.lightCream,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 20),
               Expanded(
@@ -427,11 +423,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
               const SizedBox(height: 16),
               Text(
                 "📢 آخر التنبيهات",
-                style: GoogleFonts.cairo(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.lightCream,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 12),
               const _NotificationCard(
@@ -475,7 +467,7 @@ class _NotificationCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.accent12,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.accent70, width: 0.5),
         boxShadow: [

@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 
-import '../../../../core/errors/error_model.dart';
+import '../../../../core/error/failures.dart';
 import '../repositories/student_repository.dart';
 import 'usecase.dart';
 

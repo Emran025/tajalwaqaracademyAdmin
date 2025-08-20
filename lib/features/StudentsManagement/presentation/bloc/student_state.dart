@@ -2,11 +2,13 @@ part of 'student_bloc.dart';
 
 enum StudentStatus { initial, loading, success, failure }
 
-enum StudentDetailsStatus { initial, loading, success, failure }
+enum StudentInfoStatus { initial, loading, success, failure }
 
 enum StudentSubmissionStatus { initial, submitting, success, failure }
 
 enum StudentUpsertStatus { initial, submitting, success, failure }
+
+enum FollowUpReportStatus { initial, loading, success, failure }
 
 final class StudentState extends Equatable {
   final StudentStatus status;
@@ -17,8 +19,8 @@ final class StudentState extends Equatable {
   final bool isLoadingMore;
 
   // --- Details State Properties (New) ---
-  final StudentDetailsStatus detailsStatus;
-  final StudentDetailEntity? selectedStudent;
+  final StudentInfoStatus detailsStatus;
+  final StudentInfoEntity? selectedStudent;
   final Failure? detailsFailure;
 
   // --- Operation State (New) ---
@@ -27,6 +29,15 @@ final class StudentState extends Equatable {
   // --- Operation State (New) ---
   final StudentUpsertStatus upsertStatus;
   final Failure? upsertFailure;
+  // --- Operation State (New) ---
+  final FollowUpReportStatus followUpReportStatus;
+  final FollowUpReportBundleEntity? followUpReport;
+  final Failure? followUpReportFailure;
+
+  // New
+  final StudentStatus  filteredStudentsStatus;
+  final List<StudentListItemEntity>? filteredStudents;
+  final Failure? filteredStudentsFailure;
 
   const StudentState({
     this.status = StudentStatus.initial,
@@ -37,7 +48,7 @@ final class StudentState extends Equatable {
     this.isLoadingMore = false,
 
     // New
-    this.detailsStatus = StudentDetailsStatus.initial,
+    this.detailsStatus = StudentInfoStatus.initial,
     this.selectedStudent,
     this.detailsFailure,
 
@@ -47,6 +58,14 @@ final class StudentState extends Equatable {
     // New
     this.upsertStatus = StudentUpsertStatus.initial,
     this.upsertFailure,
+    // New
+    this.followUpReportStatus = FollowUpReportStatus.initial,
+    this.followUpReport,
+    this.followUpReportFailure,
+    // New
+    this.filteredStudentsStatus = StudentStatus.initial,
+    this.filteredStudents,
+    this.filteredStudentsFailure,
   });
 
   StudentState copyWith({
@@ -58,8 +77,8 @@ final class StudentState extends Equatable {
     bool? isLoadingMore,
 
     // New
-    StudentDetailsStatus? detailsStatus,
-    StudentDetailEntity? selectedStudent,
+    StudentInfoStatus? detailsStatus,
+    StudentInfoEntity? selectedStudent,
     Failure? detailsFailure,
     // Flags to clear specific errors
     bool clearListFailure = false,
@@ -73,6 +92,16 @@ final class StudentState extends Equatable {
     StudentUpsertStatus? upsertStatus,
     Failure? upsertFailure,
     bool clearUpsertFailure = false,
+    // New
+    FollowUpReportStatus? followUpReportStatus,
+    Failure? followUpReportFailure,
+    FollowUpReportBundleEntity? followUpReport,
+    bool clearFollowUpReportFailure = false,
+    // New
+    StudentStatus? filteredStudentsStatus,
+    List<StudentListItemEntity>? filteredStudents,
+    Failure? filteredStudentsFailure,
+    bool clearFilteredStudentsFailure = false,
   }) {
     return StudentState(
       status: status ?? this.status,
@@ -98,6 +127,18 @@ final class StudentState extends Equatable {
       upsertFailure: clearUpsertFailure
           ? null
           : upsertFailure ?? this.upsertFailure,
+      // New
+      followUpReportStatus: followUpReportStatus ?? this.followUpReportStatus,
+      followUpReport: followUpReport ?? this.followUpReport,
+      followUpReportFailure: clearFollowUpReportFailure
+          ? null
+          : followUpReportFailure ?? this.followUpReportFailure,
+      // New
+      filteredStudentsStatus: filteredStudentsStatus ?? this.filteredStudentsStatus,
+      filteredStudents: filteredStudents ?? this.filteredStudents,
+      filteredStudentsFailure: clearFilteredStudentsFailure
+          ? null
+          : filteredStudentsFailure ?? this.filteredStudentsFailure,
     );
   }
 
@@ -111,5 +152,11 @@ final class StudentState extends Equatable {
     submissionFailure,
     upsertStatus,
     upsertFailure,
+    followUpReportStatus,
+    followUpReport,
+    followUpReportFailure,
+    filteredStudentsStatus,
+    filteredStudents,
+    filteredStudentsFailure,
   ];
 }

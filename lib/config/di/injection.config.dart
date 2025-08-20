@@ -34,6 +34,8 @@ import 'package:tajalwaqaracademy/core/services/dummy_push_notification_service_
     as _i669;
 import 'package:tajalwaqaracademy/core/services/push_notification_service.dart'
     as _i76;
+import 'package:tajalwaqaracademy/features/app/cubit/app_setup_cubit.dart'
+    as _i120;
 import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart'
     as _i1057;
 import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source_impl.dart'
@@ -56,20 +58,104 @@ import 'package:tajalwaqaracademy/features/auth/domain/usecases/logout_usecase.d
     as _i4;
 import 'package:tajalwaqaracademy/features/auth/presentation/bloc/auth_bloc.dart'
     as _i1019;
-import 'package:tajalwaqaracademy/features/HalqasManagement/data/datasources/auth_local_data_source.dart'
-    as _i761;
-import 'package:tajalwaqaracademy/features/HalqasManagement/data/datasources/auth_local_data_source_impl.dart'
-    as _i292;
-import 'package:tajalwaqaracademy/features/HalqasManagement/data/datasources/auth_remote_data_source.dart'
-    as _i663;
-import 'package:tajalwaqaracademy/features/HalqasManagement/data/datasources/auth_remote_data_source_impl.dart'
-    as _i885;
-import 'package:tajalwaqaracademy/features/HalqasManagement/data/repositories_impl/auth_repository_impl.dart'
-    as _i645;
-import 'package:tajalwaqaracademy/features/HalqasManagement/domain/repositories/auth_repository.dart'
-    as _i24;
-import 'package:tajalwaqaracademy/features/HalqasManagement/domain/usecases/login_usecase.dart'
-    as _i1063;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran_local_data_source.dart'
+    as _i1040;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran_local_data_source_impl.dart'
+    as _i200;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/tracking_local_data_source.dart'
+    as _i94;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/tracking_local_data_source_impl.dart'
+    as _i390;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/tracking_remote_data_source.dart'
+    as _i237;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/tracking_remote_data_source_impl.dart'
+    as _i777;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/repositories/quran_repository_impl.dart'
+    as _i288;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/repositories/tracking_repository_impl.dart'
+    as _i81;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/services/halaqa_sync_service_impl.dart'
+    as _i701;
+import 'package:tajalwaqaracademy/features/daily_tracking/data/services/tracking_sync_service.dart'
+    as _i1026;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/repositories/quran_repository.dart'
+    as _i479;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/repositories/tracking_repository.dart'
+    as _i125;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/finalize_session.dart'
+    as _i875;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_all_mistakes.dart'
+    as _i664;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_mistakes_ayahs.dart'
+    as _i610;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_or_create_today_tracking.dart'
+    as _i829;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_page_data.dart'
+    as _i768;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_surahs_list.dart'
+    as _i592;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/save_task_progress.dart'
+    as _i348;
+import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/quran_reader_bloc.dart'
+    as _i1010;
+import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/tracking_session_bloc.dart'
+    as _i8;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/data/datasources/halaqa_local_data_source.dart'
+    as _i825;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/data/datasources/halaqa_local_data_source_impl.dart'
+    as _i721;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/data/datasources/halaqa_remote_data_source.dart'
+    as _i789;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/data/datasources/halaqa_remote_data_source_impl.dart'
+    as _i470;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/data/repositories_impl/halaqa_repository_impl.dart'
+    as _i764;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/data/services/halaqa_sync_service.dart'
+    as _i221;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/data/services/halaqa_sync_service_impl.dart'
+    as _i23;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/repositories/halaqa_repository.dart'
+    as _i253;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/usecases/fetch_more_halaqas_usecase.dart'
+    as _i586;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/usecases/get_halaqa_by_id.dart'
+    as _i442;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/usecases/get_halaqas.dart'
+    as _i661;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/usecases/halaqa_halaqa_usecase.dart'
+    as _i160;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/usecases/set_halaqa_status_params.dart'
+    as _i717;
+import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/usecases/upsert_halaqa_usecase.dart'
+    as _i1020;
+import 'package:tajalwaqaracademy/features/settings/data/datasources/settings_local_data_source.dart'
+    as _i281;
+import 'package:tajalwaqaracademy/features/settings/data/datasources/settings_local_data_source_impl.dart'
+    as _i242;
+import 'package:tajalwaqaracademy/features/settings/data/datasources/settings_remote_data_source.dart'
+    as _i801;
+import 'package:tajalwaqaracademy/features/settings/data/datasources/settings_remote_data_source_impl.dart'
+    as _i1060;
+import 'package:tajalwaqaracademy/features/settings/data/repositories/settings_repository_impl.dart'
+    as _i452;
+import 'package:tajalwaqaracademy/features/settings/domain/repositories/settings_repository.dart'
+    as _i17;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_latest_policy_usecase.dart'
+    as _i311;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_settings.dart'
+    as _i959;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_user_profile.dart'
+    as _i604;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/save_theme.dart'
+    as _i589;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_analytics_preference.dart'
+    as _i562;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_notifications_preference.dart'
+    as _i762;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/update_user_profile.dart'
+    as _i577;
+import 'package:tajalwaqaracademy/features/settings/presentation/bloc/settings_bloc.dart'
+    as _i441;
 import 'package:tajalwaqaracademy/features/StudentsManagement/data/datasources/student_local_data_source.dart'
     as _i395;
 import 'package:tajalwaqaracademy/features/StudentsManagement/data/datasources/student_local_data_source_impl.dart'
@@ -90,6 +176,10 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/domain/usecases/de
     as _i219;
 import 'package:tajalwaqaracademy/features/StudentsManagement/domain/usecases/fetch_more_student_usecase.dart'
     as _i754;
+import 'package:tajalwaqaracademy/features/StudentsManagement/domain/usecases/generate_follow_up_report_use_case.dart'
+    as _i286;
+import 'package:tajalwaqaracademy/features/StudentsManagement/domain/usecases/get_filtered_students.dart'
+    as _i45;
 import 'package:tajalwaqaracademy/features/StudentsManagement/domain/usecases/get_student_by_id.dart'
     as _i358;
 import 'package:tajalwaqaracademy/features/StudentsManagement/domain/usecases/get_students.dart'
@@ -100,6 +190,8 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/domain/usecases/up
     as _i223;
 import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/bloc/student_bloc.dart'
     as _i294;
+import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/view_models/factories/follow_up_report_factory.dart'
+    as _i926;
 import 'package:tajalwaqaracademy/features/TeachersManagement/data/datasources/teacher_local_data_source.dart'
     as _i946;
 import 'package:tajalwaqaracademy/features/TeachersManagement/data/datasources/teacher_local_data_source_impl.dart'
@@ -139,11 +231,15 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    final registerModule = _$RegisterModule();
     final blocModule = _$BlocModule();
+    final registerModule = _$RegisterModule();
+    gh.factory<_i120.AppSetupCubit>(() => blocModule.appSetupCubit());
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => registerModule.prefs,
       preResolve: true,
+    );
+    gh.factory<_i926.FollowUpReportFactory>(
+      () => _i926.FollowUpReportFactory(),
     );
     gh.lazySingleton<_i788.AppDatabase>(() => registerModule.appDatabase);
     gh.lazySingleton<_i558.FlutterSecureStorage>(
@@ -169,6 +265,9 @@ extension GetItInjectableX on _i174.GetIt {
         pushNotificationService: gh<_i76.PushNotificationService>(),
       ),
     );
+    gh.lazySingleton<_i1040.QuranLocalDataSource>(
+      () => _i200.QuranLocalDataSourceImpl(),
+    );
     gh.lazySingleton<_i44.BackgroundJobService>(
       () => _i870.WorkmanagerJobServiceImpl(),
     );
@@ -176,6 +275,21 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i796.AuthLocalDataSourceImpl(
         sharedPreferences: gh<_i460.SharedPreferences>(),
         secureStorage: gh<_i558.FlutterSecureStorage>(),
+      ),
+    );
+    gh.factory<_i661.WatchHalaqasParams>(
+      () => _i661.WatchHalaqasParams(forceRefresh: gh<bool>()),
+    );
+    gh.factory<_i357.WatchTeachersParams>(
+      () => _i357.WatchTeachersParams(forceRefresh: gh<bool>()),
+    );
+    gh.lazySingleton<_i94.TrackingLocalDataSource>(
+      () => _i390.TrackingLocalDataSourceImpl(gh<_i788.AppDatabase>()),
+    );
+    gh.lazySingleton<_i281.SettingsLocalDataSource>(
+      () => _i242.SettingsLocalDataSourceImpl(
+        sharedPreferences: gh<_i460.SharedPreferences>(),
+        appDatabase: gh<_i788.AppDatabase>(),
       ),
     );
     await gh.factoryAsync<_i779.Database>(
@@ -190,6 +304,11 @@ extension GetItInjectableX on _i174.GetIt {
         connectionChecker: gh<_i161.InternetConnection>(),
       ),
     );
+    gh.lazySingleton<_i125.TrackingRepository>(
+      () => _i81.TrackingRepositoryImpl(
+        localDataSource: gh<_i94.TrackingLocalDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i946.TeacherLocalDataSource>(
       () => _i216.TeacherLocalDataSourceImpl(database: gh<_i779.Database>()),
     );
@@ -199,19 +318,63 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i361.Dio>(instanceName: 'DioForTokenRefresh'),
       ),
     );
-    gh.lazySingleton<_i761.AuthLocalDataSource>(
-      () => _i292.AuthLocalDataSourceImpl(gh<_i779.Database>()),
+    gh.lazySingleton<_i875.FinalizeSession>(
+      () => _i875.FinalizeSession(gh<_i125.TrackingRepository>()),
+    );
+    gh.lazySingleton<_i664.GetAllMistakes>(
+      () => _i664.GetAllMistakes(gh<_i125.TrackingRepository>()),
+    );
+    gh.lazySingleton<_i829.GetOrCreateTodayTrackingDetails>(
+      () =>
+          _i829.GetOrCreateTodayTrackingDetails(gh<_i125.TrackingRepository>()),
+    );
+    gh.lazySingleton<_i348.SaveTaskProgress>(
+      () => _i348.SaveTaskProgress(gh<_i125.TrackingRepository>()),
+    );
+    gh.lazySingleton<_i479.QuranRepository>(
+      () => _i288.QuranRepositoryImpl(
+        localDataSource: gh<_i1040.QuranLocalDataSource>(),
+      ),
     );
     gh.lazySingleton<_i478.ApiConsumer>(
       () => registerModule.apiConsumer(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i789.HalaqaRemoteDataSource>(
+      () => _i470.HalaqaRemoteDataSourceImpl(
+        apiConsumer: gh<_i478.ApiConsumer>(),
+      ),
     );
     gh.lazySingleton<_i133.StudentRemoteDataSource>(
       () => _i217.StudentRemoteDataSourceImpl(
         apiConsumer: gh<_i478.ApiConsumer>(),
       ),
     );
-    gh.lazySingleton<_i663.AuthRemoteDataSource>(
-      () => _i885.AuthRemoteDataSourceImpl(gh<_i478.ApiConsumer>()),
+    gh.lazySingleton<_i237.TrackingRemoteDataSource>(
+      () => _i777.TrackingRemoteDataSourceImpl(
+        apiConsumer: gh<_i478.ApiConsumer>(),
+      ),
+    );
+    gh.lazySingleton<_i801.SettingsRemoteDataSource>(
+      () => _i1060.SettingsRemoteDataSourceImpl(api: gh<_i478.ApiConsumer>()),
+    );
+    gh.lazySingleton<_i825.HalaqaLocalDataSource>(
+      () => _i721.HalaqaLocalDataSourceImpl(database: gh<_i779.Database>()),
+    );
+    gh.lazySingleton<_i610.GetMistakesAyahs>(
+      () => _i610.GetMistakesAyahs(repository: gh<_i479.QuranRepository>()),
+    );
+    gh.lazySingleton<_i768.GetPageData>(
+      () => _i768.GetPageData(repository: gh<_i479.QuranRepository>()),
+    );
+    gh.lazySingleton<_i592.GetSurahsList>(
+      () => _i592.GetSurahsList(repository: gh<_i479.QuranRepository>()),
+    );
+    gh.factory<_i1010.QuranReaderBloc>(
+      () => blocModule.quranReaderBloc(
+        gh<_i592.GetSurahsList>(),
+        gh<_i610.GetMistakesAyahs>(),
+        gh<_i768.GetPageData>(),
+      ),
     );
     gh.lazySingleton<_i668.StudentSyncService>(
       () => _i411.StudentSyncServiceImpl(
@@ -220,19 +383,61 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i1.NetworkInfo>(),
       ),
     );
+    gh.lazySingleton<_i17.SettingsRepository>(
+      () => _i452.SettingsRepositoryImpl(
+        localDataSource: gh<_i281.SettingsLocalDataSource>(),
+        remoteDataSource: gh<_i801.SettingsRemoteDataSource>(),
+        networkInfo: gh<_i1.NetworkInfo>(),
+      ),
+    );
+    gh.factory<_i8.TrackingSessionBloc>(
+      () => blocModule.trackingSession(
+        gh<_i829.GetOrCreateTodayTrackingDetails>(),
+        gh<_i348.SaveTaskProgress>(),
+        gh<_i875.FinalizeSession>(),
+        gh<_i664.GetAllMistakes>(),
+      ),
+    );
+    gh.lazySingleton<_i221.HalaqaSyncService>(
+      () => _i23.HalaqaSyncServiceImpl(
+        remoteDataSource: gh<_i789.HalaqaRemoteDataSource>(),
+        localDataSource: gh<_i825.HalaqaLocalDataSource>(),
+        networkInfo: gh<_i1.NetworkInfo>(),
+      ),
+    );
     gh.lazySingleton<_i665.TeacherRemoteDataSource>(
       () => _i275.TeacherRemoteDataSourceImpl(
         apiConsumer: gh<_i478.ApiConsumer>(),
       ),
     );
+    gh.lazySingleton<_i253.HalaqaRepository>(
+      () => _i764.HalaqaRepositoryImpl(
+        localDataSource: gh<_i825.HalaqaLocalDataSource>(),
+        syncService: gh<_i221.HalaqaSyncService>(),
+      ),
+    );
     gh.lazySingleton<_i52.AuthRemoteDataSource>(
       () => _i512.AuthRemoteDataSourceImpl(gh<_i478.ApiConsumer>()),
     );
-    gh.lazySingleton<_i24.AuthRepository>(
-      () => _i645.AuthRepositoryImpl(
-        gh<_i663.AuthRemoteDataSource>(),
-        gh<_i761.AuthLocalDataSource>(),
+    gh.lazySingleton<_i1026.TrackingSyncService>(
+      () => _i701.TrackingSyncServiceImpl(
+        remoteDataSource: gh<_i237.TrackingRemoteDataSource>(),
+        localDataSource: gh<_i94.TrackingLocalDataSource>(),
+        studentLocalDataSource: gh<_i395.StudentLocalDataSource>(),
+        networkInfo: gh<_i1.NetworkInfo>(),
       ),
+    );
+    gh.lazySingleton<_i586.FetchMoreHalaqasUseCase>(
+      () => _i586.FetchMoreHalaqasUseCase(gh<_i253.HalaqaRepository>()),
+    );
+    gh.lazySingleton<_i442.GetHalaqaById>(
+      () => _i442.GetHalaqaById(gh<_i253.HalaqaRepository>()),
+    );
+    gh.lazySingleton<_i160.DeleteHalaqaUseCase>(
+      () => _i160.DeleteHalaqaUseCase(gh<_i253.HalaqaRepository>()),
+    );
+    gh.lazySingleton<_i1020.UpsertHalaqa>(
+      () => _i1020.UpsertHalaqa(gh<_i253.HalaqaRepository>()),
     );
     gh.lazySingleton<_i879.AuthRepository>(
       () => _i410.AuthRepositoryImpl(
@@ -248,6 +453,15 @@ extension GetItInjectableX on _i174.GetIt {
         syncService: gh<_i668.StudentSyncService>(),
       ),
     );
+    gh.lazySingleton<_i661.WatchHalaqasUseCase>(
+      () => _i661.WatchHalaqasUseCase(repository: gh<_i253.HalaqaRepository>()),
+    );
+    gh.lazySingleton<_i286.GenerateFollowUpReportUseCase>(
+      () => _i286.GenerateFollowUpReportUseCase(
+        gh<_i847.StudentRepository>(),
+        gh<_i926.FollowUpReportFactory>(),
+      ),
+    );
     gh.lazySingleton<_i335.TeacherSyncService>(
       () => _i651.TeacherSyncServiceImpl(
         remoteDataSource: gh<_i665.TeacherRemoteDataSource>(),
@@ -258,6 +472,38 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i167.WatchStudentsUseCase>(
       () =>
           _i167.WatchStudentsUseCase(repository: gh<_i847.StudentRepository>()),
+    );
+    gh.lazySingleton<_i311.GetLatestPolicyUseCase>(
+      () => _i311.GetLatestPolicyUseCase(gh<_i17.SettingsRepository>()),
+    );
+    gh.lazySingleton<_i959.GetSettings>(
+      () => _i959.GetSettings(gh<_i17.SettingsRepository>()),
+    );
+    gh.lazySingleton<_i604.GetUserProfile>(
+      () => _i604.GetUserProfile(gh<_i17.SettingsRepository>()),
+    );
+    gh.lazySingleton<_i589.SaveTheme>(
+      () => _i589.SaveTheme(gh<_i17.SettingsRepository>()),
+    );
+    gh.lazySingleton<_i562.SetAnalyticsPreference>(
+      () => _i562.SetAnalyticsPreference(gh<_i17.SettingsRepository>()),
+    );
+    gh.lazySingleton<_i762.SetNotificationsPreference>(
+      () => _i762.SetNotificationsPreference(gh<_i17.SettingsRepository>()),
+    );
+    gh.lazySingleton<_i577.UpdateUserProfile>(
+      () => _i577.UpdateUserProfile(gh<_i17.SettingsRepository>()),
+    );
+    gh.factory<_i441.SettingsBloc>(
+      () => blocModule.settingsBloc(
+        gh<_i959.GetSettings>(),
+        gh<_i589.SaveTheme>(),
+        gh<_i762.SetNotificationsPreference>(),
+        gh<_i562.SetAnalyticsPreference>(),
+        gh<_i604.GetUserProfile>(),
+        gh<_i577.UpdateUserProfile>(),
+        gh<_i311.GetLatestPolicyUseCase>(),
+      ),
     );
     gh.lazySingleton<_i567.TeacherRepository>(
       () => _i109.TeacherRepositoryImpl(
@@ -277,20 +523,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i382.UpsertTeacher>(
       () => _i382.UpsertTeacher(gh<_i567.TeacherRepository>()),
     );
-    gh.factory<_i1063.LoginUseCase>(
-      () => _i1063.LoginUseCase(gh<_i24.AuthRepository>()),
+    gh.lazySingleton<_i717.SetHalaqaStatusUseCase>(
+      () => _i717.SetHalaqaStatusUseCase(gh<_i253.HalaqaRepository>()),
     );
-    gh.lazySingleton<_i306.CheckLoginUseCase>(
-      () => _i306.CheckLoginUseCase(gh<_i879.AuthRepository>()),
+    gh.lazySingleton<_i306.CheckLogInUseCase>(
+      () => _i306.CheckLogInUseCase(gh<_i879.AuthRepository>()),
     );
-    gh.lazySingleton<_i912.ForgetPasswordUseCase>(
+    gh.factory<_i912.ForgetPasswordUseCase>(
       () => _i912.ForgetPasswordUseCase(gh<_i879.AuthRepository>()),
     );
-    gh.lazySingleton<_i4.LogoutUseCase>(
-      () => _i4.LogoutUseCase(gh<_i879.AuthRepository>()),
+    gh.factory<_i432.LogInUseCase>(
+      () => _i432.LogInUseCase(gh<_i879.AuthRepository>()),
     );
-    gh.factory<_i432.LoginUseCase>(
-      () => _i432.LoginUseCase(gh<_i879.AuthRepository>()),
+    gh.factory<_i4.LogOutUseCase>(
+      () => _i4.LogOutUseCase(gh<_i879.AuthRepository>()),
     );
     gh.lazySingleton<_i358.SetStudentStatusUseCase>(
       () => _i358.SetStudentStatusUseCase(gh<_i847.StudentRepository>()),
@@ -301,6 +547,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i754.FetchMoreStudentsUseCase>(
       () => _i754.FetchMoreStudentsUseCase(gh<_i847.StudentRepository>()),
     );
+    gh.lazySingleton<_i45.FetchFilteredStudentsUseCase>(
+      () => _i45.FetchFilteredStudentsUseCase(gh<_i847.StudentRepository>()),
+    );
     gh.lazySingleton<_i358.GetStudentById>(
       () => _i358.GetStudentById(gh<_i847.StudentRepository>()),
     );
@@ -310,16 +559,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i357.WatchTeachersUseCase>(
       () =>
           _i357.WatchTeachersUseCase(repository: gh<_i567.TeacherRepository>()),
-    );
-    gh.factory<_i294.StudentBloc>(
-      () => blocModule.studentBloc(
-        gh<_i167.WatchStudentsUseCase>(),
-        gh<_i754.FetchMoreStudentsUseCase>(),
-        gh<_i223.UpsertStudent>(),
-        gh<_i219.DeleteStudentUseCase>(),
-        gh<_i358.GetStudentById>(),
-        gh<_i358.SetStudentStatusUseCase>(),
-      ),
     );
     gh.lazySingleton<_i825.SetTeacherStatusUseCase>(
       () => _i825.SetTeacherStatusUseCase(gh<_i567.TeacherRepository>()),
@@ -336,16 +575,28 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i1019.AuthBloc>(
       () => blocModule.authBloc(
-        gh<_i432.LoginUseCase>(),
-        gh<_i306.CheckLoginUseCase>(),
-        gh<_i4.LogoutUseCase>(),
+        gh<_i432.LogInUseCase>(),
+        gh<_i306.CheckLogInUseCase>(),
+        gh<_i4.LogOutUseCase>(),
         gh<_i912.ForgetPasswordUseCase>(),
+      ),
+    );
+    gh.factory<_i294.StudentBloc>(
+      () => blocModule.studentBloc(
+        gh<_i167.WatchStudentsUseCase>(),
+        gh<_i754.FetchMoreStudentsUseCase>(),
+        gh<_i45.FetchFilteredStudentsUseCase>(),
+        gh<_i223.UpsertStudent>(),
+        gh<_i219.DeleteStudentUseCase>(),
+        gh<_i358.GetStudentById>(),
+        gh<_i358.SetStudentStatusUseCase>(),
+        gh<_i286.GenerateFollowUpReportUseCase>(),
       ),
     );
     return this;
   }
 }
 
-class _$RegisterModule extends _i409.RegisterModule {}
-
 class _$BlocModule extends _i913.BlocModule {}
+
+class _$RegisterModule extends _i409.RegisterModule {}

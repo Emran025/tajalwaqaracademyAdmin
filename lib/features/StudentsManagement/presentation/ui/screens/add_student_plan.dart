@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/core/models/report_frequency.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_units.dart';
@@ -63,7 +63,7 @@ class _StudentsPlanFormState extends State<StudentsPlanForm> {
                     vertical: 8,
                   ),
                   child: Text(
-                    "إعدادات ${type.labelAr}",
+                    "إعدادات ال${type.labelAr}",
                     style: GoogleFonts.cairo(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ class _StudentsPlanFormState extends State<StudentsPlanForm> {
                     Expanded(
                       child: _buildDropdown(
                         unitTypeControllers[type]!,
-                        "وحدة ${type.labelAr}",
+                        "وحدة ال${type.labelAr}",
                         TrackingUnit.values
                             .map((element) => element.labelAr)
                             .toList(),
@@ -89,6 +89,7 @@ class _StudentsPlanFormState extends State<StudentsPlanForm> {
                         prefixIcon: Icons.format_list_numbered,
                         label: "العدد",
                         keyboardType: TextInputType.number,
+                        padding: EdgeInsets.only(bottom: 12),
                       ),
                     ),
                   ],
@@ -106,8 +107,9 @@ class _StudentsPlanFormState extends State<StudentsPlanForm> {
     String label,
     List<String> options,
   ) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12, left: 14),
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.only(bottom: 12, left: 14),
       child: DropdownButtonFormField<String>(
         style: GoogleFonts.cairo(color: AppColors.lightCream70),
         borderRadius: BorderRadius.circular(14),
@@ -131,7 +133,7 @@ class _StudentsPlanFormState extends State<StudentsPlanForm> {
             .toList(),
         onChanged: (val) => setState(() => controller.text = val ?? "صفحة"),
         onSaved: (val) => controller.text = val ?? "صفحة",
-
+        padding: EdgeInsets.all(0),
         decoration: InputDecoration(
           fillColor: AppColors.lightCream12,
           labelText: label,

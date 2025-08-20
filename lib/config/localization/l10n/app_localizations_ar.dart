@@ -12,7 +12,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appName => 'أكاديمية تاج الوقار';
 
   @override
-  String get loginButton => 'تسجيل الدخول';
+  String get logInButton => 'تسجيل الدخول';
 
   @override
   String get emailHint => 'البريد الإلكتروني';

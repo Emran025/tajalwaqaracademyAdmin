@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tajalwaqaracademy/core/errors/exceptions.dart';
+import 'package:tajalwaqaracademy/core/error/exceptions.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import '../models/sync_queue_model.dart';
+import '../../../../core/models/sync_queue_model.dart';
 import '../models/teacher_model.dart';
 import 'teacher_local_data_source.dart';
 

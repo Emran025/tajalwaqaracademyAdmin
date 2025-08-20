@@ -1,12 +1,14 @@
-
-// features/auth/domain/usecases/check_login_usecase.dart
-import 'package:injectable/injectable.dart';
+// features/auth/domain/usecases/check_logIn_usecase.dart
+import 'package:dartz/dartz.dart';
+import '../../../../core/error/failures.dart';
+import '../entities/user_entity.dart';
 import '../repositories/auth_repository.dart';
+import 'package:injectable/injectable.dart';
 
 @lazySingleton
-class CheckLoginUseCase {
+class CheckLogInUseCase {
   final AuthRepository repository;
-  CheckLoginUseCase(this.repository);
+  CheckLogInUseCase(this.repository);
 
-  Future<bool> call() => repository.isLoggedIn();
+  Future<Either<Failure, UserEntity>> call() => repository.getUserProfile();
 }

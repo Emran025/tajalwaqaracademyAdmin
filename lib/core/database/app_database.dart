@@ -53,13 +53,15 @@ class AppDatabase {
   static const String _kUnitsTable = 'units';
   static const String _kFrequenciesTable = 'frequencies';
   static const String _kTrackingTypesTable = 'tracking_types';
-  static const String _kTrackingPlansTable = 'tracking_plans';
+  static const String _kFollowUpPlansTable = 'follow_up_plans';
+  static const String _kPlanDetailsTable = 'plan_details';
   static const String _kAttendanceTypesTable = 'attendance_types';
-  static const String _kTrackingSourcesTable = 'tracking_sources';
   static const String _kDailyTrackingTable = 'daily_tracking';
   static const String _kDailyTrackingDetailTable = 'daily_tracking_detail';
+  static const String _kMistakesTable = 'mistakes';
   static const String _kPendingOperationsTable = 'pending_operations';
   static const String _kSyncMetadataTable = 'sync_metadata';
+  static const String _kPrivacyPolicyTable = 'privacy_policy';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -96,6 +98,7 @@ class AppDatabase {
       await _createTrackingTables(txn);
       await _createSyncInfrastructureTables(txn);
       await _createIndexes(txn);
+      await _createPrivacyPolicyTable(txn);
     });
   }
 
@@ -184,14 +187,26 @@ class AppDatabase {
     await txn.insert(_kFrequenciesTable, {
       'id': 1,
       'code': 'daily',
-      'nameAr': 'يومي',
-      'daysCount': 7,
+      'nameAr': 'يوميًا',
+      'daysCount': 1,
     });
     await txn.insert(_kFrequenciesTable, {
       'id': 2,
       'code': 'weekly',
-      'nameAr': 'أسبوعي',
-      'daysCount': 1,
+      'nameAr': 'أسبوعيًا',
+      'daysCount': 7,
+    });
+    await txn.insert(_kFrequenciesTable, {
+      'id': 3,
+      'code': 'twiceAWeek',
+      'nameAr': 'مرتين بالأسبوع',
+      'daysCount': 3,
+    });
+    await txn.insert(_kFrequenciesTable, {
+      'id': 4,
+      'code': 'thriceAWeek',
+      'nameAr': 'ثلاث مرات بالأسبوع',
+      'daysCount': 2,
     });
 
     // Tracking Types (e.g., memorize, review)
@@ -204,13 +219,18 @@ class AppDatabase {
     ''');
     await txn.insert(_kTrackingTypesTable, {
       'id': 1,
-      'code': 'memorize',
+      'code': 'Memorization',
       'nameAr': 'الحفظ',
     });
     await txn.insert(_kTrackingTypesTable, {
       'id': 2,
-      'code': 'review',
+      'code': 'Review',
       'nameAr': 'المراجعة',
+    });
+    await txn.insert(_kTrackingTypesTable, {
+      'id': 3,
+      'code': 'Recitation',
+      'nameAr': 'السرد',
     });
 
     // Attendance Types (e.g., present, absent)
@@ -231,25 +251,20 @@ class AppDatabase {
       'code': 'absent',
       'nameAr': 'غياب',
     });
+  }
 
-    // Tracking Sources (e.g., auto, manual)
+  /// **(جديد)** Creates the table to store privacy policy versions.
+  Future<void> _createPrivacyPolicyTable(Transaction txn) async {
     await txn.execute('''
-      CREATE TABLE $_kTrackingSourcesTable (
-        id     INTEGER PRIMARY KEY,
-        code   TEXT    NOT NULL UNIQUE,
-        nameAr TEXT    NOT NULL
-      )
-    ''');
-    await txn.insert(_kTrackingSourcesTable, {
-      'id': 1,
-      'code': 'auto_generated',
-      'nameAr': 'تلقائي',
-    });
-    await txn.insert(_kTrackingSourcesTable, {
-      'id': 2,
-      'code': 'manual',
-      'nameAr': 'يدوي',
-    });
+    CREATE TABLE $_kPrivacyPolicyTable (
+      version TEXT PRIMARY KEY,
+      lastUpdated TEXT NOT NULL,
+      summaryJson TEXT NOT NULL, 
+      sectionsJson TEXT NOT NULL,
+      changelog TEXT,
+      requiredConsent INTEGER NOT NULL
+    )
+  ''');
   }
 
   /// Creates tables related to users and registration.
@@ -349,17 +364,14 @@ class AppDatabase {
 
     await txn.execute('''
       CREATE TABLE $_kHalqaStudentsTable (
-        id           INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid         TEXT    NOT NULL UNIQUE,
-        halqaId      INTEGER NOT NULL,
-        studentId    INTEGER NOT NULL,
-        assignedAt   TEXT    NOT NULL,
-        leftAt       TEXT,
+        id           INTEGER    PRIMARY KEY AUTOINCREMENT,
+        uuid         TEXT       NOT NULL ,
+        halqaId      INTEGER    NOT NULL,
+        studentId    INTEGER    NOT NULL,
+        assignedAt   TEXT       NOT NULL,
+        playloud     TEXT,
         lastModified INTEGER NOT NULL,
-        isDeleted    INTEGER NOT NULL DEFAULT 0,
-
-        UNIQUE(halqaId, studentId),
-        FOREIGN KEY(halqaId)   REFERENCES $_kHalqasTable(id)   ON DELETE CASCADE ON UPDATE CASCADE,
+        isDeleted    INTEGER NOT NULL DEFAULT 0 ,
         FOREIGN KEY(studentId) REFERENCES $_kUsersTable(id) ON DELETE CASCADE ON UPDATE CASCADE
       )
     ''');
@@ -368,71 +380,92 @@ class AppDatabase {
   /// Creates tables related to student progress tracking.
   Future<void> _createTrackingTables(Transaction txn) async {
     await txn.execute('''
-      CREATE TABLE $_kTrackingPlansTable (
-        id               INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid             TEXT    NOT NULL UNIQUE,
-        halqaStudentId   INTEGER NOT NULL,
-        typeId           INTEGER NOT NULL,
-        frequencyId      INTEGER NOT NULL,
-        unitId           INTEGER NOT NULL,
-        amount           INTEGER NOT NULL,
-        startDate        TEXT    NOT NULL,
-        endDate          TEXT,
-        lastModified     INTEGER NOT NULL,
-        isDeleted        INTEGER NOT NULL DEFAULT 0,
+      CREATE TABLE $_kFollowUpPlansTable (
+        id              INTEGER PRIMARY KEY AUTOINCREMENT,
+        uuid            TEXT    NOT NULL UNIQUE,
+        server_plan_id  TEXT NOT NULL,
+        enrollmentId    INTEGER NOT NULL,
+        frequency       INTEGER NOT NULL DEFAULT 1,
+        createdAt       TEXT,
+        updatedAt       TEXT,
+        lastModified    INTEGER NOT NULL,
+        isDeleted       INTEGER NOT NULL DEFAULT 0,
 
-        FOREIGN KEY(halqaStudentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY(typeId)         REFERENCES $_kTrackingTypesTable(id)  ON DELETE RESTRICT ON UPDATE CASCADE,
-        FOREIGN KEY(frequencyId)    REFERENCES $_kFrequenciesTable(id)    ON DELETE RESTRICT ON UPDATE CASCADE,
-        FOREIGN KEY(unitId)         REFERENCES $_kUnitsTable(id)          ON DELETE RESTRICT ON UPDATE CASCADE
+        FOREIGN KEY(frequency) REFERENCES $_kFrequenciesTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY(enrollmentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE
+      )
+    ''');
+
+    await txn.execute('''
+      CREATE TABLE $_kPlanDetailsTable (
+        id           INTEGER PRIMARY KEY,
+        planUuid     TEXT    NOT NULL,
+        type         TEXT    NOT NULL,
+        unit         TEXT    NOT NULL,
+        amount       INTEGER NOT NULL,
+        lastModified INTEGER NOT NULL,
+        isDeleted    INTEGER NOT NULL DEFAULT 0,
+        
+        FOREIGN KEY(planUuid) REFERENCES $_kFollowUpPlansTable(uuid) ON DELETE CASCADE ON UPDATE CASCADE
       )
     ''');
 
     await txn.execute('''
       CREATE TABLE $_kDailyTrackingTable (
         id               INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid             TEXT    NOT NULL UNIQUE,
-        halqaStudentId   INTEGER NOT NULL,
+        uuid             TEXT    NOT NULL,
+        enrollmentId     INTEGER NOT NULL,
         trackDate        TEXT    NOT NULL,
-        attendanceTypeId INTEGER NOT NULL,
+        status           TEXT    NOT NULL DEFAULT 'draft',
+        attendanceTypeId INTEGER NOT NULL DEFAULT 1,
+        behaviorNote     INTEGER NOT NULL DEFAULT 4,
+        note             TEXT,
         lastModified     INTEGER NOT NULL,
+        isDeleted        INTEGER NOT NULL DEFAULT 0,
 
-        UNIQUE(halqaStudentId, trackDate),
-        FOREIGN KEY(halqaStudentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
+        UNIQUE(enrollmentId, trackDate),
+        FOREIGN KEY(enrollmentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(attendanceTypeId) REFERENCES $_kAttendanceTypesTable(id) ON DELETE RESTRICT ON UPDATE CASCADE
       )
     ''');
 
     await txn.execute('''
-      CREATE TABLE $_kDailyTrackingDetailTable (
-        id           INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid         TEXT    NOT NULL UNIQUE,
-        trackingId   INTEGER NOT NULL,
-        typeId       INTEGER NOT NULL,
-        planId       INTEGER,
-        completed    INTEGER,
-        sourceId     INTEGER,
-        note         TEXT,
-        lastModified INTEGER NOT NULL,
-        
-        UNIQUE(trackingId, typeId),
-        FOREIGN KEY(trackingId) REFERENCES $_kDailyTrackingTable(id)   ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY(typeId)     REFERENCES $_kTrackingTypesTable(id)   ON DELETE RESTRICT ON UPDATE CASCADE,
-        FOREIGN KEY(planId)     REFERENCES $_kTrackingPlansTable(id)   ON DELETE SET NULL ON UPDATE CASCADE,
-        FOREIGN KEY(sourceId)   REFERENCES $_kTrackingSourcesTable(id) ON DELETE RESTRICT ON UPDATE CASCADE
-      )
-    ''');
+        CREATE TABLE $_kDailyTrackingDetailTable (
+          id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+          uuid               TEXT    NOT NULL,
+          trackingId         INTEGER NOT NULL,
+          typeId             INTEGER NOT NULL,
+          actualAmount       INTEGER,
+          fromTrackingUnitId INTEGER,
+          toTrackingUnitId   INTEGER,
+          comment            TEXT,
+          score              INTEGER,
+          gap                REAL NOT NULL DEFAULT 0.0,
+          status             TEXT    NOT NULL DEFAULT 'draft',
+          lastModified       INTEGER NOT NULL,
+          isDeleted          INTEGER NOT NULL DEFAULT 0,
+          
+          UNIQUE(trackingId, typeId),
+          FOREIGN KEY(trackingId) REFERENCES $_kDailyTrackingTable(id)   ON DELETE CASCADE ON UPDATE CASCADE,
+          FOREIGN KEY(typeId)     REFERENCES $_kTrackingTypesTable(id)   ON DELETE RESTRICT ON UPDATE CASCADE        )
+      ''');
 
-    // Trigger to auto-populate detail rows when a daily tracking entry is created.
     await txn.execute('''
-      CREATE TRIGGER after_insert_daily_tracking
-      AFTER INSERT ON $_kDailyTrackingTable
-      BEGIN
-        INSERT INTO $_kDailyTrackingDetailTable(uuid, trackingId, typeId, lastModified)
-        SELECT lower(hex(randomblob(16))), NEW.id, tt.id, NEW.lastModified
-        FROM $_kTrackingTypesTable tt;
-      END;
-    ''');
+    CREATE TABLE $_kMistakesTable (
+      id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+      uuid               TEXT    NOT NULL UNIQUE,
+      trackingDetailId   INTEGER NOT NULL, -- FOREIGN KEY to daily_tracking_detail.id
+      
+      ayahId_quran       INTEGER NOT NULL, -- The ID of the ayah in the static Quran DB
+      wordIndex          INTEGER NOT NULL, -- The index of the character/word
+      mistakeTypeId      INTEGER NOT NULL, -- The ID from the MistakeType enum
+      
+      lastModified       INTEGER NOT NULL,
+      isDeleted          INTEGER NOT NULL DEFAULT 0,
+
+      FOREIGN KEY(trackingDetailId) REFERENCES $_kDailyTrackingDetailTable(id) ON DELETE CASCADE
+    )
+  ''');
   }
 
   /// Creates indexes on foreign key columns to improve query performance.
@@ -445,13 +478,16 @@ class AppDatabase {
       'CREATE INDEX idx_halqa_students_studentId ON $_kHalqaStudentsTable(studentId)',
     );
     await txn.execute(
-      'CREATE INDEX idx_tracking_plans_halqaStudentId ON $_kTrackingPlansTable(halqaStudentId)',
+      'CREATE INDEX idx_tracking_plans_enrollmentId ON $_kFollowUpPlansTable(enrollmentId)',
     );
     await txn.execute(
-      'CREATE INDEX idx_daily_tracking_halqaStudentId ON $_kDailyTrackingTable(halqaStudentId)',
+      'CREATE INDEX idx_daily_tracking_enrollmentId ON $_kDailyTrackingTable(enrollmentId)',
     );
     await txn.execute(
       'CREATE INDEX idx_daily_tracking_detail_trackingId ON $_kDailyTrackingDetailTable(trackingId)',
+    );
+    await txn.execute(
+      'CREATE INDEX idx_mistakes_trackingDetailId ON $_kMistakesTable(trackingDetailId)',
     );
   }
 

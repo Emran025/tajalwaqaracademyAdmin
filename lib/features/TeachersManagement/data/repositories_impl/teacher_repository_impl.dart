@@ -3,8 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 
-import '../../../../core/errors/error_model.dart';
-import '../../../../core/errors/exceptions.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/models/active_status.dart';
 import '../../domain/entities/teacher_entity.dart';
 import '../../domain/entities/teacher_list_item_entity.dart';

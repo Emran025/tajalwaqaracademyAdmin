@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
-import 'package:tajalwaqaracademy/features/HalqasManagement/presentation/ui/screens/halqas_management_screen.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/screens/students_management_screen.dart';
 import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/ui/screens/teachers_management_screen.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/modern_dashboard_screen.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/supervisor_monitoring_screen.dart';
 import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
+
+import '../../../../HalaqasManagement/presentation/ui/screens/halaqas_management_screen.dart';
+import '../../../../settings/presentation/screens/settings_screen.dart';
 
 // import '../../../../../core/constants/app_colors.dart';
 
@@ -24,8 +26,7 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
     ModernDashboardScreen(),
     TeachersManagementScreen(),
     StudentsManagementScreen(),
-    HalqasManagementScreen(),
-    // Center(child: Text("الحلقات")),
+    HalaqaManagementScreen(),
     SupervisorMonitoringScreen(),
   ];
   final List<String> headers = [
@@ -42,14 +43,11 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
       textDirection: TextDirection.ltr,
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        backgroundColor: AppColors.darkBackground,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           title: Text(
             headers[_currentIndex],
-            style: GoogleFonts.cairo(
-              fontWeight: FontWeight.bold,
-              color: AppColors.lightCream,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           actions: [
             IconButton(
@@ -101,10 +99,22 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
-                      _buildDrawerItem(Icons.person, "ملفي الشخصي"),
-                      _buildDrawerItem(Icons.settings, "إدارة الإعدادات"),
-                      _buildDrawerItem(Icons.security, " إدارة الصلاحيات"),
-                      _buildDrawerItem(Icons.logout, "تسجيل الخروج"),
+                      _buildDrawerItem(Icons.person, "ملفي الشخصي", () {}),
+                      _buildDrawerItem(Icons.settings, "الإعدادات", () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const SettingsScreen();
+                            },
+                          ),
+                        );
+                      }),
+                      _buildDrawerItem(Icons.security, " إدارة الصلاحيات", () {
+                        Navigator.pop(context);
+                      }),
+                      _buildDrawerItem(Icons.logout, "تسجيل الخروج", () {
+                        Navigator.pop(context);
+                      }),
                     ],
                   ),
                 ),
@@ -169,7 +179,7 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
     );
   }
 
-  Widget _buildDrawerItem(IconData icon, String title) {
+  Widget _buildDrawerItem(IconData icon, String title, VoidCallback? onTap) {
     return ListTile(
       leading: Icon(icon),
       title: Text(
@@ -180,8 +190,7 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
         ),
       ),
       onTap: () {
-        Navigator.pop(context);
-        print("الانتقال إلى $title");
+        onTap!();
       },
     );
   }

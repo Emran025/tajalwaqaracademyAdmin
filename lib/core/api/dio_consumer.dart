@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:tajalwaqaracademy/core/errors/exceptions.dart';
+import 'package:tajalwaqaracademy/core/error/exceptions.dart';
 import 'api_consumer.dart';
 
 /// The concrete implementation of the [ApiConsumer] contract using the Dio library.

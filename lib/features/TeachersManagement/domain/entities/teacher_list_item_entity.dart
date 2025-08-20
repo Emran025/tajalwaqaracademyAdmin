@@ -7,6 +7,9 @@ import 'base_teacher_entity.dart';
 /// This entity contains a minimal set of data required for a summary view,
 /// optimizing performance by not loading unnecessary details for lists.
 /// It inherits core properties from [BaseTeacherDetailEntity].
+import 'package:flutter/material.dart';
+
+@immutable
 class TeacherListItemEntity extends BaseTeacherEntity {
   const TeacherListItemEntity({
     required super.id,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
-import 'package:tajalwaqaracademy/features/HalqasManagement/presentation/ui/screens/halqas_continuous_monitoring.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/screens/students_continuous_monitoring.dart';
+
+import '../../../../HalaqasManagement/presentation/ui/screens/halqas_continuous_monitoring.dart';
 
 class SupervisorMonitoringScreen extends StatefulWidget {
   const SupervisorMonitoringScreen({super.key});
@@ -30,21 +30,9 @@ class _SupervisorMonitoringScreenState extends State<SupervisorMonitoringScreen>
         appBar: AppBar(
           toolbarHeight: 0,
           bottom: TabBar(
-            labelStyle: GoogleFonts.cairo(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.lightCream54,
-            ),
-            unselectedLabelStyle: GoogleFonts.cairo(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: AppColors.lightCream,
-            ),
-
             indicatorColor: AppColors.accent,
             controller: _tabController,
             dividerColor: Colors.black12,
-
             tabs: [
               Tab(text: "الحلقات"),
               Tab(text: "الطلاب"),
@@ -54,7 +42,7 @@ class _SupervisorMonitoringScreenState extends State<SupervisorMonitoringScreen>
         body: TabBarView(
           controller: _tabController,
           children: [
-            HalqasContinuousMonitoring(),
+            HalaqasContinuousMonitoring(),
             StudentsContinuousMonitoring(),
           ],
         ),

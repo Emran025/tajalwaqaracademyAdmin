@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
   final bool readOnly;
   final void Function(TextEditingController, String)? onTap;
   final String? Function(String?)? validator;
+  final EdgeInsets padding;
 
   const CustomTextField({
     super.key,
@@ -24,13 +25,14 @@ class CustomTextField extends StatelessWidget {
     this.isPassword = false,
     this.readOnly = false,
     this.validator,
+    this.padding = const EdgeInsets.only(bottom: 12, left: 14),
   });
 
   @override
   Widget build(BuildContext context) {
     // node ??= FocusNode(); // create one if none provided
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12, left: 14),
+      padding: padding,
       child: TextFormField(
         controller: controller,
         readOnly: readOnly,

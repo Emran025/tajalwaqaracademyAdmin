@@ -1,140 +1,80 @@
-
-
-
+import '../../../../core/models/user_role.dart';
 import '../../domain/entities/user_entity.dart';
 
-class UserModel extends UserEntity {
+class UserModel {
+  final int id;
+  final String name;
+  final String email;
+  final String phone;
+  final String? avatar;
+  final UserRole role;
+
   const UserModel({
-    required super.id,
-    required super.roleId,
-    required super.status,
-    required super.name,
-    required super.gender,
-    required super.email,
-    required super.phone,
-    super.birthDate,
-    super.avatar,
-    super.phoneZone,
-    super.whatsappZone,
-    super.whatsapp,
-    super.qualification,
-    super.experienceYears,
-    super.country,
-    super.residence,
-    super.city,
-    super.availableTime,
-    super.stopReasons,
-    super.memorizationLevel,
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.role,
+    this.avatar,
   });
 
-  /// Factory constructor لإنشاء نسخة UserModel من JSON القادم من الـ API
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromJson(Map<String, dynamic> json, UserRole role) {
     return UserModel(
       id: json['id'],
-      roleId: json['role_id'],
-      status: json['status'],
       name: json['name'],
-      gender: json['gender'],
-      birthDate: json['birth_date'],
       email: json['email'],
-      avatar: json['profile_picture_url'],
-      phoneZone: json['phone_zone'],
       phone: json['phone'],
-      whatsappZone: json['whatsapp_zone'],
-      whatsapp: json['whatsapp_phone'],
-      qualification: json['qualification'],
-      // التأكد من أن القيمة من نوع int
-      experienceYears: json['experience_years'] is String
-          ? int.tryParse(json['experience_years'])
-          : json['experience_years'],
-      country: json['country'],
-      residence: json['residence'],
-      city: json['city'],
-      availableTime: json['available_time'],
-      stopReasons: json['stop_reasons'],
-      memorizationLevel: json['memorization_level'],
+      avatar: json['avatar'],
+      role: role,
     );
   }
+
 
   /// Factory constructor لإنشاء نسخة UserModel من Map قادم من قاعدة البيانات المحلية
   factory UserModel.fromDbMap(Map<String, dynamic> map) {
     return UserModel(
       // لاحظ أن أسماء الأعمدة في قاعدة البيانات المحلية تختلف (camelCase)
       id: map['id'],
-      roleId: map['roleId'],
-      status: map['status'],
       name: map['name'],
-      gender: map['gender'],
-      birthDate: map['birthDate'],
       email: map['email'],
       avatar: map['avatar'],
-      phoneZone: map['phoneZone'],
       phone: map['phone'],
-      whatsappZone: map['whatsappZone'],
-      whatsapp: map['whatsapp'],
-      qualification: map['qualification'],
-      experienceYears: map['experienceYears'],
-      country: map['country'],
-      residence: map['residence'],
-      city: map['city'],
-      availableTime: map['availableTime'],
-      stopReasons: map['stopReasons'],
-      memorizationLevel: map['memorizationLevel'],
+      role: UserRole.fromId(map['roleId']) ,
     );
   }
 
-  /// دالة لتحويل UserModel إلى Map لتخزينه في قاعدة البيانات المحلية
+
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'roleId': roleId,
-      'status': status,
       'name': name,
-      'gender': gender,
-      'birthDate': birthDate,
       'email': email,
-      'avatar': avatar,
-      'phoneZone': phoneZone,
       'phone': phone,
-      'whatsappZone': whatsappZone,
-      'whatsapp': whatsapp,
-      'qualification': qualification,
-      'experienceYears': experienceYears,
-      'country': country,
-      'residence': residence,
-      'city': city,
-      'availableTime': availableTime,
-      'stopReasons': stopReasons,
-      'memorizationLevel': memorizationLevel,
-      // الحقول الإضافية في جدول قاعدة البيانات
-      // 'uuid' يمكن إنشاؤه هنا إذا لم يكن موجودًا
-      'lastModified': DateTime.now().millisecondsSinceEpoch,
-      'isDeleted': 0, // القيمة الافتراضية عند الحفظ
+      'avatar': avatar,
     };
   }
 
-  UserEntity toUserEntity() {
+
+  Map<String, dynamic> toDbMap() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'avatar': avatar,
+      'roleId': role.id,
+    };
+  }
+
+    UserEntity toUserEntity() {
     return UserEntity(
       id: id,
-      roleId: roleId,
-      status: status,
       name: name,
-      gender: gender,
       email: email,
       phone: phone,
-      birthDate: birthDate,
       avatar: avatar,
-      phoneZone: phoneZone,
-      whatsappZone: whatsappZone,
-      whatsapp: whatsapp,
-      qualification: qualification,
-      experienceYears: experienceYears,
-      country: country,
-      residence: residence,
-      city: city,
-      availableTime: availableTime,
-      stopReasons: stopReasons,
-      memorizationLevel: memorizationLevel,
+      role: role,
     );
   }
 }

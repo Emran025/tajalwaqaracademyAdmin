@@ -1,34 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/features/auth/presentation/ui/screens/forget_password_screen.dart';
 
 import '../../../../../shared/widgets/custom_button.dart';
 import '../../bloc/auth_bloc.dart';
-import '../../bloc/auth_event.dart';
-import '../../bloc/auth_state.dart';
 // import '../../../../../core/constants/app_colors.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LogInScreenState extends State<LogInScreen> {
   bool _obscurePassword = true;
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isPasswordVisible = false;
 
-  void _submitLogin(BuildContext context) {
+  void _submitLogIn(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-        LoginRequested(
-          login: emailController.text.trim(),
+        LogInRequested(
+          logIn: emailController.text.trim(),
           password: passwordController.text.trim(),
         ),
       );
@@ -42,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }) {
     return InputDecoration(
       labelText: label,
+
       prefixIcon: Icon(icon, color: AppColors.lightCream70),
       suffixIcon: isPassword
           ? IconButton(
@@ -58,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
           : null,
       filled: true,
       fillColor: AppColors.lightCream.withOpacity(0.1),
-      labelStyle: const TextStyle(color: AppColors.lightCream),
+      labelStyle: const TextStyle(color: AppColors.lightCream, fontSize: 12),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: const BorderSide(color: AppColors.lightCream26),
@@ -151,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             controller: emailController,
                             keyboardType: TextInputType.emailAddress,
+
                             style: const TextStyle(color: AppColors.lightCream),
                             validator: (val) =>
                                 val!.trim().contains('@') ||
@@ -181,27 +181,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 24),
                           BlocConsumer<AuthBloc, AuthState>(
                             listener: (context, state) {
-                              if (state is LoginSuccess) {
+                              if (state.status == LogInStatus.success) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('تم تسجيل الدخول'),
                                   ),
                                 );
-                                context.go('/home');
-                              } else if (state is LoginFailure) {
+                                context.go('/splash');
+                              } else if (state.status == LogInStatus.failure) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(state.message)),
+                                  SnackBar(
+                                    content: Text(state.failure!.message),
+                                  ),
                                 );
                               }
                             },
                             builder: (context, state) {
-                              return state is LoginLoading
+                              return state.status == LogInStatus.loading
                                   ? const CircularProgressIndicator(
                                       color: AppColors.lightCream,
                                     )
                                   : CustomButton(
                                       text: 'تسجيل الدخول',
-                                      onPressed: () => _submitLogin(context),
+                                      onPressed: () => _submitLogIn(context),
                                     );
                             },
                           ),

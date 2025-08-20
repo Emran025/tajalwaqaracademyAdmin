@@ -1,15 +1,16 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/entities/success_entity.dart';
+import '../../../../core/error/failures.dart';
 import '../entities/login_credentials_entity.dart';
 import '../entities/user_entity.dart';
 // features/auth/domain/repositories/auth_repository.dart
 
 abstract class AuthRepository {
-  Future<Either<String, UserEntity>> login({ required
-LoginCredentialsEntity credentials 
+  Future<Either<Failure, UserEntity>> logIn({
+    required LogInCredentialsEntity credentials,
   });
 
-  Future<Either<String, UserEntity>> signUp({
+  Future<Either<Failure, UserEntity>> signUp({
     required String email,
     required String password,
     required String phoneNumber,
@@ -26,13 +27,12 @@ LoginCredentialsEntity credentials
     required String currentAddress,
   });
 
-  Future<Either<String, SuccessEntity>> forgetPassword({
+  Future<Either<Failure, SuccessEntity>> forgetPassword({
     required String email,
   });
 
-  Future<UserEntity> getUserProfile();
-
+  Future<Either<Failure, UserEntity>> getUserProfile();
 
   Future<bool> isLoggedIn();
-  Future<void> logout();
+  Future<Either<Failure, SuccessEntity>> logOut();
 }

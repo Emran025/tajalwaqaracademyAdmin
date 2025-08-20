@@ -1,7 +1,8 @@
-
 import '../../domain/entities/paginated_students_result.dart';
 import '../models/student_model.dart';
 import '../models/student_sync_response_model.dart';
+import '../models/tracking_model.dart';
+
 /// Defines the abstract contract for the remote data source of students.
 ///
 /// This interface specifies the methods for fetching and manipulating student
@@ -31,8 +32,14 @@ abstract interface class StudentRemoteDataSource {
   /// records, pagination info, and a new server timestamp.
   Future<StudentSyncResponseModel> getUpdatedStudents({
     required int since,
-    required int page, // <<< الطالبة الجديدة
+    required int page,
   });
+
+
+  /// Fetches a single student by their unique identifier (UUID).
+  /// - [studentData]: A map containing the student's UUID and other identifying information.
+  /// Returns the [StudentModel] for the specified student.
+  Future<StudentModel> getStudent(String studentData);
 
   /// Pushes a create or update operation for a single student to the server.
   ///
@@ -49,4 +56,5 @@ abstract interface class StudentRemoteDataSource {
   /// - [studentId]: The ID of the student to delete.
   /// Returns a [Future] that completes when the deletion is successful.
   Future<void> deleteStudent(String studentId);
+  Future<List<TrackingModel>> getFollowUpTrackings(String studentId);
 }

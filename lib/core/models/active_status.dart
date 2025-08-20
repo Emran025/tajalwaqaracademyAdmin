@@ -3,6 +3,8 @@ enum ActiveStatus {
   inactive(2, 'غير نشط', "Inactive"),
   pending(3, 'معلق', "Pending"),
   stopped(4, 'متوقف', "Stopped"),
+    unknown(0,'UN', "Unknown"),
+
   waiteing(5, 'بانتظار', "Waiteing");
 
   final int id;
@@ -36,3 +38,6 @@ enum ActiveStatus {
     }
   }
 }
+
+
+

@@ -1,8 +1,5 @@
 // import 'package:flutter/material.dart';
 
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/follow_up_plan_entity.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/halqa_entity.dart';
-
 import 'base_student_entity.dart';
 
 import 'package:flutter/material.dart';
@@ -12,6 +9,8 @@ import 'package:flutter/material.dart';
 /// This entity includes all available information for a student, used when
 /// viewing a specific student's profile. It inherits core properties and
 /// adds detailed fields.
+
+@immutable
 class StudentDetailEntity extends BaseStudentEntity {
   final String birthDate;
   final String email;
@@ -27,11 +26,8 @@ class StudentDetailEntity extends BaseStudentEntity {
   final String stopReasons;
   final String bio;
   final String createdAt;
-  final String updatedAt;// --- New Nested Objects ---
-  final String? halaqaId;// --- New Nested Objects ---
-  final AssignedHalaqasEntity?  assignedHalaqa; // <<< Single Halqa, not a list
-  final FollowUpPlanEntity? followUpPlan; // <<< FollowUpPlan object
-
+  final String memorizationLevel;
+  final String updatedAt;
 
   const StudentDetailEntity({
     required super.id,
@@ -53,11 +49,9 @@ class StudentDetailEntity extends BaseStudentEntity {
     required this.availableTime,
     required this.stopReasons,
     required this.bio,
+    required this.memorizationLevel,
     required this.createdAt,
-    required this.updatedAt,
-    this.halaqaId,
-    this.assignedHalaqa ,
-    this.followUpPlan ,
+    required this.updatedAt
   });
-
 }
+

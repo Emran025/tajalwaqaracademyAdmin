@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/app_colors.dart';
 import 'package:tajalwaqaracademy/core/constants/countries_names.dart';
 import 'package:tajalwaqaracademy/core/models/countery_model.dart';
 import 'package:tajalwaqaracademy/shared/func/date_format.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/shared/widgets/country_picker_dialog.dart';
 import 'package:tajalwaqaracademy/shared/widgets/custom_text_field.dart';
 import 'package:tajalwaqaracademy/shared/widgets/phone_zone.dart';
@@ -40,21 +40,6 @@ class TeacherForm extends StatefulWidget {
 }
 
 class _TeacherFormState extends State<TeacherForm> {
-  // late TextEditingController name;
-  // late TextEditingController gender;
-  // late TextEditingController email;
-  // late TextEditingController birthDate;
-  // late TextEditingController phone;
-  // late TextEditingController phoneZone;
-  // late TextEditingController whatsAppPhone;
-  // late TextEditingController whatsAppZone;
-  // late TextEditingController qualification;
-  // late TextEditingController experienceYears;
-  // late TextEditingController eneregy;
-  // late TextEditingController country;
-  // late TextEditingController residence;
-  // late TextEditingController memorizationLevel;
-  // late TextEditingController availableTime;
   late CountryModel selectedPhoneZone;
   late CountryModel selectedwhatsAppZone;
   late CountryModel selectedCountry;
@@ -64,28 +49,13 @@ class _TeacherFormState extends State<TeacherForm> {
     selectedPhoneZone = countries[245];
     selectedwhatsAppZone = countries[245];
     selectedCountry = countries[245];
-    //   name = TextEditingController();
-    //   gender = TextEditingController(text: "Male");
-    //   email = TextEditingController();
-    //   birthDate = TextEditingController();
-    //   phone = TextEditingController();
-    //   phoneZone = TextEditingController();
-    //   whatsAppPhone = TextEditingController();
-    //   whatsAppZone = TextEditingController();
-    //   qualification = TextEditingController();
-    //   experienceYears = TextEditingController();
-    //   eneregy = TextEditingController();
-    //   country = TextEditingController();
-    //   residence = TextEditingController();
-    //   memorizationLevel = TextEditingController();
-    //   availableTime = TextEditingController();
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

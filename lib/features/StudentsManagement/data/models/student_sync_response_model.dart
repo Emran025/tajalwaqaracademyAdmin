@@ -1,5 +1,5 @@
 import '../../../../core/models/pagination_info_model.dart';
-import 'student_model.dart'; // Assuming you have a PaginationInfo model here
+import 'student_info_model.dart'; // Assuming you have a PaginationInfo model here
 
 /// Represents the structured response from the student synchronization endpoint.
 ///
@@ -8,12 +8,13 @@ import 'student_model.dart'; // Assuming you have a PaginationInfo model here
 /// - `updated`: Records to be created or updated locally.
 /// - `deleted`: Records to be marked as deleted locally.
 /// It also extracts crucial pagination and timestamp metadata for the sync engine.
+
 final class StudentSyncResponseModel {
   /// A list of student models that were created or updated on the server.
-  final List<StudentModel> updated;
+  final List<StudentInfoModel> updated;
 
   /// A list of student models that were marked as deleted on the server.
-  final List<StudentModel> deleted;
+  final List<StudentInfoModel> deleted;
 
   /// The new timestamp provided by the server to be used for the next sync cycle.
   final int newSyncTimestamp;
@@ -33,15 +34,15 @@ final class StudentSyncResponseModel {
     // 1. Safely parse the list of all records from the 'data' key.
     final allStudentsData = json['data'] as List<dynamic>? ?? [];
     final allStudentModels = allStudentsData
-        .map((item) => StudentModel.fromJson(item as Map<String, dynamic>))
+        .map((item) => StudentInfoModel.fromJson(item as Map<String, dynamic>))
         .toList();
 
     // 2. Intelligently partition the list into 'updated' and 'deleted'
     //    based on the `isDeleted` flag.
-    final List<StudentModel> updatedList = [];
-    final List<StudentModel> deletedList = [];
+    final List<StudentInfoModel> updatedList = [];
+    final List<StudentInfoModel> deletedList = [];
     for (final student in allStudentModels) {
-      if (student.isDeleted) {
+      if (student.studentModel.isDeleted) {
         deletedList.add(student);
       } else {
         updatedList.add(student);

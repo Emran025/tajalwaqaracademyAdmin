@@ -32,13 +32,15 @@ abstract interface class AuthLocalDataSource {
   /// Retrieves the last cached user profile.
   /// Returns `null` if no user is cached.
   Future<UserModel?> getUser();
+
   /// Checks if there is a user session currently cached.
   ///
   /// Returns `true` if a user is cached, `false` otherwise. This is often
   /// used for initial route guarding or determining the app's starting state.
   Future<bool> isLoggedIn();
+
   /// Clears all authentication-related data (tokens and user profile).
-  /// This is typically called during logout.
+  /// This is typically called during logOut.
   /// Throws a [CacheException] if the operation fails.
   Future<void> clear();
 }

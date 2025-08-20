@@ -1,6 +1,6 @@
 enum Frequency {
   daily(1, 'يوميًا', "daily"),
-  onceAWeek(2, 'مرة بالأسبوع', "onceAWeek"),
+  onceAWeek(2, 'أسبوعيًا', "onceAWeek"),
   twiceAWeek(3, 'مرتين بالأسبوع', "twiceAWeek"),
   thriceAWeek(4, 'ثلاث مرات بالأسبوع', "thriceAWeek");
 
@@ -17,6 +17,7 @@ enum Frequency {
     switch (label.toLowerCase()) {
       case 'onceAWeek':
       case 'مرة بالأسبوع':
+      case 'أسبوعيًا':
         return Frequency.onceAWeek;
       case 'twiceAWeek':
       case 'مرتين بالأسبوع':

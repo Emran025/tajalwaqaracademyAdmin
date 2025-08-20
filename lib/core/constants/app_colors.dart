@@ -1,12 +1,10 @@
-
-import 'dart:ui';
-
+part of "../../../shared/themes/app_theme.dart";
 
 class AppColors {
   static const Color darkBackground = Color(0xFF1E1E1E); // rgb(30, 32, 30)
   static const Color mediumDark = Color(0xFF3C3D37); // rgb(60, 61, 55)
   static const Color accent = Color(0xFF697565); // rgb(105, 117, 101)
-  static const Color lightCream = Color.fromARGB(255, 255, 254, 240); // rgb(206, 206, 206)
+  static const Color lightCream = Color(0xFFFFFEF0); // rgb(206, 206, 206)
 
   // Accent Color Shades - أساس اللون: #697565
   static const Color accent100 = Color(0xFF697565); // base
@@ -16,7 +14,9 @@ class AppColors {
   static const Color accent38 = Color.fromRGBO(105, 117, 101, 0.38);
   static const Color accent26 = Color.fromRGBO(105, 117, 101, 0.26);
   static const Color accent12 = Color.fromRGBO(105, 117, 101, 0.12);
-
+  // Reading Theme Palette
+  static const Color readingBackground = Color(0xFFFBF9F2);
+  static const Color readingOnBackground = Color(0xFF333333);
   // Dark background shades - #1E201E
   static const Color darkBackground100 = Color(0xFF1E201E);
   static const Color darkBackground87 = Color.fromRGBO(30, 30, 30, 0.87);

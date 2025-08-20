@@ -1,11 +1,12 @@
 // features/auth/data/datasources/auth_remote_data_source_impl.dart
 
-import 'package:tajalwaqaracademy/core/errors/error_model.dart';
+import 'package:tajalwaqaracademy/core/error/failures.dart';
 
 import '../../../../core/api/api_consumer.dart';
 import '../../../../core/api/end_ponits.dart';
-import '../../../../core/errors/exceptions.dart';
+import '../../../../core/error/exceptions.dart';
 import '../../../../core/models/success_model.dart';
+import '../../../../core/models/user_role.dart';
 import '../models/auth_response_model.dart';
 import '../models/login_request_model.dart';
 import '../models/user_model.dart';
@@ -24,11 +25,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   AuthRemoteDataSourceImpl(this.api);
   @override
-  Future<AuthResponseModel> login({ required LoginRequestModel requestModel}) async {
+  Future<AuthResponseModel> logIn({
+    required LogInRequestModel requestModel,
+  }) async {
     // The ApiConsumer is pre-configured to handle all non-2xx status codes
     // and network errors by throwing a ServerException.
     final responseJson = await api.post(
-      EndPoint.login, // e.g., '/v1/auth/login'
+      EndPoint.logIn, // e.g., '/v1/auth/logIn'
       data: requestModel.toJson(),
     );
 
@@ -50,7 +53,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String birthStates,
     required String birthCity,
     required String profileImagePath,
-    required String role,
+    required String? role,
     required String token,
     required String currentAddress,
   }) async {
@@ -76,12 +79,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     return _validateAndParse<UserModel>(
       json,
-      (map) => UserModel.fromJson(map),
+      (map) => UserModel.fromJson(map, UserRole.fromLabel(role ?? 'teache') ),
       'Invalid signup response format',
     );
   }
-
-
 
   @override
   Future<SuccessModel> forgetPassword({required String email}) async {
@@ -97,6 +98,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
   }
 
+  @override
+  Future<SuccessModel> logOut() async {
+    final json = await api.post(EndPoint.forgetPassword);
+
+    return _validateAndParse<SuccessModel>(
+      json,
+      (map) => SuccessModel.fromJson(map),
+      'Invalid forget-pass response format',
+    );
+  }
 
   /// Helper that checks for server-error payload and parses the JSON.
   ///
@@ -114,15 +125,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   ) {
     if (json is Map<String, dynamic> && json[ApiKey.status] == 'error') {
       // API-side error
+      // API-side error
       final error = ErrorModel.fromJson(json);
-      throw ServerException(errorModel: error);
+      throw ServerException(statusCode: error.status, message: error.message);
     }
     try {
       return parser(json as Map<String, dynamic>);
     } catch (_) {
       throw ServerException(
-        errorModel: ErrorModel(status: 'error', message: parseErrorMessage),
-      );
+        statusCode: 'error', message: parseErrorMessage)
+      ;
     }
   }
 }
