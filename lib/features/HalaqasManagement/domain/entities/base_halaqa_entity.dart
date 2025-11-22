@@ -17,16 +17,17 @@ abstract class BaseHalaqaEntity extends Equatable {
   final String name;
   final Gender gender;
   final String country;
-  final String city;
+  final String residence;
   final String avatar;
   final ActiveStatus status;
+
 
   const BaseHalaqaEntity({
     required this.id,
     required this.name,
     required this.gender,
     required this.country,
-    required this.city,
+    required this.residence,
     required this.avatar,
     required this.status,
   });

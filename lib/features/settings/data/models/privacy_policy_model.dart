@@ -40,17 +40,58 @@ class PrivacyPolicyModel {
   /// Creates a [PrivacyPolicyModel] from a JSON map (from a remote API).
   ///
   /// This factory is designed to parse the structured JSON response typically
-  /// received from a web server, where lists and objects are already decoded.
+  /// received from a web server. It handles cases where nested JSON structures
+  /// may be returned as JSON strings rather than direct objects, which can occur
+  /// with certain database configurations or API implementations.
+  ///
+  /// The method automatically detects and parses JSON strings for 'summary'
+  /// and 'sections' fields, and maps field names from API snake_case to
+  /// Dart camelCase conventions.
   factory PrivacyPolicyModel.fromJson(Map<String, dynamic> json) {
+    // Helper function to parse JSON strings if needed
+    dynamic _parseJsonField(dynamic field) {
+      if (field is String) {
+        try {
+          return jsonDecode(field);
+        } catch (e) {
+          // If decoding fails, return the original string
+          return field;
+        }
+      }
+      return field;
+    }
+
+    // Parse summary field - could be List or JSON string
+    final summaryRaw = json['summary'] ?? [];
+    final parsedSummary = _parseJsonField(summaryRaw);
+    final summaryList = parsedSummary is List
+        ? List<String>.from(parsedSummary)
+        : <String>[];
+
+    // Parse sections field - could be List or JSON string
+    final sectionsRaw = json['sections'] ?? [];
+    final parsedSections = _parseJsonField(sectionsRaw);
+    final sectionsList = parsedSections is List
+        ? parsedSections
+              .map((sectionJson) => SectionModel.fromMap(sectionJson))
+              .toList()
+        : <SectionModel>[];
+
     return PrivacyPolicyModel(
-      version: json['version'],
-      lastUpdated: json['lastUpdated'],
-      summary: List<String>.from(json['summary']),
-      sections: (json['sections'] as List)
-          .map((sectionJson) => SectionModel.fromMap(sectionJson))
-          .toList(),
-      changelog: json['changelog'],
-      requiredConsent: json['requiredConsent'],
+      version: json['version'] as String? ?? '',
+      // Handle both camelCase and snake_case field names
+      lastUpdated:
+          json['lastUpdated'] as String? ??
+          json['last_updated'] as String? ??
+          '',
+      summary: summaryList,
+      sections: sectionsList,
+      changelog: json['changelog'] as String?,
+      // Handle both field naming conventions for consent
+      requiredConsent:
+          json['requiredConsent'] as bool? ??
+          json['is_active'] as bool? ??
+          true,
     );
   }
 

@@ -1,21 +1,18 @@
 class EndPoint {
   static const String baseUrl =
-      // "http://192.168.237.92/tajalwaqaracademy/"; //192.168.251.92//192.168.43.92//192.168.43.89
-      // "http://192.168.43.92/tajalwaqaracademy/"; //192.168.251.92//192.168.43.92//192.168.43.89
-      // "http://192.168.43.92/api/v1/"; //192.168.251.92//192.168.43.92//192.168.43.89
-      // "http://localhost/tag-al-waqar/public/api/v1/"; //192.168.251.92//192.168.43.92//192.168.43.89
-      "http://192.168.43.92/tag-al-waqar/public/api/v1/"; //192.168.251.92//192.168.43.92//192.168.43.89
-  // "http://0.0.0.0:8000/api/v1/"; //192.168.251.92//192.168.43.92//192.168.43.89
-  // "http://127.0.0.1:8000/api/v1/"; //192.168.251.92//192.168.43.92//192.168.43.89
-  // "http://127.0.0.1:8000/api/v1/"; //192.168.251.92//192.168.43.92//192.168.43.89
-  // "https://taj-al-waqar.saherqaid.com/api/v1/"; //192.168.251.92//192.168.43.92//192.168.43.89
+      "http://192.168.72.1/tag-al-waqar/public/api/v1/"; //192.168.32.92
 
   /// Endpoint for fetching a specific student's follow-up tracking records.
   /// The `{id}` placeholder will be replaced by the student's actual ID.
   static const String studentTrackings = '/students/{id}/trackings';
   static const String logIn = "auth/login";
+  static const String forgetPassword = "auth/forgot-password";
+  static const String logOut = "auth/logout";
   static const String refreshToken = "refreshToken";
-  static const String userProfile = "userProfile";
+  static const String userProfile = "account/profile";
+  static const String changePassword = "account/change-password";
+  static const String sessions = "account/sessions";
+  static const String privacyPolicy = "help/privacy-policy";
   static const String teachers = "teachers";
   static const String students = "students";
   static const String halaqas = "halaqas";
@@ -26,13 +23,6 @@ class EndPoint {
   static const String teachersUpsert = "teachers/{id}";
   static const String studentsUpsert = "students/{id}";
   static const String halaqasUpsert = "halaqas/{id}";
-  static const String signUp = "package/auth/complateRegistration.php";
-  static const String verifyCode = "package/auth/verifyCode.php";
-  static const String forgetPassword = "package/auth/forgetPass.php";
-  static const String newPassword = "package/auth/resetPass.php";
-  static const String counteris = "getCounteries/Counteries.php";
-  static const String states = "getStates/States.php";
-  static const String cities = "getCities/Cities.php";
 
   static String getUserDataEndPoint(id) {
     return "user/get-user/$id";

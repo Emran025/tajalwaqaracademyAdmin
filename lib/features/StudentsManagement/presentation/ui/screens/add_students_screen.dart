@@ -11,6 +11,8 @@ import 'package:tajalwaqaracademy/shared/widgets/custom_text_field.dart';
 import 'package:tajalwaqaracademy/shared/widgets/phone_zone.dart';
 import 'package:tajalwaqaracademy/shared/widgets/pick_date.dart';
 
+import '../../../../../shared/widgets/pick_time.dart';
+
 class StudentForm extends StatefulWidget {
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
@@ -185,10 +187,13 @@ class _StudentFormState extends State<StudentForm> {
               readOnly: true,
             ),
 
-            CustomTextField(
+            CustomTimePicker(
               controller: widget.availableTimeController,
-              prefixIcon: Icons.timelapse_rounded,
+              icon: Icons.timelapse_rounded,
               label: "الوقت المتاح",
+              onTimeSelected: (date) {
+                widget.availableTimeController.text = "$date";
+              },
             ),
           ],
         ),

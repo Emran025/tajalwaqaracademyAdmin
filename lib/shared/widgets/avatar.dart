@@ -3,19 +3,19 @@ import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
 
 class Avatar extends StatelessWidget {
-  final Gender gender;
+  final Gender? gender;
   final String pic;
   final Size size;
   const Avatar({
     super.key,
-    this.gender = Gender.other,
+    this.gender,
     this.pic = "assets/images/logo2.png",
     this.size = const Size(55, 55),
   });
 
   @override
   Widget build(BuildContext context) {
-    return pic == 'assets/images/logo2.png' && gender == Gender.other
+    return gender == null
         ? Container(
             height: size.height,
             width: size.width,

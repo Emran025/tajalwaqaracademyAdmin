@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/config/di/injection.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/constants/countries_names.dart';
-import 'package:tajalwaqaracademy/core/error/failures.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/countery_model.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/bloc/student_bloc.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/screens/add_students_screen.dart';
-import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
+import '../../../../../config/di/injection.dart';
+import '../../../../../shared/themes/app_theme.dart';
+import '../../../../../core/constants/countries_names.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../../../core/models/active_status.dart';
+import '../../../../../core/models/countery_model.dart';
+import '../../../../../core/models/gender.dart';
+import '../../../domain/entities/student_list_item_entity.dart';
+import '../../bloc/student_bloc.dart';
+import 'add_students_screen.dart';
+import '../../../../../shared/widgets/avatar.dart';
 
 import '../../../../../shared/widgets/caerd_tile.dart';
 import '../../../domain/entities/student_entity.dart';
@@ -75,121 +75,114 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      // The screen is responsible for creating the BLoC and dispatching the initial event.
-      create: (context) => sl<StudentBloc>()..add(const WatchStudentsStarted()),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: _showAddStudentsDialog,
-          icon: Icon(Icons.add, color: AppColors.lightCream),
-          label: Text(
-            "إضافة طالب",
-            style: GoogleFonts.cairo(
-              fontWeight: FontWeight.bold,
-              color: AppColors.lightCream,
-            ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _showAddStudentsDialog,
+        icon: Icon(Icons.add, color: AppColors.lightCream),
+        label: Text(
+          "إضافة طالب",
+          style: GoogleFonts.cairo(
+            fontWeight: FontWeight.bold,
+            color: AppColors.lightCream,
           ),
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildSearchBar(),
-                const SizedBox(height: 10),
-                Expanded(
-                  // Use a BlocBuilder because this part only needs to rebuild based on state.
-                  child: BlocBuilder<StudentBloc, StudentState>(
-                    builder: (context, state) {
-                      // --- Central Loading Indicator ---
-                      if (state.status == StudentStatus.loading &&
-                          state.students.isEmpty) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      // --- Central Failure View ---
-                      if (state.status == StudentStatus.failure &&
-                          state.students.isEmpty) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Error: state.failure?.message'),
-                              ElevatedButton(
-                                onPressed: () => context
-                                    .read<StudentBloc>()
-                                    .add(const StudentsRefreshed()),
-                                child: const Text('Try Again'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      // --- Empty State View ---
-                      if (state.status == StudentStatus.success &&
-                          state.students.isEmpty) {
-                        return RefreshIndicator(
-                          onRefresh: () async {
-                            if (state.status == StudentStatus.success &&
-                                state.hasMorePages &&
-                                !state.isLoadingMore) {
-                              context.read<StudentBloc>().add(
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSearchBar(),
+              const SizedBox(height: 10),
+              Expanded(
+                // Use a BlocBuilder because this part only needs to rebuild based on state.
+                child: BlocBuilder<StudentBloc, StudentState>(
+                  builder: (context, state) {
+                    // --- Central Loading Indicator ---
+                    if (state.status == StudentStatus.loading &&
+                        state.students.isEmpty) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    // --- Central Failure View ---
+                    if (state.status == StudentStatus.failure &&
+                        state.students.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Error: state.failure?.message'),
+                            ElevatedButton(
+                              onPressed: () => context.read<StudentBloc>().add(
                                 const StudentsRefreshed(),
-                              );
-                            }
-
-                            // The refresh completes when the BLoC emits a new state.
-                          },
-                          child: const Center(
-                            child: Text('No students found.'),
-                          ),
-                        );
-                      }
-
-                      // --- Main Content (Success or Loading with existing data) ---
-                      // The ListView is always visible if there's data, even during a refresh.
-                      final filteredStudents = state.students
-                          .where(
-                            (t) =>
-                                t.name.contains(_search) ||
-                                t.country.contains(_search),
-                          )
-                          .toList();
-                      return RefreshIndicator(
-                        onRefresh: () async {
-                          context.read<StudentBloc>().add(
-                            const StudentsRefreshed(),
-                          );
-                          // The refresh completes when the BLoC emits a new state.
-                        },
-                        child: ListView.separated(
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 5),
-                          controller:
-                              _scrollController, // Controller for "load more"
-                          itemCount:
-                              filteredStudents.length +
-                              (state.isLoadingMore ? 1 : 0),
-                          itemBuilder: (ctx, i) {
-                            if (i >= filteredStudents.length) {
-                              // "Load More" indicator
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            }
-                            return _buildStudentCard(filteredStudents[i]);
-                          },
+                              ),
+                              child: const Text('Try Again'),
+                            ),
+                          ],
                         ),
                       );
-                    },
-                  ),
+                    }
+                    // --- Empty State View ---
+                    if (state.status == StudentStatus.success &&
+                        state.students.isEmpty) {
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          if (state.status == StudentStatus.success &&
+                              state.hasMorePages &&
+                              !state.isLoadingMore) {
+                            context.read<StudentBloc>().add(
+                              const StudentsRefreshed(),
+                            );
+                          }
+
+                          // The refresh completes when the BLoC emits a new state.
+                        },
+                        child: const Center(child: Text('No students found.')),
+                      );
+                    }
+
+                    // --- Main Content (Success or Loading with existing data) ---
+                    // The ListView is always visible if there's data, even during a refresh.
+                    final filteredStudents = state.students
+                        .where(
+                          (t) =>
+                              t.name.contains(_search) ||
+                              t.country.contains(_search),
+                        )
+                        .toList();
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        context.read<StudentBloc>().add(
+                          const StudentsRefreshed(),
+                        );
+                        // The refresh completes when the BLoC emits a new state.
+                      },
+                      // behavior: GlowOnlyScrollBehavior(),
+                      child: ListView.separated(
+                        separatorBuilder: (_, __) => const SizedBox(height: 5),
+                        controller:
+                            _scrollController, // Controller for "load more"
+                        itemCount:
+                            filteredStudents.length +
+                            (state.isLoadingMore ? 1 : 0), // physics: p,
+                        itemBuilder: (ctx, i) {
+                          if (i >= filteredStudents.length) {
+                            // "Load More" indicator
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+                          return _buildStudentCard(filteredStudents[i]);
+                        },
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -229,7 +222,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
   // We only need one card widget that works with the StudentDetailEntity from our domain.
 
   Widget _buildStudentCard(StudentListItemEntity student) {
-    return CustomListListTile(
+    return CustomListTile(
       title: student.name,
       moreIcon: Icons.more_vert,
       leading: Avatar(gender: student.gender, pic: student.avatar),

@@ -57,7 +57,7 @@ class AppThemes {
     onSurface: AppColors.darkBackground,
     error: AppColors.error,
     onError: AppColors.lightCream,
-    primaryContainer: AppColors.darkBackground70,
+    primaryContainer: AppColors.mediumDark,
   );
 
   static const ColorScheme _darkColorScheme = ColorScheme(
@@ -73,6 +73,7 @@ class AppThemes {
     surface: AppColors.mediumDark,
     onSurface: AppColors.lightCream,
     primaryContainer: AppColors.accent12,
+
   );
 
   static const ColorScheme _readingColorScheme = ColorScheme(
@@ -87,7 +88,7 @@ class AppThemes {
     onBackground: AppColors.readingOnBackground,
     surface: Colors.white,
     onSurface: AppColors.readingOnBackground,
-    primaryContainer: AppColors.darkBackground70,
+    primaryContainer: AppColors.mediumDark,
   );
 
   /// A private helper method to build a `ThemeData` object from a color scheme.
@@ -121,8 +122,8 @@ class AppThemes {
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.brightness == Brightness.dark
             ? AppColors.mediumDark
-            : scaffoldBackgroundColor,
-        foregroundColor: colorScheme.onBackground,
+            : AppColors.lightCream.withOpacity(0.3),
+        foregroundColor: colorScheme.onBackground.withOpacity(0.2),
         elevation: 0,
         titleTextStyle: TextStyle(
           fontFamily: _cairoFontFamily,

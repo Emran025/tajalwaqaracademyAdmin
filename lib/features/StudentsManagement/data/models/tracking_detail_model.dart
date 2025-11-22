@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/tracking_detail_entity.dart';
+import '../../domain/entities/tracking_detail_entity.dart';
 import 'package:tajalwaqaracademy/core/constants/tracking_unit_detail.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
 
-// 1. Import the new MistakeModel
 import 'package:tajalwaqaracademy/features/daily_tracking/data/models/mistake_model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -49,7 +48,6 @@ final class TrackingDetailModel {
     required this.updatedAt,
     this.mistakes = const [], // 3. Add to the constructor with a default value
     this.gap = 0.0,
-    
   });
 
   /// A factory for creating a [TrackingDetailModel] from a JSON map.
@@ -74,7 +72,8 @@ final class TrackingDetailModel {
           trackingUnitDetail[(json['toTrackingUnitId'] as int? ?? 0) - 1],
       actualAmount: json['actualAmount'] as int? ?? 0,
       comment: json['comment'] as String? ?? '',
- status: 'completed',       score: json['score'] as int? ?? 0,
+      status: 'completed',
+      score: json['score'] as int? ?? 0,
       createdAt: json['createdAt'] as String? ?? '',
       updatedAt: json['updatedAt'] as String? ?? '',
       // Mistakes are loaded separately, so we initialize with an empty list.
@@ -100,7 +99,7 @@ final class TrackingDetailModel {
           trackingUnitDetail[(map['toTrackingUnitId'] as int? ?? 1) - 1],
       comment: map['comment'] as String? ?? '',
       score: map['score'] as int? ?? 0,
-       status: map['completed'] as String? ?? '', 
+      status: map['status'] as String? ?? 'draft',
       gap: map['gap'] as double? ?? 0,
       createdAt:
           map['createdAt'] as String? ??

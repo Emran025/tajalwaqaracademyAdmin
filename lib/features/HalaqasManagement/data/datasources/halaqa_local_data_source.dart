@@ -72,10 +72,8 @@ abstract interface class HalaqaLocalDataSource {
   Future<HalaqaModel> getHalaqaById(String halaqaId);
 
   Future<List<HalaqaModel>> getHalaqasByStudentCriteria({
-
     ActiveStatus? studentStatus,
     DateTime? trackDate,
     Frequency? frequencyCode,
   });
-
 }

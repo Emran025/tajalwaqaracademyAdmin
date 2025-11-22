@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/plan_detail_model.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/follow_up_plan_entity.dart';
+import '../../../../../features/StudentsManagement/data/models/plan_detail_model.dart';
+import '../../../../../features/StudentsManagement/domain/entities/follow_up_plan_entity.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/models/report_frequency.dart';
 
 @immutable
 final class FollowUpPlanModel {
-  final String planId; // سيتم استخدام UUID الآن
+  final String planId;
   final String serverPlanId;
   final Frequency frequency;
   final String? updatedAt;
@@ -29,7 +29,7 @@ final class FollowUpPlanModel {
       return FollowUpPlanModel(
         planId: const Uuid().v4(),
         serverPlanId: json['PlanId'].toString(),
-        frequency: Frequency.fromLabel( json['frequency'] as String? ?? 'daily'),
+        frequency: Frequency.fromLabel(json['frequency'] as String? ?? 'daily'),
         updatedAt:
             json['updatedAt'] as String? ?? DateTime.now().toIso8601String(),
         createdAt:
@@ -44,7 +44,8 @@ final class FollowUpPlanModel {
     return FollowUpPlanModel(
       planId: const Uuid().v4(),
       serverPlanId: json['PlanId'].toString(),
-frequency: Frequency.fromLabel( json['frequency'] as String? ?? 'daily'),      updatedAt: json['updatedAt'] as String?,
+      frequency: Frequency.fromLabel(json['frequency'] as String? ?? 'daily'),
+      updatedAt: json['updatedAt'] as String?,
       createdAt: json['createdAt'] as String?,
       details: details,
     );
@@ -61,8 +62,8 @@ frequency: Frequency.fromLabel( json['frequency'] as String? ?? 'daily'),      u
     return FollowUpPlanModel(
       planId: planMap['uuid'] as String,
       serverPlanId: planMap['server_plan_id'].toString(),
-      frequency: Frequency.fromId( planMap['frequency'] as int? ?? 1),
-      
+      frequency: Frequency.fromId(planMap['frequency'] as int? ?? 1),
+
       createdAt: planMap['createdAt'] as String?,
       updatedAt: planMap['updatedAt'] as String?,
       details: details,

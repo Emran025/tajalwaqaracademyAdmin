@@ -6,10 +6,8 @@ import '../../../../core/api/api_consumer.dart';
 import '../../../../core/api/end_ponits.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/models/success_model.dart';
-import '../../../../core/models/user_role.dart';
 import '../models/auth_response_model.dart';
 import '../models/login_request_model.dart';
-import '../models/user_model.dart';
 import 'auth_remote_data_source.dart';
 import 'package:injectable/injectable.dart';
 
@@ -41,50 +39,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> signUp({
-    required String email,
-    required String password,
-    required String phoneNumber,
-    required String whatsappNumber,
-    required String name,
-    required String gender,
-    required String birthDate,
-    required String birthContery,
-    required String birthStates,
-    required String birthCity,
-    required String profileImagePath,
-    required String? role,
-    required String token,
-    required String currentAddress,
-  }) async {
-    final json = await api.post(
-      EndPoint.signUp,
-      data: {
-        ApiKey.email: email,
-        ApiKey.password: password,
-        ApiKey.phoneNumber: phoneNumber,
-        ApiKey.whatsappNumber: whatsappNumber,
-        ApiKey.name: name,
-        ApiKey.gender: gender,
-        ApiKey.birthDate: birthDate,
-        ApiKey.birthContery: birthContery,
-        ApiKey.birthStates: birthStates,
-        ApiKey.birthCity: birthCity,
-        ApiKey.profileImagePath: profileImagePath,
-        ApiKey.role: role,
-        ApiKey.token: token,
-        ApiKey.currentAddress: currentAddress,
-      },
-    );
-
-    return _validateAndParse<UserModel>(
-      json,
-      (map) => UserModel.fromJson(map, UserRole.fromLabel(role ?? 'teache') ),
-      'Invalid signup response format',
-    );
-  }
-
-  @override
   Future<SuccessModel> forgetPassword({required String email}) async {
     final json = await api.post(
       EndPoint.forgetPassword,
@@ -99,9 +53,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<SuccessModel> logOut() async {
-    final json = await api.post(EndPoint.forgetPassword);
+  Future<SuccessModel> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    final json = await api.post(
+      EndPoint.changePassword, // ستحتاج لتعريف هذا ال endpoint
+      data: {
+        'current_password': currentPassword,
+        'password': newPassword,
+        'password_confirmation': newPassword,
+      },
+    );
 
+    return _validateAndParse<SuccessModel>(
+      json,
+      (map) => SuccessModel.fromJson(map),
+      'Invalid change-password response format',
+    );
+  }
+
+  @override
+  Future<SuccessModel> logOut() async {
+    final json = await api.post(EndPoint.logOut);
     return _validateAndParse<SuccessModel>(
       json,
       (map) => SuccessModel.fromJson(map),
@@ -132,9 +106,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       return parser(json as Map<String, dynamic>);
     } catch (_) {
-      throw ServerException(
-        statusCode: 'error', message: parseErrorMessage)
-      ;
+      throw ServerException(statusCode: 'error', message: parseErrorMessage);
     }
   }
 }

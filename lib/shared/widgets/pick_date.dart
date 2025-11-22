@@ -33,6 +33,69 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
+            datePickerTheme: DatePickerThemeData(
+              rangePickerHeaderHelpStyle: GoogleFonts.cairo(
+                color: AppColors.lightCream,
+                fontSize: 14,
+              ),
+              rangePickerHeaderHeadlineStyle: GoogleFonts.cairo(
+                color: AppColors.lightCream,
+                fontSize: 14,
+              ),
+              cancelButtonStyle: ButtonStyle(
+                textStyle: MaterialStateProperty.all<TextStyle>(
+                  TextStyle(fontFamily: 'Cairo'),
+                ),
+              ),
+              confirmButtonStyle: ButtonStyle(
+                textStyle: MaterialStateProperty.all<TextStyle>(
+                  TextStyle(fontFamily: 'Cairo'),
+                ),
+              ),
+
+              backgroundColor: AppColors.mediumDark,
+              // hourMinuteTextColor: AppColors.lightCream,
+              // dialHandColor: AppColors.accent,
+              // dialBackgroundColor: AppColors.darkBackground,
+              // dialTextColor: MaterialStateColor.resolveWith(
+              //   (states) => states.contains(MaterialState.selected)
+              //       ? AppColors.darkBackground
+              //       : AppColors.lightCream,
+              // ),
+              // entryModeIconColor: AppColors.accent,
+              headerHeadlineStyle: GoogleFonts.cairo(
+                color: AppColors.lightCream,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              headerHelpStyle: GoogleFonts.cairo(
+                color: AppColors.lightCream,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              weekdayStyle: GoogleFonts.cairo(
+                color: AppColors.lightCream,
+                fontSize: 14,
+              ),
+
+              yearStyle: GoogleFonts.cairo(
+                color: AppColors.lightCream,
+                fontSize: 12,
+              ),
+              // dayStyle: GoogleFonts.cairo(
+              //   color: AppColors.lightCream,
+              //   fontSize: 12,
+              // ),
+
+              // hourMinuteShape: const RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.all(Radius.circular(8)),
+              // ),
+              // hourMinuteColor: MaterialStateColor.resolveWith(
+              //   (states) => states.contains(MaterialState.selected)
+              //       ? AppColors.accent
+              //       : AppColors.mediumDark38,
+              // ),
+            ),
             colorScheme: const ColorScheme.dark(
               primary: AppColors.accent, // لون العناصر الأساسية
               onPrimary: AppColors.lightCream, // لون النص على الأزرار
@@ -46,6 +109,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               onError: AppColors.lightCream,
               brightness: Brightness.dark,
             ),
+
             textTheme: TextTheme(
               titleMedium: GoogleFonts.cairo(
                 color: AppColors.lightCream,

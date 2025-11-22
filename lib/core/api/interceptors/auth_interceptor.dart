@@ -34,12 +34,14 @@ final class AuthInterceptor extends Interceptor {
     // This is a critical guard to prevent the refresh request itself from
     // being sent with an (potentially expired) access token, which could
     // cause issues or be redundant.
-    if (options.path.contains(EndPoint.refreshToken)) {
+    if (options.path.contains(EndPoint.refreshToken) ||
+        options.path.contains(EndPoint.logIn) ||
+        options.path.contains(EndPoint.forgetPassword)) {
       return handler.next(options);
     }
 
     // Attempt to retrieve the access token from secure storage.
-    final String? token = await _secureStorage.read(key: 'access_token');
+    final String? token = await _secureStorage.read(key: 'ACCESS_TOKEN');
 
     // If a token exists, add it to the request headers as a Bearer token.
     if (token != null) {

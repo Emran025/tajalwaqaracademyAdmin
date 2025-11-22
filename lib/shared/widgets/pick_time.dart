@@ -4,12 +4,16 @@ import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 
 class CustomTimePicker extends StatefulWidget {
   final void Function(TimeOfDay)? onTimeSelected;
+  final TextEditingController controller;
+
   final IconData icon;
   final String label;
 
   const CustomTimePicker({
     super.key,
     this.onTimeSelected,
+    required this.controller,
+
     required this.icon,
     required this.label,
   });
@@ -30,6 +34,31 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         return Theme(
           data: Theme.of(context).copyWith(
             timePickerTheme: TimePickerThemeData(
+              timeSelectorSeparatorTextStyle:
+                  MaterialStateProperty.all<TextStyle>(
+                    TextStyle(fontFamily: 'Cairo'),
+                  ),
+
+              cancelButtonStyle: ButtonStyle(
+                textStyle: MaterialStateProperty.all<TextStyle>(
+                  TextStyle(fontFamily: 'Cairo'),
+                ),
+              ),
+              confirmButtonStyle: ButtonStyle(
+                textStyle: MaterialStateProperty.all<TextStyle>(
+                  TextStyle(fontFamily: 'Cairo'),
+                ),
+              ),
+              // hourMinuteTextStyle: GoogleFonts.cairo(
+              //   color: AppColors.lightCream,
+              //   fontSize: 16,
+              //   fontWeight: FontWeight.bold,
+              // ),
+              // dayPeriodTextStyle: GoogleFonts.cairo(
+              //   color: AppColors.lightCream,
+              //   fontSize: 16,
+              //   fontWeight: FontWeight.bold,
+              // ),
               backgroundColor: AppColors.mediumDark,
               hourMinuteTextColor: AppColors.lightCream,
               dialHandColor: AppColors.accent,
@@ -96,6 +125,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12, left: 14),
       child: TextFormField(
+        controller: widget.controller,
         readOnly: true,
         keyboardType: TextInputType.none,
         style: GoogleFonts.cairo(color: AppColors.lightCream, fontSize: 12),
@@ -124,16 +154,6 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
           ),
         ),
         onTap: () => _pickTime(),
-        // onTap(controller, label, keyboard) : null,
-
-        // onSaved: ((val) {
-        //   controller.text = val?.trim() ?? '';
-        // }),
-        // onChanged: ((val) {
-        //   controller.text = val.trim();
-        // }),
-        // validator: (val) =>
-        //     (val == null || val.isEmpty) ? " حقل $label مطلوب" : null,
       ),
     );
   }

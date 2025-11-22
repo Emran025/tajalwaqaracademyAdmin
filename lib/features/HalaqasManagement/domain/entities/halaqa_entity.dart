@@ -12,9 +12,10 @@ import 'package:flutter/material.dart';
 
 @immutable
 class HalaqaDetailEntity extends BaseHalaqaEntity {
-  final String teacher;
-  final String residence;
+  final int teacherId;
 
+  final int sumOfStudents;
+  final int maxOfStudents;
   final String createdAt;
   final String updatedAt;
 
@@ -24,15 +25,24 @@ class HalaqaDetailEntity extends BaseHalaqaEntity {
     required super.avatar,
     required super.status,
     required super.gender,
-    required this.teacher,
+    required this.teacherId,
     required super.country,
-    required this.residence,
-    required super.city,
-    
+
+    required super.residence,
+    required this.sumOfStudents,
+    required this.maxOfStudents,
+
     required this.createdAt,
     required this.updatedAt,
   });
 
   @override
-  List<Object?> get props => [...super.props, teacher];
+  List<Object?> get props => [
+    ...super.props,
+    teacherId,
+    sumOfStudents,
+    maxOfStudents,
+    createdAt,
+    updatedAt,
+  ];
 }

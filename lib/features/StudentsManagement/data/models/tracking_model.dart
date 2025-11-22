@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../../../../core/models/attendance_type.dart';
 import 'tracking_detail_model.dart';
 import '../../domain/entities/tracking_entity.dart';
+
 /// The data model for a student's daily tracking record.
 ///
 /// This immutable class encapsulates the main tracking entry for a day, along with
@@ -16,6 +17,7 @@ final class TrackingModel {
   final String note;
   final AttendanceType attendanceTypeId;
   final int behaviorNote;
+  final String status;
   final String createdAt;
   final String updatedAt;
 
@@ -29,6 +31,7 @@ final class TrackingModel {
     required this.details,
     required this.attendanceTypeId,
     required this.behaviorNote,
+    this.status = 'draft',
     required this.createdAt,
     required this.updatedAt,
   });
@@ -52,6 +55,7 @@ final class TrackingModel {
           ? AttendanceType.absent
           : AttendanceType.present,
       behaviorNote: json['behaviorNote'] as int? ?? 0,
+      status: 'completed',
       createdAt: json['createdAt'] as String? ?? '',
       updatedAt: json['updatedAt'] as String? ?? '',
       details: detailsList,
@@ -73,6 +77,7 @@ final class TrackingModel {
         map['attendanceTypeId'] as int? ?? 1,
       ),
       behaviorNote: map['behaviorNote'] as int? ?? 2,
+      status: map['status'] as String? ?? 'draft',
       createdAt: map['createdAt'] as String? ?? '',
       updatedAt: map['updatedAt'] as String? ?? '',
       details: details,
@@ -91,11 +96,11 @@ final class TrackingModel {
       'behaviorNote': behaviorNote,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'status': status,
       // The 'details' key contains an array of detailed tracking items.
       'details': details.map((detail) => detail.toJson()).toList(),
     };
   }
-  
 
   /// Converts the model to a map suitable for the `daily_tracking` table.
   /// Requires the `enrollmentId` foreign key. Note this map does NOT include the details.
@@ -108,7 +113,9 @@ final class TrackingModel {
       'note': note,
       'attendanceTypeId': attendanceTypeId.id,
       'behaviorNote': behaviorNote,
-      'lastModified': DateTime.now().millisecondsSinceEpoch,
+      'status': status,
+      'lastModified': (DateTime.tryParse(updatedAt) ?? DateTime.now())
+          .millisecondsSinceEpoch,
     };
   }
 

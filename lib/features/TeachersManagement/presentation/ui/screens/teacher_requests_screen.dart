@@ -42,7 +42,7 @@ class TeacherRequestsScreen extends StatelessWidget {
     TeacherListItemEntity teacher,
     BuildContext context,
   ) {
-    return CustomListListTile(
+    return CustomListTile(
       title: teacher.name,
       moreIcon: Icons.more_vert,
       leading: Avatar(gender: teacher.gender, pic: teacher.avatar),

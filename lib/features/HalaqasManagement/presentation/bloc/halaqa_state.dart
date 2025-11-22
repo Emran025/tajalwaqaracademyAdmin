@@ -28,6 +28,11 @@ final class HalaqaState extends Equatable {
   final HalaqaUpsertStatus upsertStatus;
   final Failure? upsertFailure;
 
+    // New
+  final HalaqaStatus  filteredHalaqasStatus;
+  final List<HalaqaListItemEntity>? filteredHalaqas;
+  final Failure? filteredHalaqasFailure;
+
   const HalaqaState({
     this.status = HalaqaStatus.initial,
     this.halaqas = const [],
@@ -47,6 +52,13 @@ final class HalaqaState extends Equatable {
     // New
     this.upsertStatus = HalaqaUpsertStatus.initial,
     this.upsertFailure,
+
+        // New
+    this.filteredHalaqasStatus = HalaqaStatus.initial,
+    this.filteredHalaqas,
+    this.filteredHalaqasFailure,
+
+    
   });
 
   HalaqaState copyWith({
@@ -73,6 +85,12 @@ final class HalaqaState extends Equatable {
     HalaqaUpsertStatus? upsertStatus,
     Failure? upsertFailure,
     bool clearUpsertFailure = false,
+
+        // New
+    HalaqaStatus? filteredHalaqasStatus,
+    List<HalaqaListItemEntity>? filteredHalaqas,
+    Failure? filteredHalaqasFailure,
+    bool clearFilteredHalaqasFailure = false,
   }) {
     return HalaqaState(
       status: status ?? this.status,
@@ -98,6 +116,13 @@ final class HalaqaState extends Equatable {
       upsertFailure: clearUpsertFailure
           ? null
           : upsertFailure ?? this.upsertFailure,
+
+                // New
+      filteredHalaqasStatus: filteredHalaqasStatus ?? this.filteredHalaqasStatus,
+      filteredHalaqas: filteredHalaqas ?? this.filteredHalaqas,
+      filteredHalaqasFailure: clearFilteredHalaqasFailure
+          ? null
+          : filteredHalaqasFailure ?? this.filteredHalaqasFailure,
     );
   }
 
@@ -111,5 +136,8 @@ final class HalaqaState extends Equatable {
     submissionFailure,
     upsertStatus,
     upsertFailure,
+    filteredHalaqasStatus,
+    filteredHalaqas,
+    filteredHalaqasFailure,
   ];
 }

@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import '../../../../../core/error/exceptions.dart';
+import '../../../../../core/models/user_role.dart';
 import '../../../../core/models/sync_queue_model.dart';
 import '../models/teacher_model.dart';
 import 'teacher_local_data_source.dart';
@@ -49,9 +49,15 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         whereArgs: [UserRole.teacher.id, 0],
         orderBy: 'name ASC',
       );
-      print(maps);
-      return maps.map((map) => TeacherModel.fromDbMap(map)).toList();
+      // print(maps);
+      return maps.map((map) =>
+         TeacherModel.fromDbMap(map)
+      ).toList();
     } on DatabaseException catch (e) {
+      throw CacheException(
+        message: 'Failed to fetch teachers from cache: ${e.toString()}',
+      );
+    } catch (e) {
       throw CacheException(
         message: 'Failed to fetch teachers from cache: ${e.toString()}',
       );

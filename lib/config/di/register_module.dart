@@ -5,13 +5,16 @@ import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tajalwaqaracademy/core/api/interceptors/auth_interceptor.dart';
 
 import 'package:tajalwaqaracademy/core/api/api_consumer.dart';
 import 'package:tajalwaqaracademy/core/api/dio_consumer.dart';
 import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
 import 'package:tajalwaqaracademy/core/database/app_database.dart';
 import 'package:tajalwaqaracademy/core/network/network_info.dart';
-import 'package:workmanager/workmanager.dart'; // Import the contract, not the implementation
+import 'package:workmanager/workmanager.dart';
+
+import '../../core/api/interceptors/token_refresh_interceptor.dart'; // Import the contract, not the implementation
 
 /// A unique identifier for the Dio instance dedicated to token refresh operations.
 /// This named registration is crucial to prevent circular dependencies within interceptors.
@@ -89,7 +92,7 @@ abstract class RegisterModule {
       // TEMP: The authentication interceptors are temporarily disabled.
       // To enable token-based authentication, uncomment the following lines.
       // -------------------------------------------------------------------
-      // AuthInterceptor(secureStorage: storage),
+      AuthInterceptor(secureStorage: storage),
       // TokenRefreshInterceptor(
       //   secureStorage: storage,
       //   dio: mainDio,

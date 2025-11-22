@@ -70,9 +70,11 @@ final class TeacherModel {
     // Safely parse the nested list of halqas.
     final halqasListJson = json['assignedHalaqas'] as List<dynamic>? ?? [];
     final halqas = halqasListJson
-        .map((halaqaJson) => AssignedHalaqasModel.fromJson(halaqaJson as Map<String, dynamic>))
+        .map(
+          (halaqaJson) =>
+              AssignedHalaqasModel.fromJson(halaqaJson as Map<String, dynamic>),
+        )
         .toList();
-
 
     return TeacherModel(
       id: json['uuid'] as String? ?? (json['id'] as int? ?? 0).toString(),
@@ -106,29 +108,27 @@ final class TeacherModel {
   /// Creates a [TeacherModel] from a JSON map received from an API.
   factory TeacherModel.fromDbMap(Map<String, dynamic> map) {
     return TeacherModel(
-      id: map['uuid'] as String? ?? (map['id'] as int? ?? 0).toString(),
-      name: map['name'] as String? ?? 'Unknown Name',
-      gender: Gender.fromLabel(
-        map['gender'] as String? ?? Gender.male.labelAr.toLowerCase(),
-      ),
-      birthDate: map['birthDate'] as String? ?? '',
-      email: map['email'] as String? ?? '',
-      phone: map['phone'] as String? ?? '',
-      phoneZone: map['phoneZone'] as String?,
-      whatsappPhone: map['whatsapp'] as String?,
-      whatsappZone: map['whatsappZone'] as String?,
-      bio: map['bio'] as String?,
-      experienceYears: map['experienceYears'] as int? ?? 0,
-      country: map['country'] as String? ?? '',
-      residence: map['residence'] as String? ?? '',
-      city: map['city'] as String? ?? '',
-      availableTime: map['availableTime'] as String?,
-      status: ActiveStatus.fromLabel(map['status'] as String? ?? 'inactive'),
+      id: map['uuid'] as String? ?? (map['id'] as int? ?? 0).toString(), //
+      name: map['name'] as String? ?? 'Unknown Name', //
+      gender: Gender.fromId(map['gender'] as int? ?? Gender.male.id), //
+      birthDate: map['birthDate'] as String? ?? '', //
+      email: map['email'] as String? ?? '', //
+      phone: map['phone'] as String? ?? '', //
+      phoneZone: map['phoneZone'] as String?, //
+      whatsappPhone: map['whatsapp'] as String?, //
+      whatsappZone: map['whatsappZone'] as String?, //
+      bio: map['bio'] as String?, //
+      experienceYears: map['experienceYears'] as int? ?? 0, //
+      country: map['country'] as String? ?? '', //
+      residence: map['residence'] as String? ?? '', //
+      city: map['city'] as String? ?? '', //
+      availableTime: map['availableTime'] as String?, //
+      status: ActiveStatus.fromLabel(map['status'] as String? ?? 'inactive'), //
       stopReasons: map['stopReasons'] as String?,
-      avatar: map['avatar'] as String?,
+      avatar: map['avatar'] as String?, //
       createdAt: map['createdAt'] as String?,
       updatedAt: map['updatedAt'] as String?,
-      qualification: map['qualification'] as String? ?? '',
+      qualification: map['qualification'] as String? ?? '', //
       isDeleted:
           (map['isDeleted'] as int) == 1, // Convert integer back to boolean
     );
@@ -185,7 +185,7 @@ final class TeacherModel {
       'uuid': id,
       'roleId': UserRole.teacher.id,
       'name': name,
-      'gender': gender.labelAr,
+      'gender': gender.id,
       'birthDate': birthDate,
       'email': email,
       'phone': phone,
@@ -203,9 +203,13 @@ final class TeacherModel {
       'stopReasons': stopReasons,
       'avatar': avatar,
       'memorizationLevel': null,
-      'lastModified': DateTime.parse(
-        updatedAt ?? "${DateTime.now()}",
-      ).millisecondsSinceEpoch,
+      'createdAt':
+          DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
+
+      'lastModified':
+          DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
       'isDeleted': isDeleted,
     };
   }
@@ -215,7 +219,7 @@ final class TeacherModel {
       'uuid': id,
       'roleId': UserRole.teacher.id,
       'name': name,
-      'gender': gender.labelAr,
+      'gender': gender.id,
       'birthDate': birthDate,
       'email': email,
       'phone': phone,
@@ -233,9 +237,13 @@ final class TeacherModel {
       'stopReasons': stopReasons,
       'avatar': avatar,
       'memorizationLevel': null,
-      'lastModified': DateTime.parse(
-        updatedAt ?? "${DateTime.now()}",
-      ).millisecondsSinceEpoch,
+      'createdAt':
+          DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
+
+      'lastModified':
+          DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
       'isDeleted': isDeleted ? 1 : 0,
     };
   }

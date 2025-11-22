@@ -6,6 +6,7 @@ import 'package:tajalwaqaracademy/features/auth/domain/entities/device_info_enti
 /// This immutable class is responsible for serializing device metadata into a
 /// JSON format suitable for API requests. It is created from a [DeviceInfoEntity]
 /// and serves as a reusable component for any API call that requires device context.
+
 @immutable
 final class DeviceInfoModel {
   final String deviceId;

@@ -20,6 +20,7 @@ import 'halaqa_local_data_source.dart';
 /// exclusively with [HalaqaModel] objects.
 
 /// Table and column name constants to prevent typos.
+const String _kUsersTable = 'users';
 const String _kHalqasTable = 'halqas';
 const String _kPendingOperationsTable = 'pending_operations';
 const String _kSyncMetadataTable = 'sync_metadata';
@@ -51,8 +52,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
     try {
       final maps = await _db.query(
         _kHalqasTable,
-        where: 'roleId = ? AND isDeleted = ?',
-        whereArgs: [UserRole.halaqa.id, 0],
+        where: 'isDeleted = ?',
+        whereArgs: [ 0],
         orderBy: 'name ASC',
       );
       print(maps);
@@ -131,8 +132,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
               'isDeleted': 1,
               'lastModified': DateTime.now().millisecondsSinceEpoch,
             },
-            where: 'roleId = ? AND uuid = ?',
-            whereArgs: [UserRole.halaqa.id, halaqa.id],
+            where: 'uuid = ?',
+            whereArgs: [halaqa.id],
           );
         }
         // Commit all operations in the batch at once.
@@ -202,6 +203,12 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
   @override
   Future<void> upsertHalaqa(HalaqaModel halaqa) async {
     try {
+      await _db.update(
+        _kHalqasTable,
+        {'isDeleted': 1, 'lastModified': DateTime.now().millisecondsSinceEpoch},
+        where: 'uuid = ?',
+        whereArgs: [halaqa.id],
+      );
       await _db.insert(
         _kHalqasTable,
         halaqa.toDbMap(),
@@ -278,8 +285,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
     try {
       final maps = await _db.query(
         _kHalqasTable,
-        where: 'uuid = ? AND roleId = ? AND isDeleted = ?',
-        whereArgs: [halaqaId, UserRole.halaqa.id, 0],
+        where: 'uuid = ? AND isDeleted = ?',
+        whereArgs: [halaqaId, 0],
       );
 
       if (maps.isEmpty) {
@@ -300,17 +307,15 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
 
   @override
   Future<List<HalaqaModel>> getHalaqasByStudentCriteria({
-
     ActiveStatus? studentStatus,
     DateTime? trackDate,
     Frequency? frequencyCode,
   }) async {
     final query = StringBuffer('SELECT DISTINCT H.* FROM $_kHalqasTable H');
 
-    // هذه الروابط إلزامية لربط الحلقات بالطلاب
     final joins = <String>{
       'JOIN $_kHalqaStudentsTable HS ON H.id = HS.halqaId',
-      'JOIN $_kHalqasTable U ON HS.studentId = U.id',
+      'JOIN $_kUsersTable U ON HS.studentId = U.id',
     };
 
     final whereClauses = <String>[

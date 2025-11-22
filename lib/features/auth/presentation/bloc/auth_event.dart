@@ -22,3 +22,14 @@ class LogOutRequested extends AuthEvent {
 
   LogOutRequested({required this.message});
 }
+
+
+class ChangePasswordRequested extends AuthEvent {
+  final String currentPassword;
+  final String newPassword;
+
+  ChangePasswordRequested({
+    required this.currentPassword,
+    required this.newPassword,
+  });
+}

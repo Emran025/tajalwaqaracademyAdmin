@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
+import '../../../../../core/models/tracking_type.dart';
 import '../../domain/entities/plan_detail_entity.dart';
 import '../../../../core/models/tracking_units.dart';
 

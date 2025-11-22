@@ -14,6 +14,7 @@ import '../models/tracking_model.dart';
 /// This interface specifies all methods for interacting with the student-related
 /// endpoints of the remote API. It is designed to support a robust, two-way
 /// synchronization mechanism.
+
 abstract interface class StudentRemoteDataSource {
   /// Fetches a paginated list of students from the remote API.
   ///

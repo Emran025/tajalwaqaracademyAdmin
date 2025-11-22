@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../auth/domain/entities/user_entity.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../auth/presentation/ui/widgets/change_password_dialog.dart';
 import '../../domain/entities/user_session_entity.dart';
 import '../bloc/settings_bloc.dart';
 import '../widgets/modern_setting_tile.dart';
@@ -17,9 +19,14 @@ import '../widgets/settings_group_widget.dart';
 /// - Listing all active user sessions with contextual actions.
 /// It reacts to the [SettingsState] to show loading, error, and success states
 /// for the user profile data.
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +105,7 @@ class ProfileScreen extends StatelessWidget {
                   title: 'تغيير كلمة المرور',
                   onTap: () {
                     /* TODO: Navigate to Change Password Screen */
+                    _showLogoutDialog();
                   },
                 ),
               ],
@@ -125,6 +133,16 @@ class ProfileScreen extends StatelessWidget {
       ],
     );
   }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => BlocProvider.value(
+        value: context.read<AuthBloc>(),
+        child: const ChangePasswordDialog(),
+      ),
+    );
+  }
 }
 
 /// A private widget to display the main profile header.
@@ -142,11 +160,12 @@ class _ProfileHeader extends StatelessWidget {
           CircleAvatar(
             radius: 50,
             backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
-            backgroundImage: user.avatar != null
+            backgroundImage:
+                user.avatar != null && !user.avatar!.contains('example')
                 ? NetworkImage(user.avatar!)
                 : null,
-            child: user.avatar == null
-                ? Icon(Icons.person, size: 50, color: theme.colorScheme.primary)
+            child: user.avatar == null || user.avatar!.contains('example')
+                ? Icon(Icons.person, size: 60, color: Colors.amber)
                 : null,
           ),
           const SizedBox(height: 16),

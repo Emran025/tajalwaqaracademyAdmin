@@ -14,6 +14,7 @@ import '../follow_up_report_entity.dart';
 import '../follow_up_report_detail_entity.dart';
 import '../student_summary_entity.dart';
 import '../student_performance_metrics_entity.dart';
+
 @injectable
 class FollowUpReportFactory {
   static const double _pagesPerJuz = 20.0;
@@ -28,18 +29,14 @@ class FollowUpReportFactory {
   static const double _aheadStatusThreshold = 5.0;
 
   /// {@template follow_up_report_factory.create}
-  /// الدالة العامة التي تنشئ حزمة تقرير المتابعة الكاملة.
-  ///
-  /// تأخذ [plan] و [trackings] كمدخلات أساسية.
+
+  /// [plan]و [trackings]
   /// {@endtemplate}
   FollowUpReportBundleEntity create({
     required FollowUpPlanEntity plan,
     required List<TrackingEntity> trackings,
     required int totalPendingReports,
   }) {
-    // --- 2. فصل واضح بين خطوات المعالجة ---
-
-    // الخطوة الأولى: تحويل كل سجل تتبع يومي إلى تقرير يومي منظم.
     final processedReports = _processDailyReports(trackings, plan);
 
     // الخطوة الثانية: حساب الملخص الإجمالي بناءً على التقارير المنظمة.
@@ -90,8 +87,6 @@ class FollowUpReportFactory {
           final planDetail = plan.details.firstWhereOrNull(
             (p) => p.type == trackingDetail.trackingTypeId,
           );
-
-          // إذا لم يكن هناك خطة لهذا العنصر، ن返回 كيان فارغ أو نتجاهله. هنا سنتجاهله.
           if (planDetail == null) {
             return null;
           }
@@ -121,10 +116,9 @@ class FollowUpReportFactory {
           );
         })
         .whereType<FollowUpReportDetailEntity>()
-        .toList(); // تصفية أي قيم null
+        .toList();
   }
 
-  /// يحسب الملخص الإجمالي من قائمة التقارير اليومية المنظمة.
   StudentSummaryEntity _calculateSummary(
     List<FollowUpReportEntity> reports,
     int totalPendingReports,
@@ -144,20 +138,15 @@ class FollowUpReportFactory {
       );
     }
 
-    // حساب الانحراف الكلي (مجموع كل الفجوات)
     final totalDeviation = reports.fold<double>(
       0.0,
       (sum, report) => sum + report.details.fold(0.0, (s, d) => s + d.gap),
     );
-
-    // حساب متوسط تقييم السلوك
     final totalBehaviourScore = reports.fold<double>(
       0.0,
       (sum, report) => sum + report.behaviourAssessment,
     );
     final avgBehaviour = totalBehaviourScore / reports.length;
-
-    // حساب متوسط جودة التنفيذ ومعدل الإنجاز
     final allDetails = reports.expand((report) => report.details).toList();
     final totalExecutionQuality = allDetails.fold<double>(
       0.0,
@@ -208,7 +197,6 @@ class FollowUpReportFactory {
     );
   }
 
-  /// دالة مساعدة لتحويل الوحدات المختلفة إلى وحدة مشتركة (صفحة).
   double _normalizeToCommonUnit(num amount, TrackingUnit unit) {
     switch (unit) {
       case TrackingUnit.hizb:

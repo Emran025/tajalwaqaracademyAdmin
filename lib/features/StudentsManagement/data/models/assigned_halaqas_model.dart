@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/halqa_entity.dart';
+import '../../../../../features/StudentsManagement/domain/entities/halqa_entity.dart';
 import 'package:uuid/uuid.dart';
 
 @immutable

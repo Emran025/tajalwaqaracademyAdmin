@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
+import '../../../../../shared/themes/app_theme.dart';
+import '../../../../../core/models/active_status.dart';
 
 class StatusTag extends StatelessWidget {
   final ActiveStatus? status;

@@ -1,13 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/follow_up_plan_model.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
+import '../../../../../core/models/active_status.dart';
+import '../../../../../core/models/gender.dart';
+import '../../../../../features/StudentsManagement/data/models/follow_up_plan_model.dart';
+import '../../../../../features/StudentsManagement/domain/entities/student_list_item_entity.dart';
 
 import '../../domain/entities/student_entity.dart';
 import '../../domain/entities/student_info_entity.dart';
 import 'assigned_halaqas_model.dart';
 import 'student_model.dart';
+
 /// The data model for a Student, serving as the data transfer object (DTO)
 /// for the data layer. It is a plain, immutable Dart object.
 ///
@@ -30,7 +33,77 @@ final class StudentInfoModel {
   // /// Creates a [StudentInfoModel] from a JSON map received from an API.
   factory StudentInfoModel.fromJson(Map<String, dynamic> json) {
     // Safely parse the nested list of halqas.
-
+    if (json['name'] == null) {
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+      log("message");
+    }
     final studentModel = StudentModel(
       id: json['uuid'] as String? ?? (json['id'] as int? ?? 0).toString(),
       name: json['name'] as String? ?? 'Unknown Name',

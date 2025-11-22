@@ -110,38 +110,38 @@ class SettingsRepositoryImpl implements SettingsRepository {
   /// to loading the policy from the local cache.
   @override
   Future<Either<Failure, PrivacyPolicyEntity>> getLatestPolicy() async {
-    if (await networkInfo.isConnected) {
-      try {
-        // 1. Attempt to fetch from the remote data source.
-        final remotePolicyModel = await remoteDataSource.getLatestPolicy();
+    // if (await networkInfo.isConnected) {
+    try {
+      // 1. Attempt to fetch from the remote data source.
+      final remotePolicyModel = await remoteDataSource.getLatestPolicy();
 
-        // 2. If successful, save the fresh data to the local cache.
-        //    This is a "fire and forget" operation; we don't await it, and we
-        //    catch potential errors to prevent them from crashing the main flow.
-        localDataSource.savePolicy(remotePolicyModel).catchError((_) {
-          // Optional: Log this error to a monitoring service.
-          // For now, we fail silently as the user has already received the data.
-        });
+      // 2. If successful, save the fresh data to the local cache.
+      //    This is a "fire and forget" operation; we don't await it, and we
+      //    catch potential errors to prevent them from crashing the main flow.
+      localDataSource.savePolicy(remotePolicyModel).catchError((_) {
+        // Optional: Log this error to a monitoring service.
+        // For now, we fail silently as the user has already received the data.
+      });
 
-        // 3. Map the data model to a domain entity and return success.
-        return Right(remotePolicyModel.toEntity());
-      } on ServerException catch (e) {
-        // 4. A server error occurred. Fall back to the local cache.
-        return _getPolicyFromLocalCache(
-          fallbackFailure: ServerFailure(
-            message: e.message,
-            statusCode: e.statusCode,
-          ),
-        );
-      }
-    } else {
-      // 5. No internet connection. Go directly to the local cache.
+      // 3. Map the data model to a domain entity and return success.
+      return Right(remotePolicyModel.toEntity());
+    } on ServerException catch (e) {
+      // 4. A server error occurred. Fall back to the local cache.
       return _getPolicyFromLocalCache(
-        fallbackFailure: NetworkFailure(
-          message: 'No internet connection detected.',
+        fallbackFailure: ServerFailure(
+          message: e.message,
+          statusCode: e.statusCode,
         ),
       );
     }
+    // } else {
+    //   // 5. No internet connection. Go directly to the local cache.
+    //   return _getPolicyFromLocalCache(
+    //     fallbackFailure: NetworkFailure(
+    //       message: 'No internet connection detected.',
+    //     ),
+    //   );
+    // }
   }
 
   /// Private helper to fetch the policy from the local cache and handle errors.
@@ -169,17 +169,17 @@ class SettingsRepositoryImpl implements SettingsRepository {
   Future<Either<Failure, T>> _getRemoteData<T>(
     Future<T> Function() call,
   ) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final result = await call();
-        return Right(result);
-      } on ServerException catch (e) {
-        return Left(
-          ServerFailure(message: e.message, statusCode: e.statusCode),
-        );
-      }
-    } else {
-      return Left(NetworkFailure(message: 'No internet connection detected.'));
-    }
+    // if (await networkInfo.isConnected) {
+    //   try {
+    final result = await call();
+    return Right(result);
+    //   } on ServerException catch (e) {
+    //     return Left(
+    //       ServerFailure(message: e.message, statusCode: e.statusCode),
+    //     );
+    //   }
+    // } else {
+    //   return Left(NetworkFailure(message: 'No internet connection detected.'));
+    // }
   }
 }

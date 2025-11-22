@@ -55,6 +55,8 @@ class SvgAssets {
   String get surahBanner2 => '${AppAssets._baseSvg}/surah_banner2.svg';
   String get surahBanner3 => '${AppAssets._baseSvg}/surah_banner3.svg';
   String get surahBanner4 => '${AppAssets._baseSvg}/surah_banner4.svg';
+  String get circles => '${AppAssets._baseSvg}/circles.svg';
+  String get dots => '${AppAssets._baseSvg}/dots.svg';
 }
 
 /// A class holding font family names.

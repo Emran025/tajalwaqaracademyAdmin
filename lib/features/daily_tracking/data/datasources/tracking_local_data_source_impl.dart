@@ -61,7 +61,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         where: 'trackingId = ?',
         whereArgs: [trackingId],
       );
-      if (detailMaps.isEmpty) {
+      if (detailMaps.length < 3) {
         final lastUnitIdsMap = await _getLastCompletedUnitIds(db, enrollmentId);
         await _createMissingDetails(
           db,
@@ -171,57 +171,61 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       );
     }
   }
-// In TrackingLocalDataSourceImpl
-// In TrackingLocalDataSourceImpl
+  // In TrackingLocalDataSourceImpl
+  // In TrackingLocalDataSourceImpl
 
-@override
-Future<List<MistakeModel>> getAllMistakes({
-  required int enrollmentId,
-  TrackingType? type,
-  int? fromPage,
-  int? toPage,
-}) async {
-  final db = await _appDb.database;
-  try {
-    String baseQuery = '''
+  @override
+  Future<List<MistakeModel>> getAllMistakes({
+    required int enrollmentId,
+    TrackingType? type,
+    int? fromPage,
+    int? toPage,
+  }) async {
+    final db = await _appDb.database;
+    try {
+      String baseQuery = '''
       SELECT m.*
       FROM mistakes AS m
       INNER JOIN daily_tracking_detail AS tdt ON m.trackingDetailId = tdt.id
       INNER JOIN daily_tracking AS dt ON tdt.trackingId = dt.id
       INNER JOIN quran AS q ON m.ayahId_quran = q.id 
       WHERE dt.enrollmentId = ? 
-        AND tdt.status = 'completed'
+        -- AND tdt.status = 'completed'
     ''';
 
-    List<dynamic> arguments = [enrollmentId];
-    
-    // ================== DYNAMIC TYPE FILTERING ==================
-    if (type != null) {
-      baseQuery += ' AND tdt.typeId = ?';
-      arguments.add(type.id);
-    }
-    // ==========================================================
-    
-    if (fromPage != null) {
-      baseQuery += ' AND q.page >= ?';
-      arguments.add(fromPage);
-    }
-    
-    if (toPage != null) {
-      baseQuery += ' AND q.page <= ?';
-      arguments.add(toPage);
-    }
+      List<dynamic> arguments = [enrollmentId];
 
-    // Add ordering to make the result predictable and easy to group
-    baseQuery += ' ORDER BY tdt.typeId, dt.trackDate DESC';
+      // ================== DYNAMIC TYPE FILTERING ==================
+      if (type != null) {
+        baseQuery += ' AND tdt.typeId = ?';
+        arguments.add(type.id);
+      }
+      // ==========================================================
 
-    final List<Map<String, dynamic>> results = await db.rawQuery(baseQuery, arguments);
-    return results.map((map) => MistakeModel.fromDbMap(map)).toList();
+      if (fromPage != null) {
+        baseQuery += ' AND q.page >= ?';
+        arguments.add(fromPage);
+      }
 
-  } on DatabaseException catch (e) {
-    throw CacheException(message: 'Failed to fetch all mistakes: ${e.toString()}');
+      if (toPage != null) {
+        baseQuery += ' AND q.page <= ?';
+        arguments.add(toPage);
+      }
+
+      // Add ordering to make the result predictable and easy to group
+      baseQuery += ' ORDER BY tdt.typeId, dt.trackDate DESC';
+
+      final List<Map<String, dynamic>> results = await db.rawQuery(
+        baseQuery,
+        arguments,
+      );
+      return results.map((map) => MistakeModel.fromDbMap(map)).toList();
+    } on DatabaseException catch (e) {
+      throw CacheException(
+        message: 'Failed to fetch all mistakes: ${e.toString()}',
+      );
+    }
   }
-}
 
   // =========================================================================
   //                       Synchronization Methods
@@ -373,7 +377,7 @@ Future<List<MistakeModel>> getAllMistakes({
           GROUP BY tdt_inner.typeId
       ) AS max_dates ON tdt.typeId = max_dates.typeId
       INNER JOIN daily_tracking AS dt ON tdt.trackingId = dt.id AND dt.trackDate = max_dates.max_date
-      WHERE dt.enrollmentId = ? AND tdt.status = 'completed'
+      WHERE dt.enrollmentId = ? -- AND tdt.status = 'completed'
     ''',
       [enrollmentId, enrollmentId],
     );

@@ -14,7 +14,10 @@ import 'task_report_dialog.dart';
 /// This toolbar provides actions relevant to the current tracking task,
 /// such as saving progress, viewing the task report, and other session-related tools.
 class SessionBottomToolbar extends StatelessWidget {
-  const SessionBottomToolbar({super.key});
+    final void Function(int) jumpToPage;
+
+  const SessionBottomToolbar({super.key,  required this.jumpToPage});
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,13 +100,13 @@ class SessionBottomToolbar extends StatelessWidget {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.8,
                       // The SurahJuzListView will contain the TabBar and lists.
-                      child: const SurahJuzListView(),
+                      child:  SurahJuzListView(jumpToPage: jumpToPage,),
                     ),
                   );
                 },
               );
               // Placeholder for 'Go to Page' functionality.
-              print('Go to Page Tapped');
+        
             },
           ),
 

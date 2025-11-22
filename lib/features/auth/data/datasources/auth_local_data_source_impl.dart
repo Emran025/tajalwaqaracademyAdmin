@@ -18,6 +18,7 @@ const String _kUserCacheKey = 'CACHED_USER';
 /// combination of secure and standard local storage mechanisms:
 /// - [FlutterSecureStorage] is used for sensitive session tokens.
 /// - [SharedPreferences] is used for non-sensitive, structured user data.
+
 @LazySingleton(as: AuthLocalDataSource)
 final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   final SharedPreferences _sharedPreferences;
@@ -26,8 +27,8 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   AuthLocalDataSourceImpl({
     required SharedPreferences sharedPreferences,
     required FlutterSecureStorage secureStorage,
-  })  : _sharedPreferences = sharedPreferences,
-        _secureStorage = secureStorage;
+  }) : _sharedPreferences = sharedPreferences,
+       _secureStorage = secureStorage;
 
   @override
   Future<void> cacheAuthTokens({
@@ -40,7 +41,9 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       await _secureStorage.write(key: _kRefreshTokenKey, value: refreshToken);
     } catch (e) {
       // Wrap any platform-specific errors in a CacheException.
-      throw CacheException(message: 'Failed to cache auth tokens: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to cache auth tokens: ${e.toString()}',
+      );
     }
   }
 
@@ -54,7 +57,9 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       // 3. Persist the string in SharedPreferences.
       await _sharedPreferences.setString(_kUserCacheKey, userJsonString);
     } catch (e) {
-      throw CacheException(message: 'Failed to cache user profile: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to cache user profile: ${e.toString()}',
+      );
     }
   }
 
@@ -63,7 +68,9 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     try {
       return await _secureStorage.read(key: _kAccessTokenKey);
     } catch (e) {
-      throw CacheException(message: 'Failed to retrieve access token: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to retrieve access token: ${e.toString()}',
+      );
     }
   }
 
@@ -72,7 +79,9 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     try {
       return await _secureStorage.read(key: _kRefreshTokenKey);
     } catch (e) {
-      throw CacheException(message: 'Failed to retrieve refresh token: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to retrieve refresh token: ${e.toString()}',
+      );
     }
   }
 
@@ -86,17 +95,21 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
         return UserModel.fromDbMap(userMap);
       } catch (e) {
         // This can happen if the stored data is corrupted or the model has changed.
-        throw CacheException(message: 'Failed to decode cached user: ${e.toString()}');
+        throw CacheException(
+          message: 'Failed to decode cached user: ${e.toString()}',
+        );
       }
     }
     // Return null if no user is found in the cache.
     return null;
   }
+
   @override
   Future<bool> isLoggedIn() async {
     // The session is considered active if the user key exists.
     return _sharedPreferences.containsKey(_kUserCacheKey);
   }
+
   @override
   Future<void> clear() async {
     try {
@@ -104,7 +117,9 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       await _secureStorage.deleteAll();
       await _sharedPreferences.remove(_kUserCacheKey);
     } catch (e) {
-      throw CacheException(message: 'Failed to clear authentication cache: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to clear authentication cache: ${e.toString()}',
+      );
     }
   }
 }

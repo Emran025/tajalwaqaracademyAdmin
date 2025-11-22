@@ -32,7 +32,7 @@ final class StudentUpserted extends StudentEvent {
 
 /// Dispatched when the user performs an action to add or update a student.
 final class FilteredStudents extends StudentEvent {
-   final ActiveStatus? status;
+  final ActiveStatus? status;
  final int? halaqaId;
  final DateTime? trackDate;
  final Frequency? frequencyCode;
@@ -43,7 +43,6 @@ final class FilteredStudents extends StudentEvent {
     this.trackDate,
     this.frequencyCode,
   });
-  
 }
 
 /// Internal event used to push updates from the data stream into the BLoC.

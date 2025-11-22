@@ -28,7 +28,7 @@ part 'student_state.dart';
 class StudentBloc extends Bloc<StudentEvent, StudentState> {
   final WatchStudentsUseCase _watchStudentsUC;
   final FetchMoreStudentsUseCase _fetchMoreStudentsUC;
-  final FetchFilteredStudentsUseCase _fetchfetchFilteredStudentsUC;
+  final FetchFilteredStudentsUseCase _fetchFilteredStudentsUC;
   final GetStudentById _getStudentByIdUC;
   final UpsertStudent _upsertStudentUC;
   final DeleteStudentUseCase _deleteStudentUC;
@@ -49,7 +49,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     required GenerateFollowUpReportUseCase generateFollowUpReportUC,
   }) : _watchStudentsUC = watchStudents,
        _fetchMoreStudentsUC = fetchMoreStudents,
-       _fetchfetchFilteredStudentsUC = fetchFilteredStudents,
+       _fetchFilteredStudentsUC = fetchFilteredStudents,
        _upsertStudentUC = upsertStudent,
        _deleteStudentUC = deleteStudent,
        _getStudentByIdUC = getStudentById,
@@ -164,6 +164,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       ),
     );
   }
+  
   /// Handles the fetching of a single student's detailed profile.
   Future<void> _onFetchFilteredStudents(
     FilteredStudents event,
@@ -178,7 +179,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       ),
     );
 
-    final result = await _fetchfetchFilteredStudentsUC(GetFilteredStudentsParams
+    final result = await _fetchFilteredStudentsUC(GetFilteredStudentsParams
     (
       status: event.status,
       halaqaId: event.halaqaId,

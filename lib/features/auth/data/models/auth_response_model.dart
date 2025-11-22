@@ -38,10 +38,13 @@ final class AuthResponseModel {
   factory AuthResponseModel.fromJson(Map<String, dynamic> json) {
     final data = json['data'] ?? {};
     return AuthResponseModel(
-      user: UserModel.fromJson(data['user'] ?? {},UserRole.fromLabel(data['role'] ?? 'teache')),
-      accessToken: json['token'] as String? ?? '',
-      refreshToken: json['token'] as String? ?? '',
-      role: UserRole.fromLabel(data['role'] ?? '') ,
+      user: UserModel.fromJson(
+        data['user'] ?? {},
+        UserRole.fromLabel(data['role'] ?? 'teacher'),
+      ),
+      accessToken: data['token'] as String? ?? '',
+      refreshToken: data['token'] as String? ?? '',
+      role: UserRole.fromLabel(data['role'] ?? ''),
     );
   }
 
@@ -57,10 +60,10 @@ final class AuthResponseModel {
 
     return AuthResponseModel(
       // Delegate user parsing to the UserModel.
-      user: UserModel.fromJson(userJson,UserRole.fromId(map['role'] ?? 1)),
+      user: UserModel.fromJson(userJson, UserRole.fromId(map['role'] ?? 1)),
       accessToken: map['access_token'] as String? ?? '',
       refreshToken: map['refresh_token'] as String? ?? '',
-      role: UserRole.fromId(map['role'] as int? ?? 1) ,
+      role: UserRole.fromId(map['role'] as int? ?? 1),
     );
   }
   Map<String, dynamic> toDbMap() {

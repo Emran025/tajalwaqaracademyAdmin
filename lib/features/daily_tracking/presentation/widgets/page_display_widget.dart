@@ -24,7 +24,7 @@ import 'top_title_page_header_widget.dart'; // Add shimmer package to pubspec.ya
 class PageDisplayWidget extends StatefulWidget {
   final int pageNumber;
 
-  const PageDisplayWidget({super.key, required this.pageNumber});
+  const PageDisplayWidget({super.key, required this.pageNumber });
 
   @override
   State<PageDisplayWidget> createState() => _PageDisplayWidgetState();
@@ -157,7 +157,6 @@ class _PageDisplayWidgetState extends State<PageDisplayWidget> {
         );
       },
     );
-    // ================== END: NEW CODE ==================
   }
 
   //===========================================================================

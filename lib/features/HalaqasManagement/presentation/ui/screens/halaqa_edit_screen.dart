@@ -1,12 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tajalwaqaracademy/core/models/active_status.dart';
+import 'package:tajalwaqaracademy/core/models/gender.dart';
 import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/core/constants/data.dart';
 import 'package:tajalwaqaracademy/shared/widgets/taj.dart';
 
 import '../../../../StudentsManagement/domain/entities/student_entity.dart';
-import '../../../domain/entities/halqa.dart';
+import '../../../domain/entities/halaqa_list_item_entity.dart';
 
 
 class HalaqaEditScreen extends StatefulWidget {
@@ -18,12 +20,18 @@ class HalaqaEditScreen extends StatefulWidget {
 class _HalaqaEditScreenState extends State<HalaqaEditScreen>
     with TickerProviderStateMixin {
   List<String> teachers = ["أ. خالد", "أ. سمير", "أ. فاطمة"];
-  Halqa halqa = Halqa(
-    '0',
-    "حلقة كبار السن",
-    "اليمن - اب",
-    TimeOfDay.now(),
-    "أ. خالد",
+  HalaqaListItemEntity halqa = HalaqaListItemEntity(
+   id: '0',
+   name:  "حلقة كبار السن",
+   country:  "اليمن",
+   residence:  "اب",
+      avatar: "",
+   status : ActiveStatus.active,
+   gender:Gender.male,
+  
+
+   
+    
   );
 
   late List<StudentDetailEntity> currentStudents;
@@ -191,7 +199,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
   }
 
   void _changeTeacherDialog() {
-    String tempSelected = halqa.teacher;
+    String tempSelected = "أ. خالد";
     TextEditingController searchController = TextEditingController();
     List<String> filteredTeachers = [...teachers];
 
@@ -309,7 +317,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                             ),
                             onPressed: () {
                               setState(() {
-                                halqa.teacher = tempSelected;
+                               // halqa = tempSelected;
                               });
                               Navigator.pop(context);
                             },
@@ -404,7 +412,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
 
   void _editHalqaNameDialog() {
     TextEditingController nameController = TextEditingController(
-      text: halqa.halqaName,
+      text: halqa.name,
     );
 
     showDialog(
@@ -494,7 +502,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                         ),
                         onPressed: () {
                           setState(() {
-                            halqa.halqaName = nameController.text.trim();
+                            // halqa.name = nameController.text.trim();
                           });
                           Navigator.pop(context);
                         },
@@ -693,14 +701,15 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                         buildInfoRow(
                           icon: Icons.school,
                           label: "اسم الحلقة:",
-                          value: halqa.halqaName,
+                          value: halqa.name,
                           onEdit: _editHalqaNameDialog,
                         ),
                         const SizedBox(height: 16),
                         buildInfoRow(
                           icon: Icons.person,
                           label: "المعلم الحالي:",
-                          value: halqa.teacher,
+                         value: "أ. خالد",
+                         // value: halqa.teacher,
                           onEdit: _changeTeacherDialog,
                         ),
                         const SizedBox(height: 16),

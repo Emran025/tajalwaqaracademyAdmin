@@ -29,6 +29,7 @@ class _MistakesListState extends State<MistakesList> {
         .read<TrackingSessionBloc>()
         .state
         .currentTaskDetail;
+
     // Dispatch the event to fetch Ayah texts when the dialog is initialized.
     final mistakes = currentDetail?.mistakes ?? [];
     if (mistakes.isNotEmpty) {
@@ -63,12 +64,14 @@ class _MistakesListState extends State<MistakesList> {
 
         if (mistakes.isNotEmpty) {
           final mistakeAyahIds = mistakes.map((e) => e.ayahIdQuran).toList();
+          print(mistakeAyahIds.length);
           context.read<QuranReaderBloc>().add(
             MistakesAyahsRequested(mistakeAyahIds),
           );
         }
 
         final mistakesAyahs = quranState.mistakesAyahs;
+        print(mistakesAyahs.length);
         // Condition 2: If data is ready and consistent, show the list.
         if (mistakes.length == mistakesAyahs.length) {
           return _buildMistakesList(context, mistakes, mistakesAyahs);

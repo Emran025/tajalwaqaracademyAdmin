@@ -6,6 +6,7 @@ import '../../../../core/models/sync_queue_model.dart';
 import '../models/assigned_halaqas_model.dart';
 import '../models/follow_up_plan_model.dart';
 import '../models/student_info_model.dart';
+
 import '../models/tracking_model.dart';
 
 /// Defines the abstract contract for the local data source of students.
@@ -30,6 +31,8 @@ abstract interface class StudentLocalDataSource {
     required List<StudentInfoModel> updatedStudents,
     required List<StudentInfoModel> deletedStudents,
   });
+
+
 
   /// Queues a local change (create, update, delete) for later synchronization.
   Future<void> queueSyncOperation({
@@ -132,7 +135,7 @@ abstract interface class StudentLocalDataSource {
   Future<List<TrackingModel>> getFollowUpTrackingsByStudentIds({
     required int studentId,
   });
-  
+
   Future<List<StudentModel>> getFilteredStudents({
     ActiveStatus? status,
     int? halaqaId,

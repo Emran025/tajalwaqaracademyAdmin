@@ -105,49 +105,6 @@ final class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> signUp({
-    required String email,
-    required String password,
-    required String phoneNumber,
-    required String whatsappNumber,
-    required String name,
-    required String gender,
-    required String birthDate,
-    required String birthContery,
-    required String birthStates,
-    required String birthCity,
-    required String profileImagePath,
-    required String role,
-    required String token,
-    required String currentAddress,
-  }) async {
-    final either = await _executeAuthOperation(
-      () => _remoteDataSource.signUp(
-        email: email,
-        password: password,
-        phoneNumber: phoneNumber,
-        whatsappNumber: whatsappNumber,
-        name: name,
-        gender: gender,
-        birthDate: birthDate,
-        birthContery: birthContery,
-        birthStates: birthStates,
-        birthCity: birthCity,
-        profileImagePath: profileImagePath,
-        role: role,
-        token: token,
-        currentAddress: currentAddress,
-      ),
-    );
-    either.fold((failure) => null, (user) => _localDataSource.cacheUser(user));
-    return either.map((userModel) {
-      final userEntity = userModel.toUserEntity();
-      _localDataSource.cacheUser(userModel);
-      return userEntity;
-    });
-  }
-
-  @override
   Future<Either<Failure, SuccessEntity>> forgetPassword({
     required String email,
   }) async {
@@ -169,15 +126,13 @@ final class AuthRepositoryImpl implements AuthRepository {
     // We don't need the _executeApiCall wrapper unless the API requires
     // an explicit "invalidate token" call. For now, we assume it's local.
     try {
-      // We call the `clear` method to remove all authentication data,
-      // including tokens and the cached user profile.
-      await _localDataSource.clear();
-
       final either = await _executeAuthOperation(
         () => _remoteDataSource.logOut(),
       );
       either.fold((failure) => null, (user) => null);
-
+      // We call the `clear` method to remove all authentication data,
+      // including tokens and the cached user profile.
+      await _localDataSource.clear();
       return either.map((successModel) {
         final successEntity = successModel.toEntity();
 
@@ -202,6 +157,20 @@ final class AuthRepositoryImpl implements AuthRepository {
       throw CacheException(message: 'Failed to get User Profile.');
     }
     return Right(user.toUserEntity());
+  }
+
+  @override
+  Future<Either<Failure, SuccessEntity>> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    return await _executeAuthOperation(() async {
+      final successModel = await _remoteDataSource.changePassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      );
+      return successModel.toEntity();
+    });
   }
 
   /// Checks if the user is logged in by verifying if a user exists in the cache.

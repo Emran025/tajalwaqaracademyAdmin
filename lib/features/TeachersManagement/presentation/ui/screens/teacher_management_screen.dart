@@ -228,7 +228,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
   // --- UNIFIED Teacher Card Widget ---
   // We only need one card widget that works with the TeacherDetailEntity from our domain.
   Widget _buildTeacherCard(TeacherListItemEntity teacher) {
-    return CustomListListTile(
+    return CustomListTile(
       title: teacher.name,
       moreIcon: Icons.more_vert,
       leading: Avatar(gender: teacher.gender, pic: teacher.avatar),

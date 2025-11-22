@@ -31,9 +31,8 @@ class QuranReaderBloc extends Bloc<QuranReaderEvent, QuranReaderState> {
     required GetMistakesAyahs getMistakesAyahs,
     required GetSurahsList getSurahsList,
     int initialPage = 0, // Allow setting an initial page
-  }) : 
-  _getPageData = getPageData,
-  _getMistakesAyahs = getMistakesAyahs,
+  }) : _getPageData = getPageData,
+       _getMistakesAyahs = getMistakesAyahs,
        _getSurahsList = getSurahsList,
        super(const QuranReaderState()) {
     on<SurahsListRequested>(_onSurahsListRequested);
@@ -105,26 +104,25 @@ class QuranReaderBloc extends Bloc<QuranReaderEvent, QuranReaderState> {
     log("pages : ${state.pages.length}");
     log("pageDataFailure : ${state.pageDataFailure}");
   }
+
   Future<void> _ongetMistakesAyahs(
     MistakesAyahsRequested event,
     Emitter<QuranReaderState> emit,
   ) async {
+    emit(state.copyWith(mistakesAyahsStatus: DataStatus.loading));
 
-    emit(
-      state.copyWith(
-        mistakesAyahsStatus: DataStatus.loading,
-      ),
-    );
-    final result = await _getMistakesAyahs( 
+    final result = await _getMistakesAyahs(
       GetMistakesAyahsParams(ayahsNumbers: event.mistakes),
     );
     result.fold(
-      (failure) => emit(
-        state.copyWith(
-          mistakesAyahsStatus: DataStatus.failure,
-          mistakeAyahsFailure: failure,
-        ),
-      ),
+      (failure) {
+        emit(
+          state.copyWith(
+            mistakesAyahsStatus: DataStatus.failure,
+            mistakeAyahsFailure: failure,
+          ),
+        );
+      },
       (ayahs) {
         emit(
           state.copyWith(

@@ -3,7 +3,7 @@ import 'package:tajalwaqaracademy/shared/widgets/taj.dart';
 
 import '../themes/app_theme.dart';
 
-class CustomListListTile extends StatelessWidget {
+class CustomListTile extends StatelessWidget {
   final String? tajLable;
   final String title;
   final String subtitle;
@@ -17,7 +17,7 @@ class CustomListListTile extends StatelessWidget {
   final VoidCallback? onTajPressed;
   final VoidCallback? onListTilePressed;
   final VoidCallback? onMoreTab;
-  const CustomListListTile({
+  const CustomListTile({
     super.key,
     this.tajLable = "تقرير",
     this.subtitle = "",
@@ -41,8 +41,10 @@ class CustomListListTile extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.darkBackground,
+        // color: Theme.of(context).colorScheme.primaryContainer,
+        // borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(12),
         border:
             border ??
             Border.all(
@@ -51,7 +53,12 @@ class CustomListListTile extends StatelessWidget {
                   : Theme.of(context).colorScheme.onSurface,
               width: 0.5,
             ),
-        // boxShadow: boxShadow,
+
+        gradient: LinearGradient(
+          colors: [AppColors.mediumDark70, AppColors.mediumDark],
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+        ),
       ),
       child: ListTile(
         onTap: () => onListTilePressed!(),

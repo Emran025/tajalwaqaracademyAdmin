@@ -121,7 +121,9 @@ TextSpan wordspan({
         fontSize: fontSize,
         height: 2.4,
         letterSpacing: 2,
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.brightness == Brightness.dark
+            ? Colors.white
+            : Colors.black,
         backgroundColor: backgroundColor,
       ),
       recognizer: TapGestureRecognizer()

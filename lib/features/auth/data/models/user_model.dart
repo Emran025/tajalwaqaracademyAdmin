@@ -29,7 +29,6 @@ class UserModel {
     );
   }
 
-
   /// Factory constructor لإنشاء نسخة UserModel من Map قادم من قاعدة البيانات المحلية
   factory UserModel.fromDbMap(Map<String, dynamic> map) {
     return UserModel(
@@ -39,11 +38,9 @@ class UserModel {
       email: map['email'],
       avatar: map['avatar'],
       phone: map['phone'],
-      role: UserRole.fromId(map['roleId']) ,
+      role: UserRole.fromId(map['roleId']),
     );
   }
-
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -54,7 +51,6 @@ class UserModel {
       'avatar': avatar,
     };
   }
-
 
   Map<String, dynamic> toDbMap() {
     return {
@@ -67,7 +63,7 @@ class UserModel {
     };
   }
 
-    UserEntity toUserEntity() {
+  UserEntity toUserEntity() {
     return UserEntity(
       id: id,
       name: name,

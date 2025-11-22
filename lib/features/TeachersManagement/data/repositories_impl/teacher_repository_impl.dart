@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-
 import '../../../../core/error/failures.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/models/active_status.dart';
@@ -30,10 +29,10 @@ final class TeacherRepositoryImpl implements TeacherRepository {
     bool forceRefresh = true,
   }) {
     print('Fetching teachers with forceRefresh: $forceRefresh');
-    
+
     // 1. If a refresh is forced, trigger the sync immediately.
     //    Otherwise, the sync might be triggered by other mechanisms (e.g., background job).
-    if (forceRefresh ) {
+    if (forceRefresh) {
       _syncService.performSync();
     }
 
@@ -44,6 +43,7 @@ final class TeacherRepositoryImpl implements TeacherRepository {
           final entities = teacherModels
               .map((model) => model.toListItemEntity())
               .toList();
+
           return Right<Failure, List<TeacherListItemEntity>>(entities);
         })
         .handleError(
@@ -121,19 +121,19 @@ final class TeacherRepositoryImpl implements TeacherRepository {
     // then potentially trigger a targeted remote fetch if needed.
     try {
       final model = await _localDataSource.getTeacherById(teacherId);
+
       return Right(model.toDetailEntity());
     } on CacheException catch (e) {
       return Left(CacheFailure(message: e.message));
     }
   }
+
   /// Returns [Right(unit)] on success, or a [Left(Failure)] on error.
   @override
   Future<Either<Failure, Unit>> setTeacherStatus({
     required String teacherId,
     required ActiveStatus newStatus,
-  })
-   async {
-
-return const Right(unit);
+  }) async {
+    return const Right(unit);
   }
 }

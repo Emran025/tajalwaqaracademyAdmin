@@ -33,7 +33,9 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
       margin: const EdgeInsets.only(left: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.accent12,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.accent12
+            : AppColors.mediumDark54,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.accent70, width: 0.7),
       ),
@@ -56,7 +58,9 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
           const SizedBox(height: 12),
           Container(
             decoration: BoxDecoration(
-              color: AppColors.accent12,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.accent12
+                  : AppColors.mediumDark70,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.accent70, width: 0.5),
               boxShadow: [

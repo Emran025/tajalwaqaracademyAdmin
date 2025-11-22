@@ -7,8 +7,10 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/report_frequency.dart';
 import '../../domain/entities/halaqa_entity.dart';
 import '../../domain/entities/halaqa_list_item_entity.dart';
+import '../../domain/usecases/get_filtered_students.dart';
 import '../../domain/usecases/halaqa_halaqa_usecase.dart';
 import '../../domain/usecases/fetch_more_halaqas_usecase.dart';
 import '../../domain/usecases/get_halaqa_by_id.dart';
@@ -23,6 +25,7 @@ part 'halaqa_state.dart';
 class HalaqaBloc extends Bloc<HalaqaEvent, HalaqaState> {
   final WatchHalaqasUseCase _watchHalaqas;
   final FetchMoreHalaqasUseCase _fetchMoreHalaqas;
+  final FetchFilteredHalaqasUseCase _fetchFilteredHalaqasUC;
   final GetHalaqaById _getHalaqaById;
   final UpsertHalaqa _upsertHalaqa;
   final DeleteHalaqaUseCase _deleteHalaqa;
@@ -34,6 +37,7 @@ class HalaqaBloc extends Bloc<HalaqaEvent, HalaqaState> {
   HalaqaBloc({
     required WatchHalaqasUseCase watchHalaqas,
     required FetchMoreHalaqasUseCase fetchMoreHalaqas,
+    required FetchFilteredHalaqasUseCase fetchFilteredHalaqas,
     required GetHalaqaById getHalaqaById,
     required UpsertHalaqa upsertHalaqa,
     required DeleteHalaqaUseCase deleteHalaqa,
@@ -41,6 +45,7 @@ class HalaqaBloc extends Bloc<HalaqaEvent, HalaqaState> {
   }) : _watchHalaqas = watchHalaqas,
        _fetchMoreHalaqas = fetchMoreHalaqas,
        _upsertHalaqa = upsertHalaqa,
+       _fetchFilteredHalaqasUC = fetchFilteredHalaqas,
        _deleteHalaqa = deleteHalaqa,
        _getHalaqaById = getHalaqaById,
        _setHalaqaStatus = setHalaqaStatus,
@@ -51,6 +56,7 @@ class HalaqaBloc extends Bloc<HalaqaEvent, HalaqaState> {
     on<HalaqasRefreshed>(_onRefreshed, transformer: restartable());
     on<_HalaqasStreamUpdated>(_onStreamUpdated);
     on<MoreHalaqasLoaded>(_onLoadMore, transformer: droppable());
+    on<FilteredHalaqas>(_onFetchFilteredHalaqas, transformer: droppable());
     on<HalaqaUpserted>(_onUpsert, transformer: droppable());
     on<HalaqaDeleted>(_onDelete, transformer: droppable());
     on<HalaqaDetailsFetched>(_onFetchDetails, transformer: restartable());
@@ -112,6 +118,45 @@ class HalaqaBloc extends Bloc<HalaqaEvent, HalaqaState> {
           isLoadingMore: false,
           currentPage: nextPage,
           hasMorePages: false,
+        ),
+      ),
+    );
+  }
+
+  /// Handles the fetching of a single student's detailed profile.
+  Future<void> _onFetchFilteredHalaqas(
+    FilteredHalaqas event,
+    Emitter<HalaqaState> emit,
+  ) async {
+    // 1. Emit a loading state specifically for the details view.
+    //    This does not affect the main list's status.
+    emit(
+      state.copyWith(
+        filteredHalaqasStatus: HalaqaStatus.loading,
+        clearFilteredHalaqasFailure: true,
+      ),
+    );
+
+    final result = await _fetchFilteredHalaqasUC(
+      GetFilteredHalaqasParams(
+        status: event.status,
+        trackDate: event.trackDate,
+        frequencyCode: event.frequencyCode,
+      ),
+    );
+
+    // 3. Fold the result and emit either a success or failure state.
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          filteredHalaqasStatus: HalaqaStatus.failure,
+          filteredHalaqasFailure: failure,
+        ),
+      ),
+      (filteredHalaqas) => emit(
+        state.copyWith(
+          filteredHalaqasStatus: HalaqaStatus.success,
+          filteredHalaqas: filteredHalaqas,
         ),
       ),
     );

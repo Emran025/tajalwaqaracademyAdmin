@@ -10,29 +10,16 @@ abstract class AuthRepository {
     required LogInCredentialsEntity credentials,
   });
 
-  Future<Either<Failure, UserEntity>> signUp({
-    required String email,
-    required String password,
-    required String phoneNumber,
-    required String whatsappNumber,
-    required String name,
-    required String gender,
-    required String birthDate,
-    required String birthContery,
-    required String birthStates,
-    required String birthCity,
-    required String profileImagePath,
-    required String role,
-    required String token,
-    required String currentAddress,
-  });
-
   Future<Either<Failure, SuccessEntity>> forgetPassword({
     required String email,
   });
 
   Future<Either<Failure, UserEntity>> getUserProfile();
 
+  Future<Either<Failure, SuccessEntity>> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  });
   Future<bool> isLoggedIn();
   Future<Either<Failure, SuccessEntity>> logOut();
 }

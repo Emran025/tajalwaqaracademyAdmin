@@ -39,22 +39,31 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required GetUserProfile getUserProfile,
     required UpdateUserProfile updateUserProfile,
     required GetLatestPolicyUseCase getLatestPolicy,
-  })  : _getSettings = getSettings,
-        _saveTheme = saveTheme,
-        _setNotificationsPreference = setNotificationsPreference,
-        _setAnalyticsPreference = setAnalyticsPreference,
-        _getUserProfile = getUserProfile,
-        _updateUserProfile = updateUserProfile,
-        _getLatestPolicy = getLatestPolicy,
-        super(SettingsInitial()) {
+  }) : _getSettings = getSettings,
+       _saveTheme = saveTheme,
+       _setNotificationsPreference = setNotificationsPreference,
+       _setAnalyticsPreference = setAnalyticsPreference,
+       _getUserProfile = getUserProfile,
+       _updateUserProfile = updateUserProfile,
+       _getLatestPolicy = getLatestPolicy,
+       super(SettingsInitial()) {
     // Register event handlers
     on<LoadInitialSettings>(_onLoadInitialSettings);
     on<LoadUserProfile>(_onLoadUserProfile, transformer: droppable());
     on<LoadPrivacyPolicy>(_onLoadPrivacyPolicy, transformer: droppable());
     on<ThemeChanged>(_onThemeChanged, transformer: restartable());
-    on<NotificationsPreferenceChanged>(_onNotificationsPreferenceChanged, transformer: restartable());
-    on<AnalyticsPreferenceChanged>(_onAnalyticsPreferenceChanged, transformer: restartable());
-    on<UpdateProfileRequested>(_onUpdateProfileRequested, transformer: droppable());
+    on<NotificationsPreferenceChanged>(
+      _onNotificationsPreferenceChanged,
+      transformer: restartable(),
+    );
+    on<AnalyticsPreferenceChanged>(
+      _onAnalyticsPreferenceChanged,
+      transformer: restartable(),
+    );
+    on<UpdateProfileRequested>(
+      _onUpdateProfileRequested,
+      transformer: droppable(),
+    );
   }
 
   /// A common handler for all preference change events.
@@ -72,13 +81,14 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     // 1. Perform the save operation.
     await saveOperation();
-    
+
     // 2. Re-fetch all settings from the repository (the single source of truth).
     final result = await _getSettings(NoParams());
-    
+
     // 3. Emit the new state based on the fetched data.
     result.fold(
-      (failure) => emit(SettingsLoadFailure(failure)), // Or handle error differently
+      (failure) =>
+          emit(SettingsLoadFailure(failure)), // Or handle error differently
       (newSettings) {
         // We must use the old state's other properties (like userProfile)
         // and combine them with the new settings.
@@ -115,7 +125,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) async {
     await _handlePreferenceChange(
-      () => _setNotificationsPreference(SetNotificationsPreferenceParams(isEnabled: event.isEnabled)),
+      () => _setNotificationsPreference(
+        SetNotificationsPreferenceParams(isEnabled: event.isEnabled),
+      ),
       emit,
     );
   }
@@ -125,11 +137,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) async {
     await _handlePreferenceChange(
-      () => _setAnalyticsPreference(SetAnalyticsPreferenceParams(isEnabled: event.isEnabled)),
+      () => _setAnalyticsPreference(
+        SetAnalyticsPreferenceParams(isEnabled: event.isEnabled),
+      ),
       emit,
     );
   }
-  
+
   // The rest of the handlers (_onLoadUserProfile, etc.) remain the same
   // as they fetch data and don't modify the core settings object.
   Future<void> _onLoadUserProfile(
@@ -137,15 +151,27 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     Emitter<SettingsState> emit,
   ) async {
     if (state is! SettingsLoadSuccess) return;
+
     final currentState = state as SettingsLoadSuccess;
     emit(currentState.copyWith(profileStatus: SectionStatus.loading));
     final result = await _getUserProfile(NoParams());
+
     result.fold(
-      (failure) => emit(currentState.copyWith(profileStatus: SectionStatus.failure, error: failure)),
-      (profile) => emit(currentState.copyWith(profileStatus: SectionStatus.success, userProfile: profile)),
+      (failure) => emit(
+        currentState.copyWith(
+          profileStatus: SectionStatus.failure,
+          error: failure,
+        ),
+      ),
+      (profile) => emit(
+        currentState.copyWith(
+          profileStatus: SectionStatus.success,
+          userProfile: profile,
+        ),
+      ),
     );
   }
-  
+
   Future<void> _onLoadPrivacyPolicy(
     LoadPrivacyPolicy event,
     Emitter<SettingsState> emit,
@@ -155,22 +181,49 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     emit(currentState.copyWith(policyStatus: SectionStatus.loading));
     final result = await _getLatestPolicy(NoParams());
     result.fold(
-      (failure) => emit(currentState.copyWith(policyStatus: SectionStatus.failure, error: failure)),
-      (policy) => emit(currentState.copyWith(policyStatus: SectionStatus.success, privacyPolicy: policy)),
+      (failure) => emit(
+        currentState.copyWith(
+          policyStatus: SectionStatus.failure,
+          error: failure,
+        ),
+      ),
+      (policy) => emit(
+        currentState.copyWith(
+          policyStatus: SectionStatus.success,
+          privacyPolicy: policy,
+        ),
+      ),
     );
   }
-  
+
   Future<void> _onUpdateProfileRequested(
     UpdateProfileRequested event,
     Emitter<SettingsState> emit,
   ) async {
     if (state is! SettingsLoadSuccess) return;
     final currentState = state as SettingsLoadSuccess;
-    emit(currentState.copyWith(actionStatus: ActionStatus.loading, clearError: true));
-    final result = await _updateUserProfile(UpdateUserProfileParams(userProfile: event.userProfile));
+    emit(
+      currentState.copyWith(
+        actionStatus: ActionStatus.loading,
+        clearError: true,
+      ),
+    );
+    final result = await _updateUserProfile(
+      UpdateUserProfileParams(userProfile: event.userProfile),
+    );
     result.fold(
-      (failure) => emit(currentState.copyWith(actionStatus: ActionStatus.failure, error: failure)),
-      (_) => emit(currentState.copyWith(actionStatus: ActionStatus.success, userProfile: event.userProfile)),
+      (failure) => emit(
+        currentState.copyWith(
+          actionStatus: ActionStatus.failure,
+          error: failure,
+        ),
+      ),
+      (_) => emit(
+        currentState.copyWith(
+          actionStatus: ActionStatus.success,
+          userProfile: event.userProfile,
+        ),
+      ),
     );
   }
 }

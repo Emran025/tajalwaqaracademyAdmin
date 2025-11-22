@@ -6,7 +6,7 @@ import '../../../domain/entities/plan_detail_entity.dart';
 
 class StudyPlanCard extends StatefulWidget {
   final String planType;
-  
+
   final List<PlanDetailEntity> planDetailList;
   final VoidCallback? onPress;
   const StudyPlanCard({
@@ -28,7 +28,9 @@ class _StudyPlanCardState extends State<StudyPlanCard> {
         margin: const EdgeInsets.only(left: 8),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColors.accent12,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.accent12
+              : AppColors.mediumDark54,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: AppColors.accent70, width: 0.7),
         ),
@@ -54,7 +56,12 @@ class _StudyPlanCardState extends State<StudyPlanCard> {
             ),
             const SizedBox(height: 12),
             Table(
-              border: TableBorder.all(color: AppColors.accent70, width: 0.5),
+              border: TableBorder.all(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.accent12
+                    : AppColors.mediumDark,
+                width: 0.5,
+              ),
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               columnWidths: const {
                 0: FlexColumnWidth(3),
@@ -63,7 +70,11 @@ class _StudyPlanCardState extends State<StudyPlanCard> {
               },
               children: [
                 TableRow(
-                  decoration: BoxDecoration(color: AppColors.accent26),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.accent26
+                        : AppColors.mediumDark,
+                  ),
                   children: [
                     _buildTableHeader("نوع الورد"),
                     _buildTableHeader("الوحدة"),

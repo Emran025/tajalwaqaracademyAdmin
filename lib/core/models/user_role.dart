@@ -5,8 +5,8 @@ enum UserRole {
   powerAdmin(1, "Power Admin"),
   supervisor(2, "Supervisor"),
   teacher(3, "Teacher"),
-  halaqa(3, "Halaqa"),
   student(4, "Student"),
+  halaqa(5, "Halaqa"),
   unknown(0, "Unknown");
 
   final int id;
@@ -28,12 +28,15 @@ enum UserRole {
         return UserRole.supervisor;
       case 'teacher':
       case 'معلم':
+      case 'المعلمين':
         return UserRole.teacher;
       case 'halaqa':
       case 'حلقة':
+      case 'الحلقات':
         return UserRole.halaqa;
       case 'student':
       case 'طالب':
+      case 'الطلاب':
         return UserRole.student;
       default:
         return UserRole.unknown;

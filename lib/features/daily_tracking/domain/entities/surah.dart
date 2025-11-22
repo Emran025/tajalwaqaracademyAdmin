@@ -29,6 +29,9 @@ class Surah extends Equatable {
   /// The total number of Ayahs (verses) in the Surah.
   final int numberOfAyahs;
 
+  /// The total number of Ayahs (verses) in the Surah.
+  final int firstPageStrtsAt;
+
   /// The revelation type of the Surah, either "Meccan" or "Medinan".
   final String revelationType;
 
@@ -38,6 +41,7 @@ class Surah extends Equatable {
     required this.englishName,
     required this.englishNameTranslation,
     required this.numberOfAyahs,
+    required this.firstPageStrtsAt,
     required this.revelationType,
   });
 
@@ -49,6 +53,7 @@ class Surah extends Equatable {
         englishName,
         englishNameTranslation,
         numberOfAyahs,
+        firstPageStrtsAt,
         revelationType,
       ];
 }

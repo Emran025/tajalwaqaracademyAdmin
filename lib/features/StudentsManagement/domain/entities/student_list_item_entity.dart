@@ -9,6 +9,8 @@ import 'base_student_entity.dart';
 /// It inherits core properties from [BaseStudentDetailEntity].
 @immutable
 class StudentListItemEntity extends BaseStudentEntity {
+  
+  final String? stopReasons;
   const StudentListItemEntity({
     required super.id,
     required super.name,
@@ -16,6 +18,7 @@ class StudentListItemEntity extends BaseStudentEntity {
     required super.avatar,
     required super.country,
     required super.city,
+     this.stopReasons,
     required super.status,
   });
 }

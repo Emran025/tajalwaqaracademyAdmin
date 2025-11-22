@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
+import '../widgets/show_student_reports_dialog.dart';
+import '../../../../../shared/themes/app_theme.dart';
+import '../../../../../core/models/active_status.dart';
 import '../widgets/add_traking_session.dart';
 import '../widgets/study_halaqa_card.dart';
-import 'follow_up_report_dialog.dart';
 
-import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
+import '../../../../../shared/widgets/avatar.dart';
 
 import '../../../../../config/di/injection.dart';
 import '../../../domain/entities/student_entity.dart';
@@ -49,7 +49,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       create: (context) =>
           sl<StudentBloc>()..add(StudentDetailsFetched(widget.studentID)),
       child: Scaffold(
-        backgroundColor: AppColors.darkBackground,
+        // backgroundColor: AppColors.darkBackground,
         appBar: AppBar(
           title: Text("الملف الشخصي"),
           backgroundColor: Colors.transparent,
@@ -192,15 +192,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
             ),
 
             if (student.status == ActiveStatus.active) ...[
-              SizedBox(height: 15),
-              Text(
-                "حلقة الطالب",
-                style: GoogleFonts.cairo(
-                  fontSize: 18,
-                  color: AppColors.lightCream70,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              titles("حلقة الطالب"),
               if (halaqa.halaqaId != "0") ...{
                 SizedBox(height: 12),
                 StudyHalaqaCard(
@@ -209,16 +201,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                 ),
               },
 
-              SizedBox(height: 15),
-              Text(
-                "خطة التقدم",
-                style: GoogleFonts.cairo(
-                  fontSize: 18,
-                  color: AppColors.lightCream70,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               if (plan.details.isNotEmpty) ...{
+                titles("خطة التقدم"),
                 SizedBox(height: 12),
                 StudyPlanCard(
                   onPress: _showAddStudentPlan,
@@ -226,16 +210,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   planDetailList: plan.details,
                 ),
               },
-              SizedBox(height: 15),
 
-              Text(
-                "سجل المتابعة",
-                style: GoogleFonts.cairo(
-                  fontSize: 18,
-                  color: AppColors.lightCream70,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              titles("سجل المتابعة"),
               if (halaqa.halaqaId != "0") ...{
                 SizedBox(height: 12),
                 AddTrakingSession(
@@ -243,6 +219,28 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   onTap: () => _showStudentReports(context, student.name),
                 ),
               },
+              titles("مؤشرات الأداء"),
+              SingleChildScrollView(
+                child: SegmentedButton<String>(
+                  segments: ["التقدم", "الجودة", "الأداء"]
+                      .map(
+                        (item) => ButtonSegment<String>(
+                          value: item,
+                          label: Text(
+                            item,
+                            style: GoogleFonts.cairo(fontSize: 12),
+                          ),
+                        ),
+                      )
+                      .toList(growable: false),
+                  selected: {''},
+                  onSelectionChanged: (newSel) {
+                    setState(() {
+
+                    });
+                  },
+                ),
+              ),
             ] else ...[
               SizedBox(height: 12),
               Row(
@@ -294,58 +292,32 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
     );
   }
 
-  // -->> إعادة كتابة جذرية لهذه الدالة <<--
+  Widget titles(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 15),
+        Text(
+          title,
+          style: GoogleFonts.cairo(
+            fontSize: 18,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.lightCream70
+                : AppColors.mediumDark,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
   void _showStudentReports(BuildContext screenContext, String studentName) {
     showDialog(
       context: screenContext,
       builder: (_) {
-        return BlocProvider(
-          create: (context) =>
-              sl<StudentBloc>()..add(FollowUpReportFetched(widget.studentID)),
-          child: BlocBuilder<StudentBloc, StudentState>(
-            builder: (dialogContext, state) {
-              print("DIALOG: --- 3. BlocBuilder is rebuilding! ---");
-              print(
-                "DIALOG: Current followUpReportStatus is: ${state.followUpReportStatus}",
-              );
-              print(
-                "DIALOG: Is followUpReport null? --> ${state.followUpReport == null}",
-              );
-              if (state.followUpReportStatus == FollowUpReportStatus.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                );
-              }
-
-              if (state.followUpReportStatus == FollowUpReportStatus.success &&
-                  state.followUpReport != null) {
-                return FollowUpReportDialog(
-                  studentName: studentName,
-                  bundle: state.followUpReport!,
-                );
-              }
-
-              if (state.followUpReportStatus == FollowUpReportStatus.failure) {
-                return AlertDialog(
-                  title: const Text('wrong'),
-                  content: Text("Failed to load details"),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        dialogContext.read<StudentBloc>().add(
-                          FollowUpReportFetched(widget.studentID),
-                        );
-                      },
-                      child: const Text('Try Again'),
-                    ),
-                  ],
-                );
-              }
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.white),
-              );
-            },
-          ),
+        return ShowStudentReportsDialog(
+          studentId: widget.studentID,
+          studentName: studentName,
         );
       },
     );
@@ -454,7 +426,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
     return Container(
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: AppColors.lightCream.withOpacity(0.1),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.lightCream.withOpacity(0.1)
+            : AppColors.mediumDark70,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.lightCream38),
       ),
@@ -542,7 +516,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       margin: EdgeInsets.only(bottom: 12),
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       decoration: BoxDecoration(
-        color: AppColors.lightCream12,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.lightCream12
+            : AppColors.mediumDark87,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

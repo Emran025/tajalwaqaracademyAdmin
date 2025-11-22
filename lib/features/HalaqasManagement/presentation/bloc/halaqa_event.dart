@@ -38,6 +38,18 @@ final class _HalaqasStreamUpdated extends HalaqaEvent {
   List<Object> get props => [update];
 }
 
+final class FilteredHalaqas extends HalaqaEvent {
+   final ActiveStatus? status;
+ final DateTime? trackDate;
+ final Frequency? frequencyCode;
+
+  const FilteredHalaqas({
+    this.status,
+    this.trackDate,
+    this.frequencyCode,
+  });
+}
+
 /// Dispatched when the user navigates to a halaqa's profile screen
 /// to fetch their detailed information.
 final class HalaqaDetailsFetched extends HalaqaEvent {

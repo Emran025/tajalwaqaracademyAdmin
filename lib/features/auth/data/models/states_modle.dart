@@ -3,7 +3,6 @@
 import 'package:tajalwaqaracademy/features/auth/domain/entities/states_entity.dart';
 
 class StatesModel extends StatesEntity{
-
   StatesModel({
     required super.id,
     required super.name,

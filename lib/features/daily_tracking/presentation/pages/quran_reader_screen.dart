@@ -109,7 +109,7 @@ class _QuranReaderScreenState extends State<QuranReaderScreen> {
           canPop: false,
           child: Scaffold(
             key: _scaffoldKey,
-            drawer: RecitationModeSideBar(),
+            drawer: RecitationSideBar(),
             body: Row(
               children: [
                 Expanded(
@@ -147,7 +147,18 @@ class _QuranReaderScreenState extends State<QuranReaderScreen> {
                                 child: child!,
                               );
                             },
-                            child: const SessionBottomToolbar(),
+                            child: SessionBottomToolbar(
+                              jumpToPage: (index) {
+                                setState(() {
+                                  _requestPageData(index);
+                                  if (_pageController.hasClients) {
+                                    _pageController.jumpToPage(
+                                      index,
+                                    ); // PageView is 0-indexed
+                                  }
+                                });
+                              },
+                            ),
                           ),
                         ],
                       ),

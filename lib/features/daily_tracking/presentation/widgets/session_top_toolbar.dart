@@ -34,7 +34,7 @@ class SessionTopToolbar extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
             onPressed: () {
@@ -47,8 +47,23 @@ class SessionTopToolbar extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
           ),
-
-          // --- Button 4: More Options (Could include theme, font size etc.) ---
+          IconButton(
+            onPressed: () {
+              print('bar_chart Options Tapped');
+            },
+            icon: Icon(
+              Icons.bar_chart,
+              // Icons.show_chart
+              // Icons.multiline_chart
+              // Icons.pie_chart
+              // Icons.insights
+              // Icons.analytics
+              // Icons.timeline
+              // Icons.query_stats
+              size: 26,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ],
       ),
     );

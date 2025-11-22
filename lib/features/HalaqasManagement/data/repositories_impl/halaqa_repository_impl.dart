@@ -67,7 +67,6 @@ final class HalaqaRepositoryImpl implements HalaqaRepository {
 
   @override
   Future<Either<Failure, List<HalaqaListItemEntity>>> getHalaqasByStudentCriteria({
-
     ActiveStatus? studentStatus,
     DateTime? trackDate,
     Frequency? frequencyCode,
@@ -77,7 +76,6 @@ final class HalaqaRepositoryImpl implements HalaqaRepository {
     try {
       final model = await _localDataSource.getHalaqasByStudentCriteria(
         studentStatus: studentStatus,
-
         trackDate: trackDate,
         frequencyCode: frequencyCode,
       );

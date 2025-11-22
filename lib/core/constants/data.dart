@@ -1,7 +1,5 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/core/constants/countries_names.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
@@ -19,7 +17,6 @@ import '../../../features/StudentsManagement/domain/entities/halqa_entity.dart';
 import '../../../features/StudentsManagement/domain/entities/plan_detail_entity.dart';
 import '../../../features/StudentsManagement/domain/entities/student_entity.dart';
 import '../../../features/TeachersManagement/domain/entities/teacher_entity.dart';
-import '../../features/HalaqasManagement/domain/entities/halqa.dart';
 import '../models/attendance_type.dart';
 import '../models/report_frequency.dart';
 import 'tracking_unit_detail.dart';
@@ -1237,88 +1234,4 @@ final List<TeacherDetailEntity> fakeTeachers2 = [
   ),
 ];
 
-final List<Halqa> activeHalqas = [
-  Halqa(
-    '01',
-    'حلقة النور',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'أحمد العلي',
-    status: ActiveStatus.active,
-  ),
-  Halqa(
-    '02',
-    'حلقة الفرقان',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'سارة محمد',
-    status: ActiveStatus.active,
-  ),
-  Halqa(
-    '03',
-    'حلقة الإيمان',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'خالد سعيد',
-    status: ActiveStatus.active,
-  ),
-  Halqa(
-    '04',
-    'حلقة الهدى',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'منى عبد الرحمن',
-    status: ActiveStatus.active,
-  ),
-  Halqa(
-    '05',
-    'حلقة الفلاح',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'فاطمة حسن',
-    status: ActiveStatus.active,
-  ),
-];
 
-final List<Halqa> inactiveHalqas = [
-  Halqa(
-    '06',
-    'حلقة الإخلاص',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'سعيد عبد القادر',
-    status: ActiveStatus.inactive,
-  ),
-  Halqa(
-    '07',
-    'حلقة الفجر',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'مها خالد',
-    status: ActiveStatus.inactive,
-  ),
-  Halqa(
-    '08',
-    'حلقة الفرقان',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'علي سعيد',
-    status: ActiveStatus.inactive,
-  ),
-  Halqa(
-    '09',
-    'حلقة الهدى',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'سلمى محمد',
-    status: ActiveStatus.inactive,
-  ),
-  Halqa(
-    '1-',
-    'حلقة البر',
-    countries[Random().nextInt(countries.length)].arabicName,
-    TimeOfDay(hour: 16, minute: 30),
-    'حسن إبراهيم',
-    status: ActiveStatus.inactive,
-  ),
-];

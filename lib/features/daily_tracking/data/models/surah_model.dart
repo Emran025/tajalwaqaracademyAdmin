@@ -9,6 +9,7 @@ class SurahModel extends Equatable {
   // englishNameTranslation is not available, we'll use englishName
   final String englishNameTranslation;
   final int numberOfAyahs; // Corresponds to AyatCount
+  final int firstPageStrtsAt; // Corresponds to AyatCount
   final String revelationType; // Corresponds to TypeText_en
 
   const SurahModel({
@@ -17,6 +18,7 @@ class SurahModel extends Equatable {
     required this.englishName,
     required this.englishNameTranslation,
     required this.numberOfAyahs,
+    required this.firstPageStrtsAt,
     required this.revelationType,
   });
 
@@ -28,6 +30,7 @@ class SurahModel extends Equatable {
       englishNameTranslation:
           map['Name_en'] as String, // Using Name_en as fallback
       numberOfAyahs: map['AyatCount'] as int,
+      firstPageStrtsAt: map['PageNum'] as int,
       revelationType: map['TypeText_en'] as String,
     );
   }
@@ -39,6 +42,7 @@ class SurahModel extends Equatable {
       englishName: englishName,
       englishNameTranslation: englishNameTranslation,
       numberOfAyahs: numberOfAyahs,
+      firstPageStrtsAt: firstPageStrtsAt,
       revelationType: revelationType,
     );
   }
@@ -49,6 +53,7 @@ class SurahModel extends Equatable {
     name,
     englishName,
     numberOfAyahs,
+    firstPageStrtsAt,
     revelationType,
   ];
 }

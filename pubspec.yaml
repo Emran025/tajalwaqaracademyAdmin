@@ -98,6 +98,8 @@ flutter:
     # - assets/pdf/
     - assets/logo/
     - assets/svg/
+    - assets/svg/circles.svg
+    - assets/svg/dots.svg
     - assets/svg/surah_name/
     # - assets/images/
     - assets/svg/alwaqf/

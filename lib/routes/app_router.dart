@@ -40,8 +40,8 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/home',
       name: 'home',
-      builder: (_, __) => const TecherDashboard(),
-      // builder: (_, __) => const SupervisorDashboard(),
+      // builder: (_, __) => const TecherDashboard(),
+      builder: (_, __) => const SupervisorDashboard(),
     ),
 
     /// Defines the route for the main dashboard for teacher users.
@@ -50,8 +50,8 @@ final appRouter = GoRouter(
       name: 'teacher_home',
       // Note: Ensure the class name 'TecherDashboard' is correct.
       // It might be a typo for 'TeacherDashboard'.
-      builder: (_, __) => const SupervisorDashboard(),
-      // builder: (_, __) => const TecherDashboard(),
+      // builder: (_, __) => const SupervisorDashboard(),
+      builder: (_, __) => const TecherDashboard(),
     ),
   ],
 );

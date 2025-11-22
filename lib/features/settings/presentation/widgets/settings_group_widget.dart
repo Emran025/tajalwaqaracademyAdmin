@@ -15,10 +15,7 @@ class SettingsGroup extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 20, top: 24, bottom: 8),
-          child: Text(
-            title.toUpperCase(),
-            style: theme.textTheme.titleLarge,
-          ),
+          child: Text(title.toUpperCase(), style: theme.textTheme.titleLarge),
         ),
         Card(
           elevation: 0,
@@ -34,7 +31,7 @@ class SettingsGroup extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           color: theme.brightness == Brightness.dark
               ? theme.colorScheme.surface
-              : Colors.white,
+              : Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
           child: ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 4),

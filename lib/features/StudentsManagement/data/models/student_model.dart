@@ -5,6 +5,7 @@ import 'package:tajalwaqaracademy/core/models/user_role.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
 
 import '../../domain/entities/student_entity.dart';
+
 /// The data model for a Student, serving as the data transfer object (DTO)
 /// for the data layer. It is a plain, immutable Dart object.
 ///
@@ -59,23 +60,27 @@ final class StudentModel {
     this.avatar,
     this.createdAt,
     this.updatedAt,
-    
+
     required this.memorizationLevel,
     required this.qualification,
     required this.isDeleted,
   });
 
-  factory StudentModel.fromMap(Map<String, dynamic> map, {bool fromDb = false}) {
+  factory StudentModel.fromMap(
+    Map<String, dynamic> map, {
+    bool fromDb = false,
+  }) {
     return StudentModel(
       id: (map['uuid'] as String?) ?? (map['id'] as int? ?? 0).toString(),
       name: map['name'] as String? ?? 'Unknown Name',
-      gender: Gender.fromLabel(map['gender'] as String? ?? 'male'),
+      gender: Gender.fromId(map['gender'] as int? ?? Gender.male.id),
       birthDate: map['birthDate'] as String? ?? '',
       email: map['email'] as String? ?? '',
       phone: map['phone'] as String? ?? '',
       phoneZone: map['phoneZone'] as String?,
       // التعامل مع الاختلاف في الأسماء
-      whatsappPhone: (map['whatsappPhone'] as String?) ?? (map['whatsapp'] as String?),
+      whatsappPhone:
+          (map['whatsappPhone'] as String?) ?? (map['whatsapp'] as String?),
       whatsappZone: map['whatsappZone'] as String?,
       bio: map['bio'] as String?,
       experienceYears: map['experienceYears'] as int? ?? 0,
@@ -87,11 +92,13 @@ final class StudentModel {
       stopReasons: map['stopReasons'] as String?,
       avatar: map['avatar'] as String?,
       createdAt: map['createdAt'] as String?,
-      updatedAt: map['updatedAt'] as String?,
+      updatedAt: map['lastModified'] as String?,
       qualification: map['qualification'] as String? ?? '',
       memorizationLevel: map['memorizationLevel'] as String? ?? '',
       // التعامل مع اختلاف نوع البيانات
-      isDeleted: fromDb ? (map['isDeleted'] == 1) : (map['isDeleted'] as bool? ?? false),
+      isDeleted: fromDb
+          ? (map['isDeleted'] == 1)
+          : (map['isDeleted'] as bool? ?? false),
     );
   }
 
@@ -101,7 +108,7 @@ final class StudentModel {
       'uuid': id,
       'roleId': UserRole.student.id,
       'name': name,
-      'gender': gender.labelAr,
+      'gender': gender.id,
       'birthDate': birthDate,
       'email': email,
       'phone': phone,
@@ -115,16 +122,20 @@ final class StudentModel {
       'residence': residence,
       'city': city,
       'availableTime': availableTime,
-      'status': status.labelAr,
+      'status': status.label,
       'stopReasons': stopReasons,
       'avatar': avatar,
       'memorizationLevel': memorizationLevel,
-      'lastModified': DateTime.now().millisecondsSinceEpoch,
+      'createdAt':
+          DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
+
+      'lastModified':
+          DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
       'isDeleted': forDb ? (isDeleted ? 1 : 0) : isDeleted,
     };
   }
-  
-
 
   /// Converts this data model into a lightweight [StudentListItemEntity].
   StudentListItemEntity toListItemEntity() {
@@ -135,6 +146,7 @@ final class StudentModel {
       country: country,
       city: city,
       avatar: avatar ?? '',
+      stopReasons: stopReasons,
       status: status,
     );
   }
@@ -163,15 +175,13 @@ final class StudentModel {
         hour: int.tryParse(timeParts[0]) ?? 0,
         minute: int.tryParse(timeParts[1]) ?? 0,
       ),
-      memorizationLevel: memorizationLevel ,
+      memorizationLevel: memorizationLevel,
       stopReasons: stopReasons ?? '',
       bio: bio ?? '',
       createdAt: createdAt ?? '',
       updatedAt: updatedAt ?? '',
-
     ); // Convert to FollowUpPlanEntity    );
   }
-
 
   /// Converts this data model into a domain [StudentEntity].
   /// ///

@@ -59,12 +59,12 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
     }
   }
 
-  void _showAddHalaqasDialog() {
+  void _showAddHalaqasDialog(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      // Provide the existing HalaqaBloc to the dialog.
+      // Provide the existing TeacherBloc to the dialog.
       builder: (_) => BlocProvider.value(
         value: context.read<HalaqaBloc>(),
         child: const AddHalaqaDialog(),
@@ -76,119 +76,129 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       // The screen is responsible for creating the BLoC and dispatching the initial event.
-      create: (context) => sl<HalaqaBloc>()..add(const WatchHalaqasStarted()),
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: _showAddHalaqasDialog,
-          icon: Icon(Icons.add, color: AppColors.lightCream),
-          label: Text(
-            "إضافة حلقة",
-            style: GoogleFonts.cairo(
-              fontWeight: FontWeight.bold,
-              color: AppColors.lightCream,
+      create: (context) => sl<HalaqaBloc>(),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () {
+                _showAddHalaqasDialog(context);
+              },
+              icon: Icon(Icons.add, color: AppColors.lightCream),
+              label: Text(
+                "إضافة حلقة",
+                style: GoogleFonts.cairo(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.lightCream,
+                ),
+              ),
             ),
-          ),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildSearchBar(),
-                const SizedBox(height: 10),
-                Expanded(
-                  // Use a BlocBuilder because this part only needs to rebuild based on state.
-                  // ...
-                  child: BlocBuilder<HalaqaBloc, HalaqaState>(
-                    builder: (context, state) {
-                      // --- Central Loading Indicator ---
-                      if (state.status == HalaqaStatus.loading &&
-                          state.halaqas.isEmpty) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      // --- Central Failure View ---
-                      if (state.status == HalaqaStatus.failure &&
-                          state.halaqas.isEmpty) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Error: state.failure?.message'),
-                              ElevatedButton(
-                                onPressed: () => context.read<HalaqaBloc>().add(
-                                  const HalaqasRefreshed(),
-                                ),
-                                child: const Text('Try Again'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-
-                      // --- Empty State View ---
-                      if (state.status == HalaqaStatus.success &&
-                          state.halaqas.isEmpty) {
-                        return RefreshIndicator(
-                          onRefresh: () async {
-                            context.read<HalaqaBloc>().add(
-                              const HalaqasRefreshed(),
-                            );
-                            // The refresh completes when the BLoC emits a new state.
-                          },
-                          child: const Center(child: Text('No halaqas found.')),
-                        );
-                      }
-
-                      // --- Main Content (Success or Loading with existing data) ---
-                      // The ListView is always visible if there's data, even during a refresh.
-                      final filteredHalaqas = state.halaqas
-                          .where(
-                            (t) =>
-                                t.name.contains(_search) ||
-                                t.country.contains(_search),
-                          )
-                          .toList();
-                      return RefreshIndicator(
-                        onRefresh: () async {
-                          if (state.status == HalaqaStatus.success &&
-                              state.hasMorePages &&
-                              !state.isLoadingMore) {
-                            context.read<HalaqaBloc>().add(
-                              const HalaqasRefreshed(),
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildSearchBar(),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      // Use a BlocBuilder because this part only needs to rebuild based on state.
+                      // ...
+                      child: BlocBuilder<HalaqaBloc, HalaqaState>(
+                        builder: (context, state) {
+                          // --- Central Loading Indicator ---
+                          if (state.status == HalaqaStatus.loading &&
+                              state.halaqas.isEmpty) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
                           }
-                          // The refresh completes when the BLoC emits a new state.
+                          // --- Central Failure View ---
+                          if (state.status == HalaqaStatus.failure &&
+                              state.halaqas.isEmpty) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Error: state.failure?.message'),
+                                  ElevatedButton(
+                                    onPressed: () => context
+                                        .read<HalaqaBloc>()
+                                        .add(const HalaqasRefreshed()),
+                                    child: const Text('Try Again'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          // --- Empty State View ---
+                          if (state.status == HalaqaStatus.success &&
+                              state.halaqas.isEmpty) {
+                            return RefreshIndicator(
+                              onRefresh: () async {
+                                context.read<HalaqaBloc>().add(
+                                  const HalaqasRefreshed(),
+                                );
+                                // The refresh completes when the BLoC emits a new state.
+                              },
+                              child: const Center(
+                                child: Text('No halaqas found.'),
+                              ),
+                            );
+                          }
+
+                          // --- Main Content (Success or Loading with existing data) ---
+                          // The ListView is always visible if there's data, even during a refresh.
+                          final filteredHalaqas = state.halaqas
+                              .where(
+                                (t) =>
+                                    t.name.contains(_search) ||
+                                    t.country.contains(_search),
+                              )
+                              .toList();
+                          return RefreshIndicator(
+                            onRefresh: () async {
+                              if (state.status == HalaqaStatus.success &&
+                                  state.hasMorePages &&
+                                  !state.isLoadingMore) {
+                                context.read<HalaqaBloc>().add(
+                                  const HalaqasRefreshed(),
+                                );
+                              }
+                              // The refresh completes when the BLoC emits a new state.
+                            },
+                            child: ListView.separated(
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(height: 5),
+                              controller:
+                                  _scrollController, // Controller for "load more"
+                              itemCount:
+                                  filteredHalaqas.length +
+                                  (state.isLoadingMore ? 1 : 0),
+                              itemBuilder: (ctx, i) {
+                                if (i >= filteredHalaqas.length) {
+                                  // "Load More" indicator
+                                  return const Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+                                return _buildHalaqaCard(filteredHalaqas[i]);
+                              },
+                            ),
+                          );
                         },
-                        child: ListView.separated(
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 5),
-                          controller:
-                              _scrollController, // Controller for "load more"
-                          itemCount:
-                              filteredHalaqas.length +
-                              (state.isLoadingMore ? 1 : 0),
-                          itemBuilder: (ctx, i) {
-                            if (i >= filteredHalaqas.length) {
-                              // "Load More" indicator
-                              return const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            }
-                            return _buildHalaqaCard(filteredHalaqas[i]);
-                          },
-                        ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -225,11 +235,11 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
   // --- UNIFIED Halaqa Card Widget ---
   // We only need one card widget that works with the HalaqaDetailEntity from our domain.
   Widget _buildHalaqaCard(HalaqaListItemEntity halaqa) {
-    return CustomListListTile(
+    return CustomListTile(
       title: halaqa.name,
       moreIcon: Icons.more_vert,
       leading: Avatar(gender: halaqa.gender, pic: halaqa.avatar),
-      subtitle: "${halaqa.country} - ${halaqa.city}",
+      subtitle: "${halaqa.country} - ${halaqa.residence}",
       backgroundColor: AppColors.accent12,
       hasMoreIcon: false,
       tajLable: halaqa.status.labelAr,
@@ -303,12 +313,14 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
             ),
             country: form.countryController.text,
             residence: form.residenceController.text,
-            city: '',
             status: ActiveStatus.active,
             avatar: '',
             createdAt: "${DateTime.now()}",
             updatedAt: "${DateTime.now()}",
-            teacher: '0',
+            sumOfStudents: 0,
+            maxOfStudents:
+                int.tryParse(form.eneregyController.text.trim()) ?? 0,
+            teacherId: 0,
           );
 
           // 2. Add the event to the BLoC
@@ -451,7 +463,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              "اضافة ملف الأستاذ",
+                              "بناء حلقة",
                               style: GoogleFonts.cairo(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

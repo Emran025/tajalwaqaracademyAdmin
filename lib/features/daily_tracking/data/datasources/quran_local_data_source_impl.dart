@@ -73,27 +73,64 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
   }
 
   // gat ayahsModels by ayahs Numbers List
-
+  /// Retrieves Quranic verses (ayahs) based on the provided list of verse IDs.
+  ///
+  /// This method fetches ayahs from the local database corresponding to the given
+  /// list of IDs. Unlike a standard database query with IN clause that returns
+  /// distinct results, this method preserves the original order and duplicates
+  /// present in the input list, making it suitable for scenarios where verse
+  /// repetition and sequence matter (e.g., mistake tracking in memorization).
+  ///
+  /// The implementation follows an optimized approach:
+  /// 1. Fetches unique verses from the database in a single query
+  /// 2. Creates an in-memory lookup map for efficient access
+  /// 3. Reconstructs the result list maintaining original order and duplicates
+  ///
+  /// @param ayahsNumbers List of verse IDs to retrieve (may contain duplicates)
+  /// @return Future<List<AyahModel>> List of ayah models in the same order and
+  ///         frequency as the input IDs
+  /// @throws CacheException If database operation fails or data retrieval error occurs
   @override
   Future<List<AyahModel>> getMistakesAyahs(List<int> ayahsNumbers) async {
     try {
-      final db = await database;
-      final List<Map<String, dynamic>> maps = await db.query(
-        'Quran', // Correct table name
-        where: 'ID IN (${List.filled(ayahsNumbers.length, '?').join(',')})',
-        whereArgs: ayahsNumbers,
-        orderBy: 'AyaNum ASC', // Correct column name for ordering within page
-      );
-
-      if (maps.isNotEmpty) {
-        return maps.map((map) => AyahModel.fromMap(map)).toList();
-      } else {
-        // It is valid for a page to be empty (e.g., decorative pages)
+      // Early return for empty input to optimize performance
+      if (ayahsNumbers.isEmpty) {
         return [];
       }
+
+      final db = await database;
+
+      // Extract unique IDs to optimize database query performance
+      final uniqueIds = ayahsNumbers.toSet().toList();
+
+      // Execute single database query to fetch all required verses
+      final List<Map<String, dynamic>> maps = await db.query(
+        'Quran',
+        where: 'ID IN (${List.filled(uniqueIds.length, '?').join(',')})',
+        whereArgs: uniqueIds,
+      );
+
+      // Handle case where no verses are found for the given IDs
+      if (maps.isEmpty) {
+        return [];
+      }
+
+      // Create lookup map for O(1) access to verses by ID
+      final ayahMap = <int, AyahModel>{};
+      for (final map in maps) {
+        final ayah = AyahModel.fromMap(map);
+        ayahMap[ayah.number] = ayah;
+      }
+
+      // Reconstruct result list preserving original order and duplicates
+      return ayahsNumbers
+          .map((id) => ayahMap[id])
+          .where((ayah) => ayah != null)
+          .cast<AyahModel>()
+          .toList();
     } catch (e) {
       throw CacheException(
-        message: 'Failed to load ayahs for page $ayahsNumbers: ${e.toString()}',
+        message: 'Failed to load ayahs for IDs $ayahsNumbers: ${e.toString()}',
       );
     }
   }

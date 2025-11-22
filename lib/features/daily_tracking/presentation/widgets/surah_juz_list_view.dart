@@ -14,7 +14,9 @@ import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/qura
 /// This is typically shown inside a modal bottom sheet when the user wants
 /// to navigate the Quran index.
 class SurahJuzListView extends StatelessWidget {
-  const SurahJuzListView({super.key});
+  final void Function(int) jumpToPage;
+
+  const SurahJuzListView({super.key, required this.jumpToPage});
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +87,8 @@ class SurahJuzListView extends StatelessWidget {
                 title: Text((state.surahs[index].name)), // Placeholder
                 onTap: () {
                   // Logic to jump to the surah's page and close the sheet.
+                  jumpToPage(state.surahs[index].firstPageStrtsAt - 1);
+
                   Navigator.of(context).pop();
                 },
               );
@@ -113,9 +117,8 @@ class SurahJuzListView extends StatelessWidget {
               ), // Placeholder
               onTap: () {
                 // Logic to jump to the juz's starting page and close the sheet.
-                // context.read<QuranReaderBloc>().add(
-                //   PageJumpRequested(AppStrings.juzsList[index].fromPage),
-                // );
+                jumpToPage(AppStrings.juzsList[index].fromPage - 1);
+
                 Navigator.of(context).pop();
               },
             );

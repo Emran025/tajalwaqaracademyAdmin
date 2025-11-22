@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 /// AppDatabase provides a singleton instance to manage the application's SQLite database.
 ///
 /// It's designed with an "offline-first" and "sync-ready" architecture in mind.
-///
+///.
 /// Key Design Principles:
 /// 1.  **Sync-Ready Schema:**
 ///     - `uuid` (TEXT): A universally unique identifier for rows that need to be synced with a remote server.
@@ -62,6 +62,8 @@ class AppDatabase {
   static const String _kPendingOperationsTable = 'pending_operations';
   static const String _kSyncMetadataTable = 'sync_metadata';
   static const String _kPrivacyPolicyTable = 'privacy_policy';
+  static const String _kEntityDailySummary = 'entity_daily_summary';
+  static const String _kEntityCount = 'entity_count';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -99,6 +101,7 @@ class AppDatabase {
       await _createSyncInfrastructureTables(txn);
       await _createIndexes(txn);
       await _createPrivacyPolicyTable(txn);
+      await createStudentSummaryTable(txn);
     });
   }
 
@@ -111,7 +114,34 @@ class AppDatabase {
   //                             SCHEMA CREATION
   // =========================================================================
 
-  /// **(جديد)** Creates the core tables required for the synchronization engine.
+  Future<void> createStudentSummaryTable(Transaction txn) async {
+    await txn.execute('''
+      CREATE TABLE IF NOT EXISTS $_kEntityDailySummary (
+        date TEXT  NOT NULL,
+        entity_type INTEGER NOT NULL,       -- 'teachers', 'students','halaqas' etc.
+        active_count INTEGER NOT NULL,
+        additions_count INTEGER NOT NULL,
+        deletions_count INTEGER NOT NULL,
+        last_updated INTEGER NOT NULL,
+
+        UNIQUE(entity_type, date),
+        FOREIGN KEY(entity_type) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
+      )
+    ''');
+    await txn.execute('''
+      CREATE TABLE IF NOT EXISTS $_kEntityCount (
+        date TEXT  NOT NULL,
+        entity_type INTEGER NOT NULL,       -- 'teachers', 'students','halaqas' etc.
+        count INTEGER NOT NULL,
+        last_updated INTEGER NOT NULL,
+
+        UNIQUE(entity_type, date),
+        FOREIGN KEY(entity_type) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
+      )
+    ''');
+  }
+
+  /// Creates the core tables required for the synchronization engine.
   /// These tables track local changes and the sync state for different data entities.
   Future<void> _createSyncInfrastructureTables(Transaction txn) async {
     await txn.execute('''
@@ -161,6 +191,11 @@ class AppDatabase {
       'id': 4,
       'code': 'student',
       'nameAr': 'طالب',
+    });
+    await txn.insert(_kRolesTable, {
+      'id': 5,
+      'code': 'Halaqa',
+      'nameAr': 'حلقة',
     });
 
     // Units (e.g., page, juz)
@@ -253,7 +288,7 @@ class AppDatabase {
     });
   }
 
-  /// **(جديد)** Creates the table to store privacy policy versions.
+  /// Creates the table to store privacy policy versions.
   Future<void> _createPrivacyPolicyTable(Transaction txn) async {
     await txn.execute('''
     CREATE TABLE $_kPrivacyPolicyTable (
@@ -276,10 +311,10 @@ class AppDatabase {
         roleId            INTEGER NOT NULL,
         status            TEXT    NOT NULL,
         name              TEXT    NOT NULL,
-        gender            TEXT    NOT NULL,
+        gender            INTEGER NOT NULL DEFAULT 1,
         birthDate         TEXT,
         email             TEXT    NOT NULL UNIQUE,
-        avatar TEXT,
+        avatar            TEXT,
         phoneZone         TEXT,
         bio               TEXT,
         phone             TEXT    NOT NULL,
@@ -293,6 +328,7 @@ class AppDatabase {
         availableTime     TEXT,
         stopReasons       TEXT,
         memorizationLevel TEXT,
+        createdAt         INTEGER NOT NULL,
         lastModified      INTEGER NOT NULL,
         isDeleted         INTEGER NOT NULL DEFAULT 0,
         
@@ -307,7 +343,7 @@ class AppDatabase {
         uuid              TEXT    NOT NULL,
         type              TEXT    NOT NULL,
         name              TEXT    NOT NULL,
-        gender            TEXT    NOT NULL,
+        gender            INTEGER NOT NULL DEFAULT 1,
         birthDate         TEXT,
         email             TEXT    NOT NULL,
         phoneZone         TEXT,
@@ -336,15 +372,19 @@ class AppDatabase {
   Future<void> _createHalqaTables(Transaction txn) async {
     await txn.execute('''
       CREATE TABLE $_kHalqasTable (
-        id           INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid         TEXT    NOT NULL UNIQUE,
-        name         TEXT    NOT NULL,
-        isActive     INTEGER NOT NULL DEFAULT 1,
-        archivedAt   TEXT,
-        gender       TEXT    NOT NULL,
-        residence    TEXT,
-        lastModified INTEGER NOT NULL,
-        isDeleted    INTEGER NOT NULL DEFAULT 0
+        id                INTEGER PRIMARY KEY AUTOINCREMENT,
+        uuid              TEXT    NOT NULL UNIQUE,
+        name              TEXT    NOT NULL,
+        isActive          INTEGER NOT NULL DEFAULT 1,
+        sumOfStudents     INTEGER NOT NULL DEFAULT 1,
+        maxOfStudents     INTEGER NOT NULL DEFAULT 1,
+        availableTime     TEXT,
+        gender            INTEGER NOT NULL DEFAULT 1,
+        country           TEXT,
+        residence         TEXT,
+        createdAt         INTEGER NOT NULL,
+        lastModified      INTEGER NOT NULL,
+        isDeleted         INTEGER NOT NULL DEFAULT 0
       )
     ''');
 

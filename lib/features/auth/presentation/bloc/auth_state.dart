@@ -7,6 +7,9 @@ enum AuthStatus {
   unauthenticated, // The user is logged out or it's their first time.
 }
 
+// في auth_state.dart
+enum ChangePasswordStatus { initial, submitting, success, failure }
+
 enum LogInStatus { initial, loading, success, failure }
 
 enum GetUserStatus { initial, loading, success, failure }
@@ -32,6 +35,9 @@ final class AuthState extends Equatable {
   final ForgetPasswordStatus forgetPasswordStatus;
   final SuccessEntity? successEntity;
   final Failure? forgetPasswordFailure;
+  //  AuthState
+  final ChangePasswordStatus changePasswordStatus;
+  final Failure? changePasswordFailure;
 
   const AuthState({
     this.authStatus = AuthStatus.initializing,
@@ -52,6 +58,8 @@ final class AuthState extends Equatable {
     this.successEntity,
     this.forgetPasswordFailure,
     // New
+    this.changePasswordStatus = ChangePasswordStatus.initial,
+    this.changePasswordFailure,
   });
 
   AuthState copyWith({
@@ -72,6 +80,10 @@ final class AuthState extends Equatable {
     ForgetPasswordStatus? forgetPasswordStatus,
     SuccessEntity? successEntity,
     Failure? forgetPasswordFailure,
+
+    // New
+    ChangePasswordStatus? changePasswordStatus,
+    Failure? changePasswordFailure,
   }) {
     return AuthState(
       authStatus: authStatus ?? this.authStatus,
@@ -91,6 +103,9 @@ final class AuthState extends Equatable {
       successEntity: successEntity ?? this.successEntity,
       forgetPasswordFailure:
           forgetPasswordFailure ?? this.forgetPasswordFailure,
+      changePasswordStatus: changePasswordStatus ?? this.changePasswordStatus,
+      changePasswordFailure:
+          changePasswordFailure ?? this.changePasswordFailure,
     );
   }
 
@@ -107,5 +122,8 @@ final class AuthState extends Equatable {
     forgetPasswordStatus,
     successEntity,
     forgetPasswordFailure,
+
+    changePasswordStatus,
+    changePasswordFailure,
   ];
 }

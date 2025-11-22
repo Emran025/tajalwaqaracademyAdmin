@@ -92,8 +92,6 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
         where: whereClause,
         whereArgs: whereArgs,
       );
-
-      // بناء الخريطة النهائية
       return {for (var map in maps) map[keyColumn] as K: map[valueColumn] as V};
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -285,7 +283,6 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     if (detailMaps.isEmpty) {
       return {};
     }
-
     // 2. Efficiently fetch all mistakes for all the details we just found in one go.
     final detailIds = detailMaps.map((d) => d['id'] as int).toList();
 
@@ -304,6 +301,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
       final associatedMistakes = mistakesByDetailId[detailId] ?? [];
 
       // Call the updated constructor with both the map and the mistakes list.
+
       return TrackingDetailModel.fromDbMap(detailMap, associatedMistakes);
     }).toList();
 
@@ -827,27 +825,22 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
         uuids: [studentId],
       )).first;
 
-      print("===================================================");
-
       final planMaps = await _db.query(
         _kFollowUpPlansTable,
         where: 'enrollmentId = ? AND isDeleted = ?',
         whereArgs: [studentnrollmentDbId, 0],
       );
 
-      print(planMaps);
       if (planMaps.isEmpty) {
         throw CacheException(message: 'Follow-up plan not found');
       }
       final planUuid = planMaps.first['uuid'] as String;
-      print(planUuid);
 
       final detailsMaps = await _db.query(
         _kPlanDetailsTable,
         where: 'planUuid = ? AND isDeleted = ?',
         whereArgs: [planUuid, 0],
       );
-      print(detailsMaps);
 
       return FollowUpPlanModel.fromDbMaps(
         planMap: planMaps.first,
@@ -925,6 +918,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
         final currentTrackingId = trackingMap['id'] as int;
         final currentDetailModels =
             detailsByTrackingId[currentTrackingId] ?? [];
+
         return TrackingModel.fromDbMap(trackingMap, currentDetailModels);
       }).toList();
     } on DatabaseException catch (e) {
@@ -941,6 +935,9 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     required String studentId,
     required List<TrackingModel> trackings,
   }) async {
+    await _db.delete(_kDailyTrackingTable);
+    await _db.delete(_kDailyTrackingDetailTable);
+
     // ROBUSTNESS: Verify the parent enrollment record exists locally first.
     final enrollmentIds = await _fetchEnrollmentIdbyStudentUuids(
       dbExecutor: _db,
@@ -959,12 +956,6 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
       // ATOMICITY: Perform the entire operation within a single transaction.
       await _db.transaction((txn) async {
         // Step 1: Cleanly delete old data. ON DELETE CASCADE will handle children.
-
-        // await txn.delete(
-        //   _kDailyTrackingTable,
-        //   where: 'enrollmentId = ?',
-        //   whereArgs: [enrollmentId],
-        // );
 
         // Step 2: Iterate through the new tracking data from the server.
         for (final trackingModel in trackings) {
@@ -1078,8 +1069,6 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     }).toList();
   }
 
-
-
   // =========================================================================
   //                       NEW: Filtered Query Methods
   // =========================================================================
@@ -1100,14 +1089,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
     final query = StringBuffer('SELECT DISTINCT U.* FROM $_kUsersTable U');
     final joins = <String>{};
-    final whereClauses = <String>[
-      'U.roleId = ?',
-      'U.isDeleted = ?',
-    ];
-    final whereArgs = <Object?>[
-      UserRole.student.id,
-      0,
-    ];
+    final whereClauses = <String>['U.roleId = ?', 'U.isDeleted = ?'];
+    final whereArgs = <Object?>[UserRole.student.id, 0];
 
     if (status != null) {
       whereClauses.add('U.status = ?');
@@ -1135,7 +1118,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     if (frequencyCode != null) {
       if (trackDate == null) {
         throw ArgumentError(
-            'يجب توفير trackDate عند التصفية باستخدام frequencyCode.');
+          'يجب توفير trackDate عند التصفية باستخدام frequencyCode.',
+        );
       }
 
       joins.add('JOIN $_kHalqaStudentsTable HS ON U.id = HS.studentId');
@@ -1148,7 +1132,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
       final formattedDate =
           "${trackDate.year.toString().padLeft(4, '0')}-${trackDate.month.toString().padLeft(2, '0')}-${trackDate.day.toString().padLeft(2, '0')}";
       whereClauses.add(
-          "CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % F.daysCount = 0");
+        "CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % F.daysCount = 0",
+      );
       whereArgs.add(formattedDate);
     }
 

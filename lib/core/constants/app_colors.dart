@@ -2,6 +2,7 @@ part of "../../../shared/themes/app_theme.dart";
 
 class AppColors {
   static const Color darkBackground = Color(0xFF1E1E1E); // rgb(30, 32, 30)
+  static const Color quranText = Color(0xFF000000); // rgb(30, 32, 30)
   static const Color mediumDark = Color(0xFF3C3D37); // rgb(60, 61, 55)
   static const Color accent = Color(0xFF697565); // rgb(105, 117, 101)
   static const Color lightCream = Color(0xFFFFFEF0); // rgb(206, 206, 206)

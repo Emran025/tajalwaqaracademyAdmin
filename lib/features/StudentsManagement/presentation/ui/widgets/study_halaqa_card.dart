@@ -27,7 +27,9 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
       margin: const EdgeInsets.only(left: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.accent12,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.accent12
+            : AppColors.mediumDark54,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.accent70, width: 0.7),
       ),
@@ -54,7 +56,9 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
           const SizedBox(height: 12),
           Container(
             decoration: BoxDecoration(
-              color: AppColors.accent12,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.accent12
+                  : AppColors.mediumDark70,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.accent70, width: 0.5),
               boxShadow: [
@@ -99,7 +103,7 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
                     onPressed: () {
                       // onPressed!();
                     },
-                    child: StatusTag(lable: "تقرير"),
+                    child: StatusTag(lable: "تفاصيل"),
                   ),
                   IconButton(
                     icon: Icon(Icons.more_vert, color: AppColors.lightCream),

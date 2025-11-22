@@ -4,7 +4,7 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/pl
 import '../../../../core/models/report_frequency.dart';
 @immutable
 class FollowUpPlanEntity {
-  final String planId; // Maps to PlanId in JSON, primary key in DB
+  final String planId;
   final Frequency frequency;
   final String serverPlanId;
   final String? updatedAt;

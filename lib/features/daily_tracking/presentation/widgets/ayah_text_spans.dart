@@ -104,7 +104,9 @@ class _AyahaTextSpansState extends State<AyahTextSpans> {
           height: 1.5,
           letterSpacing: 2,
           color: endSymbolMistake
-              ? Theme.of(context).colorScheme.secondary
+              ? Theme.of(context).colorScheme.brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black
               : const Color(0xFF5D371C),
           backgroundColor: endSymbolMistake
               ? const Color(0xffCD9974).withOpacity(.4)

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/constants/data.dart';
+import '../../../../../shared/themes/app_theme.dart';
+import '../../../../../core/constants/data.dart';
 import '../../../../../shared/widgets/caerd_tile.dart';
 import '../../../domain/entities/student_list_item_entity.dart';
 import '../../../presentation/ui/screens/student_profile_screen.dart';
-import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
+import '../../../../../shared/widgets/avatar.dart';
 
 class StudentRequestsScreen extends StatefulWidget {
   const StudentRequestsScreen({super.key});
@@ -25,7 +25,6 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkBackground,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
@@ -52,7 +51,7 @@ class _StudentRequestsScreenState extends State<StudentRequestsScreen> {
   // We only need one card widget that works with the StudentDetailEntity from our domain.
 
   Widget _buildStudentCard(StudentListItemEntity student) {
-    return CustomListListTile(
+    return CustomListTile(
       title: student.name,
       moreIcon: Icons.more_vert,
       leading: Avatar(gender: student.gender, pic: student.avatar),

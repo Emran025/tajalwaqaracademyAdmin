@@ -15,7 +15,7 @@ class HalaqaListItemEntity extends BaseHalaqaEntity {
     required super.gender,
     required super.avatar,
     required super.country,
-    required super.city,
+    required super.residence,
     required super.status,
   });
 }

@@ -16,7 +16,7 @@ enum TrackingType {
 
   static TrackingType fromLabel(String label) {
     switch (label.toLowerCase()) {
-      case 'Memorization':
+      case 'memorization':
       case 'حفظ':
         return TrackingType.memorization;
       case 'review':
