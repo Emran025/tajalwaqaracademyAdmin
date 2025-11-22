@@ -16,7 +16,8 @@ import '../../bloc/supervisor_timeline_bloc.dart';
 /// Main dashboard screen displaying statistics and analytics
 /// Uses BLoC pattern for state management and follows OOP principles
 class ModernDashboardScreen extends StatefulWidget {
-  const ModernDashboardScreen({super.key});
+  final UserRole role;
+  const ModernDashboardScreen({super.key, required this.role});
 
   @override
   State<ModernDashboardScreen> createState() => _ModernDashboardScreenState();
@@ -25,10 +26,11 @@ class ModernDashboardScreen extends StatefulWidget {
 class _ModernDashboardScreenState extends State<ModernDashboardScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
-  final _DashboardStateBuilder _stateBuilder = _DashboardStateBuilder();
+  late final _DashboardStateBuilder _stateBuilder;
 
   @override
   void initState() {
+    _stateBuilder = _DashboardStateBuilder(role: widget.role);
     super.initState();
     _initializeAnimation();
     _loadInitialData();
@@ -114,7 +116,7 @@ class DashboardDataManager {
     [Color(0xFFFFA17F), Color(0xFF00223E)],
   ];
 
-  List<_DashboardStat> getInitialStats() {
+  List<_DashboardStat> getInitialStats(UserRole role) {
     return [
       _DashboardStat(
         'الطلاب',
@@ -123,13 +125,14 @@ class DashboardDataManager {
         _colorGradients[1],
         _trendsData[1],
       ),
-      _DashboardStat(
-        'المعلمين',
-        '23',
-        Icons.school,
-        _colorGradients[3],
-        _trendsData[3],
-      ),
+      if (role == UserRole.supervisor)
+        _DashboardStat(
+          'المعلمين',
+          '23',
+          Icons.school,
+          _colorGradients[3],
+          _trendsData[3],
+        ),
       _DashboardStat(
         'الحلقات',
         '57',
@@ -152,6 +155,9 @@ class DashboardDataManager {
 
 /// Handles building different dashboard states and components
 class _DashboardStateBuilder {
+  final UserRole role;
+  const _DashboardStateBuilder({required this.role});
+
   Widget buildDashboardContent(BuildContext context) {
     return Column(
       children: [
@@ -168,7 +174,7 @@ class _DashboardStateBuilder {
       child: BlocBuilder<SupervisorTimelineBloc, SupervisorTimelineState>(
         builder: (context, state) {
           final DashboardDataManager dataManager = DashboardDataManager();
-          final stats = dataManager.getInitialStats();
+          final stats = dataManager.getInitialStats(role);
 
           if (state is SupervisorTimelineLoaded) {
             return _buildLoadedStatisticsGrid(stats, state);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajalwaqaracademy/core/models/user_role.dart';
 import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 // import 'package:tajalwaqaracademy/features/HalqasManagement/presentation/ui/screens/halqas_management_screen.dart';
 // import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/screens/students_management_screen.dart';
@@ -22,10 +23,10 @@ class _TecherDashboardState extends State<TecherDashboard> {
   int _currentIndex = 0;
 
   final List<Widget> _tabs = [
-    ModernDashboardScreen(),
+    ModernDashboardScreen(role: UserRole.teacher,),
     // HalqasManagementScreen(),
     // StudentsManagementScreen(),
-    SupervisorMonitoringScreen(),
+    MonitoringScreen(),
   ];
   final List<String> headers = ["الرئيسية", "المتابعة الشاملة"];
 

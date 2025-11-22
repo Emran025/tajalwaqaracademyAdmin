@@ -9,6 +9,7 @@ import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
 import 'package:tajalwaqaracademy/shared/widgets/recitation_mode_sidebar.dart';
 
 import '../../../../../config/di/injection.dart';
+import '../../../../../core/models/user_role.dart';
 import '../../../../HalaqasManagement/presentation/ui/screens/halaqas_management_screen.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../auth/presentation/ui/widgets/log_out_dialog.dart';
@@ -29,12 +30,12 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
   final List<Widget> _tabs = [
     BlocProvider(
       create: (context) => sl<SupervisorTimelineBloc>(),
-      child: ModernDashboardScreen(),
+      child: ModernDashboardScreen(role: UserRole.supervisor),
     ),
     TeachersManagementScreen(),
     StudentsManagementScreen(),
     HalaqaManagementScreen(),
-    SupervisorMonitoringScreen(),
+    MonitoringScreen(),
   ];
   final List<String> headers = [
     "الرئيسية",

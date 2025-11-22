@@ -4,15 +4,14 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/sc
 
 import '../../../../HalaqasManagement/presentation/ui/screens/halqas_continuous_monitoring.dart';
 
-class SupervisorMonitoringScreen extends StatefulWidget {
-  const SupervisorMonitoringScreen({super.key});
+class MonitoringScreen extends StatefulWidget {
+  const MonitoringScreen({super.key});
 
   @override
-  State<SupervisorMonitoringScreen> createState() =>
-      _SupervisorMonitoringScreenState();
+  State<MonitoringScreen> createState() => _MonitoringScreenState();
 }
 
-class _SupervisorMonitoringScreenState extends State<SupervisorMonitoringScreen>
+class _MonitoringScreenState extends State<MonitoringScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
