@@ -151,7 +151,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
 
-        // --- Legal & Support Group ---
+        SliverToBoxAdapter(
+          child: SettingsGroup(
+            title: "مركز البيانات",
+            children: [
+              ModernSettingTile(
+                icon: Icons.file_download_outlined,
+                iconBackgroundColor: Colors.indigo,
+                title: 'تصدير البيانات',
+                subtitle: 'تصدير جداول البيانات على هيئة معرفة في ملفات',
+
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {
+                  // TODO: Implement navigation to Help & Support Screen
+                },
+              ),
+              ModernSettingTile(
+                icon: Icons.file_upload_outlined,
+                iconBackgroundColor: Colors.teal,
+                title: 'استيراد البيانات',
+                subtitle: 'استيراد جداول البيانات على هيئة معرفة من ملفات',
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {
+                  // TODO: Implement navigation to Help & Support Screen
+                },
+              ),
+            ],
+          ),
+        ),
         SliverToBoxAdapter(
           child: SettingsGroup(
             title: 'الدعم والخصوصية',
@@ -188,7 +215,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               ModernSettingTile(
                 icon: Icons.privacy_tip_outlined,
-                iconBackgroundColor: Colors.teal,
+                iconBackgroundColor: Colors.indigoAccent,
                 title: 'سياسة الخصوصية',
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
