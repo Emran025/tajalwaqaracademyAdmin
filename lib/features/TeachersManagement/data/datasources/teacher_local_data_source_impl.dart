@@ -51,7 +51,7 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
       );
       // print(maps);
       return maps.map((map) =>
-         TeacherModel.fromDbMap(map)
+         TeacherModel.fromMap(map)
       ).toList();
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -118,7 +118,7 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         for (final teacher in updatedTeachers) {
           batch.insert(
             _kUsersTable,
-            teacher.toDbMap(),
+            teacher.toMap(),
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
         }
@@ -204,7 +204,7 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
     try {
       await _db.insert(
         _kUsersTable,
-        teacher.toDbMap(),
+        teacher.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
@@ -248,7 +248,7 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         whereArgs: [UserRole.teacher.label, 'pending'],
         orderBy: 'created_at ASC',
       );
-      return maps.map(SyncQueueModel.fromDbMap).toList();
+      return maps.map(SyncQueueModel.fromMap).toList();
     } on DatabaseException catch (e) {
       throw CacheException(
         message: 'Failed to get pending operations: ${e.toString()}',
@@ -286,7 +286,7 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         throw CacheException(message: 'Teacher not found with ID: $teacherId');
       }
 
-      return TeacherModel.fromDbMap(maps.first);
+      return TeacherModel.fromMap(maps.first);
     } on DatabaseException catch (e) {
       throw CacheException(
         message: 'Failed to fetch teacher by ID ($teacherId): ${e.toString()}',

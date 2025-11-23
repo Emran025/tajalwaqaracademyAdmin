@@ -54,4 +54,3 @@ class StudentDetailEntity extends BaseStudentEntity {
     required this.updatedAt
   });
 }
-

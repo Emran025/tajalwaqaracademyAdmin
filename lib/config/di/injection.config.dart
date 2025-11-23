@@ -134,6 +134,10 @@ import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/usecases/ups
     as _i1020;
 import 'package:tajalwaqaracademy/features/HalaqasManagement/presentation/bloc/halaqa_bloc.dart'
     as _i398;
+import 'package:tajalwaqaracademy/features/settings/data/datasources/core_data_local_data_source.dart'
+    as _i830;
+import 'package:tajalwaqaracademy/features/settings/data/datasources/core_data_local_data_source_impl.dart'
+    as _i1010;
 import 'package:tajalwaqaracademy/features/settings/data/datasources/settings_local_data_source.dart'
     as _i281;
 import 'package:tajalwaqaracademy/features/settings/data/datasources/settings_local_data_source_impl.dart'
@@ -146,12 +150,16 @@ import 'package:tajalwaqaracademy/features/settings/data/repositories_impl/setti
     as _i452;
 import 'package:tajalwaqaracademy/features/settings/domain/repositories/settings_repository.dart'
     as _i17;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/export_data_usecase.dart'
+    as _i632;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_latest_policy_usecase.dart'
     as _i311;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_settings.dart'
     as _i959;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_user_profile.dart'
     as _i604;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/import_data_usecase.dart'
+    as _i16;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/save_theme.dart'
     as _i589;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_analytics_preference.dart'
@@ -198,14 +206,14 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/bloc/
     as _i294;
 import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/view_models/factories/follow_up_report_factory.dart'
     as _i926;
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_remote_data_source.dart'
-    as _i179;
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_remote_data_source_impl.dart'
-    as _i33;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_local_data_source.dart'
     as _i325;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_local_data_source_impl.dart'
     as _i414;
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_remote_data_source.dart'
+    as _i277;
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_remote_data_source_impl.dart'
+    as _i60;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/repositories_impl/repository_impl.dart'
     as _i454;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/service/timeline_builder_impl.dart'
@@ -332,6 +340,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i325.SupervisorLocalDataSource>(
       () => _i414.SupervisorLocalDataSourceImpl(database: gh<_i779.Database>()),
     );
+    gh.lazySingleton<_i830.CoreDataLocalDataSource>(
+      () => _i1010.CoreDataLocalDataSourceImpl(database: gh<_i779.Database>()),
+    );
     gh.lazySingleton<_i1.NetworkInfo>(
       () => _i81.NetworkInfoImpl(
         connectionChecker: gh<_i161.InternetConnection>(),
@@ -421,18 +432,6 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i1.NetworkInfo>(),
       ),
     );
-    gh.lazySingleton<_i17.SettingsRepository>(
-      () => _i452.SettingsRepositoryImpl(
-        localDataSource: gh<_i281.SettingsLocalDataSource>(),
-        remoteDataSource: gh<_i801.SettingsRemoteDataSource>(),
-        networkInfo: gh<_i1.NetworkInfo>(),
-      ),
-    );
-    gh.lazySingleton<_i179.SupervisorRemoteDataSource>(
-      () => _i33.SupervisorRemoteDataSourceImpl(
-        apiConsumer: gh<_i478.ApiConsumer>(),
-      ),
-    );
     gh.factory<_i8.TrackingSessionBloc>(
       () => blocModule.trackingSession(
         gh<_i829.GetOrCreateTodayTrackingDetails>(),
@@ -448,6 +447,11 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i1.NetworkInfo>(),
       ),
     );
+    gh.lazySingleton<_i277.SupervisorRemoteDataSource>(
+      () => _i60.SupervisorRemoteDataSourceImpl(
+        apiConsumer: gh<_i478.ApiConsumer>(),
+      ),
+    );
     gh.lazySingleton<_i665.TeacherRemoteDataSource>(
       () => _i275.TeacherRemoteDataSourceImpl(
         apiConsumer: gh<_i478.ApiConsumer>(),
@@ -457,6 +461,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i764.HalaqaRepositoryImpl(
         localDataSource: gh<_i825.HalaqaLocalDataSource>(),
         syncService: gh<_i221.HalaqaSyncService>(),
+      ),
+    );
+    gh.lazySingleton<_i17.SettingsRepository>(
+      () => _i452.SettingsRepositoryImpl(
+        localDataSource: gh<_i281.SettingsLocalDataSource>(),
+        remoteDataSource: gh<_i801.SettingsRemoteDataSource>(),
+        coreDataSource: gh<_i830.CoreDataLocalDataSource>(),
+        networkInfo: gh<_i1.NetworkInfo>(),
       ),
     );
     gh.lazySingleton<_i52.AuthRemoteDataSource>(
@@ -493,13 +505,6 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i1.NetworkInfo>(),
       ),
     );
-    gh.lazySingleton<_i795.SupervisorRepository>(
-      () => _i454.SupervisorRepositoryImpl(
-        localDataSource: gh<_i325.SupervisorLocalDataSource>(),
-        remoteDataSource: gh<_i179.SupervisorRemoteDataSource>(),
-        timelineBuilder: gh<_i750.TimelineBuilderImpl>(),
-      ),
-    );
     gh.lazySingleton<_i661.WatchHalaqasUseCase>(
       () => _i661.WatchHalaqasUseCase(repository: gh<_i253.HalaqaRepository>()),
     );
@@ -531,17 +536,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i577.UpdateUserProfile>(
       () => _i577.UpdateUserProfile(gh<_i17.SettingsRepository>()),
     );
-    gh.factory<_i441.SettingsBloc>(
-      () => blocModule.settingsBloc(
-        gh<_i959.GetSettings>(),
-        gh<_i589.SaveTheme>(),
-        gh<_i762.SetNotificationsPreference>(),
-        gh<_i562.SetAnalyticsPreference>(),
-        gh<_i604.GetUserProfile>(),
-        gh<_i577.UpdateUserProfile>(),
-        gh<_i311.GetLatestPolicyUseCase>(),
-      ),
-    );
     gh.lazySingleton<_i567.TeacherRepository>(
       () => _i109.TeacherRepositoryImpl(
         localDataSource: gh<_i946.TeacherLocalDataSource>(),
@@ -567,6 +561,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i382.UpsertTeacher>(
       () => _i382.UpsertTeacher(gh<_i567.TeacherRepository>()),
     );
+    gh.lazySingleton<_i795.SupervisorRepository>(
+      () => _i454.SupervisorRepositoryImpl(
+        localDataSource: gh<_i325.SupervisorLocalDataSource>(),
+        remoteDataSource: gh<_i277.SupervisorRemoteDataSource>(),
+        timelineBuilder: gh<_i750.TimelineBuilderImpl>(),
+      ),
+    );
+    gh.lazySingleton<_i632.ExportDataUseCase>(
+      () => _i632.ExportDataUseCase(gh<_i17.SettingsRepository>()),
+    );
+    gh.lazySingleton<_i16.ImportDataUseCase>(
+      () => _i16.ImportDataUseCase(gh<_i17.SettingsRepository>()),
+    );
     gh.lazySingleton<_i717.SetHalaqaStatusUseCase>(
       () => _i717.SetHalaqaStatusUseCase(gh<_i253.HalaqaRepository>()),
     );
@@ -585,11 +592,11 @@ extension GetItInjectableX on _i174.GetIt {
         repository: gh<_i795.SupervisorRepository>(),
       ),
     );
-    gh.lazySingleton<_i306.CheckLogInUseCase>(
-      () => _i306.CheckLogInUseCase(gh<_i879.AuthRepository>()),
-    );
     gh.lazySingleton<_i566.ChangePasswordUseCase>(
       () => _i566.ChangePasswordUseCase(gh<_i879.AuthRepository>()),
+    );
+    gh.lazySingleton<_i306.CheckLogInUseCase>(
+      () => _i306.CheckLogInUseCase(gh<_i879.AuthRepository>()),
     );
     gh.factory<_i912.ForgetPasswordUseCase>(
       () => _i912.ForgetPasswordUseCase(gh<_i879.AuthRepository>()),
@@ -640,6 +647,19 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i286.GenerateFollowUpReportUseCase(
         gh<_i847.StudentRepository>(),
         gh<_i926.FollowUpReportFactory>(),
+      ),
+    );
+    gh.factory<_i441.SettingsBloc>(
+      () => blocModule.settingsBloc(
+        gh<_i959.GetSettings>(),
+        gh<_i589.SaveTheme>(),
+        gh<_i762.SetNotificationsPreference>(),
+        gh<_i562.SetAnalyticsPreference>(),
+        gh<_i604.GetUserProfile>(),
+        gh<_i577.UpdateUserProfile>(),
+        gh<_i311.GetLatestPolicyUseCase>(),
+        gh<_i16.ImportDataUseCase>(),
+        gh<_i632.ExportDataUseCase>(),
       ),
     );
     gh.lazySingleton<_i167.WatchStudentsUseCase>(

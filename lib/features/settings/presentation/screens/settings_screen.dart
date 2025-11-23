@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tajalwaqaracademy/features/settings/presentation/screens/profile_screen.dart';
 
+import 'data_management_screen.dart';
 import '../bloc/settings_bloc.dart';
 import '../widgets/modern_setting_tile.dart';
 import '../widgets/settings_group_widget.dart';
@@ -156,24 +157,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: "مركز البيانات",
             children: [
               ModernSettingTile(
-                icon: Icons.file_download_outlined,
+                icon: Icons.storage_outlined,
                 iconBackgroundColor: Colors.indigo,
-                title: 'تصدير البيانات',
-                subtitle: 'تصدير جداول البيانات على هيئة معرفة في ملفات',
-
+                title: 'إدارة البيانات',
+                subtitle: 'استيراد وتصدير بيانات التطبيق',
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
-                  // TODO: Implement navigation to Help & Support Screen
-                },
-              ),
-              ModernSettingTile(
-                icon: Icons.file_upload_outlined,
-                iconBackgroundColor: Colors.teal,
-                title: 'استيراد البيانات',
-                subtitle: 'استيراد جداول البيانات على هيئة معرفة من ملفات',
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {
-                  // TODO: Implement navigation to Help & Support Screen
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider.value(
+                        value: BlocProvider.of<SettingsBloc>(context),
+                        child: const DataManagementScreen(),
+                      ),
+                    ),
+                  );
                 },
               ),
             ],

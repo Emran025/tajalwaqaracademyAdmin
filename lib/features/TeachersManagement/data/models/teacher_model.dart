@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:tajalwaqaracademy/core/utils/time_of_day_converter.dart';
 
 import '../../domain/entities/teacher_entity.dart';
 import '../../domain/entities/teacher_list_item_entity.dart';
@@ -106,7 +107,7 @@ final class TeacherModel {
   }
 
   /// Creates a [TeacherModel] from a JSON map received from an API.
-  factory TeacherModel.fromDbMap(Map<String, dynamic> map) {
+  factory TeacherModel.fromMap(Map<String, dynamic> map) {
     return TeacherModel(
       id: map['uuid'] as String? ?? (map['id'] as int? ?? 0).toString(), //
       name: map['name'] as String? ?? 'Unknown Name', //
@@ -122,7 +123,8 @@ final class TeacherModel {
       country: map['country'] as String? ?? '', //
       residence: map['residence'] as String? ?? '', //
       city: map['city'] as String? ?? '', //
-      availableTime: map['availableTime'] as String?, //
+      availableTime: timeOfDayToString(
+          stringToTimeOfDay(map['availableTime'] as String? ?? '00:00')), //
       status: ActiveStatus.fromLabel(map['status'] as String? ?? 'inactive'), //
       stopReasons: map['stopReasons'] as String?,
       avatar: map['avatar'] as String?, //
@@ -214,7 +216,7 @@ final class TeacherModel {
     };
   }
 
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'uuid': id,
       'roleId': UserRole.teacher.id,
@@ -280,4 +282,58 @@ final class TeacherModel {
 
   @override
   int get hashCode => id.hashCode;
+
+  static List<String> csvHeader() {
+    return [
+      'id',
+      'name',
+      'gender',
+      'birthDate',
+      'email',
+      'phone',
+      'phoneZone',
+      'whatsappPhone',
+      'whatsappZone',
+      'bio',
+      'experienceYears',
+      'country',
+      'residence',
+      'city',
+      'availableTime',
+      'status',
+      'stopReasons',
+      'avatar',
+      'createdAt',
+      'updatedAt',
+      'qualification',
+      'isDeleted'
+    ];
+  }
+
+  List<dynamic> toCsv() {
+    return [
+      id,
+      name,
+      gender.name,
+      birthDate,
+      email,
+      phone,
+      phoneZone,
+      whatsappPhone,
+      whatsappZone,
+      bio,
+      experienceYears,
+      country,
+      residence,
+      city,
+      timeOfDayToString(stringToTimeOfDay(availableTime ?? '00:00')),
+      status.name,
+      stopReasons,
+      avatar,
+      createdAt,
+      updatedAt,
+      qualification,
+      isDeleted
+    ];
+  }
 }

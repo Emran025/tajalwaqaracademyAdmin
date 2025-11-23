@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:tajalwaqaracademy/core/utils/time_of_day_converter.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
 
 import '../../domain/entities/student_entity.dart';
@@ -87,7 +88,8 @@ final class StudentModel {
       country: map['country'] as String? ?? '',
       residence: map['residence'] as String? ?? '',
       city: map['city'] as String? ?? '',
-      availableTime: map['availableTime'] as String?,
+      availableTime: timeOfDayToString(
+          stringToTimeOfDay(map['availableTime'] as String? ?? '00:00')),
       status: ActiveStatus.fromLabel(map['status'] as String? ?? 'inactive'),
       stopReasons: map['stopReasons'] as String?,
       avatar: map['avatar'] as String?,
@@ -102,8 +104,7 @@ final class StudentModel {
     );
   }
 
-  // دالة موحدة لإنشاء خريطة (للـ API والـ DB)
-  Map<String, dynamic> toMap({bool forDb = false}) {
+  Map<String, dynamic> toMap() {
     return {
       'uuid': id,
       'roleId': UserRole.student.id,
@@ -113,7 +114,7 @@ final class StudentModel {
       'email': email,
       'phone': phone,
       'phoneZone': phoneZone,
-      if (forDb) 'whatsapp': whatsappPhone else 'whatsappPhone': whatsappPhone,
+      'whatsapp': whatsappPhone,
       'whatsappZone': whatsappZone,
       'bio': bio,
       'qualification': qualification,
@@ -133,7 +134,40 @@ final class StudentModel {
       'lastModified':
           DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
-      'isDeleted': forDb ? (isDeleted ? 1 : 0) : isDeleted,
+      'isDeleted': isDeleted ? 1 : 0,
+    };
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'uuid': id,
+      'roleId': UserRole.student.id,
+      'name': name,
+      'gender': gender.id,
+      'birthDate': birthDate,
+      'email': email,
+      'phone': phone,
+      'phoneZone': phoneZone,
+      'whatsappPhone': whatsappPhone,
+      'whatsappZone': whatsappZone,
+      'bio': bio,
+      'qualification': qualification,
+      'experienceYears': experienceYears,
+      'country': country,
+      'residence': residence,
+      'city': city,
+      'availableTime': availableTime,
+      'status': status.label,
+      'stopReasons': stopReasons,
+      'avatar': avatar,
+      'memorizationLevel': memorizationLevel,
+      'createdAt':
+          DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
+
+      'lastModified':
+          DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
+      'isDeleted': isDeleted ? 1 : 0,
     };
   }
 
@@ -216,4 +250,60 @@ final class StudentModel {
 
   @override
   int get hashCode => id.hashCode;
+
+  static List<String> csvHeader() {
+    return [
+      'id',
+      'name',
+      'gender',
+      'birthDate',
+      'email',
+      'phone',
+      'phoneZone',
+      'whatsappPhone',
+      'whatsappZone',
+      'bio',
+      'experienceYears',
+      'country',
+      'residence',
+      'city',
+      'availableTime',
+      'status',
+      'stopReasons',
+      'avatar',
+      'updatedAt',
+      'createdAt',
+      'memorizationLevel',
+      'qualification',
+      'isDeleted'
+    ];
+  }
+
+  List<dynamic> toCsv() {
+    return [
+      id,
+      name,
+      gender.name,
+      birthDate,
+      email,
+      phone,
+      phoneZone,
+      whatsappPhone,
+      whatsappZone,
+      bio,
+      experienceYears,
+      country,
+      residence,
+      city,
+      timeOfDayToString(stringToTimeOfDay(availableTime ?? '00:00')),
+      status.name,
+      stopReasons,
+      avatar,
+      updatedAt,
+      createdAt,
+      memorizationLevel,
+      qualification,
+      isDeleted
+    ];
+  }
 }
