@@ -221,10 +221,10 @@ class SettingsRepositoryImpl implements SettingsRepository {
       final fileExtension = config.fileFormat;
       final file = File('${directory.path}/export_$timestamp.$fileExtension');
 
-      if (fileExtension == 'json') {
+      if (fileExtension.label == 'json') {
         await file.writeAsString(jsonEncode(data));
         return Right(file.path);
-      } else if (fileExtension == 'csv') {
+      } else if (fileExtension.label == 'csv') {
         final archive = Archive();
         if (students.isNotEmpty) {
           final csvData = <List<dynamic>>[];
