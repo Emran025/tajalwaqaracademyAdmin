@@ -10,7 +10,9 @@ import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/entities/settings_entity.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/entities/user_profile_entity.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_settings.dart';
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/export_data_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_user_profile.dart';
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/import_data_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/save_theme.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_analytics_preference.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_notifications_preference.dart';
@@ -30,6 +32,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final GetUserProfile _getUserProfile;
   final UpdateUserProfile _updateUserProfile;
   final GetLatestPolicyUseCase _getLatestPolicy;
+  final ExportDataUseCase _exportDataUseCase;
+  final ImportDataUseCase _importDataUseCase;
 
   SettingsBloc({
     required GetSettings getSettings,
@@ -39,6 +43,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required GetUserProfile getUserProfile,
     required UpdateUserProfile updateUserProfile,
     required GetLatestPolicyUseCase getLatestPolicy,
+    required ExportDataUseCase exportDataUseCase,
+    required ImportDataUseCase importDataUseCase,
   }) : _getSettings = getSettings,
        _saveTheme = saveTheme,
        _setNotificationsPreference = setNotificationsPreference,
@@ -46,6 +52,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
        _getUserProfile = getUserProfile,
        _updateUserProfile = updateUserProfile,
        _getLatestPolicy = getLatestPolicy,
+        _exportDataUseCase = exportDataUseCase,
+        _importDataUseCase = importDataUseCase,
        super(SettingsInitial()) {
     // Register event handlers
     on<LoadInitialSettings>(_onLoadInitialSettings);
@@ -64,6 +72,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       _onUpdateProfileRequested,
       transformer: droppable(),
     );
+    on<SettingsExportDataRequested>(_onSettingsExportDataRequested);
+    on<SettingsImportDataRequested>(_onSettingsImportDataRequested);
+    on<SettingsImportExportResetStatus>(
+        (_event, emit) => _onSettingsImportExportResetStatus(emit));
   }
 
   /// A common handler for all preference change events.
@@ -225,5 +237,62 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         ),
       ),
     );
+  }
+
+  Future<void> _onSettingsExportDataRequested(
+    SettingsExportDataRequested event,
+    Emitter<SettingsState> emit,
+  ) async {
+    if (state is! SettingsLoadSuccess) return;
+    final currentState = state as SettingsLoadSuccess;
+    emit(currentState.copyWith(exportStatus: DataExportStatus.loading));
+    final result =
+        await _exportDataUseCase(ExportDataParams(config: event.config));
+    result.fold(
+      (failure) => emit(currentState.copyWith(
+          exportStatus: DataExportStatus.failure, error: failure)),
+      (filePath) => emit(currentState.copyWith(
+          exportStatus: DataExportStatus.success, exportFilePath: filePath)),
+    );
+  }
+
+  Future<void> _onSettingsImportDataRequested(
+    SettingsImportDataRequested event,
+    Emitter<SettingsState> emit,
+  ) async {
+    if (state is! SettingsLoadSuccess) return;
+    final currentState = state as SettingsLoadSuccess;
+    emit(currentState.copyWith(importStatus: DataImportStatus.importing));
+    final result = await _importDataUseCase(
+        ImportDataParams(filePath: event.filePath, config: event.config));
+    result.fold(
+      (failure) => emit(currentState.copyWith(
+          importStatus: DataImportStatus.failure, error: failure)),
+      (summary) {
+        if (summary.failedRows > 0) {
+          emit(currentState.copyWith(
+              importStatus: DataImportStatus.failure,
+              importSummary: summary,
+              error:
+                  CacheFailure(message: 'Some rows failed to import.')));
+        } else {
+          emit(currentState.copyWith(
+              importStatus: DataImportStatus.success,
+              importSummary: summary));
+        }
+      },
+    );
+  }
+
+  void _onSettingsImportExportResetStatus(Emitter<SettingsState> emit) {
+    if (state is! SettingsLoadSuccess) return;
+    final currentState = state as SettingsLoadSuccess;
+    emit(currentState.copyWith(
+      exportStatus: DataExportStatus.initial,
+      importStatus: DataImportStatus.initial,
+      exportFilePath: null,
+      importSummary: null,
+      error: null,
+    ));
   }
 }

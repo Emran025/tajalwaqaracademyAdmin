@@ -84,7 +84,7 @@ final class StudentRepositoryImpl implements StudentRepository {
       await _localDataSource.queueSyncOperation(
         uuid: student.id,
         operation: 'upsert',
-        payload: model.toMap(forDb: true),
+        payload: model.toDbMap(),
       );
 
       // 4. Trigger a sync attempt in the background.

@@ -388,7 +388,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
           for (final studentInfo in updatedStudents) {
             usersBatch.insert(
               _kUsersTable,
-              studentInfo.studentModel.toMap(forDb: true),
+              studentInfo.studentModel.toDbMap(),
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
@@ -547,7 +547,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     try {
       _db.insert(
         _kUsersTable,
-        student.toMap(forDb: true),
+        student.toDbMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {

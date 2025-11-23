@@ -60,6 +60,32 @@ class UpdateProfileRequested extends SettingsEvent {
 /// NEW: Dispatched to fetch the latest privacy policy document.
 ///
 /// This event triggers the "remote-first, cache-fallback" logic defined
+import '../../domain/entities/export_config.dart';
+import '../../domain/entities/import_config.dart';
+
 /// in the repository layer.
 class LoadPrivacyPolicy extends SettingsEvent {}
 
+/// Fired to request a data export.
+class SettingsExportDataRequested extends SettingsEvent {
+  final ExportConfig config;
+
+  const SettingsExportDataRequested(this.config);
+
+  @override
+  List<Object> get props => [config];
+}
+
+/// Fired to request a data import.
+class SettingsImportDataRequested extends SettingsEvent {
+  final String filePath;
+  final ImportConfig config;
+
+  const SettingsImportDataRequested(this.filePath, this.config);
+
+  @override
+  List<Object> get props => [filePath, config];
+}
+
+/// Fired to reset the import/export status.
+class SettingsImportExportResetStatus extends SettingsEvent {}
