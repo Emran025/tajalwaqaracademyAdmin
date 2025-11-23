@@ -1,21 +1,21 @@
-import 'package:tajalwaqaracademy/features/settings/domain/entities/export_config.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/import_config.dart';
+
+import '../../domain/entities/import_export.dart';
 
 String toDisplayString(dynamic anEnum) {
   switch (anEnum) {
-    case ExportableData.students:
+    case EntityType.student:
       return 'بيانات الطلاب';
-    case ExportableData.teachers:
+    case EntityType.teacher:
       return 'بيانات المعلمين';
-    case ExportableData.halaqas:
+    case EntityType.halaqa:
       return 'بيانات الحلقات';
     case DataExportFormat.csv:
       return 'CSV';
     case DataExportFormat.json:
       return 'JSON';
-    case ConflictStrategy.skip:
+    case ConflictResolution.skip:
       return 'تجاهل';
-    case ConflictStrategy.overwrite:
+    case ConflictResolution.overwrite:
       return 'الكتابة فوق';
     default:
       return anEnum.toString().split('.').last;

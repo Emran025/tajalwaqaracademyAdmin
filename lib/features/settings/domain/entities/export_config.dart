@@ -9,7 +9,7 @@ class ExportConfig extends Equatable {
   final List<EntityType> entityTypes;
 
   /// The desired file format for the export (e.g., 'csv', 'json').
-  final String fileFormat;
+  final DataExportFormat fileFormat;
 
   const ExportConfig({
     required this.entityTypes,
