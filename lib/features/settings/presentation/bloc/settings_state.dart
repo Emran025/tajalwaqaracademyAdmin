@@ -1,6 +1,5 @@
 part of 'settings_bloc.dart';
 
-import '../../domain/entities/import_summary.dart';
 
 /// Represents the status of a specific, discrete section of the UI,
 /// such as the user profile or privacy policy block.

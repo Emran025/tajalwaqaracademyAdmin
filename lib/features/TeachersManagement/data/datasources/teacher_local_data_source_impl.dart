@@ -118,7 +118,7 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         for (final teacher in updatedTeachers) {
           batch.insert(
             _kUsersTable,
-            teacher.toDbMap(),
+            teacher.toMap(),
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
         }
@@ -204,7 +204,7 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
     try {
       await _db.insert(
         _kUsersTable,
-        teacher.toDbMap(),
+        teacher.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {

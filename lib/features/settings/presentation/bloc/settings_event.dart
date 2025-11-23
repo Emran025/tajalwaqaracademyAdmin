@@ -57,11 +57,6 @@ class UpdateProfileRequested extends SettingsEvent {
 
 
 
-/// NEW: Dispatched to fetch the latest privacy policy document.
-///
-/// This event triggers the "remote-first, cache-fallback" logic defined
-import '../../domain/entities/export_config.dart';
-import '../../domain/entities/import_config.dart';
 
 /// in the repository layer.
 class LoadPrivacyPolicy extends SettingsEvent {}

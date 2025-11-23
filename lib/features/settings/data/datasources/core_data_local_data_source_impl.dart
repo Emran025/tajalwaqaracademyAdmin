@@ -1,6 +1,7 @@
 // path: lib/features/settings/data/datasources/core_data_local_data_source_impl.dart
 
-import 'package.sqflite/sqflite.dart';
+import 'package:injectable/injectable.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../StudentsManagement/data/models/student_model.dart';
@@ -11,6 +12,8 @@ import 'package:tajalwaqaracademy/core/models/user_role.dart';
 const String _kUsersTable = 'users';
 
 /// Implements the [CoreDataLocalDataSource] contract.
+
+@LazySingleton(as: CoreDataLocalDataSource)
 class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   final Database database;
 
@@ -54,7 +57,7 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
     try {
       final batch = database.batch();
       for (final student in students) {
-        batch.insert(_kUsersTable, student.toDbMap(),
+        batch.insert(_kUsersTable, student.toMap(),
             conflictAlgorithm: conflictResolution == 'skip'
                 ? ConflictAlgorithm.ignore
                 : ConflictAlgorithm.replace);
@@ -72,7 +75,7 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
     try {
       final batch = database.batch();
       for (final teacher in teachers) {
-        batch.insert(_kUsersTable, teacher.toDbMap(),
+        batch.insert(_kUsersTable, teacher.toMap(),
             conflictAlgorithm: conflictResolution == 'skip'
                 ? ConflictAlgorithm.ignore
                 : ConflictAlgorithm.replace);

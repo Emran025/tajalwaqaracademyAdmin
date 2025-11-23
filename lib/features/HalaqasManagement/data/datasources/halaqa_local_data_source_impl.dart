@@ -255,7 +255,7 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
         whereArgs: [UserRole.halaqa.label, 'pending'],
         orderBy: 'created_at ASC',
       );
-      return maps.map(SyncQueueModel.fromDbMap).toList();
+      return maps.map(SyncQueueModel.fromMap).toList();
     } on DatabaseException catch (e) {
       throw CacheException(
         message: 'Failed to get pending operations: ${e.toString()}',

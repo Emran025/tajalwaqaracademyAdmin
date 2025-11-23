@@ -1,6 +1,6 @@
 // path: lib/features/settings/domain/entities/import_summary.dart
 
-import 'package.equatable/equatable.dart';
+import 'package:equatable/equatable.dart';
 
 /// Represents a detailed summary of a data import operation.
 class ImportSummary extends Equatable {

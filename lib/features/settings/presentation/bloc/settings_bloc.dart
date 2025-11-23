@@ -17,6 +17,13 @@ import 'package:tajalwaqaracademy/features/settings/domain/usecases/save_theme.d
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_analytics_preference.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_notifications_preference.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/update_user_profile.dart';
+import '../../domain/entities/import_summary.dart';
+
+/// NEW: Dispatched to fetch the latest privacy policy document.
+///
+/// This event triggers the "remote-first, cache-fallback" logic defined
+import '../../domain/entities/export_config.dart';
+import '../../domain/entities/import_config.dart';
 
 import '../../domain/entities/privacy_policy_entity.dart';
 

@@ -216,7 +216,7 @@ final class TeacherModel {
     };
   }
 
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'uuid': id,
       'roleId': UserRole.teacher.id,

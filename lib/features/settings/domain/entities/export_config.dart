@@ -1,6 +1,6 @@
 // path: lib/features/settings/domain/entities/export_config.dart
 
-import 'package.equatable/equatable.dart';
+import 'package:equatable/equatable.dart';
 import 'import_export.dart';
 
 /// Defines the configuration for a data export operation.

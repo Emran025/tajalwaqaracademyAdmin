@@ -388,7 +388,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
           for (final studentInfo in updatedStudents) {
             usersBatch.insert(
               _kUsersTable,
-              studentInfo.studentModel.toDbMap(),
+              studentInfo.studentModel.toMap(),
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
@@ -547,7 +547,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     try {
       _db.insert(
         _kUsersTable,
-        student.toDbMap(),
+        student.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
@@ -738,7 +738,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
         whereArgs: [UserRole.student.label, 'pending'],
         orderBy: 'created_at ASC',
       );
-      return maps.map(SyncQueueModel.fromDbMap).toList();
+      return maps.map(SyncQueueModel.fromMap).toList();
     } on DatabaseException catch (e) {
       throw CacheException(
         message: 'Failed to get pending operations: ${e.toString()}',

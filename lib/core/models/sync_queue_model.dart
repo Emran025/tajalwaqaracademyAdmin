@@ -42,7 +42,7 @@ final class SyncQueueModel {
   });
 
   /// A factory constructor for creating a new [SyncQueueModel] instance from a database map.
-  factory SyncQueueModel.fromDbMap(Map<String, dynamic> map) {
+  factory SyncQueueModel.fromMap(Map<String, dynamic> map) {
     return SyncQueueModel(
       id: map['id'] as int,
       entityUuid: map['entity_uuid'] as String,

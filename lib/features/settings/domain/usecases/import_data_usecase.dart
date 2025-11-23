@@ -2,6 +2,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -10,6 +11,8 @@ import '../entities/import_summary.dart';
 import '../repositories/settings_repository.dart';
 
 /// Imports application data from a file.
+@lazySingleton
+
 class ImportDataUseCase implements UseCase<ImportSummary, ImportDataParams> {
   final SettingsRepository repository;
 

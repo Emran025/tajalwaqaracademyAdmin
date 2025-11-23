@@ -104,8 +104,7 @@ final class StudentModel {
     );
   }
 
-  // دالة موحدة لإنشاء خريطة (للـ API والـ DB)
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'uuid': id,
       'roleId': UserRole.student.id,
@@ -115,7 +114,40 @@ final class StudentModel {
       'email': email,
       'phone': phone,
       'phoneZone': phoneZone,
-      if (forDb) 'whatsapp': whatsappPhone else 'whatsappPhone': whatsappPhone,
+      'whatsapp': whatsappPhone,
+      'whatsappZone': whatsappZone,
+      'bio': bio,
+      'qualification': qualification,
+      'experienceYears': experienceYears,
+      'country': country,
+      'residence': residence,
+      'city': city,
+      'availableTime': availableTime,
+      'status': status.label,
+      'stopReasons': stopReasons,
+      'avatar': avatar,
+      'memorizationLevel': memorizationLevel,
+      'createdAt':
+          DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
+
+      'lastModified':
+          DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
+          DateTime.now().toIso8601String(),
+      'isDeleted': isDeleted ? 1 : 0,
+    };
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'uuid': id,
+      'roleId': UserRole.student.id,
+      'name': name,
+      'gender': gender.id,
+      'birthDate': birthDate,
+      'email': email,
+      'phone': phone,
+      'phoneZone': phoneZone,
+      'whatsappPhone': whatsappPhone,
       'whatsappZone': whatsappZone,
       'bio': bio,
       'qualification': qualification,

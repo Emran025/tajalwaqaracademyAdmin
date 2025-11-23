@@ -199,8 +199,9 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }
 
   @override
-  Future<Either<Failure, String>> exportData(
-      {required ExportConfig config}) async {
+  Future<Either<Failure, String>> exportData({
+    required ExportConfig config,
+  }) async {
     try {
       final List<StudentModel> students = [];
       if (config.entityTypes.contains(EntityType.student)) {
@@ -231,7 +232,12 @@ class SettingsRepositoryImpl implements SettingsRepository {
           csvData.addAll(students.map((s) => s.toCsv()));
           final csvString = const ListToCsvConverter().convert(csvData);
           archive.addFile(
-              ArchiveFile('students.csv', csvString.length, utf8.encode(csvString)));
+            ArchiveFile(
+              'students.csv',
+              csvString.length,
+              utf8.encode(csvString),
+            ),
+          );
         }
         if (teachers.isNotEmpty) {
           final csvData = <List<dynamic>>[];
@@ -239,19 +245,27 @@ class SettingsRepositoryImpl implements SettingsRepository {
           csvData.addAll(teachers.map((t) => t.toCsv()));
           final csvString = const ListToCsvConverter().convert(csvData);
           archive.addFile(
-              ArchiveFile('teachers.csv', csvString.length, utf8.encode(csvString)));
+            ArchiveFile(
+              'teachers.csv',
+              csvString.length,
+              utf8.encode(csvString),
+            ),
+          );
         }
         final zipFile = File('${directory.path}/export_$timestamp.zip');
         final encoder = ZipFileEncoder();
         encoder.create(zipFile.path);
         for (final file in archive) {
-          encoder.addFile(file);
+          encoder.addArchiveFile(file);
         }
         encoder.close();
         return Right(zipFile.path);
       } else {
         return Left(
-            CacheFailure(message: 'Unsupported export file format: $fileExtension'));
+          CacheFailure(
+            message: 'Unsupported export file format: $fileExtension',
+          ),
+        );
       }
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
@@ -259,8 +273,10 @@ class SettingsRepositoryImpl implements SettingsRepository {
   }
 
   @override
-  Future<Either<Failure, ImportSummary>> importData(
-      {required String filePath, required ImportConfig config}) async {
+  Future<Either<Failure, ImportSummary>> importData({
+    required String filePath,
+    required ImportConfig config,
+  }) async {
     try {
       final file = File(filePath);
       final content = await file.readAsString();
@@ -277,15 +293,20 @@ class SettingsRepositoryImpl implements SettingsRepository {
           final studentsToImport = <StudentModel>[];
           for (var i = 0; i < totalRows; i++) {
             try {
-              studentsToImport.add(StudentModel.fromMap(
-                  studentsData[i] as Map<String, dynamic>));
+              studentsToImport.add(
+                StudentModel.fromMap(studentsData[i] as Map<String, dynamic>),
+              );
             } catch (e) {
-              errorMessages.add('Row ${i + 1}: Invalid student data - ${e.toString()}');
+              errorMessages.add(
+                'Row ${i + 1}: Invalid student data - ${e.toString()}',
+              );
             }
           }
           if (studentsToImport.isNotEmpty) {
             successfulRows = await coreDataSource.importStudents(
-                studentsToImport, config.conflictResolution.name);
+              studentsToImport,
+              config.conflictResolution.name,
+            );
           }
         } else if (config.entityType == EntityType.teacher &&
             data.containsKey('teachers')) {
@@ -294,15 +315,20 @@ class SettingsRepositoryImpl implements SettingsRepository {
           final teachersToImport = <TeacherModel>[];
           for (var i = 0; i < totalRows; i++) {
             try {
-              teachersToImport.add(TeacherModel.fromMap(
-                  teachersData[i] as Map<String, dynamic>));
+              teachersToImport.add(
+                TeacherModel.fromMap(teachersData[i] as Map<String, dynamic>),
+              );
             } catch (e) {
-              errorMessages.add('Row ${i + 1}: Invalid teacher data - ${e.toString()}');
+              errorMessages.add(
+                'Row ${i + 1}: Invalid teacher data - ${e.toString()}',
+              );
             }
           }
           if (teachersToImport.isNotEmpty) {
             successfulRows = await coreDataSource.importTeachers(
-                teachersToImport, config.conflictResolution.name);
+              teachersToImport,
+              config.conflictResolution.name,
+            );
           }
         }
       } else if (filePath.endsWith('.csv')) {
@@ -318,15 +344,21 @@ class SettingsRepositoryImpl implements SettingsRepository {
               try {
                 final row = dataRows[i];
                 final map = Map<String, dynamic>.fromIterables(
-                    header.map((e) => e.toString()), row);
+                  header.map((e) => e.toString()),
+                  row,
+                );
                 studentsToImport.add(StudentModel.fromMap(map));
               } catch (e) {
-                errorMessages.add('Row ${i + 1}: Invalid student data - ${e.toString()}');
+                errorMessages.add(
+                  'Row ${i + 1}: Invalid student data - ${e.toString()}',
+                );
               }
             }
             if (studentsToImport.isNotEmpty) {
               successfulRows = await coreDataSource.importStudents(
-                  studentsToImport, config.conflictResolution.name);
+                studentsToImport,
+                config.conflictResolution.name,
+              );
             }
           } else if (config.entityType == EntityType.teacher) {
             final teachersToImport = <TeacherModel>[];
@@ -334,26 +366,34 @@ class SettingsRepositoryImpl implements SettingsRepository {
               try {
                 final row = dataRows[i];
                 final map = Map<String, dynamic>.fromIterables(
-                    header.map((e) => e.toString()), row);
+                  header.map((e) => e.toString()),
+                  row,
+                );
                 teachersToImport.add(TeacherModel.fromMap(map));
               } catch (e) {
-                errorMessages.add('Row ${i + 1}: Invalid teacher data - ${e.toString()}');
+                errorMessages.add(
+                  'Row ${i + 1}: Invalid teacher data - ${e.toString()}',
+                );
               }
             }
             if (teachersToImport.isNotEmpty) {
               successfulRows = await coreDataSource.importTeachers(
-                  teachersToImport, config.conflictResolution.name);
+                teachersToImport,
+                config.conflictResolution.name,
+              );
             }
           }
         }
       }
 
-      return Right(ImportSummary(
-        totalRows: totalRows,
-        successfulRows: successfulRows,
-        failedRows: totalRows - successfulRows,
-        errorMessages: errorMessages,
-      ));
+      return Right(
+        ImportSummary(
+          totalRows: totalRows,
+          successfulRows: successfulRows,
+          failedRows: totalRows - successfulRows,
+          errorMessages: errorMessages,
+        ),
+      );
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
