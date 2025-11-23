@@ -103,7 +103,7 @@ final class StudentState extends Equatable {
     List<StudentListItemEntity>? filteredStudents,
     Failure? filteredStudentsFailure,
     bool clearFilteredStudentsFailure = false,
-        List<ListItemEntity>? applications,
+        List<ListItemEntity>? applicants,
   }) {
     return StudentState(
       status: status ?? this.status,

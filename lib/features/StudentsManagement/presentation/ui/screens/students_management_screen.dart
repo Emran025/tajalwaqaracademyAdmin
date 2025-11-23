@@ -49,9 +49,7 @@ class _StudentsManagementScreenState extends State<StudentsManagementScreen>
             StudentManagementScreen(),
             BlocProvider(
               create: (context) => sl<SupervisorBloc>()
-                ..add(
-                  ApplicationsFetched(page: 1, entityType: UserRole.student),
-                ),
+                ..add(ApplicantsFetched(page: 1, entityType: UserRole.student)),
               child: RequestsScreen(entityType: UserRole.student),
             ),
           ],

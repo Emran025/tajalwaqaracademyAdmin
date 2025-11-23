@@ -15,10 +15,10 @@ class SupervisorLoaded extends SupervisorState {
   final DateTimeRange? availableDateRange;
   // New
 
-  final List<ApplicationEntity> applications;
-  final int applicationsCurrentPage;
-  final bool applicationsHasMorePages;
-  final bool isLoadingMoreApplications;
+  final List<ApplicantEntity> applicants;
+  final int applicantsCurrentPage;
+  final bool applicantsHasMorePages;
+  final bool isLoadingMoreApplicants;
   SupervisorLoaded({
     this.countsDeltaEntity,
     this.timelineData,
@@ -26,11 +26,11 @@ class SupervisorLoaded extends SupervisorState {
     this.filter,
     this.availableDateRange,
 
-    // New properties for applications
-    this.applications = const [],
-    this.applicationsCurrentPage = 1,
-    this.applicationsHasMorePages = true,
-    this.isLoadingMoreApplications = false,
+    // New properties for applicants
+    this.applicants = const [],
+    this.applicantsCurrentPage = 1,
+    this.applicantsHasMorePages = true,
+    this.isLoadingMoreApplicants = false,
   });
 
   SupervisorLoaded copyWith({
@@ -39,11 +39,11 @@ class SupervisorLoaded extends SupervisorState {
     List<CompositePerformanceData>? chartData,
     ChartFilterEntity? filter,
     DateTimeRange? availableDateRange,
-    List<ApplicationEntity>? applications,
-    int? applicationsCurrentPage,
-    bool? applicationsHasMorePages,
-    bool? isLoadingMoreApplications,
-    bool clearApplications = false,
+    List<ApplicantEntity>? applicants,
+    int? applicantsCurrentPage,
+    bool? applicantsHasMorePages,
+    bool? isLoadingMoreApplicants,
+    bool clearApplicants = false,
   }) {
     return SupervisorLoaded(
       countsDeltaEntity: countsDeltaEntity ?? this.countsDeltaEntity,
@@ -52,16 +52,14 @@ class SupervisorLoaded extends SupervisorState {
       filter: filter ?? this.filter,
       availableDateRange: availableDateRange ?? this.availableDateRange,
 
-      // Applications
-      applications: clearApplications
-          ? const []
-          : applications ?? this.applications,
-      applicationsCurrentPage:
-          applicationsCurrentPage ?? this.applicationsCurrentPage,
-      applicationsHasMorePages:
-          applicationsHasMorePages ?? this.applicationsHasMorePages,
-      isLoadingMoreApplications:
-          isLoadingMoreApplications ?? this.isLoadingMoreApplications,
+      // Applicants
+      applicants: clearApplicants ? const [] : applicants ?? this.applicants,
+      applicantsCurrentPage:
+          applicantsCurrentPage ?? this.applicantsCurrentPage,
+      applicantsHasMorePages:
+          applicantsHasMorePages ?? this.applicantsHasMorePages,
+      isLoadingMoreApplicants:
+          isLoadingMoreApplicants ?? this.isLoadingMoreApplicants,
     );
   }
 }

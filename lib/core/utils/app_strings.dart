@@ -13,7 +13,6 @@ class AppStrings {
   AppStrings._();
 
   // --- General & App-wide Strings ---
-  static const String appName = 'بلغوا عني';
   static const String ok = 'موافق';
   static const String cancel = 'إلغاء';
   static const String error = 'خطأ';

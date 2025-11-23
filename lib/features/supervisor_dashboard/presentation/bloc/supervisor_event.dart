@@ -19,15 +19,22 @@ class UpdateChartFilter extends SupervisorEvent {
   UpdateChartFilter({required this.filter});
 }
 
-/// Dispatched to fetch student applications specifically
+/// Dispatched to fetch student applicants specifically
 // student_event.dart
-final class ApplicationsFetched extends SupervisorEvent {
+final class ApplicantsFetched extends SupervisorEvent {
   final int page;
   final UserRole entityType;
-  ApplicationsFetched({this.page = 1 ,required this.entityType});
+  ApplicantsFetched({this.page = 1, required this.entityType});
 }
 
-/// Dispatched to load more applications when reaching end of list
-final class MoreApplicationsLoaded extends SupervisorEvent {
-  MoreApplicationsLoaded();
+/// Dispatched to load more applicants when reaching end of list
+final class MoreApplicantsLoaded extends SupervisorEvent {
+  MoreApplicantsLoaded();
+}
+/// Dispatched to fetch student applicants specifically
+// student_event.dart
+final class ApplicantDetailsFetched extends SupervisorEvent {
+  
+  final UserRole applicantId;
+  ApplicantDetailsFetched({ required this.applicantId});
 }

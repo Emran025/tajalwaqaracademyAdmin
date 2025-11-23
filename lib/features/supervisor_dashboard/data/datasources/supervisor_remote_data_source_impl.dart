@@ -4,7 +4,7 @@ import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
 import 'package:tajalwaqaracademy/core/error/exceptions.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
 
-import '../models/application_model.dart';
+import '../models/applicant_model.dart';
 import 'supervisor_remote_data_source.dart';
 
 /// The concrete implementation of [SupervisorRemoteDataSource].
@@ -25,14 +25,14 @@ final class SupervisorRemoteDataSourceImpl
     : _apiConsumer = apiConsumer;
 
   @override
-  Future<PaginatedApplicationsResponse> getApplications({
+  Future<PaginatedApplicantsResponse> getApplicants({
     int page = 1,
     int? since,
     required UserRole entityType,
   }) async {
     try {
       final responseJson = await _apiConsumer.get(
-        EndPoint.studentApplications.replaceAll(
+        EndPoint.studentApplicants.replaceAll(
           '{application_type}',
           entityType.label.toLowerCase(),
         ),
@@ -44,11 +44,11 @@ final class SupervisorRemoteDataSourceImpl
 
       if (responseJson is! Map<String, dynamic>) {
         throw const FormatException(
-          'Invalid response format for student applications',
+          'Invalid response format for student applicants',
         );
       }
 
-      return PaginatedApplicationsResponse.fromJson(responseJson);
+      return PaginatedApplicantsResponse.fromJson(responseJson);
     } catch (e) {
       CacheException(message: "Undifund Data");
       rethrow;

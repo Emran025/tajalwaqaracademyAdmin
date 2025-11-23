@@ -70,7 +70,6 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
     );
   }
 
-  // دالة مساعدة لبناء الواجهة الرئيسية لجعل دالة build نظيفة
   Widget _buildSuccessfulUI(BuildContext screenContext, StudentState status) {
     // When success, the data will be in `state.selectedStudent`.
     // Another BlocBuilder can be used to display the actual data.

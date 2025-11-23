@@ -53,7 +53,7 @@ import '../../features/settings/domain/usecases/set_analytics_preference.dart';
 import '../../features/settings/domain/usecases/set_notifications_preference.dart';
 import '../../features/settings/domain/usecases/update_user_profile.dart';
 import '../../features/settings/presentation/bloc/settings_bloc.dart';
-import '../../features/supervisor_dashboard/domain/usecases/applications_use_case.dart';
+import '../../features/supervisor_dashboard/domain/usecases/applicants_use_case.dart';
 import '../../features/supervisor_dashboard/domain/usecases/get_date_range_use_case.dart';
 import '../../features/supervisor_dashboard/domain/usecases/get_entities_counts_use_case.dart';
 import '../../features/supervisor_dashboard/domain/usecases/get_timeline_use_case.dart';
@@ -126,7 +126,6 @@ abstract class BlocModule {
     GetStudentById getStudentById,
     SetStudentStatusUseCase setStudentStatus,
     GenerateFollowUpReportUseCase generateFollowUpReportUC,
-    
   ) {
     return StudentBloc(
       watchStudents: watchStudents,
@@ -137,7 +136,6 @@ abstract class BlocModule {
       getStudentById: getStudentById,
       setStudentStatus: setStudentStatus,
       generateFollowUpReportUC: generateFollowUpReportUC,
-      
     )..add(const WatchStudentsStarted());
   }
 
@@ -226,13 +224,13 @@ abstract class BlocModule {
     GetTimelineUseCase getTimelineUseCase,
     GetDateRangeUseCase getDateRangeUseCase,
     GetEntitiesCountsUseCase getEntitiesCountsUseCase,
-    GetApplicationsUseCase getApplicationsUC,
+    GetApplicantsUseCase getApplicantsUC,
   ) {
     return SupervisorBloc(
       getTimelineUseCase: getTimelineUseCase,
       getDateRangeUseCase: getDateRangeUseCase,
       getEntitiesCountsUseCase: getEntitiesCountsUseCase,
-      getApplicationsUC: getApplicationsUC,
+      getApplicantsUC: getApplicantsUC,
     );
   }
 }

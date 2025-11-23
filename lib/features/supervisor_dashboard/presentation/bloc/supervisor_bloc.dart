@@ -4,14 +4,14 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/application_entity.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_entity.dart';
 
 import '../../data/models/composite_performance_data.dart';
 import '../../domain/entities/chart_filter_entity.dart';
 import '../../domain/entities/counts_delta_entity.dart';
 import '../../domain/entities/timeline_entity.dart';
 import '../../domain/factories/chart_factory.dart';
-import '../../domain/usecases/applications_use_case.dart';
+import '../../domain/usecases/applicants_use_case.dart';
 import '../../domain/usecases/get_date_range_use_case.dart';
 import '../../domain/usecases/get_entities_counts_use_case.dart';
 import '../../domain/usecases/get_timeline_use_case.dart';
@@ -23,22 +23,19 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
   final GetEntitiesCountsUseCase getEntitiesCountsUseCase;
   final GetTimelineUseCase getTimelineUseCase;
   final GetDateRangeUseCase getDateRangeUseCase;
-  final GetApplicationsUseCase getApplicationsUC;
+  final GetApplicantsUseCase getApplicantsUC;
 
   SupervisorBloc({
     required this.getEntitiesCountsUseCase,
     required this.getTimelineUseCase,
     required this.getDateRangeUseCase,
-    required this.getApplicationsUC,
+    required this.getApplicantsUC,
   }) : super(SupervisorInitial()) {
     on<LoadCountsDeltaEntity>(_onLoadCountsDeltaEntity);
     on<LoadTimeline>(_onLoadTimeline);
     on<UpdateChartFilter>(_onUpdateChartFilter);
-    on<ApplicationsFetched>(_onApplicationsFetched, transformer: restartable());
-    on<MoreApplicationsLoaded>(
-      _onMoreApplicationsLoaded,
-      transformer: droppable(),
-    );
+    on<ApplicantsFetched>(_onApplicantsFetched, transformer: restartable());
+    on<MoreApplicantsLoaded>(_onMoreApplicantsLoaded, transformer: droppable());
   }
 
   Future<void> _onLoadTimeline(
@@ -193,15 +190,13 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
     }
   }
 
-  Future<void> _onApplicationsFetched(
-    ApplicationsFetched event,
+  Future<void> _onApplicantsFetched(
+    ApplicantsFetched event,
     Emitter<SupervisorState> emit,
   ) async {
-
-
     emit(SupervisorLoading());
 
-    final result = await getApplicationsUC(
+    final result = await getApplicantsUC(
       page: event.page,
       entityType: event.entityType,
     );
@@ -210,44 +205,43 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
       (failure) => emit(SupervisorError(message: failure.message)),
       (paginatedResult) => emit(
         SupervisorLoaded(
-          applications: paginatedResult.applications,
-          applicationsCurrentPage: paginatedResult.pagination.currentPage,
-          applicationsHasMorePages: paginatedResult.pagination.hasMorePages,
+          applicants: paginatedResult.applicants,
+          applicantsCurrentPage: paginatedResult.pagination.currentPage,
+          applicantsHasMorePages: paginatedResult.pagination.hasMorePages,
         ),
       ),
     );
   }
 
-  Future<void> _onMoreApplicationsLoaded(
-    MoreApplicationsLoaded event,
+  Future<void> _onMoreApplicantsLoaded(
+    MoreApplicantsLoaded event,
     Emitter<SupervisorState> emit,
   ) async {
     final currentState = state;
     if (currentState is! SupervisorLoaded ||
-        !currentState.applicationsHasMorePages ||
-        currentState.isLoadingMoreApplications) {
+        !currentState.applicantsHasMorePages ||
+        currentState.isLoadingMoreApplicants) {
       return;
     }
 
-    emit(currentState.copyWith(isLoadingMoreApplications: true));
+    emit(currentState.copyWith(isLoadingMoreApplicants: true));
 
-    final nextPage = currentState.applicationsCurrentPage + 1;
-    final result = await getApplicationsUC(
+    final nextPage = currentState.applicantsCurrentPage + 1;
+    final result = await getApplicantsUC(
       page: nextPage,
-      entityType: currentState.applications.first.applicationType,
+      entityType: currentState.applicants.first.applicantType,
     );
     result.fold(
-      (failure) =>
-          emit(currentState.copyWith(isLoadingMoreApplications: false)),
+      (failure) => emit(currentState.copyWith(isLoadingMoreApplicants: false)),
       (paginatedResult) => emit(
         currentState.copyWith(
-          isLoadingMoreApplications: false,
-          applications: [
-            ...currentState.applications,
-            ...paginatedResult.applications,
+          isLoadingMoreApplicants: false,
+          applicants: [
+            ...currentState.applicants,
+            ...paginatedResult.applicants,
           ],
-          applicationsCurrentPage: paginatedResult.pagination.currentPage,
-          applicationsHasMorePages: paginatedResult.pagination.hasMorePages,
+          applicantsCurrentPage: paginatedResult.pagination.currentPage,
+          applicantsHasMorePages: paginatedResult.pagination.hasMorePages,
         ),
       ),
     );

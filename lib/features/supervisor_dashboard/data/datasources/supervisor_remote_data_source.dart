@@ -1,6 +1,5 @@
-
 import '../../../../core/models/user_role.dart';
-import '../models/application_model.dart';
+import '../models/applicant_model.dart';
 
 /// Defines the abstract contract for the remote data source of students.
 ///
@@ -15,7 +14,6 @@ import '../models/application_model.dart';
 /// synchronization mechanism.
 
 abstract interface class SupervisorRemoteDataSource {
-
   /// Fetches a single page of delta updates from the server.
   ///
   /// - [since]: A Unix timestamp (milliseconds) of the last successful sync.
@@ -23,9 +21,9 @@ abstract interface class SupervisorRemoteDataSource {
   ///
   /// Returns a [StudentSyncResponseModel] containing a batch of updated/deleted
   /// records, pagination info, and a new server timestamp.
-  Future<PaginatedApplicationsResponse> getApplications({
+  Future<PaginatedApplicantsResponse> getApplicants({
     int page = 1,
     int? since,
-     required UserRole entityType ,
+    required UserRole entityType,
   });
 }

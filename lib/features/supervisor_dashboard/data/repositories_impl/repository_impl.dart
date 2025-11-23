@@ -7,7 +7,7 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/user_role.dart';
-import '../../../StudentsManagement/domain/entities/paginated_applications_result.dart';
+import '../../../StudentsManagement/domain/entities/paginated_applicants_result.dart';
 import '../../domain/entities/chart_filter_entity.dart';
 import '../../domain/entities/timeline_entity.dart';
 import '../../domain/repositories/repository.dart';
@@ -78,12 +78,12 @@ class SupervisorRepositoryImpl implements SupervisorRepository {
   }
 
   @override
-  Future<Either<Failure, PaginatedApplicationsResult>> getApplications({
+  Future<Either<Failure, PaginatedApplicantsResult>> getApplicants({
     int page = 1,
     required UserRole entityType,
   }) async {
     try {
-      final result = await remoteDataSource.getApplications(
+      final result = await remoteDataSource.getApplicants(
         page: page,
         entityType: entityType,
       );
@@ -93,8 +93,8 @@ class SupervisorRepositoryImpl implements SupervisorRepository {
           .toList();
 
       return Right(
-        PaginatedApplicationsResult(
-          applications: entities,
+        PaginatedApplicantsResult(
+          applicants: entities,
           pagination: result.pagination.toEntity(),
         ),
       );

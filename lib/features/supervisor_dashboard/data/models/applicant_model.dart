@@ -1,26 +1,26 @@
-// application_model.dart
+// applicant_model.dart
 import 'package:equatable/equatable.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/core/models/gender.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
 import '../../../../core/entities/list_item_entity.dart';
 import '../../../../core/models/pagination_info_model.dart';
-import '../../domain/entities/application_entity.dart';
+import '../../domain/entities/applicant_entity.dart';
 
-class ApplicationModel extends Equatable {
-  final UserRole applicationType;
+class ApplicantModel extends Equatable {
+  final UserRole applicantType;
   final String submittedAt;
   final UserModel user;
 
-  const ApplicationModel({
-    required this.applicationType,
+  const ApplicantModel({
+    required this.applicantType,
     required this.submittedAt,
     required this.user,
   });
 
-  factory ApplicationModel.fromJson(Map<String, dynamic> json) {
-    return ApplicationModel(
-      applicationType: UserRole.fromLabel(json['application_type'] as String),
+  factory ApplicantModel.fromJson(Map<String, dynamic> json) {
+    return ApplicantModel(
+      applicantType: UserRole.fromLabel(json['application_type'] as String),
 
       submittedAt: json['submitted_at'] as String? ?? "${DateTime.now()}",
       user: UserModel.fromJson(
@@ -33,16 +33,16 @@ class ApplicationModel extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'application_type': applicationType,
+      'application_type': applicantType,
       'submitted_at': submittedAt,
       'user': user.toJson(),
     };
   }
 
-  ApplicationEntity toEntity() {
-    return ApplicationEntity(
+  ApplicantEntity toEntity() {
+    return ApplicantEntity(
       id: user.id,
-      applicationType: applicationType,
+      applicantType: applicantType,
       status: user.status,
       submittedAt: submittedAt,
       user: user.toEntity(),
@@ -50,7 +50,7 @@ class ApplicationModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [applicationType, submittedAt, user];
+  List<Object?> get props => [applicantType, submittedAt, user];
 }
 
 class UserModel extends Equatable {
@@ -129,24 +129,22 @@ class UserModel extends Equatable {
   ];
 }
 
-class PaginatedApplicationsResponse {
+class PaginatedApplicantsResponse {
   final bool success;
-  final List<ApplicationModel> data;
+  final List<ApplicantModel> data;
   final PaginationInfo pagination;
 
-  PaginatedApplicationsResponse({
+  PaginatedApplicantsResponse({
     required this.success,
     required this.data,
     required this.pagination,
   });
 
-  factory PaginatedApplicationsResponse.fromJson(Map<String, dynamic> json) {
-    return PaginatedApplicationsResponse(
+  factory PaginatedApplicantsResponse.fromJson(Map<String, dynamic> json) {
+    return PaginatedApplicantsResponse(
       success: json['success'] as bool,
       data: (json['data'] as List)
-          .map(
-            (item) => ApplicationModel.fromJson(item as Map<String, dynamic>),
-          )
+          .map((item) => ApplicantModel.fromJson(item as Map<String, dynamic>))
           .toList(),
       pagination: PaginationInfo.fromJson(
         json['pagination'] as Map<String, dynamic>,

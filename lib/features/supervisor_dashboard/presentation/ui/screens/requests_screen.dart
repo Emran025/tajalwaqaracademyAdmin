@@ -26,7 +26,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
     super.initState();
     _supervisorBloc = context.read<SupervisorBloc>();
     _supervisorBloc.add(
-      ApplicationsFetched(page: 1, entityType: widget.entityType),
+      ApplicantsFetched(page: 1, entityType: widget.entityType),
     );
 
     _scrollController.addListener(_onScroll);
@@ -35,7 +35,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      _supervisorBloc.add(MoreApplicationsLoaded());
+      _supervisorBloc.add(MoreApplicantsLoaded());
     }
   }
 
@@ -64,7 +64,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             ElevatedButton(
                               onPressed: () {
                                 _supervisorBloc.add(
-                                  ApplicationsFetched(
+                                  ApplicantsFetched(
                                     page: 1,
                                     entityType: widget.entityType,
                                   ),
@@ -76,19 +76,19 @@ class _RequestsScreenState extends State<RequestsScreen> {
                         ),
                       );
                     } else if (state is SupervisorLoaded) {
-                      if (state.applications.isEmpty) {
+                      if (state.applicants.isEmpty) {
                         //   return const Center(child: CircularProgressIndicator());
                       }
-                      final applications = state.applications;
+                      final applicants = state.applicants;
 
                       return ListView.separated(
                         controller: _scrollController,
                         itemCount:
-                            applications.length +
-                            (state.isLoadingMoreApplications ? 1 : 0),
+                            applicants.length +
+                            (state.isLoadingMoreApplicants ? 1 : 0),
                         separatorBuilder: (_, __) => const SizedBox(height: 5),
                         itemBuilder: (ctx, i) {
-                          if (i == applications.length) {
+                          if (i == applicants.length) {
                             // عرض مؤشر التحميل في النهاية
                             return const Padding(
                               padding: EdgeInsets.all(16.0),
@@ -96,7 +96,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             );
                           }
 
-                          return _buildStudentCard(applications[i].user);
+                          return _buildStudentCard(applicants[i].user);
                         },
                       );
                     }
