@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 // import 'package:injectable/injectable.dart';
 
+import '../../../../core/entities/list_item_entity.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
 import '../../../../core/models/report_frequency.dart';
@@ -68,6 +69,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<FilteredStudents>(_onFetchFilteredStudents, transformer: restartable());
     on<StudentStatusChanged>(_onStatusChange, transformer: droppable());
     on<FollowUpReportFetched>(_onFetchReport, transformer: droppable());
+
   }
 
   @override
@@ -164,7 +166,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       ),
     );
   }
-  
+
   /// Handles the fetching of a single student's detailed profile.
   Future<void> _onFetchFilteredStudents(
     FilteredStudents event,
@@ -179,13 +181,14 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       ),
     );
 
-    final result = await _fetchFilteredStudentsUC(GetFilteredStudentsParams
-    (
-      status: event.status,
-      halaqaId: event.halaqaId,
-      trackDate: event.trackDate,
-      frequencyCode: event.frequencyCode,
-    ));
+    final result = await _fetchFilteredStudentsUC(
+      GetFilteredStudentsParams(
+        status: event.status,
+        halaqaId: event.halaqaId,
+        trackDate: event.trackDate,
+        frequencyCode: event.frequencyCode,
+      ),
+    );
 
     // 3. Fold the result and emit either a success or failure state.
     result.fold(

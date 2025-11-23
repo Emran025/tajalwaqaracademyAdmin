@@ -66,6 +66,7 @@ final class StudentState extends Equatable {
     this.filteredStudentsStatus = StudentStatus.initial,
     this.filteredStudents,
     this.filteredStudentsFailure,
+
   });
 
   StudentState copyWith({
@@ -102,6 +103,7 @@ final class StudentState extends Equatable {
     List<StudentListItemEntity>? filteredStudents,
     Failure? filteredStudentsFailure,
     bool clearFilteredStudentsFailure = false,
+        List<ListItemEntity>? applications,
   }) {
     return StudentState(
       status: status ?? this.status,
@@ -139,6 +141,7 @@ final class StudentState extends Equatable {
       filteredStudentsFailure: clearFilteredStudentsFailure
           ? null
           : filteredStudentsFailure ?? this.filteredStudentsFailure,
+
     );
   }
 
@@ -158,5 +161,7 @@ final class StudentState extends Equatable {
     filteredStudentsStatus,
     filteredStudents,
     filteredStudentsFailure,
+
   ];
 }
+

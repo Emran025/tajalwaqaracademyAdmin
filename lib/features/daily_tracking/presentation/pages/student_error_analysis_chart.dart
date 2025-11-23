@@ -6,10 +6,9 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/
 import '../../../../shared/themes/app_theme.dart';
 import '../../../supervisor_dashboard/presentation/ui/widgets/base_bar_chart.dart';
 
-/// مخطط تحليل الأخطاء مع إمكانية السحب الأفقي لعرض 12 فترة زمنية
-/// يستخدم PageView لتمكين السحب بسلاسة بين الفترات
+
 class StudentErrorAnalysisChart extends StatefulWidget {
-  final List<BarChartDatas> errorDataPeriods; // 12 فترة من البيانات
+  final List<BarChartDatas> errorDataPeriods;
   final ChartFilter filter;
   final ChartTile tile;
   final Function(ChartFilter)? onFilterChanged;
@@ -36,7 +35,6 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
   void initState() {
     super.initState();
     _currentFilter = widget.filter;
-    // ابدأ من الفترة الأخيرة (الأحدث) - الفترة 11 (من 0 إلى 11)
     _pageController = PageController(
       initialPage: widget.errorDataPeriods.length - 1,
     );
@@ -98,7 +96,7 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
 
         // PageView for Charts
         SizedBox(
-          height: 280, // ارتفاع ثابت للمخطط
+          height: 280,
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: _onPageChanged,

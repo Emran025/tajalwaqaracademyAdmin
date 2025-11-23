@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:tajalwaqaracademy/core/entities/pagination_info_entity.dart';
 
 /// A data model that encapsulates pagination metadata from an API response.
 ///
@@ -58,7 +59,17 @@ final class PaginationInfo {
       currentPage: 1,
       totalPages: 1,
       // Assume there are more pages until the first fetch proves otherwise.
-      hasMorePages: true, 
+      hasMorePages: true,
+    );
+  }
+
+  PaginationInfoEntity toEntity() {
+    return PaginationInfoEntity(
+      total: total,
+      perPage: perPage,
+      currentPage: currentPage,
+      totalPages: totalPages,
+      hasMorePages: hasMorePages,
     );
   }
 
@@ -85,4 +96,3 @@ final class PaginationInfo {
         hasMorePages.hashCode;
   }
 }
-

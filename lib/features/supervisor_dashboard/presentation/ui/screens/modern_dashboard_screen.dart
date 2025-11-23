@@ -11,7 +11,7 @@ import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import '../../../../../core/models/cheet_tile.dart';
 import '../../../../../shared/widgets/draggable_scrollable_sheet.dart';
 import '../../../domain/entities/chart_filter_entity.dart';
-import '../../bloc/supervisor_timeline_bloc.dart';
+import '../../bloc/supervisor_bloc.dart';
 
 /// Main dashboard screen displaying statistics and analytics
 /// Uses BLoC pattern for state management and follows OOP principles
@@ -59,7 +59,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
   }
 
   void _loadInitialData() {
-    final bloc = context.read<SupervisorTimelineBloc>();
+    final bloc = context.read<SupervisorBloc>();
     bloc.add(LoadCountsDeltaEntity());
   }
 
@@ -171,13 +171,15 @@ class _DashboardStateBuilder {
   Widget _buildStatisticsGrid(BuildContext context) {
     return Expanded(
       flex: 2,
-      child: BlocBuilder<SupervisorTimelineBloc, SupervisorTimelineState>(
+      child: BlocBuilder<SupervisorBloc, SupervisorState>(
         builder: (context, state) {
           final DashboardDataManager dataManager = DashboardDataManager();
           final stats = dataManager.getInitialStats(role);
 
-          if (state is SupervisorTimelineLoaded) {
-            return _buildLoadedStatisticsGrid(stats, state);
+          if (state is SupervisorLoaded && state.countsDeltaEntity !=null) {
+            return 
+            
+             _buildLoadedStatisticsGrid(stats, state);
           } else {
             return _buildDefaultStatisticsGrid(stats);
           }
@@ -188,17 +190,17 @@ class _DashboardStateBuilder {
 
   Widget _buildLoadedStatisticsGrid(
     List<_DashboardStat> stats,
-    SupervisorTimelineLoaded state,
+    SupervisorLoaded state,
   ) {
     final updatedStats = [
       stats[0].copyWith(
-        suTitle: "${state.countsDeltaEntity.studentCount.count}",
+        suTitle: "${state.countsDeltaEntity!.studentCount.count}",
       ),
       stats[1].copyWith(
-        suTitle: "${state.countsDeltaEntity.teacherCount.count}",
+        suTitle: "${state.countsDeltaEntity!.teacherCount.count}",
       ),
       stats[2].copyWith(
-        suTitle: "${state.countsDeltaEntity.halaqaCount.count}",
+        suTitle: "${state.countsDeltaEntity!.halaqaCount.count}",
       ),
     ];
 
@@ -233,7 +235,7 @@ class _DashboardStateBuilder {
   }
 
   Widget _buildStatCard(BuildContext context, _DashboardStat stat) {
-    return BlocConsumer<SupervisorTimelineBloc, SupervisorTimelineState>(
+    return BlocConsumer<SupervisorBloc, SupervisorState>(
       listener: _handleStatCardStateChange,
       builder: (context, state) {
         return _StatCardWidget(
@@ -245,16 +247,13 @@ class _DashboardStateBuilder {
     );
   }
 
-  void _handleStatCardStateChange(
-    BuildContext context,
-    SupervisorTimelineState state,
-  ) {
+  void _handleStatCardStateChange(BuildContext context, SupervisorState state) {
     // Handle specific state changes like errors
   }
 
   void _handleStatCardTap(BuildContext context, _DashboardStat stat) {
     final selectedEntityType = UserRole.fromLabel(stat.title);
-    context.read<SupervisorTimelineBloc>().add(
+    context.read<SupervisorBloc>().add(
       LoadTimeline(
         filter: ChartFilterEntity(
           entityType: selectedEntityType,
@@ -284,7 +283,7 @@ class _DashboardStateBuilder {
 /// Individual statistic card widget
 class _StatCardWidget extends StatelessWidget {
   final _DashboardStat stat;
-  final SupervisorTimelineState state;
+  final SupervisorState state;
   final VoidCallback onTap;
 
   const _StatCardWidget({
@@ -307,19 +306,19 @@ class _StatCardWidget extends StatelessWidget {
   }
 
   List<Widget> _buildDetailContent(BuildContext context) {
-    if (state is SupervisorTimelineLoading) {
+    if (state is SupervisorLoading) {
       return [_buildLoadingState()];
-    } else if (state is SupervisorTimelineError) {
-      return [_buildErrorState((state as SupervisorTimelineError).message)];
+    } else if (state is SupervisorError) {
+      return [_buildErrorState((state as SupervisorError).message)];
     } else if (_hasValidData(state)) {
-      return _buildDetailedCharts(context, state as SupervisorTimelineLoaded);
+      return _buildDetailedCharts(context, state as SupervisorLoaded);
     } else {
       return [_buildInitialState()];
     }
   }
 
-  bool _hasValidData(SupervisorTimelineState state) {
-    return state is SupervisorTimelineLoaded &&
+  bool _hasValidData(SupervisorState state) {
+    return state is SupervisorLoaded &&
         state.timelineData != null &&
         state.availableDateRange != null &&
         state.filter != null &&
@@ -328,7 +327,7 @@ class _StatCardWidget extends StatelessWidget {
 
   List<Widget> _buildDetailedCharts(
     BuildContext context,
-    SupervisorTimelineLoaded state,
+    SupervisorLoaded state,
   ) {
     return [
       Text(
@@ -349,7 +348,7 @@ class _StatCardWidget extends StatelessWidget {
             icon: Icons.assessment,
           ),
           onFilterChanged: (filter) {
-            context.read<SupervisorTimelineBloc>().add(
+            context.read<SupervisorBloc>().add(
               UpdateChartFilter(filter: filter),
             );
           },

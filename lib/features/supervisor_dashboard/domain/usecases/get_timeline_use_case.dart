@@ -10,11 +10,13 @@ import '../../../../core/error/failures.dart';
 
 @lazySingleton
 class GetTimelineUseCase {
-  final SupervisorTimelineRepository repository;
+  final SupervisorRepository repository;
 
   GetTimelineUseCase({required this.repository});
 
-  Future<Either<Failure, List<TimelineEntity>>> call(ChartFilterEntity filter) async {
+  Future<Either<Failure, List<TimelineEntity>>> call(
+    ChartFilterEntity filter,
+  ) async {
     try {
       final timeline = await repository.getTimeline(filter);
       return Right(timeline);

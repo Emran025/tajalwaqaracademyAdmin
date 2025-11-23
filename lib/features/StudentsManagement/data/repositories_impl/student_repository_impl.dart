@@ -13,6 +13,7 @@ import '../../domain/entities/student_list_item_entity.dart';
 import '../../domain/entities/tracking_entity.dart';
 import '../../domain/repositories/student_repository.dart';
 import '../datasources/student_local_data_source.dart';
+import '../datasources/student_remote_data_source.dart';
 import '../models/follow_up_plan_model.dart';
 import '../models/student_model.dart';
 import '../models/tracking_model.dart';
@@ -26,6 +27,7 @@ final class StudentRepositoryImpl implements StudentRepository {
 
   StudentRepositoryImpl({
     required StudentLocalDataSource localDataSource,
+    required StudentRemoteDataSource remoteDataSource,
     required StudentSyncService syncService,
   }) : _localDataSource = localDataSource,
        _syncService = syncService;
@@ -184,6 +186,7 @@ final class StudentRepositoryImpl implements StudentRepository {
       return Left(ServerFailure(message: e.message));
     }
   }
+
 
   /// Returns [Right(unit)] on success, or a [Left(Failure)] on error.
   @override

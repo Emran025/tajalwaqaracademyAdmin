@@ -2,6 +2,7 @@
 import '../../data/models/student_model.dart';
 import 'package:flutter/material.dart';
 
+
 /// A wrapper class to hold the list of students and pagination metadata.
 @immutable
 class PaginatedStudentsResult {

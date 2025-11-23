@@ -4,7 +4,9 @@ import 'package:tajalwaqaracademy/config/di/injection.dart';
 import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/bloc/teacher_bloc.dart';
 import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/ui/screens/teacher_management_screen.dart';
-import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/ui/screens/teacher_requests_screen.dart';
+
+import '../../../../../core/models/user_role.dart';
+import '../../../../supervisor_dashboard/presentation/ui/screens/requests_screen.dart';
 
 class TeachersManagementScreen extends StatefulWidget {
   const TeachersManagementScreen({super.key});
@@ -32,18 +34,7 @@ class _TeachersManagementScreenState extends State<TeachersManagementScreen>
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           toolbarHeight: 0,
-          // title: const Text("إدارة المعلمين"),
           bottom: TabBar(
-            // labelStyle: GoogleFonts.cairo(
-            //   fontSize: 14,
-            //   fontWeight: FontWeight.bold,
-            //   color: AppColors.lightCream54,
-            // ),
-            // unselectedLabelStyle: GoogleFonts.cairo(
-            //   fontSize: 12,
-            //   fontWeight: FontWeight.bold,
-            //   color: AppColors.lightCream,
-            // ),
             dividerColor: Colors.black12,
             indicatorColor: AppColors.accent,
             controller: _tabController,
@@ -55,7 +46,11 @@ class _TeachersManagementScreenState extends State<TeachersManagementScreen>
         ),
         body: TabBarView(
           controller: _tabController,
-          children: [TeacherManagementScreen(), TeacherRequestsScreen()],
+          children: [
+            TeacherManagementScreen(),
+
+            RequestsScreen(entityType: UserRole.teacher),
+          ],
         ),
       ),
     );

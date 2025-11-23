@@ -1,4 +1,4 @@
-import '../../domain/entities/paginated_students_result.dart';
+import '../../domain/entities/paginated_result.dart';
 import '../models/student_model.dart';
 import '../models/student_sync_response_model.dart';
 import '../models/tracking_model.dart';
@@ -36,7 +36,6 @@ abstract interface class StudentRemoteDataSource {
     required int page,
   });
 
-
   /// Fetches a single student by their unique identifier (UUID).
   /// - [studentData]: A map containing the student's UUID and other identifying information.
   /// Returns the [StudentModel] for the specified student.
@@ -58,4 +57,5 @@ abstract interface class StudentRemoteDataSource {
   /// Returns a [Future] that completes when the deletion is successful.
   Future<void> deleteStudent(String studentId);
   Future<List<TrackingModel>> getFollowUpTrackings(String studentId);
+
 }

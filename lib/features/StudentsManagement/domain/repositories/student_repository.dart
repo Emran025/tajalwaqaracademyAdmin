@@ -78,4 +78,5 @@ abstract interface class StudentRepository {
     DateTime? trackDate,
     Frequency? frequencyCode,
   });
+
 }

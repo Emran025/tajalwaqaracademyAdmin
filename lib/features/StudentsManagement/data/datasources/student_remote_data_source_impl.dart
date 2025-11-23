@@ -1,9 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:tajalwaqaracademy/core/api/api_consumer.dart';
 import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
+
 import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_model.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_sync_response_model.dart';
-import '../../domain/entities/paginated_students_result.dart';
+import '../../domain/entities/paginated_result.dart';
 import '../models/tracking_model.dart';
 import 'student_remote_data_source.dart';
 
@@ -191,4 +192,5 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
         .whereType<TrackingModel>()
         .toList();
   }
+
 }

@@ -6,12 +6,12 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'config/di/injection.dart';
 import 'features/app/cubit/app_setup_cubit.dart';
 import 'features/settings/presentation/bloc/settings_bloc.dart';
+import 'features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
 import 'shared/themes/app_theme.dart';
 import 'routes/app_router.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
   // Initialize date formatting for Arabic locale.
@@ -35,6 +35,7 @@ void main() async {
         // creating it is standard practice unless the instance must be preserved
         // across widget trees, which is not the case at the root.
         BlocProvider<AuthBloc>(create: (context) => sl<AuthBloc>()),
+        BlocProvider(create: (context) => sl<SupervisorBloc>()),
       ],
       child: const TajAlWaqarApp(),
     ),

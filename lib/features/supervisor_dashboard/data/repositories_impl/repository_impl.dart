@@ -1,23 +1,29 @@
 // repository/student_timeline_repository_impl.dart
 
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/counts_delta_entity.dart';
 
+import '../../../../core/error/failures.dart';
 import '../../../../core/models/user_role.dart';
+import '../../../StudentsManagement/domain/entities/paginated_applications_result.dart';
 import '../../domain/entities/chart_filter_entity.dart';
 import '../../domain/entities/timeline_entity.dart';
 import '../../domain/repositories/repository.dart';
+import '../datasources/supervisor_remote_data_source.dart';
 import '../datasources/supervisor_local_data_source.dart';
 import '../service/timeline_builder_impl.dart';
 
-@LazySingleton(as: SupervisorTimelineRepository)
-class SupervisorTimelineRepositoryImpl implements SupervisorTimelineRepository {
+@LazySingleton(as: SupervisorRepository)
+class SupervisorRepositoryImpl implements SupervisorRepository {
   final SupervisorLocalDataSource localDataSource;
+  final SupervisorRemoteDataSource remoteDataSource;
   final TimelineBuilderImpl timelineBuilder;
 
-  SupervisorTimelineRepositoryImpl({
+  SupervisorRepositoryImpl({
     required this.localDataSource,
+    required this.remoteDataSource,
     required this.timelineBuilder,
   });
 
@@ -68,32 +74,32 @@ class SupervisorTimelineRepositoryImpl implements SupervisorTimelineRepository {
   Future<CountsDeltaEntity> getEntitiesCounts() async {
     await timelineBuilder.buildAccurateCounts();
     final counts = await localDataSource.getCounts();
-    print("----------------------${counts.studentCount.count}");
-    print("----------------------${counts.teacherCount.count}");
-    print("----------------------${counts.halaqaCount.count}");
     return counts.toEntity();
   }
-  // @override
-  // Future<DateTimeRange> getAvailableDateRange() async {
-  //   final times = await localDataSource.getStartEndTimes();
-  //   if (times.length < 2) {
-  //     final now = DateTime.now();
-  //     // Ensure start is always before end
-  //     return DateTimeRange(
-  //       start: now.subtract(const Duration(days: 30)),
-  //       end: now
-  //     );
-  //   }
 
-  //   // Validate that start is before end
-  //   final start = times[0];
-  //   final end = times[1];
+  @override
+  Future<Either<Failure, PaginatedApplicationsResult>> getApplications({
+    int page = 1,
+    required UserRole entityType,
+  }) async {
+    try {
+      final result = await remoteDataSource.getApplications(
+        page: page,
+        entityType: entityType,
+      );
 
-  //   if (start.isAfter(end)) {
-  //     // Swap dates if they're in wrong order
-  //     return DateTimeRange(start: end, end: start);
-  //   }
+      final entities = result.data
+          .map((element) => element.toEntity())
+          .toList();
 
-  //   return DateTimeRange(start: start, end: end);
-  // }
+      return Right(
+        PaginatedApplicationsResult(
+          applications: entities,
+          pagination: result.pagination.toEntity(),
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

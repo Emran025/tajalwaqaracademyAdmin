@@ -8,7 +8,7 @@ import '../repositories/repository.dart';
 
 @lazySingleton
 class GetEntitiesCountsUseCase {
-  final SupervisorTimelineRepository repository;
+  final SupervisorRepository repository;
 
   GetEntitiesCountsUseCase({required this.repository});
 

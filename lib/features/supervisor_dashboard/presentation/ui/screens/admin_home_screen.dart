@@ -8,13 +8,11 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/
 import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
 import 'package:tajalwaqaracademy/shared/widgets/recitation_mode_sidebar.dart';
 
-import '../../../../../config/di/injection.dart';
 import '../../../../../core/models/user_role.dart';
 import '../../../../HalaqasManagement/presentation/ui/screens/halaqas_management_screen.dart';
 import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../auth/presentation/ui/widgets/log_out_dialog.dart';
 import '../../../../settings/presentation/screens/settings_screen.dart';
-import '../../bloc/supervisor_timeline_bloc.dart';
 
 // import '../../../../../core/constants/app_colors.dart';
 
@@ -28,10 +26,8 @@ class SupervisorDashboard extends StatefulWidget {
 class _SupervisorDashboardState extends State<SupervisorDashboard> {
   int _currentIndex = 0;
   final List<Widget> _tabs = [
-    BlocProvider(
-      create: (context) => sl<SupervisorTimelineBloc>(),
-      child: ModernDashboardScreen(role: UserRole.supervisor),
-    ),
+    ModernDashboardScreen(role: UserRole.supervisor),
+    
     TeachersManagementScreen(),
     StudentsManagementScreen(),
     HalaqaManagementScreen(),

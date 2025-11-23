@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tajalwaqaracademy/core/models/user_role.dart';
 
 import '../../../../../config/di/injection.dart';
+import '../../../../supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
+import '../../../../supervisor_dashboard/presentation/ui/screens/requests_screen.dart';
 import '../../bloc/student_bloc.dart';
 import 'student_management_screen.dart';
-import 'student_requests_screen.dart';
 
 class StudentsManagementScreen extends StatefulWidget {
   const StudentsManagementScreen({super.key});
@@ -43,7 +45,16 @@ class _StudentsManagementScreenState extends State<StudentsManagementScreen>
         ),
         body: TabBarView(
           controller: _tabController,
-          children: [StudentManagementScreen(), StudentRequestsScreen()],
+          children: [
+            StudentManagementScreen(),
+            BlocProvider(
+              create: (context) => sl<SupervisorBloc>()
+                ..add(
+                  ApplicationsFetched(page: 1, entityType: UserRole.student),
+                ),
+              child: RequestsScreen(entityType: UserRole.student),
+            ),
+          ],
         ),
       ),
     );

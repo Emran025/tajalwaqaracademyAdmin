@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/constants/data.dart';
 import 'package:tajalwaqaracademy/core/models/report_frequency.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_entity.dart';
 import 'package:tajalwaqaracademy/shared/func/date_format.dart';
 
 import 'package:tajalwaqaracademy/shared/widgets/frequency_selector.dart';
@@ -21,8 +19,6 @@ class StudentsContinuousMonitoring extends StatefulWidget {
 class _StudentsContinuousMonitoringState
     extends State<StudentsContinuousMonitoring>
     with TickerProviderStateMixin {
-  late List<StudentDetailEntity> students;
-
   DateTime selectedDate = DateTime.now();
   String reportType = 'يومي'; // أو 'أسبوعي', 'شهري'
 
@@ -34,12 +30,7 @@ class _StudentsContinuousMonitoringState
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
-    students = [
-      ...fakeStudents1,
-      ...fakeStudents1,
-      ...fakeStudents1,
-      ...fakeStudents1,
-    ];
+
     super.initState();
     // Add a listener to the scroll controller to detect when the user reaches the end.
   }

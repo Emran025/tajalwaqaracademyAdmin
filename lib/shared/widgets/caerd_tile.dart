@@ -14,6 +14,7 @@ class CustomListTile extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
   final IconData? moreIcon;
   final bool hasMoreIcon;
+  final bool hastajLable;
   final VoidCallback? onTajPressed;
   final VoidCallback? onListTilePressed;
   final VoidCallback? onMoreTab;
@@ -32,6 +33,7 @@ class CustomListTile extends StatelessWidget {
     ],
     this.onMoreTab,
     this.hasMoreIcon = true,
+    this.hastajLable = true,
     this.onListTilePressed,
     this.onTajPressed,
   });
@@ -65,10 +67,11 @@ class CustomListTile extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextButton(
-              onPressed: () => onTajPressed!(),
-              child: StatusTag(lable: tajLable),
-            ),
+            if (hastajLable)
+              TextButton(
+                onPressed: () => onTajPressed!(),
+                child: StatusTag(lable: tajLable),
+              ),
             if (hasMoreIcon)
               IconButton(
                 icon: Icon(moreIcon ?? Icons.more_vert, color: moreColor),

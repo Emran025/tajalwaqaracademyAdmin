@@ -33,9 +33,9 @@ final class StudentUpserted extends StudentEvent {
 /// Dispatched when the user performs an action to add or update a student.
 final class FilteredStudents extends StudentEvent {
   final ActiveStatus? status;
- final int? halaqaId;
- final DateTime? trackDate;
- final Frequency? frequencyCode;
+  final int? halaqaId;
+  final DateTime? trackDate;
+  final Frequency? frequencyCode;
 
   const FilteredStudents({
     this.status,
@@ -81,7 +81,6 @@ final class StudentStatusChanged extends StudentEvent {
   @override
   List<Object> get props => [studentId, newStatus];
 }
-
 
 /// Dispatched when the user navigates to a student's profile screen
 /// to fetch their detailed information.

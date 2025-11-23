@@ -10,7 +10,7 @@ import '../../../../core/models/user_role.dart';
 
 @lazySingleton
 class GetDateRangeUseCase {
-  final SupervisorTimelineRepository repository;
+  final SupervisorRepository repository;
 
   GetDateRangeUseCase({required this.repository});
 

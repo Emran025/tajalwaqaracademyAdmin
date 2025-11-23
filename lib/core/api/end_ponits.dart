@@ -12,6 +12,8 @@ class EndPoint {
   static const String userProfile = "account/profile";
   static const String changePassword = "account/change-password";
   static const String sessions = "account/sessions";
+  static const String studentApplications =
+      "admin/applicants?application_type={application_type}";
   static const String privacyPolicy = "help/privacy-policy";
   static const String teachers = "teachers";
   static const String students = "students";

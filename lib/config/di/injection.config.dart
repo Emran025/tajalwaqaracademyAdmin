@@ -198,6 +198,10 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/bloc/
     as _i294;
 import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/view_models/factories/follow_up_report_factory.dart'
     as _i926;
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_remote_data_source.dart'
+    as _i179;
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_remote_data_source_impl.dart'
+    as _i33;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_local_data_source.dart'
     as _i325;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/datasources/supervisor_local_data_source_impl.dart'
@@ -208,14 +212,16 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/service/tim
     as _i750;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/repositories/repository.dart'
     as _i795;
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/applications_use_case.dart'
+    as _i37;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/get_date_range_use_case.dart'
     as _i751;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/get_entities_counts_use_case.dart'
     as _i538;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/get_timeline_use_case.dart'
     as _i278;
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/bloc/supervisor_timeline_bloc.dart'
-    as _i720;
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart'
+    as _i692;
 import 'package:tajalwaqaracademy/features/TeachersManagement/data/datasources/teacher_local_data_source.dart'
     as _i946;
 import 'package:tajalwaqaracademy/features/TeachersManagement/data/datasources/teacher_local_data_source_impl.dart'
@@ -408,27 +414,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i768.GetPageData>(),
       ),
     );
-    gh.lazySingleton<_i795.SupervisorTimelineRepository>(
-      () => _i454.SupervisorTimelineRepositoryImpl(
-        localDataSource: gh<_i325.SupervisorLocalDataSource>(),
-        timelineBuilder: gh<_i750.TimelineBuilderImpl>(),
-      ),
-    );
-    gh.lazySingleton<_i751.GetDateRangeUseCase>(
-      () => _i751.GetDateRangeUseCase(
-        repository: gh<_i795.SupervisorTimelineRepository>(),
-      ),
-    );
-    gh.lazySingleton<_i538.GetEntitiesCountsUseCase>(
-      () => _i538.GetEntitiesCountsUseCase(
-        repository: gh<_i795.SupervisorTimelineRepository>(),
-      ),
-    );
-    gh.lazySingleton<_i278.GetTimelineUseCase>(
-      () => _i278.GetTimelineUseCase(
-        repository: gh<_i795.SupervisorTimelineRepository>(),
-      ),
-    );
     gh.lazySingleton<_i668.StudentSyncService>(
       () => _i411.StudentSyncServiceImpl(
         remoteDataSource: gh<_i133.StudentRemoteDataSource>(),
@@ -441,6 +426,11 @@ extension GetItInjectableX on _i174.GetIt {
         localDataSource: gh<_i281.SettingsLocalDataSource>(),
         remoteDataSource: gh<_i801.SettingsRemoteDataSource>(),
         networkInfo: gh<_i1.NetworkInfo>(),
+      ),
+    );
+    gh.lazySingleton<_i179.SupervisorRemoteDataSource>(
+      () => _i33.SupervisorRemoteDataSourceImpl(
+        apiConsumer: gh<_i478.ApiConsumer>(),
       ),
     );
     gh.factory<_i8.TrackingSessionBloc>(
@@ -503,20 +493,15 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i1.NetworkInfo>(),
       ),
     );
-    gh.lazySingleton<_i847.StudentRepository>(
-      () => _i624.StudentRepositoryImpl(
-        localDataSource: gh<_i395.StudentLocalDataSource>(),
-        syncService: gh<_i668.StudentSyncService>(),
+    gh.lazySingleton<_i795.SupervisorRepository>(
+      () => _i454.SupervisorRepositoryImpl(
+        localDataSource: gh<_i325.SupervisorLocalDataSource>(),
+        remoteDataSource: gh<_i179.SupervisorRemoteDataSource>(),
+        timelineBuilder: gh<_i750.TimelineBuilderImpl>(),
       ),
     );
     gh.lazySingleton<_i661.WatchHalaqasUseCase>(
       () => _i661.WatchHalaqasUseCase(repository: gh<_i253.HalaqaRepository>()),
-    );
-    gh.lazySingleton<_i286.GenerateFollowUpReportUseCase>(
-      () => _i286.GenerateFollowUpReportUseCase(
-        gh<_i847.StudentRepository>(),
-        gh<_i926.FollowUpReportFactory>(),
-      ),
     );
     gh.lazySingleton<_i335.TeacherSyncService>(
       () => _i651.TeacherSyncServiceImpl(
@@ -524,10 +509,6 @@ extension GetItInjectableX on _i174.GetIt {
         localDataSource: gh<_i946.TeacherLocalDataSource>(),
         networkInfo: gh<_i1.NetworkInfo>(),
       ),
-    );
-    gh.lazySingleton<_i167.WatchStudentsUseCase>(
-      () =>
-          _i167.WatchStudentsUseCase(repository: gh<_i847.StudentRepository>()),
     );
     gh.lazySingleton<_i311.GetLatestPolicyUseCase>(
       () => _i311.GetLatestPolicyUseCase(gh<_i17.SettingsRepository>()),
@@ -567,6 +548,13 @@ extension GetItInjectableX on _i174.GetIt {
         syncService: gh<_i335.TeacherSyncService>(),
       ),
     );
+    gh.lazySingleton<_i847.StudentRepository>(
+      () => _i624.StudentRepositoryImpl(
+        localDataSource: gh<_i395.StudentLocalDataSource>(),
+        remoteDataSource: gh<_i133.StudentRemoteDataSource>(),
+        syncService: gh<_i668.StudentSyncService>(),
+      ),
+    );
     gh.lazySingleton<_i280.DeleteTeacherUseCase>(
       () => _i280.DeleteTeacherUseCase(gh<_i567.TeacherRepository>()),
     );
@@ -582,11 +570,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i717.SetHalaqaStatusUseCase>(
       () => _i717.SetHalaqaStatusUseCase(gh<_i253.HalaqaRepository>()),
     );
-    gh.factory<_i720.SupervisorTimelineBloc>(
-      () => blocModule.timelineBloc(
-        gh<_i278.GetTimelineUseCase>(),
-        gh<_i751.GetDateRangeUseCase>(),
-        gh<_i538.GetEntitiesCountsUseCase>(),
+    gh.lazySingleton<_i751.GetDateRangeUseCase>(
+      () => _i751.GetDateRangeUseCase(
+        repository: gh<_i795.SupervisorRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i538.GetEntitiesCountsUseCase>(
+      () => _i538.GetEntitiesCountsUseCase(
+        repository: gh<_i795.SupervisorRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i278.GetTimelineUseCase>(
+      () => _i278.GetTimelineUseCase(
+        repository: gh<_i795.SupervisorRepository>(),
       ),
     );
     gh.lazySingleton<_i306.CheckLogInUseCase>(
@@ -618,6 +614,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i717.SetHalaqaStatusUseCase>(),
       ),
     );
+    gh.factory<_i37.GetApplicationsUseCase>(
+      () => _i37.GetApplicationsUseCase(gh<_i795.SupervisorRepository>()),
+    );
     gh.lazySingleton<_i219.DeleteStudentUseCase>(
       () => _i219.DeleteStudentUseCase(gh<_i847.StudentRepository>()),
     );
@@ -636,6 +635,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i357.WatchTeachersUseCase>(
       () =>
           _i357.WatchTeachersUseCase(repository: gh<_i567.TeacherRepository>()),
+    );
+    gh.lazySingleton<_i286.GenerateFollowUpReportUseCase>(
+      () => _i286.GenerateFollowUpReportUseCase(
+        gh<_i847.StudentRepository>(),
+        gh<_i926.FollowUpReportFactory>(),
+      ),
+    );
+    gh.lazySingleton<_i167.WatchStudentsUseCase>(
+      () =>
+          _i167.WatchStudentsUseCase(repository: gh<_i847.StudentRepository>()),
     );
     gh.lazySingleton<_i825.SetTeacherStatusUseCase>(
       () => _i825.SetTeacherStatusUseCase(gh<_i567.TeacherRepository>()),
@@ -669,6 +678,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i358.GetStudentById>(),
         gh<_i358.SetStudentStatusUseCase>(),
         gh<_i286.GenerateFollowUpReportUseCase>(),
+      ),
+    );
+    gh.factory<_i692.SupervisorBloc>(
+      () => blocModule.supervisorBloc(
+        gh<_i278.GetTimelineUseCase>(),
+        gh<_i751.GetDateRangeUseCase>(),
+        gh<_i538.GetEntitiesCountsUseCase>(),
+        gh<_i37.GetApplicationsUseCase>(),
       ),
     );
     return this;
