@@ -8,7 +8,10 @@ import '../entities/privacy_policy_entity.dart';
 import '../entities/settings_entity.dart';
 import '../entities/export_config.dart';
 import '../entities/import_config.dart';
+import '../entities/faq_entity.dart';
 import '../entities/import_summary.dart';
+import '../entities/support_ticket_entity.dart';
+import '../entities/terms_of_use_entity.dart';
 import '../entities/user_profile_entity.dart';
 
 /// Defines the contract for managing all data related to the settings and
@@ -69,4 +72,13 @@ abstract class SettingsRepository {
   /// Returns a [Future] completing to an [ImportSummary].
   Future<Either<Failure, ImportSummary>> importData(
       {required String filePath, required ImportConfig config});
+
+  /// Fetches the frequently asked questions.
+  Future<Either<Failure, List<FaqEntity>>> getFaqs(int page);
+
+  /// Submits a new support ticket.
+  Future<Either<Failure, void>> submitSupportTicket(SupportTicketEntity ticket);
+
+  /// Fetches the terms of use.
+  Future<Either<Failure, TermsOfUseEntity>> getTermsOfUse();
 }

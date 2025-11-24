@@ -48,11 +48,14 @@ import '../../features/daily_tracking/presentation/bloc/tracking_session_bloc.da
 import '../../features/settings/domain/usecases/export_data_usecase.dart';
 import '../../features/settings/domain/usecases/get_latest_policy_usecase.dart';
 import '../../features/settings/domain/usecases/get_settings.dart';
+import '../../features/settings/domain/usecases/get_faqs_usecase.dart';
+import '../../features/settings/domain/usecases/get_terms_of_use_usecase.dart';
 import '../../features/settings/domain/usecases/get_user_profile.dart';
 import '../../features/settings/domain/usecases/import_data_usecase.dart';
 import '../../features/settings/domain/usecases/save_theme.dart';
 import '../../features/settings/domain/usecases/set_analytics_preference.dart';
 import '../../features/settings/domain/usecases/set_notifications_preference.dart';
+import '../../features/settings/domain/usecases/submit_support_ticket_usecase.dart';
 import '../../features/settings/domain/usecases/update_user_profile.dart';
 import '../../features/settings/presentation/bloc/settings_bloc.dart';
 import '../../features/supervisor_dashboard/domain/usecases/applicants_use_case.dart';
@@ -192,6 +195,9 @@ abstract class BlocModule {
     GetLatestPolicyUseCase getLatestPolicy,
     ImportDataUseCase importDataUseCase,
     ExportDataUseCase exportDataUseCase,
+    GetFaqsUseCase getFaqsUseCase,
+    SubmitSupportTicketUseCase submitSupportTicketUseCase,
+    GetTermsOfUseUseCase getTermsOfUseUseCase,
   ) {
     return SettingsBloc(
       getSettings: getSettings,
@@ -203,6 +209,9 @@ abstract class BlocModule {
       updateUserProfile: updateUserProfile,
       importDataUseCase: importDataUseCase,
       exportDataUseCase: exportDataUseCase,
+      getFaqsUseCase: getFaqsUseCase,
+      submitSupportTicketUseCase: submitSupportTicketUseCase,
+      getTermsOfUseUseCase: getTermsOfUseUseCase,
     )..add(LoadInitialSettings());
   }
 

@@ -15,6 +15,9 @@ class EndPoint {
   static const String studentApplicants =
       "admin/applicants?application_type={application_type}";
   static const String privacyPolicy = "help/privacy-policy";
+  static const String faqs = "help/faqs";
+  static const String tickets = "help/tickets";
+  static const String termsOfUse = "help/terms-of-use";
   static const String teachers = "teachers";
   static const String students = "students";
   static const String halaqas = "halaqas";

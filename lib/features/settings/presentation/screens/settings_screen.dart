@@ -9,7 +9,10 @@ import '../bloc/settings_bloc.dart';
 import '../widgets/modern_setting_tile.dart';
 import '../widgets/settings_group_widget.dart';
 import '../widgets/theme_switcher_widget.dart';
+import '../widgets/submit_ticket_dialog.dart';
+import 'faq_screen.dart';
 import 'privacy_policy_screen.dart';
+import 'terms_of_use_screen.dart';
 
 /// The main UI screen for the application settings feature.
 ///
@@ -207,7 +210,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: 'شروط الاستخدام',
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
-                  // TODO: Implement navigation to Terms of Use Screen
+                  context.read<SettingsBloc>().add(LoadTermsOfUse());
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider.value(
+                        value: BlocProvider.of<SettingsBloc>(context),
+                        child: const TermsOfUseScreen(),
+                      ),
+                    ),
+                  );
                 },
               ),
               ModernSettingTile(
@@ -236,15 +247,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // --- END OF UPDATED CODE ---
                 },
               ),
-              ModernSettingTile(
-                icon: Icons.help_outline,
-                iconBackgroundColor: Colors.green,
-                title: 'المساعدة والدعم',
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {
-                  // TODO: Implement navigation to Help & Support Screen
-                },
-              ),
+              Builder(builder: (context) {
+                return ModernSettingTile(
+                  icon: Icons.help_outline,
+                  iconBackgroundColor: Colors.green,
+                  title: 'المساعدة والدعم',
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    final RenderBox button = context.findRenderObject() as RenderBox;
+                    final RenderBox overlay =
+                        Overlay.of(context).context.findRenderObject() as RenderBox;
+                    final RelativeRect position = RelativeRect.fromRect(
+                      Rect.fromPoints(
+                        button.localToGlobal(Offset.zero, ancestor: overlay),
+                        button.localToGlobal(button.size.bottomRight(Offset.zero),
+                            ancestor: overlay),
+                      ),
+                      Offset.zero & overlay.size,
+                    );
+                    showMenu(
+                      context: context,
+                      position: position,
+                      items: [
+                        const PopupMenuItem(
+                        value: 'faq',
+                        child: Text('الأسئلة الشائعة'),
+                      ),
+                        const PopupMenuItem(
+                          value: 'submit_ticket',
+                          child: Text('إرسال طلب جديد'),
+                        ),
+                      ],
+                    ).then((value) {
+                      if (value == 'faq') {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider.value(
+                              value: BlocProvider.of<SettingsBloc>(context),
+                              child: const FaqScreen(),
+                            ),
+                          ),
+                        );
+                      } else if (value == 'submit_ticket') {
+                        showDialog(
+                          context: context,
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<SettingsBloc>(context),
+                            child: const SubmitTicketDialog(),
+                          ),
+                        );
+                      }
+                    });
+                  },
+                );
+              }),
             ],
           ),
         ),

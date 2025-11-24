@@ -51,6 +51,13 @@ class SettingsLoadSuccess extends SettingsState {
   /// The loading status of the privacy policy section.
   final SectionStatus policyStatus; // NEW
 
+  final List<FaqEntity> faqs;
+  final bool hasReachedMaxFaqs;
+  final SectionStatus faqsStatus;
+
+  final TermsOfUseEntity? termsOfUse;
+  final SectionStatus termsOfUseStatus;
+
   /// The status of a one-time user action (e.g., updating the profile).
   final ActionStatus actionStatus;
 
@@ -69,6 +76,11 @@ class SettingsLoadSuccess extends SettingsState {
     this.profileStatus = SectionStatus.initial,
     this.privacyPolicy, // NEW
     this.policyStatus = SectionStatus.initial, // NEW
+    this.faqs = const [],
+    this.hasReachedMaxFaqs = false,
+    this.faqsStatus = SectionStatus.initial,
+    this.termsOfUse,
+    this.termsOfUseStatus = SectionStatus.initial,
     this.actionStatus = ActionStatus.initial,
     this.error,
     this.exportStatus = DataExportStatus.initial,
@@ -85,6 +97,11 @@ class SettingsLoadSuccess extends SettingsState {
     SectionStatus? profileStatus,
     PrivacyPolicyEntity? privacyPolicy, // NEW
     SectionStatus? policyStatus, // NEW
+    List<FaqEntity>? faqs,
+    bool? hasReachedMaxFaqs,
+    SectionStatus? faqsStatus,
+    TermsOfUseEntity? termsOfUse,
+    SectionStatus? termsOfUseStatus,
     ActionStatus? actionStatus,
     Failure? error,
     bool clearError = false, // Flag to explicitly clear the error
@@ -99,6 +116,11 @@ class SettingsLoadSuccess extends SettingsState {
       profileStatus: profileStatus ?? this.profileStatus,
       privacyPolicy: privacyPolicy ?? this.privacyPolicy, // NEW
       policyStatus: policyStatus ?? this.policyStatus, // NEW
+      faqs: faqs ?? this.faqs,
+      hasReachedMaxFaqs: hasReachedMaxFaqs ?? this.hasReachedMaxFaqs,
+      faqsStatus: faqsStatus ?? this.faqsStatus,
+      termsOfUse: termsOfUse ?? this.termsOfUse,
+      termsOfUseStatus: termsOfUseStatus ?? this.termsOfUseStatus,
       actionStatus: actionStatus ?? this.actionStatus,
       error: clearError ? null : error ?? this.error,
       exportStatus: exportStatus ?? this.exportStatus,
@@ -115,6 +137,11 @@ class SettingsLoadSuccess extends SettingsState {
     profileStatus,
     privacyPolicy, // NEW
     policyStatus, // NEW
+    faqs,
+    hasReachedMaxFaqs,
+    faqsStatus,
+    termsOfUse,
+    termsOfUseStatus,
     actionStatus,
     error,
         exportStatus,

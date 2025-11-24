@@ -19,13 +19,17 @@ import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../../shared/themes/app_theme.dart';
+import '../../domain/entities/faq_entity.dart';
 import '../../domain/entities/privacy_policy_entity.dart';
 import '../../domain/entities/settings_entity.dart';
+import '../../domain/entities/support_ticket_entity.dart';
+import '../../domain/entities/terms_of_use_entity.dart';
 import '../../domain/entities/user_profile_entity.dart';
 import '../../domain/repositories/settings_repository.dart';
 import '../datasources/core_data_local_data_source.dart';
 import '../datasources/settings_local_data_source.dart';
 import '../datasources/settings_remote_data_source.dart';
+import '../models/support_ticket_model.dart';
 
 /// The concrete implementation of the [SettingsRepository] contract.
 ///
@@ -397,5 +401,37 @@ class SettingsRepositoryImpl implements SettingsRepository {
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
+  }
+
+  @override
+  Future<Either<Failure, List<FaqEntity>>> getFaqs(int page) async {
+    return await _getRemoteData<List<FaqEntity>>(() async {
+      final faqResponseModel = await remoteDataSource.getFaqs(page);
+      return faqResponseModel.data
+          .map((model) => FaqEntity(
+                id: model.id,
+                question: model.question,
+                answer: model.answer,
+                viewCount: model.viewCount,
+              ))
+          .toList();
+    });
+  }
+
+  @override
+  Future<Either<Failure, void>> submitSupportTicket(
+      SupportTicketEntity ticket) async {
+    return await _getRemoteData<void>(
+      () => remoteDataSource.submitSupportTicket(
+        SupportTicketModel(subject: ticket.subject, body: ticket.body),
+      ),
+    );
+  }
+
+  @override
+  Future<Either<Failure, TermsOfUseEntity>> getTermsOfUse() async {
+    return await _getRemoteData<TermsOfUseEntity>(
+      () => remoteDataSource.getTermsOfUse().then((model) => model.toEntity()),
+    );
   }
 }

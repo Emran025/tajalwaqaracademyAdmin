@@ -8,7 +8,10 @@ import '../../../../core/api/api_consumer.dart';
 import '../../../../core/api/end_ponits.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../auth/data/models/user_model.dart';
+import '../models/faq_model.dart';
 import '../models/privacy_policy_model.dart';
+import '../models/support_ticket_model.dart';
+import '../models/terms_of_use_model.dart';
 import '../models/user_profile_model.dart';
 import '../models/user_session_model.dart';
 import 'settings_remote_data_source.dart';
@@ -147,5 +150,42 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
     //   // Use the same `fromJson` factory that the production code will use.
     //   // This ensures the parsing logic is validated even during development.
     //   return PrivacyPolicyModel.fromJson(mockSuccessResponse);
+  }
+
+  @override
+  Future<FaqResponseModel> getFaqs(int page) async {
+    try {
+      final responseJson = await _api.get(
+        EndPoint.faqs,
+        queryParameters: {'page': page},
+      );
+      return FaqResponseModel.fromJson(responseJson as Map<String, dynamic>);
+    } catch (e) {
+      throw ServerException(message: 'Failed to fetch FAQs.');
+    }
+  }
+
+  @override
+  Future<void> submitSupportTicket(SupportTicketModel ticket) async {
+    try {
+      await _api.post(
+        EndPoint.tickets,
+        data: ticket.toJson(),
+      );
+    } catch (e) {
+      throw ServerException(message: 'Failed to submit support ticket.');
+    }
+  }
+
+  @override
+  Future<TermsOfUseModel> getTermsOfUse() async {
+    try {
+      final responseJson = await _api.get(EndPoint.termsOfUse);
+      return TermsOfUseModel.fromJson(
+        (responseJson as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+      );
+    } catch (e) {
+      throw ServerException(message: 'Failed to fetch terms of use.');
+    }
   }
 }

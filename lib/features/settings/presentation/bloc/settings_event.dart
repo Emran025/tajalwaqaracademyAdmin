@@ -84,3 +84,20 @@ class SettingsImportDataRequested extends SettingsEvent {
 
 /// Fired to reset the import/export status.
 class SettingsImportExportResetStatus extends SettingsEvent {}
+
+/// Fired to fetch the frequently asked questions.
+class FetchFaqs extends SettingsEvent {}
+
+/// Fired when the user submits a new support ticket.
+class SubmitSupportTicket extends SettingsEvent {
+  final String subject;
+  final String body;
+
+  const SubmitSupportTicket({required this.subject, required this.body});
+
+  @override
+  List<Object> get props => [subject, body];
+}
+
+/// Fired to fetch the terms of use.
+class LoadTermsOfUse extends SettingsEvent {}

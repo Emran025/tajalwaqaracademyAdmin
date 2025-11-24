@@ -2,6 +2,7 @@
 
 import 'package:tajalwaqaracademy/features/settings/domain/entities/user_profile_entity.dart';
 
+import '../models/faq_model.dart';
 import '../models/privacy_policy_model.dart';
 import '../models/user_profile_model.dart';
 
@@ -25,5 +26,17 @@ abstract class SettingsRemoteDataSource {
   /// NEW: Fetches the latest privacy policy document from the remote API.
   /// Throws a [ServerException] for all error cases.
   Future<PrivacyPolicyModel> getLatestPolicy();
+
+  /// Fetches the frequently asked questions from the remote API.
+  /// Throws a [ServerException] for all error cases.
+  Future<FaqResponseModel> getFaqs(int page);
+
+  /// Submits a new support ticket.
+  /// Throws a [ServerException] for all error cases.
+  Future<void> submitSupportTicket(SupportTicketModel ticket);
+
+  /// Fetches the terms of use.
+  /// Throws a [ServerException] for all error cases.
+  Future<TermsOfUseModel> getTermsOfUse();
 }
 
