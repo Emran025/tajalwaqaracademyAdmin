@@ -228,7 +228,6 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/repositor
     as _i795;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/applicants_use_case.dart'
     as _i365;
-
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/approve_applicant_usecase.dart'
     as _i674;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/get_applicant_profile_usecase.dart'
@@ -706,14 +705,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i860.GetFaqsUseCase>(),
         gh<_i5.SubmitSupportTicketUseCase>(),
         gh<_i962.GetTermsOfUseUseCase>(),
-      ),
-    );
-    gh.factory<_i692.SupervisorBloc>(
-      () => blocModule.supervisorBloc(
-        gh<_i278.GetTimelineUseCase>(),
-        gh<_i751.GetDateRangeUseCase>(),
-        gh<_i538.GetEntitiesCountsUseCase>(),
-        gh<_i365.GetApplicantsUseCase>(),
       ),
     );
     gh.factory<_i1019.AuthBloc>(
