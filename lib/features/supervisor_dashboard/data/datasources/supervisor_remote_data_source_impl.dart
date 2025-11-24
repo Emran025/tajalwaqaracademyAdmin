@@ -5,6 +5,7 @@ import 'package:tajalwaqaracademy/core/error/exceptions.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
 
 import '../models/applicant_model.dart';
+import '../models/applicant_profile_model.dart';
 import 'supervisor_remote_data_source.dart';
 
 /// The concrete implementation of [SupervisorRemoteDataSource].

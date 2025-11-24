@@ -17,6 +17,7 @@ import '../../domain/usecases/get_applicant_profile_usecase.dart';
 import '../../domain/usecases/get_date_range_use_case.dart';
 import '../../domain/usecases/get_entities_counts_use_case.dart';
 import '../../domain/usecases/get_timeline_use_case.dart';
+import '../../domain/entities/applicant_profile_entity.dart';
 
 part 'supervisor_event.dart';
 part 'supervisor_state.dart';

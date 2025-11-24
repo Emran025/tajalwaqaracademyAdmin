@@ -1,7 +1,6 @@
 // bloc/student_timeline_state.dart
 part of 'supervisor_bloc.dart';
 
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
 
 abstract class SupervisorState {}
 

@@ -1,12 +1,12 @@
 // Applicants_use_case.dart
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/user_role.dart';
 import '../../../StudentsManagement/domain/entities/paginated_applicants_result.dart';
 import '../repositories/repository.dart';
 
+import 'package:injectable/injectable.dart';
 @injectable
 class GetApplicantsUseCase {
   final SupervisorRepository _repository;

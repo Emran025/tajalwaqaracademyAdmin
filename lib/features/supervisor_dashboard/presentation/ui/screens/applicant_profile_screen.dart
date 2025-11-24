@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/app/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/app/shared/widgets/avatar.dart';
+import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
+import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/widgets/approve_applicant_dialog.dart';
+
+import '../../../../../core/models/gender.dart';
 
 class ApplicantProfileScreen extends StatefulWidget {
   final int applicantId;
@@ -20,17 +22,15 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<SupervisorBloc>()
-        .add(ApplicantProfileFetched(widget.applicantId));
+    context.read<SupervisorBloc>().add(
+      ApplicantProfileFetched(widget.applicantId),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ملف المقدم'),
-      ),
+      appBar: AppBar(title: const Text('ملف المقدم')),
       body: BlocListener<SupervisorBloc, SupervisorState>(
         listener: (context, state) {
           if (state is SupervisorLoaded && state.applicantProfile == null) {
@@ -56,7 +56,9 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
   }
 
   Widget _buildSuccessfulUI(
-      BuildContext context, ApplicantProfileEntity applicant) {
+    BuildContext context,
+    ApplicantProfileEntity applicant,
+  ) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: SafeArea(
@@ -81,14 +83,13 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
   }
 
   Widget _buildActionButtons(
-      BuildContext context, ApplicantProfileEntity applicant) {
+    BuildContext context,
+    ApplicantProfileEntity applicant,
+  ) {
     return Row(
       children: [
         Expanded(
-          child: OutlinedButton(
-            onPressed: null,
-            child: const Text('رفض'),
-          ),
+          child: OutlinedButton(onPressed: null, child: const Text('رفض')),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -101,9 +102,9 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                   child: ApproveApplicantDialog(
                     applicantId: applicant.id,
                     onConfirm: () {
-                      context
-                          .read<SupervisorBloc>()
-                          .add(ApproveApplicant(applicant.id));
+                      context.read<SupervisorBloc>().add(
+                        ApproveApplicant(applicant.id),
+                      );
                       Navigator.of(context).pop();
                     },
                   ),
@@ -129,7 +130,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
       ),
       child: Row(
         children: [
-          Avatar(gender: user.gender, pic: user.avatar),
+          Avatar(gender: Gender.fromLabel(user.gender), pic: user.avatar),
           const SizedBox(width: 20),
           Expanded(
             child: Column(
@@ -146,8 +147,10 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                 ),
                 const SizedBox(height: 15),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.orange.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
@@ -182,8 +185,10 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: GoogleFonts.cairo(color: AppColors.lightCream70)),
-          Text(value ?? '',
-              style: GoogleFonts.cairo(color: AppColors.lightCream)),
+          Text(
+            value ?? '',
+            style: GoogleFonts.cairo(color: AppColors.lightCream),
+          ),
         ],
       ),
     );

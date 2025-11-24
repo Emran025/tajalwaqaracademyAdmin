@@ -8,6 +8,7 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/user_role.dart';
 import '../../../StudentsManagement/domain/entities/paginated_applicants_result.dart';
+import '../../domain/entities/applicant_profile_entity.dart';
 import '../../domain/entities/chart_filter_entity.dart';
 import '../../domain/entities/timeline_entity.dart';
 import '../../domain/repositories/repository.dart';
