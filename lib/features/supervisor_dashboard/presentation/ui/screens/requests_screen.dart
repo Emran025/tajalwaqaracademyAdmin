@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import '../../../../../core/entities/list_item_entity.dart';
 import '../../../../../shared/themes/app_theme.dart';
 import '../../../../../shared/widgets/caerd_tile.dart';
 
