@@ -30,6 +30,7 @@ import '../../domain/entities/import_config.dart';
 
 import '../../domain/entities/faq_entity.dart';
 import '../../domain/entities/privacy_policy_entity.dart';
+import '../../domain/entities/support_ticket_entity.dart';
 import '../../domain/entities/terms_of_use_entity.dart';
 
 part 'settings_event.dart';

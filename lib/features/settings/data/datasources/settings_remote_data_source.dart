@@ -4,6 +4,8 @@ import 'package:tajalwaqaracademy/features/settings/domain/entities/user_profile
 
 import '../models/faq_model.dart';
 import '../models/privacy_policy_model.dart';
+import '../models/support_ticket_model.dart';
+import '../models/terms_of_use_model.dart';
 import '../models/user_profile_model.dart';
 
 /// Defines the contract for fetching and updating user profile data from the remote API.
