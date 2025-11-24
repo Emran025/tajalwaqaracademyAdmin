@@ -5,8 +5,9 @@ import '../../../../../core/entities/list_item_entity.dart';
 import '../../../../../shared/themes/app_theme.dart';
 import '../../../../../shared/widgets/caerd_tile.dart';
 
+import 'package:go_router/go_router.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_entity.dart';
 import '../../../../../shared/widgets/avatar.dart';
-import '../../../../StudentsManagement/presentation/ui/screens/student_profile_screen.dart';
 import '../../bloc/supervisor_bloc.dart';
 
 class RequestsScreen extends StatefulWidget {
@@ -96,7 +97,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             );
                           }
 
-                          return _buildStudentCard(applicants[i].user);
+                          return _buildStudentCard(applicants[i]);
                         },
                       );
                     }
@@ -111,23 +112,19 @@ class _RequestsScreenState extends State<RequestsScreen> {
     );
   }
 
-  Widget _buildStudentCard(ListItemEntity student) {
+  Widget _buildStudentCard(ApplicantEntity applicant) {
     return CustomListTile(
-      title: student.name,
+      title: applicant.user.name,
       moreIcon: Icons.more_vert,
-      leading: Avatar(gender: student.gender, pic: student.avatar),
-      subtitle: "${student.country} - ${student.city}",
+      leading: Avatar(gender: applicant.user.gender, pic: applicant.user.avatar),
+      subtitle: "${applicant.user.country} - ${applicant.user.city}",
       backgroundColor: AppColors.accent12,
       hasMoreIcon: false,
-      tajLable: student.status.labelAr,
+      tajLable: applicant.status,
       border: Border.all(color: AppColors.accent70, width: 0.5),
       onMoreTab: () => {},
       onListTilePressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => StudentProfileScreen(studentID: student.id),
-          ),
-        );
+        context.push('/applicant_profile/${applicant.id}');
       },
       onTajPressed: () {},
     );

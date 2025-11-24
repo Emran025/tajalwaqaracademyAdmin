@@ -54,4 +54,34 @@ final class SupervisorRemoteDataSourceImpl
       rethrow;
     }
   }
+
+  @override
+  Future<ApplicantProfileModel> getApplicantProfile(int applicantId) async {
+    try {
+      final responseJson = await _apiConsumer.get(
+        EndPoint.applicantProfile.replaceAll('{id}', applicantId.toString()),
+      );
+
+      if (responseJson is! Map<String, dynamic>) {
+        throw const FormatException(
+          'Invalid response format for applicant profile',
+        );
+      }
+
+      return ApplicantProfileModel.fromJson(responseJson['data']);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> approveApplicant(int applicantId) async {
+    try {
+      await _apiConsumer.post(
+        EndPoint.approveApplicant.replaceAll('{id}', applicantId.toString()),
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

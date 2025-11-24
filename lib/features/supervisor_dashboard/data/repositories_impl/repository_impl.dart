@@ -102,4 +102,25 @@ class SupervisorRepositoryImpl implements SupervisorRepository {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, ApplicantProfileEntity>> getApplicantProfile(
+      int applicantId) async {
+    try {
+      final result = await remoteDataSource.getApplicantProfile(applicantId);
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> approveApplicant(int applicantId) async {
+    try {
+      await remoteDataSource.approveApplicant(applicantId);
+      return const Right(unit);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

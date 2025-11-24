@@ -1,6 +1,8 @@
 // bloc/student_timeline_state.dart
 part of 'supervisor_bloc.dart';
 
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
+
 abstract class SupervisorState {}
 
 class SupervisorInitial extends SupervisorState {}
@@ -18,14 +20,16 @@ class SupervisorLoaded extends SupervisorState {
   final List<ApplicantEntity> applicants;
   final int applicantsCurrentPage;
   final bool applicantsHasMorePages;
+
   final bool isLoadingMoreApplicants;
+  final ApplicantProfileEntity? applicantProfile;
   SupervisorLoaded({
     this.countsDeltaEntity,
     this.timelineData,
     this.chartData,
     this.filter,
     this.availableDateRange,
-
+    this.applicantProfile,
     // New properties for applicants
     this.applicants = const [],
     this.applicantsCurrentPage = 1,
@@ -43,6 +47,7 @@ class SupervisorLoaded extends SupervisorState {
     int? applicantsCurrentPage,
     bool? applicantsHasMorePages,
     bool? isLoadingMoreApplicants,
+    ApplicantProfileEntity? applicantProfile,
     bool clearApplicants = false,
   }) {
     return SupervisorLoaded(
@@ -51,7 +56,7 @@ class SupervisorLoaded extends SupervisorState {
       chartData: chartData ?? this.chartData,
       filter: filter ?? this.filter,
       availableDateRange: availableDateRange ?? this.availableDateRange,
-
+      applicantProfile: applicantProfile ?? this.applicantProfile,
       // Applicants
       applicants: clearApplicants ? const [] : applicants ?? this.applicants,
       applicantsCurrentPage:
