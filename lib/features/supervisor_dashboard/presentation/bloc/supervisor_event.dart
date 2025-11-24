@@ -34,7 +34,16 @@ final class MoreApplicantsLoaded extends SupervisorEvent {
 /// Dispatched to fetch student applicants specifically
 // student_event.dart
 final class ApplicantDetailsFetched extends SupervisorEvent {
-  
   final UserRole applicantId;
-  ApplicantDetailsFetched({ required this.applicantId});
+  ApplicantDetailsFetched({required this.applicantId});
+}
+
+final class ApplicantProfileFetched extends SupervisorEvent {
+  final int applicantId;
+  ApplicantProfileFetched(this.applicantId);
+}
+
+final class ApproveApplicant extends SupervisorEvent {
+  final int applicantId;
+  ApproveApplicant(this.applicantId);
 }

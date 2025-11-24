@@ -228,6 +228,11 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/repositor
     as _i795;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/applicants_use_case.dart'
     as _i365;
+
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/approve_applicant_usecase.dart'
+    as _i674;
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/get_applicant_profile_usecase.dart'
+    as _i45;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/get_date_range_use_case.dart'
     as _i751;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/get_entities_counts_use_case.dart'
@@ -592,6 +597,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i717.SetHalaqaStatusUseCase>(
       () => _i717.SetHalaqaStatusUseCase(gh<_i253.HalaqaRepository>()),
     );
+    gh.factory<_i674.ApproveApplicantUseCase>(
+      () => _i674.ApproveApplicantUseCase(gh<_i795.SupervisorRepository>()),
+    );
+    gh.factory<_i45.GetApplicantProfileUseCase>(
+      () => _i45.GetApplicantProfileUseCase(gh<_i795.SupervisorRepository>()),
+    );
     gh.lazySingleton<_i751.GetDateRangeUseCase>(
       () => _i751.GetDateRangeUseCase(
         repository: gh<_i795.SupervisorRepository>(),
@@ -712,6 +723,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i4.LogOutUseCase>(),
         gh<_i912.ForgetPasswordUseCase>(),
         gh<_i566.ChangePasswordUseCase>(),
+      ),
+    );
+    gh.factory<_i692.SupervisorBloc>(
+      () => blocModule.supervisorBloc(
+        gh<_i278.GetTimelineUseCase>(),
+        gh<_i751.GetDateRangeUseCase>(),
+        gh<_i538.GetEntitiesCountsUseCase>(),
+        gh<_i365.GetApplicantsUseCase>(),
+        gh<_i45.GetApplicantProfileUseCase>(),
+        gh<_i674.ApproveApplicantUseCase>(),
       ),
     );
     gh.factory<_i294.StudentBloc>(

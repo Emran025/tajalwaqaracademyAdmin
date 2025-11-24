@@ -13,6 +13,8 @@ import '../models/applicant_model.dart';
 /// endpoints of the remote API. It is designed to support a robust, two-way
 /// synchronization mechanism.
 
+import '../models/applicant_profile_model.dart';
+
 abstract interface class SupervisorRemoteDataSource {
   /// Fetches a single page of delta updates from the server.
   ///
@@ -26,4 +28,8 @@ abstract interface class SupervisorRemoteDataSource {
     int? since,
     required UserRole entityType,
   });
+
+  Future<ApplicantProfileModel> getApplicantProfile(int applicantId);
+
+  Future<void> approveApplicant(int applicantId);
 }

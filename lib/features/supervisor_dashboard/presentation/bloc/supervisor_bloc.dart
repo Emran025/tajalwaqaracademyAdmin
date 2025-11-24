@@ -12,9 +12,12 @@ import '../../domain/entities/counts_delta_entity.dart';
 import '../../domain/entities/timeline_entity.dart';
 import '../../domain/factories/chart_factory.dart';
 import '../../domain/usecases/applicants_use_case.dart';
+import '../../domain/usecases/approve_applicant_usecase.dart';
+import '../../domain/usecases/get_applicant_profile_usecase.dart';
 import '../../domain/usecases/get_date_range_use_case.dart';
 import '../../domain/usecases/get_entities_counts_use_case.dart';
 import '../../domain/usecases/get_timeline_use_case.dart';
+import '../../domain/entities/applicant_profile_entity.dart';
 
 part 'supervisor_event.dart';
 part 'supervisor_state.dart';
@@ -24,18 +27,24 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
   final GetTimelineUseCase getTimelineUseCase;
   final GetDateRangeUseCase getDateRangeUseCase;
   final GetApplicantsUseCase getApplicantsUC;
+  final GetApplicantProfileUseCase getApplicantProfileUC;
+  final ApproveApplicantUseCase approveApplicantUC;
 
   SupervisorBloc({
     required this.getEntitiesCountsUseCase,
     required this.getTimelineUseCase,
     required this.getDateRangeUseCase,
     required this.getApplicantsUC,
+    required this.getApplicantProfileUC,
+    required this.approveApplicantUC,
   }) : super(SupervisorInitial()) {
     on<LoadCountsDeltaEntity>(_onLoadCountsDeltaEntity);
     on<LoadTimeline>(_onLoadTimeline);
     on<UpdateChartFilter>(_onUpdateChartFilter);
     on<ApplicantsFetched>(_onApplicantsFetched, transformer: restartable());
     on<MoreApplicantsLoaded>(_onMoreApplicantsLoaded, transformer: droppable());
+    on<ApplicantProfileFetched>(_onApplicantProfileFetched);
+    on<ApproveApplicant>(_onApproveApplicant);
   }
 
   Future<void> _onLoadTimeline(
@@ -244,6 +253,45 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
           applicantsHasMorePages: paginatedResult.pagination.hasMorePages,
         ),
       ),
+    );
+  }
+
+  Future<void> _onApplicantProfileFetched(
+    ApplicantProfileFetched event,
+    Emitter<SupervisorState> emit,
+  ) async {
+    emit(SupervisorLoading());
+    final result = await getApplicantProfileUC(event.applicantId);
+    result.fold(
+      (failure) => emit(SupervisorError(message: failure.message)),
+      (applicantProfile) => emit(
+        SupervisorLoaded(applicantProfile: applicantProfile),
+      ),
+    );
+  }
+
+  Future<void> _onApproveApplicant(
+    ApproveApplicant event,
+    Emitter<SupervisorState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is! SupervisorLoaded) return;
+
+    emit(SupervisorLoading());
+    final result = await approveApplicantUC(event.applicantId);
+    result.fold(
+      (failure) => emit(SupervisorError(message: failure.message)),
+      (_) {
+        final updatedApplicants = currentState.applicants
+            .where((element) => element.id != event.applicantId)
+            .toList();
+        emit(
+          currentState.copyWith(
+            applicants: updatedApplicants,
+            applicantProfile: null,
+          ),
+        );
+      },
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:tajalwaqaracademy/features/auth/presentation/ui/screens/logIn_sc
 import 'package:tajalwaqaracademy/features/app/pages/splash_screen.dart';
 import 'package:tajalwaqaracademy/features/app/pages/welcome_screen.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/admin_home_screen.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/applicant_profile_screen.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/teacher_home_screen.dart';
 
 /// The main router configuration for the application.
@@ -52,6 +53,14 @@ final appRouter = GoRouter(
       // It might be a typo for 'TeacherDashboard'.
       // builder: (_, __) => const SupervisorDashboard(),
       builder: (_, __) => const TecherDashboard(),
+    ),
+    GoRoute(
+      path: '/applicant_profile/:id',
+      name: 'applicant_profile',
+      builder: (context, state) {
+        final applicantId = int.parse(state.pathParameters['id']!);
+        return ApplicantProfileScreen(applicantId: applicantId);
+      },
     ),
   ],
 );

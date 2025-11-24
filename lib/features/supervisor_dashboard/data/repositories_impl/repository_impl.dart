@@ -8,6 +8,7 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/user_role.dart';
 import '../../../StudentsManagement/domain/entities/paginated_applicants_result.dart';
+import '../../domain/entities/applicant_profile_entity.dart';
 import '../../domain/entities/chart_filter_entity.dart';
 import '../../domain/entities/timeline_entity.dart';
 import '../../domain/repositories/repository.dart';
@@ -98,6 +99,27 @@ class SupervisorRepositoryImpl implements SupervisorRepository {
           pagination: result.pagination.toEntity(),
         ),
       );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApplicantProfileEntity>> getApplicantProfile(
+      int applicantId) async {
+    try {
+      final result = await remoteDataSource.getApplicantProfile(applicantId);
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> approveApplicant(int applicantId) async {
+    try {
+      await remoteDataSource.approveApplicant(applicantId);
+      return const Right(unit);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }

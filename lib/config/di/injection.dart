@@ -60,6 +60,8 @@ import '../../features/settings/domain/usecases/update_user_profile.dart';
 import '../../features/settings/presentation/bloc/settings_bloc.dart';
 import '../../features/supervisor_dashboard/domain/usecases/applicants_use_case.dart';
 import '../../features/supervisor_dashboard/domain/usecases/get_date_range_use_case.dart';
+import '../../features/supervisor_dashboard/domain/usecases/approve_applicant_usecase.dart';
+import '../../features/supervisor_dashboard/domain/usecases/get_applicant_profile_usecase.dart';
 import '../../features/supervisor_dashboard/domain/usecases/get_entities_counts_use_case.dart';
 import '../../features/supervisor_dashboard/domain/usecases/get_timeline_use_case.dart';
 import '../../features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
@@ -240,12 +242,16 @@ abstract class BlocModule {
     GetDateRangeUseCase getDateRangeUseCase,
     GetEntitiesCountsUseCase getEntitiesCountsUseCase,
     GetApplicantsUseCase getApplicantsUC,
+    GetApplicantProfileUseCase getApplicantProfileUC,
+    ApproveApplicantUseCase approveApplicantUC,
   ) {
     return SupervisorBloc(
       getTimelineUseCase: getTimelineUseCase,
       getDateRangeUseCase: getDateRangeUseCase,
       getEntitiesCountsUseCase: getEntitiesCountsUseCase,
       getApplicantsUC: getApplicantsUC,
+      getApplicantProfileUC: getApplicantProfileUC,
+      approveApplicantUC: approveApplicantUC,
     );
   }
 }
