@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tajalwaqaracademy/features/settings/presentation/bloc/settings_bloc.dart';
 
+import '../../../../shared/widgets/taj.dart';
 import '../../domain/entities/faq_entity.dart';
+import '../widgets/submit_ticket_dialog.dart';
 
 class FaqScreen extends StatefulWidget {
   const FaqScreen({super.key});
@@ -27,14 +29,32 @@ class _FaqScreenState extends State<FaqScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('الأسئلة الشائعة'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('الأسئلة الشائعة'),
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => BlocProvider.value(
+                    value: BlocProvider.of<SettingsBloc>(context),
+                    child: const SubmitTicketDialog(),
+                  ),
+                );
+              },
+              child: StatusTag(lable: 'طلب الدعم'),
+            ),
+          ],
+        ),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         bottom: PreferredSize(preferredSize: Size.zero, child: Container()),
       ),
       body: BlocBuilder<SettingsBloc, SettingsState>(
         buildWhen: (previous, current) {
-          if (previous is SettingsLoadSuccess && current is SettingsLoadSuccess) {
+          if (previous is SettingsLoadSuccess &&
+              current is SettingsLoadSuccess) {
             return previous.faqsStatus != current.faqsStatus ||
                 previous.faqs != current.faqs;
           }
@@ -60,7 +80,9 @@ class _FaqScreenState extends State<FaqScreen> {
                 if (state.faqs.isNotEmpty) {
                   return _buildFaqList(context, state.faqs, false);
                 }
-                return const Center(child: Text('لم يتم العثور على أسئلة شائعة.'));
+                return const Center(
+                  child: Text('لم يتم العثور على أسئلة شائعة.'),
+                );
             }
           }
           return const Center(child: CircularProgressIndicator());
@@ -70,7 +92,10 @@ class _FaqScreenState extends State<FaqScreen> {
   }
 
   Widget _buildFaqList(
-      BuildContext context, List<FaqEntity> faqs, bool isLoading) {
+    BuildContext context,
+    List<FaqEntity> faqs,
+    bool isLoading,
+  ) {
     return ListView.builder(
       controller: _scrollController,
       itemCount: faqs.length + (isLoading ? 1 : 0),
