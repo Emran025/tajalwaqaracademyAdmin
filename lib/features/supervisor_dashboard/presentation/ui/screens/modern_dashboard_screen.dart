@@ -178,10 +178,8 @@ class _DashboardStateBuilder {
           final DashboardDataManager dataManager = DashboardDataManager();
           final stats = dataManager.getInitialStats(role);
 
-          if (state is SupervisorLoaded && state.countsDeltaEntity !=null) {
-            return 
-            
-             _buildLoadedStatisticsGrid(stats, state);
+          if (state is SupervisorLoaded && state.countsDeltaEntity != null) {
+            return _buildLoadedStatisticsGrid(stats, state);
           } else {
             return _buildDefaultStatisticsGrid(stats);
           }
@@ -308,11 +306,14 @@ class _StatCardWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildDetailContent(BuildContext context, SupervisorState state) {
+  List<Widget> _buildDetailContent(
+    BuildContext context,
+    SupervisorState state,
+  ) {
     if (state is SupervisorLoading) {
       return [_buildLoadingState()];
     } else if (state is SupervisorError) {
-      return [_buildErrorState((state as SupervisorError).message)];
+      return [_buildErrorState((state).message)];
     } else if (_hasValidData(state)) {
       return _buildDetailedCharts(context, state as SupervisorLoaded);
     } else {
