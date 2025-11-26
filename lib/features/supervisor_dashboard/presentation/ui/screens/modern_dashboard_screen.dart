@@ -33,7 +33,9 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
     _stateBuilder = _DashboardStateBuilder(role: widget.role);
     super.initState();
     _initializeAnimation();
-    _loadInitialData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadInitialData();
+    });
   }
 
   @override
@@ -294,9 +296,10 @@ class _StatCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DraggaBottomSheetBUtton(
+    return DraggaBottomSheetBUtton<SupervisorBloc, SupervisorState>(
+      bloc: context.read<SupervisorBloc>(),
       onTap: onTap,
-      children: _buildDetailContent(context),
+      contentBuilder: (state) => _buildDetailContent(context, state),
       child: Container(
         decoration: _buildCardDecoration(),
         padding: const EdgeInsets.all(16),
@@ -305,7 +308,7 @@ class _StatCardWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildDetailContent(BuildContext context) {
+  List<Widget> _buildDetailContent(BuildContext context, SupervisorState state) {
     if (state is SupervisorLoading) {
       return [_buildLoadingState()];
     } else if (state is SupervisorError) {
