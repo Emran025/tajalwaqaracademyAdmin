@@ -25,4 +25,9 @@ abstract class SupervisorRepository {
   );
 
   Future<Either<Failure, Unit>> approveApplicant(int applicantId);
+
+  Future<Either<Failure, Unit>> rejectApplicant(
+    int applicantId,
+    String reason,
+  );
 }

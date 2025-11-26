@@ -32,4 +32,6 @@ abstract interface class SupervisorRemoteDataSource {
   Future<ApplicantProfileModel> getApplicantProfile(int applicantId);
 
   Future<void> approveApplicant(int applicantId);
+
+  Future<void> rejectApplicant(int applicantId, String reason);
 }

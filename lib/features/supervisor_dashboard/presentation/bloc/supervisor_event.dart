@@ -47,3 +47,11 @@ final class ApproveApplicant extends SupervisorEvent {
   final int applicantId;
   ApproveApplicant(this.applicantId);
 }
+
+final class RejectApplicant extends SupervisorEvent {
+  final int applicantId;
+  final String reason;
+  RejectApplicant(this.applicantId, this.reason);
+}
+
+final class ClearMessage extends SupervisorEvent {}

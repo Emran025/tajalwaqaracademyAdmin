@@ -17,6 +17,7 @@ import '../../domain/usecases/get_applicant_profile_usecase.dart';
 import '../../domain/usecases/get_date_range_use_case.dart';
 import '../../domain/usecases/get_entities_counts_use_case.dart';
 import '../../domain/usecases/get_timeline_use_case.dart';
+import '../../domain/usecases/reject_applicant_usecase.dart';
 import '../../domain/entities/applicant_profile_entity.dart';
 
 part 'supervisor_event.dart';
@@ -29,6 +30,7 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
   final GetApplicantsUseCase getApplicantsUC;
   final GetApplicantProfileUseCase getApplicantProfileUC;
   final ApproveApplicantUseCase approveApplicantUC;
+  final RejectApplicantUseCase rejectApplicantUC;
 
   SupervisorBloc({
     required this.getEntitiesCountsUseCase,
@@ -37,6 +39,7 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
     required this.getApplicantsUC,
     required this.getApplicantProfileUC,
     required this.approveApplicantUC,
+    required this.rejectApplicantUC,
   }) : super(SupervisorInitial()) {
     on<LoadCountsDeltaEntity>(_onLoadCountsDeltaEntity);
     on<LoadTimeline>(_onLoadTimeline);
@@ -45,6 +48,22 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
     on<MoreApplicantsLoaded>(_onMoreApplicantsLoaded, transformer: droppable());
     on<ApplicantProfileFetched>(_onApplicantProfileFetched);
     on<ApproveApplicant>(_onApproveApplicant);
+    on<RejectApplicant>(_onRejectApplicant);
+    on<ClearMessage>(_onClearMessage);
+  }
+
+  Future<void> _onClearMessage(
+    ClearMessage event,
+    Emitter<SupervisorState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is SupervisorLoaded) {
+      emit(currentState.copyWith(
+        message: null,
+        errorMessage: null,
+        rejectStatus: ActionStatus.initial,
+      ));
+    }
   }
 
   Future<void> _onLoadTimeline(
@@ -289,6 +308,39 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
           currentState.copyWith(
             applicants: updatedApplicants,
             applicantProfile: null,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _onRejectApplicant(
+    RejectApplicant event,
+    Emitter<SupervisorState> emit,
+  ) async {
+    final currentState = state;
+    if (currentState is! SupervisorLoaded) return;
+
+    emit(currentState.copyWith(rejectStatus: ActionStatus.loading));
+
+    final result =
+        await rejectApplicantUC(event.applicantId, event.reason);
+    result.fold(
+      (failure) => emit(
+        currentState.copyWith(
+          rejectStatus: ActionStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (_) {
+        final updatedApplicants = currentState.applicants
+            .where((element) => element.id != event.applicantId)
+            .toList();
+        emit(
+          currentState.copyWith(
+            applicants: updatedApplicants,
+            message: 'Applicant rejected and returned to the general pool.',
+            rejectStatus: ActionStatus.success,
           ),
         );
       },

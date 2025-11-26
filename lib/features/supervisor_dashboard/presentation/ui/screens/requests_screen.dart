@@ -49,7 +49,20 @@ class _RequestsScreenState extends State<RequestsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: BlocBuilder<SupervisorBloc, SupervisorState>(
+                child: BlocConsumer<SupervisorBloc, SupervisorState>(
+                  listener: (context, state) {
+                    if (state is SupervisorLoaded &&
+                        state.message != null &&
+                        state.rejectStatus == ActionStatus.success) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message!),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      _supervisorBloc.add(ClearMessage());
+                    }
+                  },
                   builder: (context, state) {
                     if (state is SupervisorLoading) {
                       return const Center(child: CircularProgressIndicator());

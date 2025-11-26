@@ -85,4 +85,16 @@ final class SupervisorRemoteDataSourceImpl
       rethrow;
     }
   }
+
+  @override
+  Future<void> rejectApplicant(int applicantId, String reason) async {
+    try {
+      await _apiConsumer.post(
+        EndPoint.rejectApplicant.replaceAll('{id}', applicantId.toString()),
+        body: {'reason': reason},
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

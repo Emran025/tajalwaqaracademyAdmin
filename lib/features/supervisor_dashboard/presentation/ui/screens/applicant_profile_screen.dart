@@ -6,6 +6,7 @@ import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/widgets/approve_applicant_dialog.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/widgets/reject_applicant_dialog.dart';
 
 import '../../../../../core/models/gender.dart';
 
@@ -33,8 +34,19 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
       appBar: AppBar(title: const Text('ملف المقدم')),
       body: BlocListener<SupervisorBloc, SupervisorState>(
         listener: (context, state) {
-          if (state is SupervisorLoaded && state.applicantProfile == null) {
-            Navigator.of(context).pop();
+          if (state is SupervisorLoaded) {
+            if (state.applicantProfile == null) {
+              Navigator.of(context).pop();
+            }
+            if (state.errorMessage != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage!),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              context.read<SupervisorBloc>().add(ClearMessage());
+            }
           }
         },
         child: BlocBuilder<SupervisorBloc, SupervisorState>(
@@ -89,7 +101,23 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
     return Row(
       children: [
         Expanded(
-          child: OutlinedButton(onPressed: null, child: const Text('رفض')),
+          child: OutlinedButton(
+            onPressed: () async {
+              final result = await showDialog(
+                context: context,
+                builder: (_) => BlocProvider.value(
+                  value: BlocProvider.of<SupervisorBloc>(context),
+                  child: RejectApplicantDialog(
+                    applicantId: applicant.id,
+                  ),
+                ),
+              );
+              if (result == true) {
+                Navigator.of(context).pop(true);
+              }
+            },
+            child: const Text('رفض'),
+          ),
         ),
         const SizedBox(width: 12),
         Expanded(

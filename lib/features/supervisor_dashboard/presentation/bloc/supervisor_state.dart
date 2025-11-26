@@ -1,6 +1,7 @@
 // bloc/student_timeline_state.dart
 part of 'supervisor_bloc.dart';
 
+enum ActionStatus { initial, loading, success, failure }
 
 abstract class SupervisorState {}
 
@@ -22,6 +23,9 @@ class SupervisorLoaded extends SupervisorState {
 
   final bool isLoadingMoreApplicants;
   final ApplicantProfileEntity? applicantProfile;
+  final String? message;
+  final ActionStatus rejectStatus;
+  final String? errorMessage;
   SupervisorLoaded({
     this.countsDeltaEntity,
     this.timelineData,
@@ -34,6 +38,9 @@ class SupervisorLoaded extends SupervisorState {
     this.applicantsCurrentPage = 1,
     this.applicantsHasMorePages = true,
     this.isLoadingMoreApplicants = false,
+    this.message,
+    this.rejectStatus = ActionStatus.initial,
+    this.errorMessage,
   });
 
   SupervisorLoaded copyWith({
@@ -47,6 +54,9 @@ class SupervisorLoaded extends SupervisorState {
     bool? applicantsHasMorePages,
     bool? isLoadingMoreApplicants,
     ApplicantProfileEntity? applicantProfile,
+    String? message,
+    ActionStatus? rejectStatus,
+    String? errorMessage,
     bool clearApplicants = false,
   }) {
     return SupervisorLoaded(
@@ -64,6 +74,9 @@ class SupervisorLoaded extends SupervisorState {
           applicantsHasMorePages ?? this.applicantsHasMorePages,
       isLoadingMoreApplicants:
           isLoadingMoreApplicants ?? this.isLoadingMoreApplicants,
+      message: message ?? this.message,
+      rejectStatus: rejectStatus ?? this.rejectStatus,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
