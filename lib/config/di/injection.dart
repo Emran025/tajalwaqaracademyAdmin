@@ -40,9 +40,11 @@ import '../../features/daily_tracking/domain/usecases/finalize_session.dart';
 import '../../features/daily_tracking/domain/usecases/get_all_mistakes.dart';
 import '../../features/daily_tracking/domain/usecases/get_or_create_today_tracking.dart';
 import '../../features/daily_tracking/domain/usecases/get_mistakes_ayahs.dart';
+import '../../features/daily_tracking/domain/usecases/get_error_analysis_chart_data.dart';
 import '../../features/daily_tracking/domain/usecases/get_page_data.dart';
 import '../../features/daily_tracking/domain/usecases/get_surahs_list.dart';
 import '../../features/daily_tracking/domain/usecases/save_task_progress.dart';
+import '../../features/daily_tracking/presentation/bloc/error_analysis_chart/error_analysis_chart_bloc.dart';
 import '../../features/daily_tracking/presentation/bloc/quran_reader_bloc.dart';
 import '../../features/daily_tracking/presentation/bloc/tracking_session_bloc.dart';
 import '../../features/settings/domain/usecases/export_data_usecase.dart';
@@ -255,6 +257,15 @@ abstract class BlocModule {
       getApplicantProfileUC: getApplicantProfileUC,
       approveApplicantUC: approveApplicantUC,
       rejectApplicantUC: rejectApplicantUC,
+    );
+  }
+
+  @factoryMethod
+  ErrorAnalysisChartBloc errorAnalysisChartBloc(
+    GetErrorAnalysisChartData getErrorAnalysisChartData,
+  ) {
+    return ErrorAnalysisChartBloc(
+      getErrorAnalysisChartData: getErrorAnalysisChartData,
     );
   }
 }

@@ -15,7 +15,12 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/tracki
 import 'package:tajalwaqaracademy/features/daily_tracking/data/models/mistake_model.dart';
 
 // The contract it implements
+import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran_local_data_source.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/chart_data_point.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 import 'tracking_local_data_source.dart';
+import 'package:tajalwaqaracademy/core/models/mistake_type.dart';
 
 // Models
 
@@ -36,10 +41,11 @@ const String _kTrackingEntityType = 'tracking';
 @LazySingleton(as: TrackingLocalDataSource)
 final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   final AppDatabase _appDb;
+    final QuranLocalDataSource _quranDataSource;
   static const int _kDefaultStartUnitId =
       1; // Represents the start of the Quran.
 
-  TrackingLocalDataSourceImpl(this._appDb);
+  TrackingLocalDataSourceImpl(this._appDb, this._quranDataSource);
 
   // =========================================================================
   //                             Core Public Methods
@@ -224,6 +230,223 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       throw CacheException(
         message: 'Failed to fetch all mistakes: ${e.toString()}',
       );
+    }
+  }
+
+  @override
+  Future<List<BarChartDatas>> getErrorAnalysisChartData(
+      {required int enrollmentId, required ChartFilter filter}) async {
+    final db = await _appDb.database;
+    try {
+      if (filter.dimension == FilterDimension.time) {
+        return _fetchDataByTime(db, enrollmentId, filter);
+      } else {
+        return _fetchDataByQuantity(db, enrollmentId, filter);
+      }
+    } on DatabaseException catch (e) {
+      throw CacheException(
+        message: 'Failed to fetch error analysis data: ${e.toString()}',
+      );
+    }
+  }
+
+  Future<List<BarChartDatas>> _fetchDataByTime(
+      Database db, int enrollmentId, ChartFilter filter) async {
+    String dateFormat;
+    bool isQuarter = filter.timePeriod == 'quarter';
+
+    if (isQuarter) {
+      dateFormat =
+          '%Y-%m'; // Fetch by month, then group by quarter in Dart
+    } else {
+      switch (filter.timePeriod) {
+        case 'year':
+          dateFormat = '%Y';
+          break;
+        case 'week':
+          dateFormat = '%Y-%W';
+          break;
+        default:
+          dateFormat = '%Y-%m';
+      }
+    }
+
+    final query = '''
+      SELECT
+        m.mistakeTypeId,
+        COUNT(m.id) as mistakeCount,
+        STRFTIME('$dateFormat', dt.trackDate) as period
+      FROM $_kMistakesTable AS m
+      JOIN $_kDailyTrackingDetailTable AS dtd ON m.trackingDetailId = dtd.id
+      JOIN $_kDailyTrackingTable AS dt ON dtd.trackingId = dt.id
+      WHERE dt.enrollmentId = ? AND dtd.typeId = ?
+      GROUP BY period, m.mistakeTypeId
+      ORDER BY period ASC;
+    ''';
+
+    final trackingType = TrackingType.values
+        .firstWhere((e) => e.toString().endsWith(filter.trackingType));
+    final results =
+        await db.rawQuery(query, [enrollmentId, trackingType.id]);
+    if (results.isEmpty) return [];
+
+    if (isQuarter) {
+      return _groupMonthsIntoQuarters(results);
+    }
+
+    // Group by period (for non-quarter filters)
+    final groupedByPeriod =
+        groupBy<Map<String, dynamic>, String>(results, (row) => row['period']);
+
+    final List<BarChartDatas> chartDataList = [];
+    for (final period in groupedByPeriod.keys) {
+      final periodMistakes = groupedByPeriod[period]!;
+      final dataPoints = _calculateDataPoints(periodMistakes);
+
+      DateTime? periodDate;
+      if (filter.timePeriod == 'year') {
+        periodDate = DateTime.tryParse('$period-01-01');
+      } else if (filter.timePeriod == 'week') {
+        final parts = period.split('-');
+        final year = int.parse(parts[0]);
+        final week = int.parse(parts[1]);
+        // This is an approximation: the first day of the week.
+        periodDate = DateTime(year, 1, 1).add(Duration(days: (week - 1) * 7));
+      } else {
+        periodDate = DateTime.tryParse('$period-01');
+      }
+
+      chartDataList.add(
+        BarChartDatas(
+          data: dataPoints,
+          xAxisLabel: ' أنواع الأخطاء',
+          yAxisLabel: 'العدد',
+          periodDate: periodDate,
+        ),
+      );
+    }
+    return chartDataList;
+  }
+
+  List<BarChartDatas> _groupMonthsIntoQuarters(
+      List<Map<String, dynamic>> monthlyResults) {
+    final groupedByQuarter =
+        groupBy<Map<String, dynamic>, String>(monthlyResults, (row) {
+      final yearMonth = (row['period'] as String).split('-');
+      final month = int.parse(yearMonth[1]);
+      final quarter = (month - 1) ~/ 3 + 1;
+      return '${yearMonth[0]}-Q$quarter';
+    });
+
+    final List<BarChartDatas> chartDataList = [];
+    for (final quarter in groupedByQuarter.keys) {
+      final quarterMistakes = groupedByQuarter[quarter]!;
+      final dataPoints = _calculateDataPoints(quarterMistakes);
+
+      final year = int.parse(quarter.split('-Q')[0]);
+      final quarterNum = int.parse(quarter.split('-Q')[1]);
+      final month = (quarterNum - 1) * 3 + 1;
+      final periodDate = DateTime(year, month, 1);
+
+      chartDataList.add(BarChartDatas(
+        data: dataPoints,
+        xAxisLabel: 'أنواع الأخطاء',
+        yAxisLabel: 'العدد',
+        periodDate: periodDate,
+      ));
+    }
+    return chartDataList;
+  }
+
+  List<ChartDataPoint> _calculateDataPoints(
+      List<Map<String, dynamic>> mistakes) {
+    return MistakeType.values
+        .where((e) => e != MistakeType.none)
+        .map((mistakeType) {
+      final count = mistakes
+          .where((r) => r['mistakeTypeId'] == mistakeType.id)
+          .fold<int>(0, (sum, r) => sum + (r['mistakeCount'] as int));
+      return ChartDataPoint(
+          label: mistakeType.labelAr, value: count.toDouble());
+    }).toList();
+  }
+
+  Future<List<BarChartDatas>> _fetchDataByQuantity(
+      Database db, int enrollmentId, ChartFilter filter) async {
+    final trackingType = TrackingType.values
+        .firstWhere((e) => e.toString().endsWith(filter.trackingType));
+    final allMistakesQuery = '''
+      SELECT m.mistakeTypeId, m.ayahId_quran
+      FROM $_kMistakesTable AS m
+      JOIN $_kDailyTrackingDetailTable AS dtd ON m.trackingDetailId = dtd.id
+      JOIN $_kDailyTrackingTable AS dt ON dtd.trackingId = dt.id
+      WHERE dt.enrollmentId = ? AND dtd.typeId = ?;
+    ''';
+    final mistakeResults =
+        await db.rawQuery(allMistakesQuery, [enrollmentId, trackingType.id]);
+    if (mistakeResults.isEmpty) return [];
+
+    // 2. Get Ayah details from Quran DB
+    final ayahIds =
+        mistakeResults.map((r) => r['ayahId_quran'] as int).toSet().toList();
+    final ayahs = await _quranDataSource.getMistakesAyahs(ayahIds);
+    final ayahMap = {for (var ayah in ayahs) ayah.number: ayah};
+
+    // 3. Group mistakes by the quantitative unit
+    String Function(int) getGroupingKey;
+    switch (filter.quantityUnit) {
+      case 'juz':
+        getGroupingKey = (ayahId) => ayahMap[ayahId]?.juz.toString() ?? '0';
+        break;
+      case 'hizb':
+        getGroupingKey = (ayahId) => ayahMap[ayahId]?.hizb.toString() ?? '0';
+        break;
+      case 'page':
+      default:
+        getGroupingKey = (ayahId) => ayahMap[ayahId]?.pageNum.toString() ?? '0';
+        break;
+    }
+
+    final groupedMistakes = groupBy<Map<String, dynamic>, String>(
+        mistakeResults, (row) => getGroupingKey(row['ayahId_quran']));
+
+    final List<BarChartDatas> chartDataList = [];
+    final sortedKeys = groupedMistakes.keys.toList()
+      ..sort((a, b) => int.parse(a).compareTo(int.parse(b)));
+
+    for (final key in sortedKeys) {
+       final groupMistakes = groupedMistakes[key]!;
+       final dataPoints = MistakeType.values
+          .where((e) => e != MistakeType.none)
+          .map((mistakeType) {
+        final count = groupMistakes.where((r) => r['mistakeTypeId'] == mistakeType.id).length;
+        return ChartDataPoint(
+            label: mistakeType.labelAr, value: count.toDouble());
+      }).toList();
+
+      chartDataList.add(
+        BarChartDatas(
+          data: dataPoints,
+          xAxisLabel: 'أنواع الأخطاء',
+          yAxisLabel: 'العدد',
+          periodLabel: _getFormattedPeriodLabel(filter.quantityUnit, key),
+        ),
+      );
+    }
+
+    return chartDataList;
+  }
+
+  String _getFormattedPeriodLabel(String quantityUnit, String key) {
+    switch (quantityUnit) {
+      case 'juz':
+        return 'الجزء $key';
+      case 'hizb':
+        return 'الحزب $key';
+      case 'page':
+        return 'صفحة $key';
+      default:
+        return 'الفترة $key';
     }
   }
 

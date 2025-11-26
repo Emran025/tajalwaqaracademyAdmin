@@ -1,124 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tajalwaqaracademy/core/models/cheet_tile.dart';
+import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart/error_analysis_chart_bloc.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 import '../../../../shared/themes/app_theme.dart';
 import '../../../supervisor_dashboard/presentation/ui/widgets/base_bar_chart.dart';
+import 'package:tajalwaqaracademy/injection_container.dart';
 
-
-class StudentErrorAnalysisChart extends StatefulWidget {
-  final List<BarChartDatas> errorDataPeriods;
-  final ChartFilter filter;
+class StudentErrorAnalysisChart extends StatelessWidget {
   final ChartTile tile;
-  final Function(ChartFilter)? onFilterChanged;
+  final String enrollmentId;
 
   const StudentErrorAnalysisChart({
     super.key,
-    required this.errorDataPeriods,
-    required this.filter,
     required this.tile,
-    this.onFilterChanged,
+    required this.enrollmentId,
   });
 
   @override
-  State<StudentErrorAnalysisChart> createState() =>
-      _StudentErrorAnalysisChartState();
-}
-
-class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
-  late PageController _pageController;
-  late ChartFilter _currentFilter;
-  int _currentPageIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentFilter = widget.filter;
-    _pageController = PageController(
-      initialPage: widget.errorDataPeriods.length - 1,
-    );
-    _currentPageIndex = widget.errorDataPeriods.length - 1;
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onPageChanged(int index) {
-    setState(() {
-      _currentPageIndex = index;
-    });
-  }
-
-  String _getPeriodLabel() {
-    if (_currentPageIndex >= 0 &&
-        _currentPageIndex < widget.errorDataPeriods.length) {
-      final periodData = widget.errorDataPeriods[_currentPageIndex];
-      if (periodData.periodDate != null) {
-        return _formatPeriodDate(periodData.periodDate!);
-      }
-    }
-    return 'الفترة ${_currentPageIndex + 1}';
-  }
-
-  String _formatPeriodDate(DateTime date) {
-    final months = [
-      'يناير',
-      'فبراير',
-      'مارس',
-      'أبريل',
-      'مايو',
-      'يونيو',
-      'يوليو',
-      'أغسطس',
-      'سبتمبر',
-      'أكتوبر',
-      'نوفمبر',
-      'ديسمبر',
-    ];
-    return '${months[date.month - 1]} ${date.year}';
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Filters Section
-        _buildTitelIndicator(widget.tile),
-        const SizedBox(height: 16),
-        _buildFiltersSection(),
-        const SizedBox(height: 16),
-        // Period Indicator
-        _buildPeriodIndicator(),
-
-        // PageView for Charts
-        SizedBox(
-          height: 280,
-          child: PageView.builder(
-            controller: _pageController,
-            onPageChanged: _onPageChanged,
-            itemCount: widget.errorDataPeriods.length,
-            itemBuilder: (context, index) {
-              final chartData = widget.errorDataPeriods[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: BaseBarChart(
-                  chartData: BarChartDatas(
-                    data: chartData.data,
-                    xAxisLabel: chartData.xAxisLabel,
-                    yAxisLabel: chartData.yAxisLabel,
-                    maxY: chartData.maxY,
-                  ),
-                  barColor: AppColors.error,
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => sl<ErrorAnalysisChartBloc>()
+        ..add(LoadErrorAnalysisChartData(
+          enrollmentId: enrollmentId,
+          filter: const ChartFilter(),
+        )),
+      child: BlocBuilder<ErrorAnalysisChartBloc, ErrorAnalysisChartState>(
+        builder: (context, state) {
+          return Column(
+            children: [
+              _buildTitelIndicator(tile),
+              const SizedBox(height: 16),
+              if (state is ErrorAnalysisChartLoaded) ...[
+                _buildFiltersSection(context, state.filter),
+                const SizedBox(height: 16),
+                _ChartContent(
+                  chartData: state.chartData,
+                )
+              ] else if (state is ErrorAnalysisChartLoading)
+                const CircularProgressIndicator()
+              else if (state is ErrorAnalysisChartError)
+                Text(state.message)
+              else
+                Container(),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -158,9 +88,7 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
     );
   }
 
-  String tempSelected = 'فترة زمنية';
-
-  Widget _buildFiltersSection() {
+  Widget _buildFiltersSection(BuildContext context, ChartFilter currentFilter) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -183,9 +111,9 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
                   ).textTheme.titleLarge?.copyWith(color: AppColors.lightCream),
                 ),
                 Expanded(
-                  child: RadioListTile<String>(
-                    value: "مقدار ورد",
-                    groupValue: tempSelected,
+                  child: RadioListTile<FilterDimension>(
+                    value: FilterDimension.quantity,
+                    groupValue: currentFilter.dimension,
                     activeColor: AppColors.accent,
                     title: Text(
                       "مقدار ورد",
@@ -195,16 +123,19 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
                       ),
                     ),
                     onChanged: (val) {
-                      setState(() {
-                        tempSelected = val!;
-                      });
+                      if (val != null) {
+                        context.read<ErrorAnalysisChartBloc>().add(
+                            UpdateErrorAnalysisChartFilter(
+                                filter: currentFilter.copyWith(
+                                    dimension: val)));
+                      }
                     },
                   ),
                 ),
                 Expanded(
-                  child: RadioListTile<String>(
-                    value: 'فترة زمنية',
-                    groupValue: tempSelected,
+                  child: RadioListTile<FilterDimension>(
+                    value: FilterDimension.time,
+                    groupValue: currentFilter.dimension,
                     activeColor: AppColors.accent,
                     title: Text(
                       'فترة زمنية',
@@ -214,50 +145,50 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
                       ),
                     ),
                     onChanged: (val) {
-                      setState(() {
-                        tempSelected = val!;
-                      });
+                      if (val != null) {
+                        context.read<ErrorAnalysisChartBloc>().add(
+                            UpdateErrorAnalysisChartFilter(
+                                filter: currentFilter.copyWith(
+                                    dimension: val)));
+                      }
                     },
                   ),
                 ),
-               
               ],
             ),
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              if (tempSelected == 'فترة زمنية')
+              if (currentFilter.dimension == FilterDimension.time)
                 Expanded(
                   child: _buildFilterDropdown(
+                    context: context,
                     label: 'الفترة الزمنية',
-                    value: _currentFilter.timePeriod,
+                    value: currentFilter.timePeriod,
                     items: const ['week', 'month', 'quarter', 'year'],
                     labels: const ['أسبوع', 'شهر', 'ربع سنة', 'سنة'],
                     onChanged: (value) {
-                      setState(() {
-                        _currentFilter = _currentFilter.copyWith(
-                          timePeriod: value,
-                        );
-                        widget.onFilterChanged?.call(_currentFilter);
-                      });
+                      context.read<ErrorAnalysisChartBloc>().add(
+                          UpdateErrorAnalysisChartFilter(
+                              filter: currentFilter.copyWith(
+                                  timePeriod: value)));
                     },
                   ),
                 )
               else
                 Expanded(
                   child: _buildFilterDropdown(
+                    context: context,
                     label: 'مدى الحفظ',
-                    value: _currentFilter.quantityUnit,
+                    value: currentFilter.quantityUnit,
                     items: const ['page', 'hizb', 'juz', 'full_quran'],
                     labels: const ['صفحة', 'حزب', 'جزء', 'مصحف كامل'],
                     onChanged: (value) {
-                      setState(() {
-                        _currentFilter = _currentFilter.copyWith(
-                          quantityUnit: value,
-                        );
-                        widget.onFilterChanged?.call(_currentFilter);
-                      });
+                      context.read<ErrorAnalysisChartBloc>().add(
+                          UpdateErrorAnalysisChartFilter(
+                              filter: currentFilter.copyWith(
+                                  quantityUnit: value)));
                     },
                   ),
                 ),
@@ -265,17 +196,16 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 4,
                 child: _buildFilterDropdown(
+                  context: context,
                   label: 'نوع المسار',
-                  value: _currentFilter.trackingType,
+                  value: currentFilter.trackingType,
                   items: const ['memorization', 'review', 'recitation'],
                   labels: const ['حفظ', 'مراجعة', 'سرد'],
                   onChanged: (value) {
-                    setState(() {
-                      _currentFilter = _currentFilter.copyWith(
-                        trackingType: value,
-                      );
-                      widget.onFilterChanged?.call(_currentFilter);
-                    });
+                    context.read<ErrorAnalysisChartBloc>().add(
+                        UpdateErrorAnalysisChartFilter(
+                            filter:
+                                currentFilter.copyWith(trackingType: value)));
                   },
                 ),
               ),
@@ -286,34 +216,8 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
     );
   }
 
-  Widget _buildPeriodIndicator() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            _getPeriodLabel(),
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: AppColors.lightCream,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            '${_currentPageIndex + 1} من ${widget.errorDataPeriods.length}',
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(color: AppColors.lightCream70),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Mini stat widget
-
   Widget _buildFilterDropdown({
+    required BuildContext context,
     required String label,
     required String value,
     required List<String> items,
@@ -347,6 +251,132 @@ class _StudentErrorAnalysisChartState extends State<StudentErrorAnalysisChart> {
           },
         ),
       ],
+    );
+  }
+}
+
+class _ChartContent extends StatefulWidget {
+  final List<BarChartDatas> chartData;
+
+  const _ChartContent({required this.chartData});
+
+  @override
+  State<_ChartContent> createState() => _ChartContentState();
+}
+
+class _ChartContentState extends State<_ChartContent> {
+  late PageController _pageController;
+  int _currentPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      initialPage: widget.chartData.isNotEmpty ? widget.chartData.length - 1 : 0,
+    );
+    _currentPageIndex = widget.chartData.isNotEmpty ? widget.chartData.length - 1 : 0;
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPageIndex = index;
+    });
+  }
+
+  String _getPeriodLabel() {
+    if (_currentPageIndex >= 0 &&
+        _currentPageIndex < widget.chartData.length) {
+      final periodData = widget.chartData[_currentPageIndex];
+      if (periodData.periodLabel != null) {
+        return periodData.periodLabel!;
+      }
+      if (periodData.periodDate != null) {
+        return _formatPeriodDate(periodData.periodDate!);
+      }
+    }
+    return 'الفترة ${_currentPageIndex + 1}';
+  }
+
+  String _formatPeriodDate(DateTime date) {
+    final months = [
+      'يناير',
+      'فبراير',
+      'مارس',
+      'أبريل',
+      'مايو',
+      'يونيو',
+      'يوليو',
+      'أغسطس',
+      'سبتمبر',
+      'أكتوبر',
+      'نوفمبر',
+      'ديسمبر',
+    ];
+    return '${months[date.month - 1]} ${date.year}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.chartData.isEmpty) {
+      return const Text('لا توجد بيانات لعرضها');
+    }
+    return Column(
+      children: [
+        _buildPeriodIndicator(),
+        SizedBox(
+          height: 280,
+          child: PageView.builder(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            itemCount: widget.chartData.length,
+            itemBuilder: (context, index) {
+              final chartData = widget.chartData[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: BaseBarChart(
+                  chartData: BarChartDatas(
+                    data: chartData.data,
+                    xAxisLabel: chartData.xAxisLabel,
+                    yAxisLabel: chartData.yAxisLabel,
+                    maxY: chartData.maxY,
+                  ),
+                  barColor: AppColors.error,
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPeriodIndicator() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            _getPeriodLabel(),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: AppColors.lightCream,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          Text(
+            '${_currentPageIndex + 1} من ${widget.chartData.length}',
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: AppColors.lightCream70),
+          ),
+        ],
+      ),
     );
   }
 }

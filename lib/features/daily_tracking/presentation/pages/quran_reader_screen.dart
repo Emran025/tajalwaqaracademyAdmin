@@ -133,6 +133,7 @@ class _QuranReaderScreenState extends State<QuranReaderScreen> {
                             },
                             child: SessionTopToolbar(
                               onTap: _toggleSidebarsVisibility,
+                              enrollmentId: widget.enrollmentId,
                             ),
                           ),
                           ValueListenableBuilder<bool>(

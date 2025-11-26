@@ -1,6 +1,8 @@
 import 'package:tajalwaqaracademy/core/models/sync_queue_model.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
 import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/tracking_detail_model.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 
 import '../models/mistake_model.dart';
 
@@ -55,6 +57,11 @@ abstract class TrackingLocalDataSource {
     TrackingType? type, // <-- NOW OPTIONAL
     int? fromPage,
     int? toPage,
+  });
+
+  Future<List<BarChartDatas>> getErrorAnalysisChartData({
+    required int enrollmentId,
+    required ChartFilter filter,
   });
 
 

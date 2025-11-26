@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:tajalwaqaracademy/core/error/failures.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 
 // Import the pure domain entities
 import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/tracking_detail_entity.dart';
@@ -29,8 +31,7 @@ abstract class TrackingRepository {
   /// Saves the current "draft" state of a tracking task.
   ///
   /// This is used for autosaving the session. It persists the `TrackingDetailEntity`,
-  /// including its list of mistakes, to the local database and queues the
-  /// operation for future synchronization with the server.
+  /// including its list of mistakes, to the local database and.
   ///
   /// Returns a [Right] with `unit` on success, or a [Left] with a `Failure` on error.
   Future<Either<Failure, Unit>> saveDraftTaskProgress(
@@ -57,5 +58,10 @@ abstract class TrackingRepository {
     TrackingType? type, // <-- NOW OPTIONAL
     int? fromPage,
     int? toPage,
+  });
+
+  Future<Either<Failure, List<BarChartDatas>>> getErrorAnalysisChartData({
+    required String enrollmentId,
+    required ChartFilter filter,
   });
 }

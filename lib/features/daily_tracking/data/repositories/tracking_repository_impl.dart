@@ -4,6 +4,8 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tajalwaqaracademy/core/error/exceptions.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 
 // Domain Layer imports
 import '../../../../core/error/failures.dart';
@@ -26,11 +28,11 @@ final class TrackingRepositoryImpl implements TrackingRepository {
   final TrackingLocalDataSource _localDataSource;
 
   TrackingRepositoryImpl({required TrackingLocalDataSource localDataSource})
-    : _localDataSource = localDataSource;
+      : _localDataSource = localDataSource;
 
   @override
   Future<Either<Failure, Map<TrackingType, TrackingDetailEntity>>>
-  getOrCreateTodayDraftTrackingDetails({required String enrollmentId}) {
+      getOrCreateTodayDraftTrackingDetails({required String enrollmentId}) {
     // REFINEMENT: Wrap the logic in a generic helper for conciseness and robustness.
     return _tryCatch<Map<TrackingType, TrackingDetailEntity>>(() async {
       final int enrollmentIdInt = int.parse(enrollmentId);
@@ -92,10 +94,6 @@ final class TrackingRepositoryImpl implements TrackingRepository {
     }
   }
 
-  ///
-  ///
-  // lib/features/daily_tracking/data/repositories/tracking_repository_impl.dart
-  // In TrackingRepositoryImpl
   @override
   Future<Either<Failure, List<Mistake>>> getAllMistakes({
     required String enrollmentId,
@@ -112,6 +110,21 @@ final class TrackingRepositoryImpl implements TrackingRepository {
         toPage: toPage,
       );
       return mistakeModels.map((model) => model.toEntity()).toList();
+    });
+  }
+
+  @override
+  Future<Either<Failure, List<BarChartDatas>>> getErrorAnalysisChartData({
+    required String enrollmentId,
+    required ChartFilter filter,
+  }) {
+    return _tryCatch<List<BarChartDatas>>(() async {
+      final int enrollmentIdInt = int.parse(enrollmentId);
+      final chartData = await _localDataSource.getErrorAnalysisChartData(
+        enrollmentId: enrollmentIdInt,
+        filter: filter,
+      );
+      return chartData;
     });
   }
 }

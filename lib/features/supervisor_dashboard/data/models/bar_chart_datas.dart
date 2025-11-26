@@ -9,6 +9,7 @@ class BarChartDatas extends Equatable {
   final String yAxisLabel;
   final double maxY;
   final DateTime? periodDate; // تاريخ الفترة الزمنية
+  final String? periodLabel;
 
   const BarChartDatas({
     required this.data,
@@ -17,10 +18,12 @@ class BarChartDatas extends Equatable {
     required this.yAxisLabel,
     this.maxY = 100,
     this.periodDate,
+    this.periodLabel,
   });
 
   @override
-  List<Object?> get props => [data, xAxisLabel, yAxisLabel, maxY, periodDate];
+  List<Object?> get props =>
+      [data, xAxisLabel, yAxisLabel, maxY, periodDate, periodLabel];
 }
 
 

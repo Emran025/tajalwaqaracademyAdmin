@@ -333,8 +333,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i357.WatchTeachersParams>(
       () => _i357.WatchTeachersParams(forceRefresh: gh<bool>()),
     );
+    // MANUALLY EDITED: Added QuranLocalDataSource dependency to TrackingLocalDataSourceImpl.
+    // This is a temporary fix because `build_runner` cannot be run in the current environment.
     gh.lazySingleton<_i94.TrackingLocalDataSource>(
-      () => _i390.TrackingLocalDataSourceImpl(gh<_i788.AppDatabase>()),
+      () => _i390.TrackingLocalDataSourceImpl(
+          gh<_i788.AppDatabase>(), gh<_i1040.QuranLocalDataSource>()),
     );
     gh.lazySingleton<_i281.SettingsLocalDataSource>(
       () => _i242.SettingsLocalDataSourceImpl(

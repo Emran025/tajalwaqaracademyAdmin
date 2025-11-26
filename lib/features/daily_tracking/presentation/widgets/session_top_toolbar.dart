@@ -7,13 +7,19 @@ import 'package:flutter/material.dart';
 /// This toolbar provides actions relevant to the current tracking task,
 /// such as saving progress, viewing the task report, and other session-related tools.
 
+import 'package:tajalwaqaracademy/core/models/cheet_tile.dart';
+import 'package:tajalwaqaracademy/features/daily_tracking/presentation/pages/student_error_analysis_chart.dart';
+import 'package:tajalwaqaracademy/shared/widgets/draggable_scrollable_sheet.dart';
+
 /// A specialized bottom toolbar for the recitation session screen.
 ///
 /// This toolbar provides actions relevant to the current tracking task,
 /// such as saving progress, viewing the task report, and other session-related tools.
 class SessionTopToolbar extends StatelessWidget {
   final VoidCallback onTap;
-  const SessionTopToolbar({super.key, required this.onTap});
+  final String enrollmentId;
+  const SessionTopToolbar(
+      {super.key, required this.onTap, required this.enrollmentId});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +55,20 @@ class SessionTopToolbar extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              print('bar_chart Options Tapped');
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => DraggableScrollableSheet(
+                  child: StudentErrorAnalysisChart(
+                    enrollmentId: enrollmentId,
+                    tile: const ChartTile(
+                      title: 'تحليل أداء الطالب',
+                      subTitle: 'عرض إحصائيات الأخطاء',
+                      icon: Icons.error_outline,
+                    ),
+                  ),
+                ),
+              );
             },
             icon: Icon(
               Icons.bar_chart,
