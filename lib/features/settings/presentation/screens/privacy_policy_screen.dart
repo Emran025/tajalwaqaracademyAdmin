@@ -32,9 +32,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
       body: BlocBuilder<SettingsBloc, SettingsState>(
         buildWhen: (previous, current) {
           // Optimization: only rebuild if the relevant parts of the state have changed.
-          if (previous is SettingsLoadSuccess && current is SettingsLoadSuccess) {
+          if (previous is SettingsLoadSuccess &&
+              current is SettingsLoadSuccess) {
             return previous.policyStatus != current.policyStatus ||
-                   previous.privacyPolicy != current.privacyPolicy;
+                previous.privacyPolicy != current.privacyPolicy;
           }
           return true;
         },
@@ -60,7 +61,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   return _buildPolicyContent(context, state.privacyPolicy!);
                 }
                 // Handle the edge case where status is success but data is null.
-                return const Center(child: Text('لم يتم العثور على سياسة الخصوصية.'));
+                return const Center(
+                  child: Text('لم يتم العثور على سياسة الخصوصية.'),
+                );
             }
           }
           // Fallback for any other state (e.g., global failure), though unlikely to be hit
@@ -88,22 +91,19 @@ class PrivacyPolicyScreen extends StatelessWidget {
             child: Text(
               'التفاصيل الكاملة',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ),
 
         // An efficient, lazy-loaded list of expandable policy sections.
         SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return _buildSectionItem(context, policy.sections[index]);
-            },
-            childCount: policy.sections.length,
-          ),
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return _buildSectionItem(context, policy.sections[index]);
+          }, childCount: policy.sections.length),
         ),
-        
+
         // Provides bottom padding for better visual spacing.
         const SliverToBoxAdapter(child: SizedBox(height: 32)),
       ],
@@ -116,7 +116,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
     // Simple date formatting
-    final formattedDate = "${policy.lastUpdated.year}-${policy.lastUpdated.month.toString().padLeft(2, '0')}-${policy.lastUpdated.day.toString().padLeft(2, '0')}";
+    final formattedDate =
+        "${policy.lastUpdated.year}-${policy.lastUpdated.month.toString().padLeft(2, '0')}-${policy.lastUpdated.day.toString().padLeft(2, '0')}";
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -132,20 +133,34 @@ class PrivacyPolicyScreen extends StatelessWidget {
             children: [
               Text(
                 'سياسة الخصوصية',
-                style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
                 'آخر تحديث: $formattedDate  |  الإصدار: ${policy.version}',
-                style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
               const Divider(height: 24),
               // Dynamically create a list of summary points.
-              ...policy.summary.map((point) => ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.check_circle_outline, color: Colors.teal),
-                title: Text(point, style: textTheme.bodyMedium),
-              )),
+              ...policy.summary.map(
+                (point) => ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.teal,
+                  ),
+                  title: Text(
+                    point,
+                    style: textTheme.bodyMedium!.copyWith(
+                      color: Colors.white60,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

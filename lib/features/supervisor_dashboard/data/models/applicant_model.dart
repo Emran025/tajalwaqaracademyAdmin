@@ -25,7 +25,7 @@ class ApplicantModel extends Equatable {
       submittedAt: json['submitted_at'] as String? ?? "${DateTime.now()}",
       user: UserModel.fromJson(
         json['user'] as Map<String, dynamic>,
-        json['status'] as String,
+        ActiveStatus.fromLabel(json['status'] as String).labelAr,
         json['id'] as int,
       ),
     );

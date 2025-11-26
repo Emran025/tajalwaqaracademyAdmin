@@ -21,7 +21,8 @@ class TermsOfUseScreen extends StatelessWidget {
       ),
       body: BlocBuilder<SettingsBloc, SettingsState>(
         buildWhen: (previous, current) {
-          if (previous is SettingsLoadSuccess && current is SettingsLoadSuccess) {
+          if (previous is SettingsLoadSuccess &&
+              current is SettingsLoadSuccess) {
             return previous.termsOfUseStatus != current.termsOfUseStatus ||
                 previous.termsOfUse != current.termsOfUse;
           }
@@ -44,7 +45,9 @@ class TermsOfUseScreen extends StatelessWidget {
                 if (state.termsOfUse != null) {
                   return _buildTermsContent(context, state.termsOfUse!);
                 }
-                return const Center(child: Text('لم يتم العثور على شروط الاستخدام.'));
+                return const Center(
+                  child: Text('لم يتم العثور على شروط الاستخدام.'),
+                );
             }
           }
           return const Center(child: CircularProgressIndicator());
@@ -63,18 +66,15 @@ class TermsOfUseScreen extends StatelessWidget {
             child: Text(
               'التفاصيل الكاملة',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ),
         SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return _buildSectionItem(context, terms.sections[index]);
-            },
-            childCount: terms.sections.length,
-          ),
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return _buildSectionItem(context, terms.sections[index]);
+          }, childCount: terms.sections.length),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 32)),
       ],
@@ -102,21 +102,33 @@ class TermsOfUseScreen extends StatelessWidget {
             children: [
               Text(
                 'شروط الاستخدام',
-                style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
                 'آخر تحديث: $formattedDate  |  الإصدار: ${terms.version}',
-                style: textTheme.bodySmall
-                    ?.copyWith(color: colorScheme.onSurfaceVariant),
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
               const Divider(height: 24),
-              ...terms.summary.map((point) => ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.check_circle_outline,
-                        color: Colors.teal),
-                    title: Text(point, style: textTheme.bodyMedium),
-                  )),
+              ...terms.summary.map(
+                (point) => ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.teal,
+                  ),
+                  title: Text(
+                    point,
+                    style: textTheme.bodyMedium!.copyWith(
+                      color: Colors.white60,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -124,8 +136,7 @@ class TermsOfUseScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionItem(
-      BuildContext context, SectionEntity section) {
+  Widget _buildSectionItem(BuildContext context, SectionEntity section) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
