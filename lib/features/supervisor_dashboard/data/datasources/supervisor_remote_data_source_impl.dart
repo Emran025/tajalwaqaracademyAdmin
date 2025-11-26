@@ -91,7 +91,7 @@ final class SupervisorRemoteDataSourceImpl
     try {
       await _apiConsumer.post(
         EndPoint.rejectApplicant.replaceAll('{id}', applicantId.toString()),
-        body: {'reason': reason},
+        queryParameters: {'reason': reason},
       );
     } catch (e) {
       rethrow;

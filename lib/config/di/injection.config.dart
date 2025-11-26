@@ -238,6 +238,8 @@ import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/
     as _i538;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/get_timeline_use_case.dart'
     as _i278;
+import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/usecases/reject_applicant_usecase.dart'
+    as _i403;
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart'
     as _i692;
 import 'package:tajalwaqaracademy/features/TeachersManagement/data/datasources/teacher_local_data_source.dart'
@@ -602,6 +604,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i45.GetApplicantProfileUseCase>(
       () => _i45.GetApplicantProfileUseCase(gh<_i795.SupervisorRepository>()),
     );
+    gh.factory<_i403.RejectApplicantUseCase>(
+      () => _i403.RejectApplicantUseCase(gh<_i795.SupervisorRepository>()),
+    );
     gh.lazySingleton<_i751.GetDateRangeUseCase>(
       () => _i751.GetDateRangeUseCase(
         repository: gh<_i795.SupervisorRepository>(),
@@ -707,15 +712,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i962.GetTermsOfUseUseCase>(),
       ),
     );
-    gh.factory<_i1019.AuthBloc>(
-      () => blocModule.authBloc(
-        gh<_i432.LogInUseCase>(),
-        gh<_i306.CheckLogInUseCase>(),
-        gh<_i4.LogOutUseCase>(),
-        gh<_i912.ForgetPasswordUseCase>(),
-        gh<_i566.ChangePasswordUseCase>(),
-      ),
-    );
     gh.factory<_i692.SupervisorBloc>(
       () => blocModule.supervisorBloc(
         gh<_i278.GetTimelineUseCase>(),
@@ -724,6 +720,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i365.GetApplicantsUseCase>(),
         gh<_i45.GetApplicantProfileUseCase>(),
         gh<_i674.ApproveApplicantUseCase>(),
+        gh<_i403.RejectApplicantUseCase>(),
+      ),
+    );
+    gh.factory<_i1019.AuthBloc>(
+      () => blocModule.authBloc(
+        gh<_i432.LogInUseCase>(),
+        gh<_i306.CheckLogInUseCase>(),
+        gh<_i4.LogOutUseCase>(),
+        gh<_i912.ForgetPasswordUseCase>(),
+        gh<_i566.ChangePasswordUseCase>(),
       ),
     );
     gh.factory<_i294.StudentBloc>(
