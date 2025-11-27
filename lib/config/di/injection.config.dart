@@ -88,6 +88,8 @@ import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/finali
     as _i875;
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_all_mistakes.dart'
     as _i664;
+import 'packagepackage:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_error_analysis_chart_data.dart'
+    as _i1061;
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_mistakes_ayahs.dart'
     as _i610;
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_or_create_today_tracking.dart'
@@ -98,6 +100,8 @@ import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_su
     as _i592;
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/save_task_progress.dart'
     as _i348;
+import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart/error_analysis_chart_bloc.dart'
+    as _i1062;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/quran_reader_bloc.dart'
     as _i1010;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/tracking_session_bloc.dart'
@@ -382,6 +386,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i664.GetAllMistakes>(
       () => _i664.GetAllMistakes(gh<_i125.TrackingRepository>()),
+    );
+    // MANUALLY EDITED: Added GetErrorAnalysisChartData registration.
+    gh.lazySingleton<_i1061.GetErrorAnalysisChartData>(
+      () => _i1061.GetErrorAnalysisChartData(gh<_i125.TrackingRepository>()),
     );
     gh.lazySingleton<_i829.GetOrCreateTodayTrackingDetails>(
       () =>
@@ -724,6 +732,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i45.GetApplicantProfileUseCase>(),
         gh<_i674.ApproveApplicantUseCase>(),
         gh<_i403.RejectApplicantUseCase>(),
+      ),
+    );
+    // MANUALLY EDITED: Added ErrorAnalysisChartBloc registration.
+    gh.factory<_i1062.ErrorAnalysisChartBloc>(
+      () => blocModule.errorAnalysisChartBloc(
+        gh<_i1061.GetErrorAnalysisChartData>(),
       ),
     );
     gh.factory<_i1019.AuthBloc>(

@@ -4,9 +4,11 @@ import 'package:tajalwaqaracademy/core/error/failures.dart';
 import 'package:tajalwaqaracademy/core/usecases/usecase.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import 'package:injectable/injectable.dart';
 
 import '../repositories/tracking_repository.dart';
 
+@lazySingleton
 class GetErrorAnalysisChartData
     implements UseCase<List<BarChartDatas>, GetErrorAnalysisChartDataParams> {
   final TrackingRepository repository;
