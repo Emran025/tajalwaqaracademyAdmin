@@ -19,6 +19,7 @@ import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/chart_data_point.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import '../../domain/entities/stop_point.dart';
 import 'tracking_local_data_source.dart';
 import 'package:tajalwaqaracademy/core/models/mistake_type.dart';
 
@@ -42,8 +43,6 @@ const String _kTrackingEntityType = 'tracking';
 final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   final AppDatabase _appDb;
   final QuranLocalDataSource _quranDataSource;
-  static const int _kDefaultStartUnitId =
-      1; // Represents the start of the Quran.
 
   TrackingLocalDataSourceImpl(this._appDb, this._quranDataSource);
 
@@ -68,12 +67,8 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         whereArgs: [trackingId],
       );
       if (detailMaps.length < 3) {
-        final lastUnitIdsMap = await _getLastCompletedUnitIds(db, enrollmentId);
-        await _createMissingDetails(
-          db,
-          trackingId,
-          startUnitIds: lastUnitIdsMap,
-        );
+        final lastUnitsMap = await _getLastCompletedUnitIds(db, enrollmentId);
+        await _createMissingDetails(db, trackingId, startUnits: lastUnitsMap);
         detailMaps = await db.query(
           _kDailyTrackingDetailTable,
           where: 'trackingId = ?',
@@ -143,33 +138,153 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     final db = await _appDb.database;
     try {
       await db.transaction((txn) async {
-        final parentTrackingUuid = await _getParentTrackingUuid(
-          txn,
-          trackingId,
-        );
-        await txn.update(
+        // 1. Retrieve the current record data (Draft) to find the date and student
+
+        final currentRecord = await txn.query(
           _kDailyTrackingTable,
-          {
-            'status': 'completed',
-            'note': finalNotes,
-            'behaviorNote': behaviorScore,
-            'lastModified': DateTime.now().millisecondsSinceEpoch,
-          },
+          columns: ['enrollmentId', 'trackDate', 'uuid'],
           where: 'id = ?',
           whereArgs: [trackingId],
         );
-        await txn.update(
-          _kDailyTrackingDetailTable,
-          {'status': 'completed'},
+
+        if (currentRecord.isEmpty) {
+          throw CacheException(message: 'Tracking record not found');
+        }
+
+        final enrollmentId = currentRecord.first['enrollmentId'] as int;
+        final trackDate = currentRecord.first['trackDate'] as String;
+        final currentUuid = currentRecord.first['uuid'] as String;
+
+        // 2. Search for a completed record for the same student on the same day
+        final oldCompletedRecord = await txn.query(
+          _kDailyTrackingTable,
           where:
-              'trackingId = ? AND fromTrackingUnitId IS NOT NULL AND toTrackingUnitId IS NOT NULL AND fromTrackingUnitId != toTrackingUnitId',
-          whereArgs: [trackingId],
+              'enrollmentId = ? AND trackDate = ? AND status = ? AND id != ?',
+          whereArgs: [enrollmentId, trackDate, 'completed', trackingId],
         );
-        await _queueSyncOperation(
-          dbExecutor: txn,
-          uuid: parentTrackingUuid,
-          operation: 'update',
-        );
+
+        if (oldCompletedRecord.isNotEmpty) {
+          // =============================================================
+          // Merger Scenario: A previous record is complete; the current one will be merged into it.
+          // ==========================================================
+
+          final oldRecordId = oldCompletedRecord.first['id'] as int;
+          final oldRecordUuid = oldCompletedRecord.first['uuid'] as String;
+
+          // A. Update the old record header with the new data
+          await txn.update(
+            _kDailyTrackingTable,
+            {
+              'note': finalNotes,
+              'behaviorNote': behaviorScore,
+              'lastModified': DateTime.now().millisecondsSinceEpoch,
+            },
+            where: 'id = ?',
+            whereArgs: [oldRecordId],
+          );
+
+          // B. Retrieve the details of the two records (old and new) to merge them
+          final oldDetails = await txn.query(
+            _kDailyTrackingDetailTable,
+            where: 'trackingId = ?',
+            whereArgs: [oldRecordId],
+          );
+          final newDetails = await txn.query(
+            _kDailyTrackingDetailTable,
+            where: 'trackingId = ?',
+            whereArgs: [trackingId],
+          );
+
+          // C. Combining details for each type (save, review, narrate)
+          for (var newDetail in newDetails) {
+            final typeId = newDetail['typeId'];
+            // Search for the corresponding detail in the old record
+            final matchingOldDetail = oldDetails.firstWhereOrNull(
+              (d) => d['typeId'] == typeId,
+            );
+
+            if (matchingOldDetail != null) {
+              // There is an old detail: We are updating
+              // Rule: From (old), To (new)
+              // But only if there is a new progress in the new record
+              if (newDetail['toTrackingUnitId'] != null) {
+                await txn.update(
+                  _kDailyTrackingDetailTable,
+                  {
+                    'toTrackingUnitId': newDetail['toTrackingUnitId'],
+                    'actualAmount': newDetail['actualAmount'],
+                    'score': newDetail['score'],
+                    'gap': newDetail['gap'],
+                    'comment':
+                        newDetail['comment'], // أو دمج التعليقين إذا أردت
+                    'lastModified': DateTime.now().millisecondsSinceEpoch,
+                  },
+                  where: 'id = ?',
+                  whereArgs: [matchingOldDetail['id']],
+                );
+              }
+
+              // D. Transferring Mistakes from the New Detail to the Old Detail
+              // We update the trackingDetailId in the Mistakes table to point to the old one.
+              await txn.update(
+                _kMistakesTable,
+                {'trackingDetailId': matchingOldDetail['id']},
+                where: 'trackingDetailId = ?',
+                whereArgs: [newDetail['id']],
+              );
+            }
+          }
+
+          // e. The new record (Draft) will be completely deleted because it has been merged.
+          // (Since Cascade deletion is enabled in the table, the Draft details will be deleted automatically.)
+          // (We have already moved the errors to the old record, so there is no need to worry.)
+          await txn.delete(
+            _kDailyTrackingTable,
+            where: 'id = ?',
+            whereArgs: [trackingId],
+          );
+
+          // And. Adding the synchronization process to the old record (because it is the one that remained and was modified)
+          await _queueSyncOperation(
+            dbExecutor: txn,
+            uuid: oldRecordUuid, // We use the old record UUID
+            operation: 'update',
+          );
+        } else {
+          // =============================================================
+          // Normal scenario: No previous record, current converted to Completed
+          // ==========================================================
+
+          await txn.update(
+            _kDailyTrackingTable,
+            {
+              'status': 'completed',
+              'note': finalNotes,
+              'behaviorNote': behaviorScore,
+              'lastModified': DateTime.now().millisecondsSinceEpoch,
+            },
+            where: 'id = ?',
+            whereArgs: [trackingId],
+          );
+
+          await txn.update(
+            _kDailyTrackingDetailTable,
+            {'status': 'completed'},
+            where: '''
+                trackingId = ? 
+                AND fromTrackingUnitId IS NOT NULL 
+                AND toTrackingUnitId IS NOT NULL 
+                AND fromTrackingUnitId != toTrackingUnitId
+            ''',
+            whereArgs: [trackingId],
+          );
+
+          await _queueSyncOperation(
+            dbExecutor: txn,
+            uuid: currentUuid,
+            operation: 'update',
+          );
+        }
       });
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -177,8 +292,6 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       );
     }
   }
-  // In TrackingLocalDataSourceImpl
-  // In TrackingLocalDataSourceImpl
 
   @override
   Future<List<MistakeModel>> getAllMistakes({
@@ -189,11 +302,12 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   }) async {
     final db = await _appDb.database;
     try {
-      String baseQuery = '''
+      String baseQuery =
+          '''
       SELECT m.*
-      FROM mistakes AS m
-      INNER JOIN daily_tracking_detail AS tdt ON m.trackingDetailId = tdt.id
-      INNER JOIN daily_tracking AS dt ON tdt.trackingId = dt.id
+      FROM $_kMistakesTable AS m
+      INNER JOIN $_kDailyTrackingDetailTable AS tdt ON m.trackingDetailId = tdt.id
+      INNER JOIN $_kDailyTrackingTable AS dt ON tdt.trackingId = dt.id
       INNER JOIN quran AS q ON m.ayahId_quran = q.id 
       WHERE dt.enrollmentId = ? 
         -- AND tdt.status = 'completed'
@@ -596,11 +710,13 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   Future<void> _createMissingDetails(
     Database db,
     int trackingId, {
-    required Map<TrackingType, int> startUnitIds,
+    required Map<TrackingType, StopPoint> startUnits,
   }) async {
     final batch = db.batch();
     for (final type in TrackingType.values) {
-      final startUnitId = startUnitIds[type] ?? _kDefaultStartUnitId;
+      final startPoint = startUnits[type] ?? StopPoint();
+      final startUnitId = startPoint.unitIndex;
+      final startUnitGap = startPoint.gap;
       batch.insert(_kDailyTrackingDetailTable, {
         'uuid': const Uuid().v4(),
         'trackingId': trackingId,
@@ -608,6 +724,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         'status': 'draft',
         'fromTrackingUnitId': startUnitId,
         'toTrackingUnitId': startUnitId,
+        'gap': startUnitGap,
         'lastModified': DateTime.now().millisecondsSinceEpoch,
       });
     }
@@ -615,22 +732,22 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   }
 
   /// Retrieves a map of the last `toTrackingUnitId` for each tracking type individually from the student's past COMPLETED sessions.
-  Future<Map<TrackingType, int>> _getLastCompletedUnitIds(
+  Future<Map<TrackingType, StopPoint>> _getLastCompletedUnitIds(
     Database db,
     int enrollmentId,
   ) async {
     final List<Map<String, dynamic>> results = await db.rawQuery(
       '''
-      SELECT tdt.typeId, tdt.toTrackingUnitId
-      FROM daily_tracking_detail AS tdt
+      SELECT tdt.typeId, tdt.toTrackingUnitId, gap
+      FROM $_kDailyTrackingDetailTable AS tdt
       INNER JOIN (
           SELECT tdt_inner.typeId, MAX(dt_inner.trackDate) AS max_date
-          FROM daily_tracking_detail AS tdt_inner
-          INNER JOIN daily_tracking AS dt_inner ON tdt_inner.trackingId = dt_inner.id
+          FROM $_kDailyTrackingDetailTable AS tdt_inner
+          INNER JOIN $_kDailyTrackingTable AS dt_inner ON tdt_inner.trackingId = dt_inner.id
           WHERE dt_inner.enrollmentId = ? AND tdt_inner.status = 'completed' AND tdt_inner.toTrackingUnitId IS NOT NULL
           GROUP BY tdt_inner.typeId
       ) AS max_dates ON tdt.typeId = max_dates.typeId
-      INNER JOIN daily_tracking AS dt ON tdt.trackingId = dt.id AND dt.trackDate = max_dates.max_date
+      INNER JOIN $_kDailyTrackingTable AS dt ON tdt.trackingId = dt.id AND dt.trackDate = max_dates.max_date
       WHERE dt.enrollmentId = ? -- AND tdt.status = 'completed'
     ''',
       [enrollmentId, enrollmentId],
@@ -639,8 +756,10 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     if (results.isEmpty) return {};
     return {
       for (var row in results)
-        TrackingType.fromId(row['typeId'] as int):
-            row['toTrackingUnitId'] as int,
+        TrackingType.fromId(row['typeId'] as int): StopPoint(
+          unitIndex: row['toTrackingUnitId'] as int,
+          gap: row['gap'] as double,
+        ),
     };
   }
 

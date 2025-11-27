@@ -1,3 +1,4 @@
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:collection/collection.dart'; // Import collection package for firstWhereOrNull
@@ -192,8 +193,6 @@ class TrackingSessionBloc
     await _updateStateWithNewDetail(emit, updatedDetail);
   }
 
-  // _onFinalSessionReportSaved remains the same as it doesn't modify entities.
-
   // The helper method remains the same and is still very useful.
   Future<void> _updateStateWithNewDetail(
     Emitter<TrackingSessionState> emit,
@@ -243,7 +242,7 @@ class TrackingSessionBloc
         trackingDetailId: "${currentTaskDetail.id}",
         ayahIdQuran: event.ayahId,
         wordIndex: event.wordIndex,
-        mistakeType: event.newMistakeType
+        mistakeType: event.newMistakeType,
       );
       updatedMistakes.add(newMistake);
     }
@@ -273,7 +272,7 @@ class TrackingSessionBloc
     );
 
     updatedProgress[state.currentTaskType] = updatedTaskDetail;
-    
+
     emit(state.copyWith(taskProgress: updatedProgress));
   }
 
@@ -325,6 +324,7 @@ class TrackingSessionBloc
     );
   }
 
+  // _onFinalSessionReportSaved remains the same as it doesn't modify entities.
   Future<void> _onFinalSessionReportSaved(
     FinalSessionReportSaved event,
     Emitter<TrackingSessionState> emit,
@@ -332,7 +332,7 @@ class TrackingSessionBloc
     // The parent tracking ID is what we need to finalize.
     // It's the same for all details in the current session.
     final parentTrackingId = int.tryParse(
-      state.currentTaskDetail?.trackingId ?? '',
+      state.currentTaskDetail?.trackingId ?? '1',
     );
     if (parentTrackingId == null) return;
 
@@ -419,41 +419,42 @@ class TrackingSessionBloc
       updatedAt: currentDetail.updatedAt,
       mistakes: currentDetail.mistakes,
     );
-
     await _updateStateWithNewDetail(emit, updatedDetail);
   }
 
-// In TrackingSessionBloc
-Future<void> _onHistoricalMistakesRequested(
-  HistoricalMistakesRequested event,
-  Emitter<TrackingSessionState> emit,
-) async {
+  // In TrackingSessionBloc
+  Future<void> _onHistoricalMistakesRequested(
+    HistoricalMistakesRequested event,
+    Emitter<TrackingSessionState> emit,
+  ) async {
     emit(state.copyWith(historicalMistakesStatus: DataStatus.loading));
 
-  // Call the UseCase without a type to fetch all mistakes.
-  final result = await _getAllMistakes(
-    GetAllMistakesParams(
-      enrollmentId: state.enrollmentId,
-      // No type specified, so we get all types.
-      // We can pass page filters from the event if needed.
-      fromPage: event.fromPage, 
-      toPage: event.toPage,
-    ),
-  );
+    // Call the UseCase without a type to fetch all mistakes.
+    final result = await _getAllMistakes(
+      GetAllMistakesParams(
+        enrollmentId: state.enrollmentId,
+        // No type specified, so we get all types.
+        // We can pass page filters from the event if needed.
+        fromPage: event.fromPage,
+        toPage: event.toPage,
+      ),
+    );
 
-  result.fold(
-          (failure) => emit(
+    result.fold(
+      (failure) => emit(
         state.copyWith(
           historicalMistakesStatus: DataStatus.failure,
           errorMessage: failure.message,
         ),
       ),
-    (allMistakesList) {
-      emit(state.copyWith(
-        historicalMistakesStatus: DataStatus.success,
-        historicalMistakes: allMistakesList,
-      ));
-    },
-  );
-}
+      (allMistakesList) {
+        emit(
+          state.copyWith(
+            historicalMistakesStatus: DataStatus.success,
+            historicalMistakes: allMistakesList,
+          ),
+        );
+      },
+    );
+  }
 }

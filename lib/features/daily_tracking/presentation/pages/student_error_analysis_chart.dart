@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tajalwaqaracademy/core/models/cheet_tile.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart/error_analysis_chart_bloc.dart';
+import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart_bloc.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 import '../../../../config/di/injection.dart';

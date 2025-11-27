@@ -1,7 +1,6 @@
 // lib/features/quran_reader/data/models/ayah_model.dart
 
 import 'package:equatable/equatable.dart';
-import '../datasources/quran_ayas.dart';
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
 
 class AyahModel extends Equatable {
@@ -29,7 +28,7 @@ class AyahModel extends Equatable {
   factory AyahModel.fromMap(Map<String, dynamic> map) {
     return AyahModel(
       number: map['ID'] as int,
-      text: quranAyas[map['ID'] - 1 ?? 0],
+      text: map['Uthomanic_text'] as String? ?? "",
       textEmlaey: map['SearchText'] as String,
       numberInSurah: map['AyaNum'] as int,
       page: map['PageNum'] as int,

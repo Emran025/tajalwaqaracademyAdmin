@@ -29,7 +29,6 @@ class _AyahaTextSpansState extends State<AyahTextSpans> {
     return RichText(
       textAlign: TextAlign.center,
       textDirection: TextDirection.rtl,
-      // ================== IMPORTANT CHANGE HERE ==================
       text: TextSpan(
         children: _buildTextSpans(
           context,
@@ -37,7 +36,6 @@ class _AyahaTextSpansState extends State<AyahTextSpans> {
           widget.allMistakes,
         ),
       ),
-      // ==========================================================
     );
   }
 

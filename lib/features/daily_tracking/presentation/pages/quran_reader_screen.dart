@@ -92,8 +92,9 @@ class _QuranReaderScreenState extends State<QuranReaderScreen> {
             listener: (context, state) {
               // Get the starting page for the current task
               final lastPage =
-                  (state.currentTaskDetail?.toTrackingUnitId.fromPage ??
-                  1 + (state.currentTaskDetail?.gap.floor() ?? 0));
+                  (((state.currentTaskDetail?.toTrackingUnitId.fromPage ?? 1) -
+                      1) +
+                  (state.currentTaskDetail?.gap.floor() ?? 0));
               // Jump to the last read page if the controller is ready
               _requestPageData(lastPage - 1);
               if (_pageController.hasClients) {

@@ -77,7 +77,13 @@ class RecitationSideBar extends StatelessWidget {
                 Navigator.of(context).pop();
                 showDialog(
                   context: context,
-                  builder: (_) => const FinalReportDialog(),
+                  builder: (_) {
+                    final bloc = context.read<TrackingSessionBloc>();
+                    return BlocProvider.value(
+                      value: bloc,
+                      child: const FinalReportDialog(),
+                    );
+                  },
                 );
               },
             ),

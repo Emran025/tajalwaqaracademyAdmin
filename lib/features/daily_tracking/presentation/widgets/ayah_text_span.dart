@@ -50,6 +50,11 @@ List<TextSpan> buildWordSpans({
     final Mistake? mistake = mistakesForThisAyah.firstWhereOrNull(
       (m) => m.wordIndex == i,
     );
+
+    if (char == r'\') spans.add(TextSpan(text: '\n'));
+    if (char == r'\' || char == r'n') continue;
+
+    // else {
     spans.add(
       wordspan(
         word: char,
@@ -61,6 +66,7 @@ List<TextSpan> buildWordSpans({
         context: context,
       ),
     );
+    // }
   }
 
   return spans;
@@ -77,7 +83,6 @@ TextSpan wordspan({
   required BuildContext context,
 }) {
   if (word.isNotEmpty) {
-    // Determine the background color based on the mistake type.
     final Color backgroundColor;
     if (mistake != null) {
       switch (mistake.mistakeType) {

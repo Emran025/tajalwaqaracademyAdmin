@@ -100,7 +100,7 @@ import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_su
     as _i592;
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/save_task_progress.dart'
     as _i348;
-import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart/error_analysis_chart_bloc.dart'
+import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart_bloc.dart'
     as _i17;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/quran_reader_bloc.dart'
     as _i1010;

@@ -463,7 +463,7 @@ class AppDatabase {
         lastModified     INTEGER NOT NULL,
         isDeleted        INTEGER NOT NULL DEFAULT 0,
 
-        UNIQUE(enrollmentId, trackDate),
+        UNIQUE(enrollmentId, trackDate , status),
         FOREIGN KEY(enrollmentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(attendanceTypeId) REFERENCES $_kAttendanceTypesTable(id) ON DELETE RESTRICT ON UPDATE CASCADE
       )
