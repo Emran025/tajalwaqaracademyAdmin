@@ -88,8 +88,8 @@ import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/finali
     as _i875;
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_all_mistakes.dart'
     as _i664;
-import 'packagepackage:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_error_analysis_chart_data.dart'
-    as _i1061;
+import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_error_analysis_chart_data.dart'
+    as _i1005;
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_mistakes_ayahs.dart'
     as _i610;
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_or_create_today_tracking.dart'
@@ -101,7 +101,7 @@ import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_su
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/save_task_progress.dart'
     as _i348;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart/error_analysis_chart_bloc.dart'
-    as _i1062;
+    as _i17;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/quran_reader_bloc.dart'
     as _i1010;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/tracking_session_bloc.dart'
@@ -337,11 +337,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i357.WatchTeachersParams>(
       () => _i357.WatchTeachersParams(forceRefresh: gh<bool>()),
     );
-    // MANUALLY EDITED: Added QuranLocalDataSource dependency to TrackingLocalDataSourceImpl.
-    // This is a temporary fix because `build_runner` cannot be run in the current environment.
     gh.lazySingleton<_i94.TrackingLocalDataSource>(
       () => _i390.TrackingLocalDataSourceImpl(
-          gh<_i788.AppDatabase>(), gh<_i1040.QuranLocalDataSource>()),
+        gh<_i788.AppDatabase>(),
+        gh<_i1040.QuranLocalDataSource>(),
+      ),
     );
     gh.lazySingleton<_i281.SettingsLocalDataSource>(
       () => _i242.SettingsLocalDataSourceImpl(
@@ -387,16 +387,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i664.GetAllMistakes>(
       () => _i664.GetAllMistakes(gh<_i125.TrackingRepository>()),
     );
-    // MANUALLY EDITED: Added GetErrorAnalysisChartData registration.
-    gh.lazySingleton<_i1061.GetErrorAnalysisChartData>(
-      () => _i1061.GetErrorAnalysisChartData(gh<_i125.TrackingRepository>()),
-    );
     gh.lazySingleton<_i829.GetOrCreateTodayTrackingDetails>(
       () =>
           _i829.GetOrCreateTodayTrackingDetails(gh<_i125.TrackingRepository>()),
     );
     gh.lazySingleton<_i348.SaveTaskProgress>(
       () => _i348.SaveTaskProgress(gh<_i125.TrackingRepository>()),
+    );
+    gh.lazySingleton<_i1005.GetErrorAnalysisChartData>(
+      () => _i1005.GetErrorAnalysisChartData(gh<_i125.TrackingRepository>()),
     );
     gh.lazySingleton<_i479.QuranRepository>(
       () => _i288.QuranRepositoryImpl(
@@ -431,6 +430,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i825.HalaqaLocalDataSource>(
       () => _i721.HalaqaLocalDataSourceImpl(database: gh<_i779.Database>()),
+    );
+    gh.factory<_i17.ErrorAnalysisChartBloc>(
+      () => blocModule.errorAnalysisChartBloc(
+        gh<_i1005.GetErrorAnalysisChartData>(),
+      ),
     );
     gh.lazySingleton<_i610.GetMistakesAyahs>(
       () => _i610.GetMistakesAyahs(repository: gh<_i479.QuranRepository>()),
@@ -732,12 +736,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i45.GetApplicantProfileUseCase>(),
         gh<_i674.ApproveApplicantUseCase>(),
         gh<_i403.RejectApplicantUseCase>(),
-      ),
-    );
-    // MANUALLY EDITED: Added ErrorAnalysisChartBloc registration.
-    gh.factory<_i1062.ErrorAnalysisChartBloc>(
-      () => blocModule.errorAnalysisChartBloc(
-        gh<_i1061.GetErrorAnalysisChartData>(),
       ),
     );
     gh.factory<_i1019.AuthBloc>(

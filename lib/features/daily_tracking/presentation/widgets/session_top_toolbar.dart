@@ -1,5 +1,7 @@
 // lib/features/daily_tracking/presentation/widgets/session_bottom_toolbar.dart
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 /// A specialized bottom toolbar for the recitation session screen.
@@ -9,7 +11,6 @@ import 'package:flutter/material.dart';
 
 import 'package:tajalwaqaracademy/core/models/cheet_tile.dart';
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/pages/student_error_analysis_chart.dart';
-import 'package:tajalwaqaracademy/shared/widgets/draggable_scrollable_sheet.dart';
 
 /// A specialized bottom toolbar for the recitation session screen.
 ///
@@ -18,8 +19,11 @@ import 'package:tajalwaqaracademy/shared/widgets/draggable_scrollable_sheet.dart
 class SessionTopToolbar extends StatelessWidget {
   final VoidCallback onTap;
   final String enrollmentId;
-  const SessionTopToolbar(
-      {super.key, required this.onTap, required this.enrollmentId});
+  const SessionTopToolbar({
+    super.key,
+    required this.onTap,
+    required this.enrollmentId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +62,24 @@ class SessionTopToolbar extends StatelessWidget {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                builder: (context) => DraggableScrollableSheet(
-                  child: StudentErrorAnalysisChart(
-                    enrollmentId: enrollmentId,
-                    tile: const ChartTile(
-                      title: 'تحليل أداء الطالب',
-                      subTitle: 'عرض إحصائيات الأخطاء',
-                      icon: Icons.error_outline,
-                    ),
+                backgroundColor: Colors.transparent,
+                useRootNavigator: true,
+                builder: (context) => BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                  child: DraggableScrollableSheet(
+                    expand: false,
+                    initialChildSize: 0.75,
+                    maxChildSize: 0.75,
+                    builder: (context, scrollController) {
+                      return StudentErrorAnalysisChart(
+                        enrollmentId: enrollmentId,
+                        tile: const ChartTile(
+                          title: 'تحليل أداء الطالب',
+                          subTitle: 'عرض إحصائيات الأخطاء',
+                          icon: Icons.bar_chart,
+                        ),
+                      );
+                    },
                   ),
                 ),
               );

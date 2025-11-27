@@ -41,7 +41,7 @@ const String _kTrackingEntityType = 'tracking';
 @LazySingleton(as: TrackingLocalDataSource)
 final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   final AppDatabase _appDb;
-    final QuranLocalDataSource _quranDataSource;
+  final QuranLocalDataSource _quranDataSource;
   static const int _kDefaultStartUnitId =
       1; // Represents the start of the Quran.
 
@@ -234,8 +234,10 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   }
 
   @override
-  Future<List<BarChartDatas>> getErrorAnalysisChartData(
-      {required int enrollmentId, required ChartFilter filter}) async {
+  Future<List<BarChartDatas>> getErrorAnalysisChartData({
+    required int enrollmentId,
+    required ChartFilter filter,
+  }) async {
     final db = await _appDb.database;
     try {
       if (filter.dimension == FilterDimension.time) {
@@ -251,13 +253,15 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   }
 
   Future<List<BarChartDatas>> _fetchDataByTime(
-      Database db, int enrollmentId, ChartFilter filter) async {
+    Database db,
+    int enrollmentId,
+    ChartFilter filter,
+  ) async {
     String dateFormat;
     bool isQuarter = filter.timePeriod == 'quarter';
 
     if (isQuarter) {
-      dateFormat =
-          '%Y-%m'; // Fetch by month, then group by quarter in Dart
+      dateFormat = '%Y-%m'; // Fetch by month, then group by quarter in Dart
     } else {
       switch (filter.timePeriod) {
         case 'year':
@@ -271,7 +275,8 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       }
     }
 
-    final query = '''
+    final query =
+        '''
       SELECT
         m.mistakeTypeId,
         COUNT(m.id) as mistakeCount,
@@ -284,10 +289,10 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       ORDER BY period ASC;
     ''';
 
-    final trackingType = TrackingType.values
-        .firstWhere((e) => e.toString().endsWith(filter.trackingType));
-    final results =
-        await db.rawQuery(query, [enrollmentId, trackingType.id]);
+    final trackingType = TrackingType.values.firstWhere(
+      (e) => e.toString().endsWith(filter.trackingType),
+    );
+    final results = await db.rawQuery(query, [enrollmentId, trackingType.id]);
     if (results.isEmpty) return [];
 
     if (isQuarter) {
@@ -295,8 +300,10 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     }
 
     // Group by period (for non-quarter filters)
-    final groupedByPeriod =
-        groupBy<Map<String, dynamic>, String>(results, (row) => row['period']);
+    final groupedByPeriod = groupBy<Map<String, dynamic>, String>(
+      results,
+      (row) => row['period'],
+    );
 
     final List<BarChartDatas> chartDataList = [];
     for (final period in groupedByPeriod.keys) {
@@ -329,14 +336,17 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   }
 
   List<BarChartDatas> _groupMonthsIntoQuarters(
-      List<Map<String, dynamic>> monthlyResults) {
-    final groupedByQuarter =
-        groupBy<Map<String, dynamic>, String>(monthlyResults, (row) {
-      final yearMonth = (row['period'] as String).split('-');
-      final month = int.parse(yearMonth[1]);
-      final quarter = (month - 1) ~/ 3 + 1;
-      return '${yearMonth[0]}-Q$quarter';
-    });
+    List<Map<String, dynamic>> monthlyResults,
+  ) {
+    final groupedByQuarter = groupBy<Map<String, dynamic>, String>(
+      monthlyResults,
+      (row) {
+        final yearMonth = (row['period'] as String).split('-');
+        final month = int.parse(yearMonth[1]);
+        final quarter = (month - 1) ~/ 3 + 1;
+        return '${yearMonth[0]}-Q$quarter';
+      },
+    );
 
     final List<BarChartDatas> chartDataList = [];
     for (final quarter in groupedByQuarter.keys) {
@@ -348,47 +358,61 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       final month = (quarterNum - 1) * 3 + 1;
       final periodDate = DateTime(year, month, 1);
 
-      chartDataList.add(BarChartDatas(
-        data: dataPoints,
-        xAxisLabel: 'أنواع الأخطاء',
-        yAxisLabel: 'العدد',
-        periodDate: periodDate,
-      ));
+      chartDataList.add(
+        BarChartDatas(
+          data: dataPoints,
+          xAxisLabel: 'أنواع الأخطاء',
+          yAxisLabel: 'العدد',
+          periodDate: periodDate,
+        ),
+      );
     }
     return chartDataList;
   }
 
   List<ChartDataPoint> _calculateDataPoints(
-      List<Map<String, dynamic>> mistakes) {
-    return MistakeType.values
-        .where((e) => e != MistakeType.none)
-        .map((mistakeType) {
+    List<Map<String, dynamic>> mistakes,
+  ) {
+    return MistakeType.values.where((e) => e != MistakeType.none).map((
+      mistakeType,
+    ) {
       final count = mistakes
           .where((r) => r['mistakeTypeId'] == mistakeType.id)
           .fold<int>(0, (sum, r) => sum + (r['mistakeCount'] as int));
       return ChartDataPoint(
-          label: mistakeType.labelAr, value: count.toDouble());
+        label: mistakeType.labelAr,
+        value: count.toDouble(),
+      );
     }).toList();
   }
 
   Future<List<BarChartDatas>> _fetchDataByQuantity(
-      Database db, int enrollmentId, ChartFilter filter) async {
-    final trackingType = TrackingType.values
-        .firstWhere((e) => e.toString().endsWith(filter.trackingType));
-    final allMistakesQuery = '''
+    Database db,
+    int enrollmentId,
+    ChartFilter filter,
+  ) async {
+    final trackingType = TrackingType.values.firstWhere(
+      (e) => e.toString().endsWith(filter.trackingType),
+    );
+    final allMistakesQuery =
+        '''
       SELECT m.mistakeTypeId, m.ayahId_quran
       FROM $_kMistakesTable AS m
       JOIN $_kDailyTrackingDetailTable AS dtd ON m.trackingDetailId = dtd.id
       JOIN $_kDailyTrackingTable AS dt ON dtd.trackingId = dt.id
       WHERE dt.enrollmentId = ? AND dtd.typeId = ?;
     ''';
-    final mistakeResults =
-        await db.rawQuery(allMistakesQuery, [enrollmentId, trackingType.id]);
+    final mistakeResults = await db.rawQuery(allMistakesQuery, [
+      enrollmentId,
+      trackingType.id,
+    ]);
     if (mistakeResults.isEmpty) return [];
 
     // 2. Get Ayah details from Quran DB
-    final ayahIds =
-        mistakeResults.map((r) => r['ayahId_quran'] as int).toSet().toList();
+    final ayahIds = mistakeResults
+        .map((r) => r['ayahId_quran'] as int)
+        .toSet()
+        .toList();
     final ayahs = await _quranDataSource.getMistakesAyahs(ayahIds);
     final ayahMap = {for (var ayah in ayahs) ayah.number: ayah};
 
@@ -399,30 +423,37 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         getGroupingKey = (ayahId) => ayahMap[ayahId]?.juz.toString() ?? '0';
         break;
       case 'hizb':
-        getGroupingKey = (ayahId) => ayahMap[ayahId]?.hizb.toString() ?? '0';
+        getGroupingKey = (ayahId) => (ayahMap[ayahId]?.juz ?? 0 / 2).toString();
         break;
       case 'page':
       default:
-        getGroupingKey = (ayahId) => ayahMap[ayahId]?.pageNum.toString() ?? '0';
+        getGroupingKey = (ayahId) => ayahMap[ayahId]?.page.toString() ?? '0';
         break;
     }
 
     final groupedMistakes = groupBy<Map<String, dynamic>, String>(
-        mistakeResults, (row) => getGroupingKey(row['ayahId_quran']));
+      mistakeResults,
+      (row) => getGroupingKey(row['ayahId_quran']),
+    );
 
     final List<BarChartDatas> chartDataList = [];
     final sortedKeys = groupedMistakes.keys.toList()
       ..sort((a, b) => int.parse(a).compareTo(int.parse(b)));
 
     for (final key in sortedKeys) {
-       final groupMistakes = groupedMistakes[key]!;
-       final dataPoints = MistakeType.values
+      final groupMistakes = groupedMistakes[key]!;
+      final dataPoints = MistakeType.values
           .where((e) => e != MistakeType.none)
           .map((mistakeType) {
-        final count = groupMistakes.where((r) => r['mistakeTypeId'] == mistakeType.id).length;
-        return ChartDataPoint(
-            label: mistakeType.labelAr, value: count.toDouble());
-      }).toList();
+            final count = groupMistakes
+                .where((r) => r['mistakeTypeId'] == mistakeType.id)
+                .length;
+            return ChartDataPoint(
+              label: mistakeType.labelAr,
+              value: count.toDouble(),
+            );
+          })
+          .toList();
 
       chartDataList.add(
         BarChartDatas(

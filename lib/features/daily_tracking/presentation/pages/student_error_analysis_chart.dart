@@ -5,9 +5,9 @@ import 'package:tajalwaqaracademy/core/models/cheet_tile.dart';
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart/error_analysis_chart_bloc.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
 import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import '../../../../config/di/injection.dart';
 import '../../../../shared/themes/app_theme.dart';
 import '../../../supervisor_dashboard/presentation/ui/widgets/base_bar_chart.dart';
-import 'package:tajalwaqaracademy/injection_container.dart';
 
 class StudentErrorAnalysisChart extends StatelessWidget {
   final ChartTile tile;
@@ -23,29 +23,40 @@ class StudentErrorAnalysisChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<ErrorAnalysisChartBloc>()
-        ..add(LoadErrorAnalysisChartData(
-          enrollmentId: enrollmentId,
-          filter: const ChartFilter(),
-        )),
+        ..add(
+          LoadErrorAnalysisChartData(
+            enrollmentId: enrollmentId,
+            filter: const ChartFilter(),
+          ),
+        ),
       child: BlocBuilder<ErrorAnalysisChartBloc, ErrorAnalysisChartState>(
         builder: (context, state) {
-          return Column(
-            children: [
-              _buildTitelIndicator(tile),
-              const SizedBox(height: 16),
-              if (state is ErrorAnalysisChartLoaded) ...[
-                _buildFiltersSection(context, state.filter),
+          return Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.lightCream26),
+              borderRadius: BorderRadius.circular(30),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [AppColors.mediumDark70, AppColors.darkBackground70],
+              ),
+            ),
+            child: Column(
+              children: [
+                _buildTitelIndicator(tile),
                 const SizedBox(height: 16),
-                _ChartContent(
-                  chartData: state.chartData,
-                )
-              ] else if (state is ErrorAnalysisChartLoading)
-                const CircularProgressIndicator()
-              else if (state is ErrorAnalysisChartError)
-                Text(state.message)
-              else
-                Container(),
-            ],
+                if (state is ErrorAnalysisChartLoaded) ...[
+                  _buildFiltersSection(context, state.filter),
+                  const SizedBox(height: 16),
+                  _ChartContent(chartData: state.chartData),
+                ] else if (state is ErrorAnalysisChartLoading)
+                  const CircularProgressIndicator()
+                else if (state is ErrorAnalysisChartError)
+                  Text(state.message)
+                else
+                  Container(),
+              ],
+            ),
           );
         },
       ),
@@ -57,10 +68,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppColors.lightCream12,
-            shape: BoxShape.circle,
-          ),
+          // decoration: BoxDecoration(
+          //   color: AppColors.lightCream12,
+          //   shape: BoxShape.circle,
+          // ),
           child: Icon(tile.icon, size: 26, color: AppColors.lightCream),
         ),
         const SizedBox(width: 12),
@@ -91,11 +102,11 @@ class StudentErrorAnalysisChart extends StatelessWidget {
   Widget _buildFiltersSection(BuildContext context, ChartFilter currentFilter) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.mediumDark70,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.accent26),
-      ),
+      // decoration: BoxDecoration(
+      //   color: AppColors.mediumDark70,
+      //   borderRadius: BorderRadius.circular(12),
+      //   border: Border.all(color: AppColors.accent26),
+      // ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -125,9 +136,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                     onChanged: (val) {
                       if (val != null) {
                         context.read<ErrorAnalysisChartBloc>().add(
-                            UpdateErrorAnalysisChartFilter(
-                                filter: currentFilter.copyWith(
-                                    dimension: val)));
+                          UpdateErrorAnalysisChartFilter(
+                            filter: currentFilter.copyWith(dimension: val),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -147,9 +159,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                     onChanged: (val) {
                       if (val != null) {
                         context.read<ErrorAnalysisChartBloc>().add(
-                            UpdateErrorAnalysisChartFilter(
-                                filter: currentFilter.copyWith(
-                                    dimension: val)));
+                          UpdateErrorAnalysisChartFilter(
+                            filter: currentFilter.copyWith(dimension: val),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -170,9 +183,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                     labels: const ['أسبوع', 'شهر', 'ربع سنة', 'سنة'],
                     onChanged: (value) {
                       context.read<ErrorAnalysisChartBloc>().add(
-                          UpdateErrorAnalysisChartFilter(
-                              filter: currentFilter.copyWith(
-                                  timePeriod: value)));
+                        UpdateErrorAnalysisChartFilter(
+                          filter: currentFilter.copyWith(timePeriod: value),
+                        ),
+                      );
                     },
                   ),
                 )
@@ -186,9 +200,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                     labels: const ['صفحة', 'حزب', 'جزء', 'مصحف كامل'],
                     onChanged: (value) {
                       context.read<ErrorAnalysisChartBloc>().add(
-                          UpdateErrorAnalysisChartFilter(
-                              filter: currentFilter.copyWith(
-                                  quantityUnit: value)));
+                        UpdateErrorAnalysisChartFilter(
+                          filter: currentFilter.copyWith(quantityUnit: value),
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -203,9 +218,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                   labels: const ['حفظ', 'مراجعة', 'سرد'],
                   onChanged: (value) {
                     context.read<ErrorAnalysisChartBloc>().add(
-                        UpdateErrorAnalysisChartFilter(
-                            filter:
-                                currentFilter.copyWith(trackingType: value)));
+                      UpdateErrorAnalysisChartFilter(
+                        filter: currentFilter.copyWith(trackingType: value),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -272,9 +288,13 @@ class _ChartContentState extends State<_ChartContent> {
   void initState() {
     super.initState();
     _pageController = PageController(
-      initialPage: widget.chartData.isNotEmpty ? widget.chartData.length - 1 : 0,
+      initialPage: widget.chartData.isNotEmpty
+          ? widget.chartData.length - 1
+          : 0,
     );
-    _currentPageIndex = widget.chartData.isNotEmpty ? widget.chartData.length - 1 : 0;
+    _currentPageIndex = widget.chartData.isNotEmpty
+        ? widget.chartData.length - 1
+        : 0;
   }
 
   @override
@@ -290,8 +310,7 @@ class _ChartContentState extends State<_ChartContent> {
   }
 
   String _getPeriodLabel() {
-    if (_currentPageIndex >= 0 &&
-        _currentPageIndex < widget.chartData.length) {
+    if (_currentPageIndex >= 0 && _currentPageIndex < widget.chartData.length) {
       final periodData = widget.chartData[_currentPageIndex];
       if (periodData.periodLabel != null) {
         return periodData.periodLabel!;
@@ -365,9 +384,9 @@ class _ChartContentState extends State<_ChartContent> {
           Text(
             _getPeriodLabel(),
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.lightCream,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: AppColors.lightCream,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
             '${_currentPageIndex + 1} من ${widget.chartData.length}',
