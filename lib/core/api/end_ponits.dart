@@ -1,6 +1,6 @@
 class EndPoint {
   static const String baseUrl =
-      "http://192.168.72.1/tag-al-waqar/public/api/v1/"; //192.168.32.92
+      "http://192.168.124.7/tag-al-waqar/public/api/v1/"; //192.168.32.92
 
   /// Endpoint for fetching a specific student's follow-up tracking records.
   /// The `{id}` placeholder will be replaced by the student's actual ID.

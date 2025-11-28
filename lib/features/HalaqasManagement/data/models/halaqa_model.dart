@@ -50,7 +50,6 @@ final class HalaqaModel {
   factory HalaqaModel.fromJson(Map<String, dynamic> json) {
     // Safely parse the nested list of halqas.
 
-
     return HalaqaModel(
       id: (json['id'] as int? ?? 0).toString(),
       name: json['name'] as String? ?? 'Unknown Name',
@@ -62,7 +61,7 @@ final class HalaqaModel {
       residence: json['residence'] as String? ?? '',
 
       availableTime: json['availableTime'] as String?,
-      status: ActiveStatus.fromLabel(json['status'] as String? ?? 'inactive'),
+      status: ActiveStatus.fromId(json['isActive'] as int? ?? 2),
       avatar: json['avatar'] as String?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
@@ -82,7 +81,7 @@ final class HalaqaModel {
       country: map['country'] as String? ?? '', //
       residence: map['residence'] as String? ?? '', //
       availableTime: map['availableTime'] as String?, //
-      status: ActiveStatus.fromId(map['isActive'] as int? ?? 1), //
+      status: ActiveStatus.fromId(map['isActive'] as int? ?? 2), //
 
       createdAt: map['createdAt'] as String?,
       updatedAt: map['lastModified'] as String?,
