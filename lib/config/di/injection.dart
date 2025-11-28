@@ -1,5 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:tajalwaqaracademy/features/auth/domain/usecases/get_device_accounts_usecase.dart';
+import 'package:tajalwaqaracademy/features/auth/domain/usecases/login_with_device_account_usecase.dart';
+import 'package:tajalwaqaracademy/features/auth/domain/usecases/remove_device_account_usecase.dart';
 
 // Import your features' use cases and BLoCs here.
 // Grouping by feature improves readability.
@@ -87,8 +90,10 @@ abstract class BlocModule {
     CheckLogInUseCase checkLogInUC,
     LogOutUseCase logOutUC,
     ForgetPasswordUseCase forgetPasswordUC,
-
     ChangePasswordUseCase changePasswordUC,
+    GetDeviceAccountsUseCase getDeviceAccountsUC,
+    LogInWithDeviceAccountUseCase logInWithDeviceAccountUC,
+    RemoveDeviceAccountUseCase removeDeviceAccountUC,
   ) {
     // The cascade operator (..) allows us to call a method on the new instance
     // before returning it, making initial event dispatching clean.
@@ -98,7 +103,10 @@ abstract class BlocModule {
       logOutUC,
       forgetPasswordUC,
       changePasswordUC,
-    );
+      getDeviceAccountsUC,
+      logInWithDeviceAccountUC,
+      removeDeviceAccountUC,
+    )..add(AppStarted());
   }
 
   /// Provides the [TeacherBloc] and immediately dispatches [FetchAllTeachersEvent]

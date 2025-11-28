@@ -54,10 +54,16 @@ import 'package:tajalwaqaracademy/features/auth/domain/usecases/check_login_usec
     as _i306;
 import 'package:tajalwaqaracademy/features/auth/domain/usecases/forget_password_usecase.dart'
     as _i912;
+import 'package:tajalwaqaracademy/features/auth/domain/usecases/get_device_accounts_usecase.dart'
+    as _i333;
 import 'package:tajalwaqaracademy/features/auth/domain/usecases/login_usecase.dart'
     as _i432;
+import 'package:tajalwaqaracademy/features/auth/domain/usecases/login_with_device_account_usecase.dart'
+    as _i444;
 import 'package:tajalwaqaracademy/features/auth/domain/usecases/logout_usecase.dart'
     as _i4;
+import 'package:tajalwaqaracademy/features/auth/domain/usecases/remove_device_account_usecase.dart'
+    as _i555;
 import 'package:tajalwaqaracademy/features/auth/presentation/bloc/auth_bloc.dart'
     as _i1019;
 import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran_local_data_source.dart'
@@ -329,6 +335,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i796.AuthLocalDataSourceImpl(
         sharedPreferences: gh<_i460.SharedPreferences>(),
         secureStorage: gh<_i558.FlutterSecureStorage>(),
+        appDatabase: gh<_i788.AppDatabase>(),
       ),
     );
     gh.factory<_i661.WatchHalaqasParams>(
@@ -354,7 +361,9 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i395.StudentLocalDataSource>(
-      () => _i937.StudentLocalDataSourceImpl(database: gh<_i779.Database>()),
+      () => _i937.StudentLocalDataSourceImpl(
+          database: gh<_i779.Database>(),
+          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.lazySingleton<_i325.SupervisorLocalDataSource>(
       () => _i414.SupervisorLocalDataSourceImpl(database: gh<_i779.Database>()),
@@ -373,7 +382,9 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.lazySingleton<_i946.TeacherLocalDataSource>(
-      () => _i216.TeacherLocalDataSourceImpl(database: gh<_i779.Database>()),
+      () => _i216.TeacherLocalDataSourceImpl(
+          database: gh<_i779.Database>(),
+          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.lazySingleton<_i361.Dio>(
       () => registerModule.dio(
@@ -429,7 +440,9 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.lazySingleton<_i825.HalaqaLocalDataSource>(
-      () => _i721.HalaqaLocalDataSourceImpl(database: gh<_i779.Database>()),
+      () => _i721.HalaqaLocalDataSourceImpl(
+          database: gh<_i779.Database>(),
+          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.factory<_i17.ErrorAnalysisChartBloc>(
       () => blocModule.errorAnalysisChartBloc(
@@ -652,6 +665,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i4.LogOutUseCase>(
       () => _i4.LogOutUseCase(gh<_i879.AuthRepository>()),
     );
+    gh.lazySingleton<_i333.GetDeviceAccountsUseCase>(
+      () => _i333.GetDeviceAccountsUseCase(gh<_i879.AuthRepository>()),
+    );
+    gh.lazySingleton<_i444.LogInWithDeviceAccountUseCase>(
+      () => _i444.LogInWithDeviceAccountUseCase(gh<_i879.AuthRepository>()),
+    );
+    gh.lazySingleton<_i555.RemoveDeviceAccountUseCase>(
+      () => _i555.RemoveDeviceAccountUseCase(gh<_i879.AuthRepository>()),
+    );
     gh.lazySingleton<_i358.SetStudentStatusUseCase>(
       () => _i358.SetStudentStatusUseCase(gh<_i847.StudentRepository>()),
     );
@@ -745,6 +767,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i4.LogOutUseCase>(),
         gh<_i912.ForgetPasswordUseCase>(),
         gh<_i566.ChangePasswordUseCase>(),
+        gh<_i333.GetDeviceAccountsUseCase>(),
+        gh<_i444.LogInWithDeviceAccountUseCase>(),
+        gh<_i555.RemoveDeviceAccountUseCase>(),
       ),
     );
     gh.factory<_i294.StudentBloc>(

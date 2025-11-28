@@ -1,106 +1,56 @@
-// features/auth/data/repositories_impl/auth_repository_impl.dart
-
+// lib/features/auth/data/repositories_impl/auth_repository_impl.dart
 import 'package:dartz/dartz.dart';
-
-import '../../../../core/entities/success_entity.dart';
-import '../../../../core/error/exceptions.dart';
-import '../../../../core/error/failures.dart';
-import '../../domain/entities/user_entity.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../datasources/auth_local_data_source.dart';
-import '../datasources/auth_remote_data_source.dart';
-import '../models/login_request_model.dart';
-import '../models/user_model.dart';
-
-import 'package:injectable/injectable.dart';
-
+import 'package:tajalwaqaracademy/core/error/exceptions.dart';
+import 'package.dart';
+import 'package:tajalwaqaracademy/core/error/failures.dart';
 import 'package:tajalwaqaracademy/core/network/network_info.dart';
 import 'package:tajalwaqaracademy/core/services/device_info_service.dart';
+import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:tajalwaqaracademy/features/auth/data/models/auth_response_model.dart';
+import 'package:tajalwaqaracademy/features/auth/data/models/device_account_model.dart';
+import 'package:tajalwaqaracademy/features/auth/data/models/login_request_model.dart';
+import 'package:tajalwaqaracademy/features/auth/domain/entities/auth_response_entity.dart';
+import 'package:tajalwaqaracademy/features/auth/domain/entities/device_account_entity.dart';
 import 'package:tajalwaqaracademy/features/auth/domain/entities/login_credentials_entity.dart';
+import 'package:tajalwaqaracademy/features/auth/domain/entities/user_entity.dart';
+import 'package:tajalwaqaracademy/features/auth/domain/repositories/auth_repository.dart';
+import 'package:injectable/injectable.dart';
+import '../../../../core/entities/success_entity.dart';
 
-/// Orchestrates calls to [AuthRemoteDataSource], catches any
-/// [ServerException], and exposes a clean [Either]<String, T> API.
-/// Coordinates remote + local sources, and exposes
-/// a clean Either<String,T> API for network calls,
-/// plus async getters for cached data.
-
-/// The concrete implementation of the [AuthRepository] contract.
-///
-/// This repository orchestrates the authentication flow by coordinating between
-/// remote and local data sources, handling network status, and managing data
-/// transformations and error handling.
 @LazySingleton(as: AuthRepository)
-final class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDataSource _remoteDataSource;
-  final AuthLocalDataSource
-  _localDataSource; // For caching tokens and user data
-  final DeviceInfoService _deviceInfoService;
-  final NetworkInfo _networkInfo;
+class AuthRepositoryImpl implements AuthRepository {
+  final AuthRemoteDataSource remoteDataSource;
+  final AuthLocalDataSource localDataSource;
+  final DeviceInfoService deviceInfoService;
+  final NetworkInfo networkInfo;
 
   AuthRepositoryImpl({
-    required AuthRemoteDataSource remoteDataSource,
-    required AuthLocalDataSource localDataSource,
-    required DeviceInfoService deviceInfoService,
-    required NetworkInfo networkInfo,
-  }) : _remoteDataSource = remoteDataSource,
-       _localDataSource = localDataSource,
-       _deviceInfoService = deviceInfoService,
-       _networkInfo = networkInfo;
+    required this.remoteDataSource,
+    required this.localDataSource,
+    required this.deviceInfoService,
+    required this.networkInfo,
+  });
 
   @override
   Future<Either<Failure, UserEntity>> logIn({
     required LogInCredentialsEntity credentials,
   }) async {
-    // This is the "wrapper" function that handles exceptions and network state.
-    // It takes a function `body` which contains the core logic.
-    return await _executeAuthOperation(() async {
-      // 1. Gather all necessary device information.
-      final deviceInfo = await _deviceInfoService.getDeviceInfo();
-
-      // 2. Create the complete request model from the domain entities.
-      final logInRequestModel = LogInRequestModel.fromEntities(
-        credentials: credentials,
-        deviceInfo: deviceInfo,
-      );
-
-      // 3. Execute the remote call.
-      final authResponseModel = await _remoteDataSource.logIn(
-        requestModel: logInRequestModel,
-      );
-
-      // 4. Perform side effects: Cache the tokens and user data upon successful logIn.
-      await _localDataSource.cacheAuthTokens(
-        accessToken: authResponseModel.accessToken,
-        refreshToken: authResponseModel.refreshToken,
-      );
-      await _localDataSource.cacheUser(authResponseModel.user);
-
-      // 5. Convert the result model back to a domain entity to return success.
-      return authResponseModel.user.toUserEntity();
-    });
-  }
-
-  /// A high-order function to wrap repository calls.
-  ///
-  /// It centralizes boilerplate logic such as network checking and exception-to-failure
-  /// translation, keeping the primary repository methods clean and focused on their
-  /// specific logic.
-  ///
-  /// - [body]: A function that contains the core data-fetching and processing logic.
-  Future<Either<Failure, T>> _executeAuthOperation<T>(
-    Future<T> Function() body,
-  ) async {
-    // A. Pre-execution check: Fail fast if there is no internet connection.
-    // if (!await _networkInfo.isConnected) {
-    //   return Left( 'No internet connection available.');
-    // }
-
-    try {
-      // B. Execute the main logic.
-      final result = await body();
-      return Right(result);
-    } on ServerException catch (e) {
-      return Left(DataFailure(message: e.message));
+    if (await networkInfo.isConnected) {
+      try {
+        final deviceInfo = await deviceInfoService.getDeviceInfo();
+        final loginRequest = LoginRequestModel.fromEntity(
+          credentials,
+          deviceInfo,
+        );
+        final authResponse = await remoteDataSource.logIn(loginRequest);
+        await _handleSuccessfulLogin(authResponse);
+        return Right(authResponse.user);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      return const Left(OfflineFailure());
     }
   }
 
@@ -108,55 +58,40 @@ final class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, SuccessEntity>> forgetPassword({
     required String email,
   }) async {
-    final either = await _executeAuthOperation(
-      () => _remoteDataSource.forgetPassword(email: email),
-    );
-    either.fold((failure) => null, (user) => null);
-
-    return either.map((successModel) {
-      final successEntity = successModel.toEntity();
-
-      return successEntity;
-    });
-  }
-
-  @override
-  Future<Either<Failure, SuccessEntity>> logOut() async {
-    // LogOut is primarily a local operation. It clears all session data.
-    // We don't need the _executeApiCall wrapper unless the API requires
-    // an explicit "invalidate token" call. For now, we assume it's local.
-    try {
-      final either = await _executeAuthOperation(
-        () => _remoteDataSource.logOut(),
-      );
-      either.fold((failure) => null, (user) => null);
-      // We call the `clear` method to remove all authentication data,
-      // including tokens and the cached user profile.
-      await _localDataSource.clear();
-      return either.map((successModel) {
-        final successEntity = successModel.toEntity();
-
-        return successEntity;
-      });
-    } on CacheException catch (e) {
-      // If clearing the cache fails, we return a CacheFailure.
-      return Left(CacheFailure(message: e.message));
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.forgetPassword(email);
+        return Right(SuccessEntity());
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      return const Left(OfflineFailure());
     }
   }
 
-  /// Returns the most recently cached user, or throws [CacheException]
-  /// if no user is cached.
-  /// - Returns: The cached [UserModel] if available.
   @override
   Future<Either<Failure, UserEntity>> getUserProfile() async {
-    bool isLoggedin = await isLoggedIn();
-    if (!isLoggedin)
-      return Left(CacheFailure(message: 'Failed to get User Profile.'));
-    final user = await _localDataSource.getUser();
-    if (user == null) {
-      throw CacheException(message: 'Failed to get User Profile.');
+    if (await networkInfo.isConnected) {
+      try {
+        final user = await remoteDataSource.getUserProfile();
+        await localDataSource.cacheUser(user);
+        return Right(user);
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      try {
+        final user = await localDataSource.getUser();
+        if (user != null) {
+          return Right(user);
+        } else {
+          return const Left(CacheFailure());
+        }
+      } on CacheException {
+        return const Left(CacheFailure());
+      }
     }
-    return Right(user.toUserEntity());
   }
 
   @override
@@ -164,22 +99,92 @@ final class AuthRepositoryImpl implements AuthRepository {
     required String currentPassword,
     required String newPassword,
   }) async {
-    return await _executeAuthOperation(() async {
-      final successModel = await _remoteDataSource.changePassword(
-        currentPassword: currentPassword,
-        newPassword: newPassword,
-      );
-      return successModel.toEntity();
-    });
+    if (await networkInfo.isConnected) {
+      try {
+        await remoteDataSource.changePassword(currentPassword, newPassword);
+        return Right(SuccessEntity());
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      return const Left(OfflineFailure());
+    }
   }
 
-  /// Checks if the user is logged in by verifying if a user exists in the cache.
-  /// This method is used to determine if the user has an active session.
-  /// - Returns: `true` if the user is logged in, `false` otherwise.
   @override
-  Future<bool> isLoggedIn() {
-    // The session is considered active if the user key exists.
+  Future<bool> isLoggedIn() async {
+    return await localDataSource.isLoggedIn();
+  }
 
-    return _localDataSource.isLoggedIn();
+  @override
+  Future<Either<Failure, SuccessEntity>> logOut(int userId) async {
+    try {
+      await localDataSource.clear(userId);
+      return Right(SuccessEntity());
+    } on CacheException {
+      return const Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<DeviceAccountEntity>>> getDeviceAccounts() async {
+    try {
+      final accounts = await localDataSource.getDeviceAccounts();
+      return Right(accounts);
+    } on CacheException {
+      return const Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessEntity>> removeDeviceAccount(
+      int userId) async {
+    try {
+      await localDataSource.removeDeviceAccount(userId);
+      return Right(SuccessEntity());
+    } on CacheException {
+      return const Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> logInWithDeviceAccount(
+      int userId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final accessToken = await localDataSource.getAccessToken(userId);
+        if (accessToken != null) {
+          // Assuming the remote data source has a method to log in with a token.
+          // If not, you might need to fetch the user profile or perform another action.
+          final authResponse =
+              await remoteDataSource.logInWithToken(accessToken);
+          await _handleSuccessfulLogin(authResponse);
+          return Right(authResponse.user);
+        } else {
+          return const Left(CacheFailure(message: 'Access token not found.'));
+        }
+      } on ServerException catch (e) {
+        return Left(ServerFailure(message: e.message));
+      }
+    } else {
+      return const Left(OfflineFailure());
+    }
+  }
+
+  Future<void> _handleSuccessfulLogin(AuthResponseModel authResponse) async {
+    await localDataSource.cacheAuthTokens(
+      userId: authResponse.user.id,
+      accessToken: authResponse.accessToken,
+      refreshToken: authResponse.refreshToken,
+    );
+    await localDataSource.cacheUser(authResponse.user);
+    final deviceAccount = DeviceAccountModel(
+      id: authResponse.user.id,
+      name: authResponse.user.name,
+      email: authResponse.user.email,
+      avatar: authResponse.user.avatar,
+      lastLogin: DateTime.now(),
+    );
+    await localDataSource.saveDeviceAccount(deviceAccount);
   }
 }

@@ -44,6 +44,7 @@ class AppDatabase {
   static const int _dbVersion = 1;
 
   // Table Names
+  static const String _kDeviceAccountsTable = 'device_accounts';
   static const String _kRolesTable = 'roles';
   static const String _kUsersTable = 'users';
   static const String _kRegistrationRequestsTable = 'registration_requests';
@@ -94,6 +95,7 @@ class AppDatabase {
   /// Called when the database is created for the first time.
   Future<void> _onCreate(Database db, int version) async {
     await db.transaction((txn) async {
+      await _createDeviceAccountsTable(txn);
       await _createLookupTables(txn);
       await _createUserTables(txn);
       await _createHalqaTables(txn);
@@ -105,18 +107,26 @@ class AppDatabase {
     });
   }
 
-  /// Creates static lookup tables that define types and categories within the app.
-  /// These tables are typically seeded with initial data and rarely change.
-  /// They do not require sync columns as they are considered part of the app's core data.
-  ///
-
   // =========================================================================
   //                             SCHEMA CREATION
   // =========================================================================
 
+  Future<void> _createDeviceAccountsTable(Transaction txn) async {
+    await txn.execute('''
+      CREATE TABLE $_kDeviceAccountsTable (
+        id INTEGER PRIMARY KEY, -- This will be the user's ID from the server
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        avatar TEXT,
+        lastLogin INTEGER NOT NULL
+      )
+    ''');
+  }
+
   Future<void> createStudentSummaryTable(Transaction txn) async {
     await txn.execute('''
       CREATE TABLE IF NOT EXISTS $_kEntityDailySummary (
+        userId INTEGER NOT NULL,
         date TEXT  NOT NULL,
         entity_type INTEGER NOT NULL,       -- 'teachers', 'students','halaqas' etc.
         active_count INTEGER NOT NULL,
@@ -124,18 +134,19 @@ class AppDatabase {
         deletions_count INTEGER NOT NULL,
         last_updated INTEGER NOT NULL,
 
-        UNIQUE(entity_type, date),
+        UNIQUE(userId, entity_type, date),
         FOREIGN KEY(entity_type) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
       )
     ''');
     await txn.execute('''
       CREATE TABLE IF NOT EXISTS $_kEntityCount (
+        userId INTEGER NOT NULL,
         date TEXT  NOT NULL,
         entity_type INTEGER NOT NULL,       -- 'teachers', 'students','halaqas' etc.
         count INTEGER NOT NULL,
         last_updated INTEGER NOT NULL,
 
-        UNIQUE(entity_type, date),
+        UNIQUE(userId, entity_type, date),
         FOREIGN KEY(entity_type) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
       )
     ''');
@@ -146,13 +157,16 @@ class AppDatabase {
   Future<void> _createSyncInfrastructureTables(Transaction txn) async {
     await txn.execute('''
   CREATE TABLE $_kSyncMetadataTable (
-    entity_type TEXT PRIMARY KEY,       -- 'teachers', 'students', etc.
-    last_server_sync_timestamp INTEGER NOT NULL DEFAULT 0
+    userId INTEGER NOT NULL,
+    entity_type TEXT NOT NULL,       -- 'teachers', 'students', etc.
+    last_server_sync_timestamp INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (userId, entity_type)
   )
 ''');
     await txn.execute('''
   CREATE TABLE $_kPendingOperationsTable (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER NOT NULL,
     entity_uuid TEXT NOT NULL,
     entity_type TEXT NOT NULL,      -- e.g., 'teacher'
     operation_type TEXT NOT NULL,   -- 'create', 'update', 'delete'
@@ -163,6 +177,10 @@ class AppDatabase {
 ''');
   }
 
+  /// Creates static lookup tables that define types and categories within the app.
+  /// These tables are typically seeded with initial data and rarely change.
+  /// They do not require sync columns as they are considered part of the app's core data.
+  ///
   Future<void> _createLookupTables(Transaction txn) async {
     // Roles (e.g., student, teacher)
     await txn.execute('''
@@ -307,13 +325,14 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kUsersTable (
         id                INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId            INTEGER NOT NULL,
         uuid              TEXT    NOT NULL,
         roleId            INTEGER NOT NULL,
         status            TEXT    NOT NULL,
         name              TEXT    NOT NULL,
         gender            INTEGER NOT NULL DEFAULT 1,
         birthDate         TEXT,
-        email             TEXT    NOT NULL UNIQUE,
+        email             TEXT    NOT NULL,
         avatar            TEXT,
         phoneZone         TEXT,
         bio               TEXT,
@@ -332,7 +351,8 @@ class AppDatabase {
         lastModified      INTEGER NOT NULL,
         isDeleted         INTEGER NOT NULL DEFAULT 0,
         
-        UNIQUE(roleId, uuid),
+        UNIQUE(userId, roleId, uuid),
+        UNIQUE(userId, email),
         FOREIGN KEY(roleId) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
       )
     ''');
@@ -340,6 +360,7 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kRegistrationRequestsTable (
         id                INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId            INTEGER NOT NULL,
         uuid              TEXT    NOT NULL,
         type              TEXT    NOT NULL,
         name              TEXT    NOT NULL,
@@ -361,9 +382,9 @@ class AppDatabase {
         note              TEXT,
         lastModified      INTEGER NOT NULL,
 
-        UNIQUE(email),
-        UNIQUE(uuid, type),
-        UNIQUE(phoneZone, phone)
+        UNIQUE(userId, email),
+        UNIQUE(userId, uuid, type),
+        UNIQUE(userId, phoneZone, phone)
       )
     ''');
   }
@@ -373,7 +394,8 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kHalqasTable (
         id                INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid              TEXT    NOT NULL UNIQUE,
+        userId            INTEGER NOT NULL,
+        uuid              TEXT    NOT NULL,
         name              TEXT    NOT NULL,
         isActive          INTEGER NOT NULL DEFAULT 1,
         sumOfStudents     INTEGER NOT NULL DEFAULT 1,
@@ -384,19 +406,22 @@ class AppDatabase {
         residence         TEXT,
         createdAt         INTEGER NOT NULL,
         lastModified      INTEGER NOT NULL,
-        isDeleted         INTEGER NOT NULL DEFAULT 0
+        isDeleted         INTEGER NOT NULL DEFAULT 0,
+        UNIQUE(userId, uuid)
       )
     ''');
 
     await txn.execute('''
       CREATE TABLE $_kTeacherHalqasTable (
-        uuid         TEXT    NOT NULL UNIQUE,
+        uuid         TEXT    NOT NULL,
+        userId       INTEGER NOT NULL,
         teacherId    INTEGER NOT NULL,
         halqaId      INTEGER NOT NULL,
         lastModified INTEGER NOT NULL,
         isDeleted    INTEGER NOT NULL DEFAULT 0,
         
-        PRIMARY KEY (teacherId, halqaId),
+        PRIMARY KEY (userId, teacherId, halqaId),
+        UNIQUE(userId, uuid),
         FOREIGN KEY(teacherId) REFERENCES $_kUsersTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(halqaId)   REFERENCES $_kHalqasTable(id) ON DELETE CASCADE ON UPDATE CASCADE
       )
@@ -405,6 +430,7 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kHalqaStudentsTable (
         id           INTEGER    PRIMARY KEY AUTOINCREMENT,
+        userId       INTEGER    NOT NULL,
         uuid         TEXT       NOT NULL ,
         halqaId      INTEGER    NOT NULL,
         studentId    INTEGER    NOT NULL,
@@ -422,8 +448,9 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kFollowUpPlansTable (
         id              INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid            TEXT    NOT NULL UNIQUE,
-        server_plan_id  TEXT NOT NULL,
+        userId          INTEGER NOT NULL,
+        uuid            TEXT    NOT NULL,
+        server_plan_id  TEXT    NOT NULL,
         enrollmentId    INTEGER NOT NULL,
         frequency       INTEGER NOT NULL DEFAULT 1,
         createdAt       TEXT,
@@ -431,6 +458,7 @@ class AppDatabase {
         lastModified    INTEGER NOT NULL,
         isDeleted       INTEGER NOT NULL DEFAULT 0,
 
+        UNIQUE(userId, uuid),
         FOREIGN KEY(frequency) REFERENCES $_kFrequenciesTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(enrollmentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE
       )
@@ -439,6 +467,7 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kPlanDetailsTable (
         id           INTEGER PRIMARY KEY,
+        userId       INTEGER NOT NULL,
         planUuid     TEXT    NOT NULL,
         type         TEXT    NOT NULL,
         unit         TEXT    NOT NULL,
@@ -453,6 +482,7 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kDailyTrackingTable (
         id               INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId           INTEGER NOT NULL,
         uuid             TEXT    NOT NULL,
         enrollmentId     INTEGER NOT NULL,
         trackDate        TEXT    NOT NULL,
@@ -463,7 +493,7 @@ class AppDatabase {
         lastModified     INTEGER NOT NULL,
         isDeleted        INTEGER NOT NULL DEFAULT 0,
 
-        UNIQUE(enrollmentId, trackDate , status),
+        UNIQUE(userId, enrollmentId, trackDate , status),
         FOREIGN KEY(enrollmentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(attendanceTypeId) REFERENCES $_kAttendanceTypesTable(id) ON DELETE RESTRICT ON UPDATE CASCADE
       )
@@ -472,6 +502,7 @@ class AppDatabase {
     await txn.execute('''
         CREATE TABLE $_kDailyTrackingDetailTable (
           id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+          userId             INTEGER NOT NULL,
           uuid               TEXT    NOT NULL,
           trackingId         INTEGER NOT NULL,
           typeId             INTEGER NOT NULL,
@@ -485,7 +516,7 @@ class AppDatabase {
           lastModified       INTEGER NOT NULL,
           isDeleted          INTEGER NOT NULL DEFAULT 0,
           
-          UNIQUE(trackingId, typeId),
+          UNIQUE(userId, trackingId, typeId),
           FOREIGN KEY(trackingId) REFERENCES $_kDailyTrackingTable(id)   ON DELETE CASCADE ON UPDATE CASCADE,
           FOREIGN KEY(typeId)     REFERENCES $_kTrackingTypesTable(id)   ON DELETE RESTRICT ON UPDATE CASCADE        )
       ''');
@@ -493,7 +524,8 @@ class AppDatabase {
     await txn.execute('''
     CREATE TABLE $_kMistakesTable (
       id                 INTEGER PRIMARY KEY AUTOINCREMENT,
-      uuid               TEXT    NOT NULL UNIQUE,
+      userId             INTEGER NOT NULL,
+      uuid               TEXT    NOT NULL,
       trackingDetailId   INTEGER NOT NULL, -- FOREIGN KEY to daily_tracking_detail.id
       
       ayahId_quran       INTEGER NOT NULL, -- The ID of the ayah in the static Quran DB
@@ -503,6 +535,7 @@ class AppDatabase {
       lastModified       INTEGER NOT NULL,
       isDeleted          INTEGER NOT NULL DEFAULT 0,
 
+      UNIQUE(userId, uuid),
       FOREIGN KEY(trackingDetailId) REFERENCES $_kDailyTrackingDetailTable(id) ON DELETE CASCADE
     )
   ''');

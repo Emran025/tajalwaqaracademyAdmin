@@ -20,12 +20,12 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   CoreDataLocalDataSourceImpl({required this.database});
 
   @override
-  Future<List<StudentModel>> getStudentsForExport() async {
+  Future<List<StudentModel>> getStudentsForExport(int userId) async {
     try {
       final List<Map<String, dynamic>> maps = await database.query(
         _kUsersTable,
-        where: 'roleId = ? AND isDeleted = ?',
-        whereArgs: [UserRole.student.id, 0],
+        where: 'userId = ? AND roleId = ? AND isDeleted = ?',
+        whereArgs: [userId, UserRole.student.id, 0],
       );
       return List.generate(maps.length, (i) {
         return StudentModel.fromMap(maps[i]);
@@ -36,12 +36,12 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   }
 
   @override
-  Future<List<TeacherModel>> getTeachersForExport() async {
+  Future<List<TeacherModel>> getTeachersForExport(int userId) async {
     try {
       final List<Map<String, dynamic>> maps = await database.query(
         _kUsersTable,
-        where: 'roleId = ? AND isDeleted = ?',
-        whereArgs: [UserRole.teacher.id, 0],
+        where: 'userId = ? AND roleId = ? AND isDeleted = ?',
+        whereArgs: [userId, UserRole.teacher.id, 0],
       );
       return List.generate(maps.length, (i) {
         return TeacherModel.fromMap(maps[i]);
@@ -52,15 +52,14 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   }
 
   @override
-  Future<int> importStudents(List<StudentModel> students,
-      [String conflictResolution = 'replace']) async {
+  Future<int> importStudents(
+      int userId, List<StudentModel> students, String conflictAlgorithm) async {
     try {
       final batch = database.batch();
       for (final student in students) {
-        batch.insert(_kUsersTable, student.toMap(),
-            conflictAlgorithm: conflictResolution == 'skip'
-                ? ConflictAlgorithm.ignore
-                : ConflictAlgorithm.replace);
+        batch.insert(
+            _kUsersTable, {...student.toMap(), 'userId': userId},
+            conflictAlgorithm: ConflictAlgorithm.replace);
       }
       final results = await batch.commit();
       return results.where((r) => r != 0).length;
@@ -70,15 +69,14 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   }
 
   @override
-  Future<int> importTeachers(List<TeacherModel> teachers,
-      [String conflictResolution = 'replace']) async {
+  Future<int> importTeachers(
+      int userId, List<TeacherModel> teachers, String conflictAlgorithm) async {
     try {
       final batch = database.batch();
       for (final teacher in teachers) {
-        batch.insert(_kUsersTable, teacher.toMap(),
-            conflictAlgorithm: conflictResolution == 'skip'
-                ? ConflictAlgorithm.ignore
-                : ConflictAlgorithm.replace);
+        batch.insert(
+            _kUsersTable, {...teacher.toMap(), 'userId': userId},
+            conflictAlgorithm: ConflictAlgorithm.replace);
       }
       final results = await batch.commit();
       return results.where((r) => r != 0).length;

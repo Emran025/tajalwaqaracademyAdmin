@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
 import '../../../../../core/error/exceptions.dart';
 import '../../../../../core/models/user_role.dart';
 import '../../../../core/models/sync_queue_model.dart';
@@ -25,13 +26,18 @@ const String _kSyncMetadataTable = 'sync_metadata';
 @LazySingleton(as: TeacherLocalDataSource)
 final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   final Database _db;
+  final AuthLocalDataSource _authLocalDataSource;
 
   /// A broadcast StreamController that acts as a simple notification bus.
   /// When data in the teachers table changes (e.g., after a sync), we add an
   /// event to this controller to trigger all active listeners to re-fetch.
   final _dbChangeNotifier = StreamController<void>.broadcast();
 
-  TeacherLocalDataSourceImpl({required Database database}) : _db = database;
+  TeacherLocalDataSourceImpl(
+      {required Database database,
+      required AuthLocalDataSource authLocalDataSource})
+      : _db = database,
+        _authLocalDataSource = authLocalDataSource;
 
   // =========================================================================
   //                             Data Access Methods
@@ -43,16 +49,18 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   /// Throws a [CacheException] if the database query fails.
   Future<List<TeacherModel>> _fetchCachedTeachers() async {
     try {
+      final userId = await _authLocalDataSource.getLastLoggedInUserId();
+      if (userId == null) {
+        throw const CacheException(message: 'User not logged in');
+      }
       final maps = await _db.query(
         _kUsersTable,
-        where: 'roleId = ? AND isDeleted = ?',
-        whereArgs: [UserRole.teacher.id, 0],
+        where: 'userId = ? AND roleId = ? AND isDeleted = ?',
+        whereArgs: [userId, UserRole.teacher.id, 0],
         orderBy: 'name ASC',
       );
       // print(maps);
-      return maps.map((map) =>
-         TeacherModel.fromMap(map)
-      ).toList();
+      return maps.map((map) => TeacherModel.fromMap(map)).toList();
     } on DatabaseException catch (e) {
       throw CacheException(
         message: 'Failed to fetch teachers from cache: ${e.toString()}',
@@ -105,9 +113,13 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   @override
   Future<void> applySyncBatch({
     required List<TeacherModel> updatedTeachers,
-    required List<TeacherModel> deletedTeachers,
+    required List<String> deletedTeacherUuids,
   }) async {
     try {
+      final userId = await _authLocalDataSource.getLastLoggedInUserId();
+      if (userId == null) {
+        throw const CacheException(message: 'User not logged in');
+      }
       // Execute all database modifications within a single atomic transaction
       // to ensure data consistency. If any part fails, all changes are rolled back.
       await _db.transaction((txn) async {
@@ -118,21 +130,21 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         for (final teacher in updatedTeachers) {
           batch.insert(
             _kUsersTable,
-            teacher.toMap(),
+            {...teacher.toMap(), 'userId': userId},
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
         }
         // --- Handle Soft Deletes ---
         // Mark records as deleted based on the sync response.
-        for (final teacher in deletedTeachers) {
+        for (final teacherUuid in deletedTeacherUuids) {
           batch.update(
             _kUsersTable,
             {
               'isDeleted': 1,
               'lastModified': DateTime.now().millisecondsSinceEpoch,
             },
-            where: 'roleId = ? AND uuid = ?',
-            whereArgs: [UserRole.teacher.id, teacher.id],
+            where: 'userId = ? AND roleId = ? AND uuid = ?',
+            whereArgs: [userId, UserRole.teacher.id, teacherUuid],
           );
         }
         // Commit all operations in the batch at once.
@@ -157,7 +169,12 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
     Map<String, dynamic>? payload,
   }) async {
     try {
+      final userId = await _authLocalDataSource.getLastLoggedInUserId();
+      if (userId == null) {
+        throw const CacheException(message: 'User not logged in');
+      }
       await _db.insert(_kPendingOperationsTable, {
+        'userId': userId,
         'entity_uuid': uuid,
         'entity_type': UserRole.teacher.label,
         'operation_type': operation,
@@ -173,11 +190,15 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<int> getLastSyncTimestampFor() async {
+    final userId = await _authLocalDataSource.getLastLoggedInUserId();
+    if (userId == null) {
+      throw const CacheException(message: 'User not logged in');
+    }
     final result = await _db.query(
       _kSyncMetadataTable,
       columns: ['last_server_sync_timestamp'],
-      where: 'entity_type = ?',
-      whereArgs: [UserRole.teacher.label],
+      where: 'userId = ? AND entity_type = ?',
+      whereArgs: [userId, UserRole.teacher.label],
     );
     if (result.isNotEmpty) {
       return result.first['last_server_sync_timestamp'] as int;
@@ -187,10 +208,18 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> updateLastSyncTimestampFor(int timestamp) async {
-    await _db.insert(_kSyncMetadataTable, {
-      'entity_type': UserRole.teacher.label,
-      'last_server_sync_timestamp': timestamp,
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+    final userId = await _authLocalDataSource.getLastLoggedInUserId();
+    if (userId == null) {
+      throw const CacheException(message: 'User not logged in');
+    }
+    await _db.insert(
+        _kSyncMetadataTable,
+        {
+          'userId': userId,
+          'entity_type': UserRole.teacher.label,
+          'last_server_sync_timestamp': timestamp,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   @override
@@ -202,9 +231,13 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   @override
   Future<void> upsertTeacher(TeacherModel teacher) async {
     try {
+      final userId = await _authLocalDataSource.getLastLoggedInUserId();
+      if (userId == null) {
+        throw const CacheException(message: 'User not logged in');
+      }
       await _db.insert(
         _kUsersTable,
-        teacher.toMap(),
+        {...teacher.toMap(), 'userId': userId},
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
@@ -217,12 +250,16 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   @override
   Future<void> deleteTeacher(String teacherId) async {
     try {
+      final userId = await _authLocalDataSource.getLastLoggedInUserId();
+      if (userId == null) {
+        throw const CacheException(message: 'User not logged in');
+      }
       // Perform a "soft delete" by marking the record as deleted.
       final rowsAffected = await _db.update(
         _kUsersTable,
         {'isDeleted': 1, 'lastModified': DateTime.now().millisecondsSinceEpoch},
-        where: 'uuid = ?',
-        whereArgs: [teacherId],
+        where: 'userId = ? AND uuid = ?',
+        whereArgs: [userId, teacherId],
       );
 
       if (rowsAffected == 0) {
@@ -242,10 +279,14 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   @override
   Future<List<SyncQueueModel>> getPendingSyncOperations() async {
     try {
+      final userId = await _authLocalDataSource.getLastLoggedInUserId();
+      if (userId == null) {
+        throw const CacheException(message: 'User not logged in');
+      }
       final maps = await _db.query(
         _kPendingOperationsTable,
-        where: 'entity_type = ? AND status = ?',
-        whereArgs: [UserRole.teacher.label, 'pending'],
+        where: 'userId = ? AND entity_type = ? AND status = ?',
+        whereArgs: [userId, UserRole.teacher.label, 'pending'],
         orderBy: 'created_at ASC',
       );
       return maps.map(SyncQueueModel.fromMap).toList();
@@ -259,10 +300,14 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   @override
   Future<void> deleteCompletedOperation(int operationId) async {
     try {
+      final userId = await _authLocalDataSource.getLastLoggedInUserId();
+      if (userId == null) {
+        throw const CacheException(message: 'User not logged in');
+      }
       await _db.delete(
         _kPendingOperationsTable,
-        where: 'id = ?',
-        whereArgs: [operationId],
+        where: 'userId = ? AND id = ?',
+        whereArgs: [userId, operationId],
       );
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -276,10 +321,14 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   @override
   Future<TeacherModel> getTeacherById(String teacherId) async {
     try {
+      final userId = await _authLocalDataSource.getLastLoggedInUserId();
+      if (userId == null) {
+        throw const CacheException(message: 'User not logged in');
+      }
       final maps = await _db.query(
         _kUsersTable,
-        where: 'uuid = ? AND roleId = ? AND isDeleted = ?',
-        whereArgs: [teacherId, UserRole.teacher.id, 0],
+        where: 'userId = ? AND uuid = ? AND roleId = ? AND isDeleted = ?',
+        whereArgs: [userId, teacherId, UserRole.teacher.id, 0],
       );
 
       if (maps.isEmpty) {

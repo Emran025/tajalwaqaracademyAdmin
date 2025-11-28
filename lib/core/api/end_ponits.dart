@@ -6,6 +6,7 @@ class EndPoint {
   /// The `{id}` placeholder will be replaced by the student's actual ID.
   static const String studentTrackings = '/students/{id}/trackings';
   static const String logIn = "auth/login";
+  static const String logInWithToken = "auth/login-with-token";
   static const String forgetPassword = "auth/forgot-password";
   static const String logOut = "auth/logout";
   static const String refreshToken = "refreshToken";
