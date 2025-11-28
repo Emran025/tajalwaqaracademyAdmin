@@ -95,7 +95,7 @@ final class TeacherModel {
       residence: json['residence'] as String? ?? '',
       city: json['city'] as String? ?? '',
       availableTime: json['availableTime'] as String?,
-      status: ActiveStatus.fromLabel(json['status'] as String? ?? 'inactive'),
+      status: ActiveStatus.fromId(json['status'] as int == 1 ? 1 : 2),
       stopReasons: json['stopReasons'] as String?,
       avatar: json['avatar'] as String?,
       createdAt: json['createdAt'] as String?,
@@ -124,7 +124,8 @@ final class TeacherModel {
       residence: map['residence'] as String? ?? '', //
       city: map['city'] as String? ?? '', //
       availableTime: timeOfDayToString(
-          stringToTimeOfDay(map['availableTime'] as String? ?? '00:00')), //
+        stringToTimeOfDay(map['availableTime'] as String? ?? '00:00'),
+      ), //
       status: ActiveStatus.fromLabel(map['status'] as String? ?? 'inactive'), //
       stopReasons: map['stopReasons'] as String?,
       avatar: map['avatar'] as String?, //
@@ -306,7 +307,7 @@ final class TeacherModel {
       'createdAt',
       'updatedAt',
       'qualification',
-      'isDeleted'
+      'isDeleted',
     ];
   }
 
@@ -333,7 +334,7 @@ final class TeacherModel {
       createdAt,
       updatedAt,
       qualification,
-      isDeleted
+      isDeleted,
     ];
   }
 }
