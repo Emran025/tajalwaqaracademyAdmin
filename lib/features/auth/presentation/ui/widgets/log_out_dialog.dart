@@ -21,29 +21,34 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        // إعادة تعيين حالة التحميل عندما تتغير حالة المصادقة
         if (state.authStatus == AuthStatus.unauthenticated) {
-          setState(() {
-            _isLoggingOut = false;
-          });
-          Navigator.of(
-            context,
-          ).pop({'success': true, 'deleteCredentials': _deleteCredentials});
+          if (mounted) {
+            context.go('/welcome');
+          }
         } else if (state.logOutFailure != null) {
-          setState(() {
-            _isLoggingOut = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                state.logOutFailure?.message ?? 'فشل تسجيل الخروج',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onError,
+          if (mounted) {
+            setState(() {
+              _isLoggingOut = false;
+            });
+            final failure = state.logOutFailure!;
+            final errorMessage = failure.message;
+            if (errorMessage.contains('Token is invalid') ||
+                errorMessage.contains('already revoked')) {
+              context.go('/welcome');
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.logOutFailure?.message ?? 'فشل تسجيل الخروج',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onError,
+                    ),
+                  ),
+                  backgroundColor: Theme.of(context).colorScheme.error,
                 ),
-              ),
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-          );
+              );
+            }
+          }
         }
       },
       child: Dialog(
@@ -169,8 +174,6 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                                       : 'تم تسجيل الخروج',
                                 ),
                               );
-
-                              _setupLogoutListener();
                             },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -215,48 +218,4 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
     );
   }
 
-  void _setupLogoutListener() {
-    context.read<AuthBloc>().stream.listen((state) {
-      if (state.authStatus == AuthStatus.unauthenticated) {
-        _onLogoutSuccess();
-      }
-      if (state.logOutFailure != null) {
-        _onLogoutFailure(state.logOutFailure!);
-      }
-    });
-  }
-
-  void _onLogoutSuccess() {
-    debugPrint('تم تسجيل الخروج بنجاح');
-    _navigateToLoginScreen();
-  }
-
-  void _onLogoutFailure(Failure failure) {
-    final String errorMessage = failure.message;
-    debugPrint('فشل تسجيل الخروج: $errorMessage');
-
-    if (errorMessage.contains('Token is invalid') ||
-        errorMessage.contains('already revoked')) {
-      debugPrint('التوكن غير صالح - تنظيف البيانات المحلية');
-      _navigateToLoginScreen();
-    } else {
-      _showErrorSnackBar(errorMessage);
-    }
-  }
-
-  void _showErrorSnackBar(String message) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 3),
-        ),
-      );
-    }
-  }
-
-  void _navigateToLoginScreen() {
-    context.go('/welcome');
-  }
 }
