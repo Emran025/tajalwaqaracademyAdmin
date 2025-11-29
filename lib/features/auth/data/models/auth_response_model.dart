@@ -49,7 +49,7 @@ final class AuthResponseModel {
   }
 
   /// دالة لتحويل UserModel إلى Map لتخزينه في قاعدة البيانات المحلية
-  factory AuthResponseModel.fromDbMap(Map<String, dynamic> map) {
+  factory AuthResponseModel.fromMap(Map<String, dynamic> map) {
     // Check for the presence of the nested 'user' object.
     final userJson = map['user'] as Map<String, dynamic>?;
     if (userJson == null) {
@@ -66,7 +66,7 @@ final class AuthResponseModel {
       role: UserRole.fromId(map['role'] as int? ?? 1),
     );
   }
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'access_token': accessToken,
       'refreshToken': refreshToken,

@@ -7,8 +7,8 @@ import '../../domain/entities/mistake.dart';
 /// The data model for a single mistake record.
 ///
 /// This immutable class is responsible for:
-/// 1. Converting raw database maps into a structured object (`fromDbMap`).
-/// 2. Converting the object into a map suitable for database insertion/updates (`toDbMap`).
+/// 1. Converting raw database maps into a structured object (`fromMap`).
+/// 2. Converting the object into a map suitable for database insertion/updates (`toMap`).
 /// 3. Converting itself into a pure, domain-layer [Mistake] entity (`toEntity`).
 @immutable
 class MistakeModel {
@@ -36,7 +36,7 @@ class MistakeModel {
     return MistakeModel(
       localId: json['id'] as int? ?? 0,
       uuid: json['uuid'] as String? ?? '',
-      trackingDetailId: (json['trackingDetailId']  as int? ?? 0).toString(),
+      trackingDetailId: (json['trackingDetailId'] as int? ?? 0).toString(),
       ayahIdQuran: json['ayahId_quran'] as int? ?? 0,
       wordIndex: json['wordIndex'] as int? ?? 0,
       mistakeType: MistakeType.fromId(json['mistakeTypeId'] as int? ?? 0),
@@ -45,11 +45,11 @@ class MistakeModel {
   }
 
   /// A factory for creating a [MistakeModel] from a database map.
-  factory MistakeModel.fromDbMap(Map<String, dynamic> map) {
+  factory MistakeModel.fromMap(Map<String, dynamic> map) {
     return MistakeModel(
       localId: map['id'] as int? ?? 0,
       uuid: map['uuid'] as String? ?? '',
-      trackingDetailId:( map['trackingDetailId'] as int? ?? 0).toString(),
+      trackingDetailId: (map['trackingDetailId'] as int? ?? 0).toString(),
       ayahIdQuran: map['ayahId_quran'] as int? ?? 0,
       wordIndex: map['wordIndex'] as int? ?? 0,
       mistakeType: MistakeType.fromId(map['mistakeTypeId'] as int? ?? 0),
@@ -73,7 +73,7 @@ class MistakeModel {
   ///
   /// Requires the `parentDetailId` (the local integer ID of the parent `daily_tracking_detail` record)
   /// to establish the foreign key relationship.
-  Map<String, dynamic> toDbMap(int parentDetailId) {
+  Map<String, dynamic> toMap(int parentDetailId) {
     return {
       'uuid': uuid.isEmpty ? const Uuid().v4() : uuid,
       'trackingDetailId': parentDetailId,

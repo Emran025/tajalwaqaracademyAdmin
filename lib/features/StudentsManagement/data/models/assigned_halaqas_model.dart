@@ -46,7 +46,7 @@ final class AssignedHalaqasModel {
           );
   }
 
-  factory AssignedHalaqasModel.fromDbMap(Map<String, dynamic> map) {
+  factory AssignedHalaqasModel.fromMap(Map<String, dynamic> map) {
     // final playloudJsonString = map['playloud'] as String? ?? '{}';
 
     final playloudData = jsonDecode(map['playloud']) as Map<String, dynamic>;
@@ -62,7 +62,7 @@ final class AssignedHalaqasModel {
     );
   }
 
-  Map<String, dynamic> toDbMap(int studentId) {
+  Map<String, dynamic> toMap(int studentId) {
     return {
       "uuid": id,
       "halqaId": halaqaId,

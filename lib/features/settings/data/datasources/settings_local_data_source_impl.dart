@@ -110,7 +110,7 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
 
       if (result.isNotEmpty) {
         // A policy was found, hydrate the model from the database map.
-        return PrivacyPolicyModel.fromDbMap(result.first);
+        return PrivacyPolicyModel.fromMap(result.first);
       } else {
         // No policy has been cached yet. This is a valid but exceptional case.
         throw CacheException(
@@ -131,7 +131,7 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
       final db = await _appDatabase.database;
       await db.insert(
         _kPrivacyPolicyTable,
-        policy.toDbMap(), // Use the model's conversion method
+        policy.toMap(), // Use the model's conversion method
         conflictAlgorithm:
             ConflictAlgorithm.replace, // Handles insert vs. update
       );

@@ -3,7 +3,6 @@
 import '../../../../shared/themes/app_theme.dart';
 import '../../domain/entities/settings_entity.dart';
 
-
 /// Represents the settings data as it is structured and transferred within
 /// the data layer.
 ///
@@ -37,6 +36,7 @@ class SettingsModel extends SettingsEntity {
       analyticsEnabled: json['analyticsEnabled'] as bool,
     );
   }
+
   /// Converts this model to a JSON map.
   /// This is useful when saving data to a local cache or sending it to a remote API.
   Map<String, dynamic> toJson() {
@@ -59,7 +59,7 @@ class SettingsModel extends SettingsEntity {
 
   /// Converts this model to a Db Map.
   /// This is useful when saving data to a local database.
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'themeType': themeType.index,
       'notificationsEnabled': notificationsEnabled,
@@ -77,6 +77,7 @@ class SettingsModel extends SettingsEntity {
       analyticsEnabled: entity.analyticsEnabled,
     );
   }
+
   /// Converts this model to a [SettingsEntity].
   /// This is useful when passing data to the domain layer.
   SettingsEntity toEntity() {

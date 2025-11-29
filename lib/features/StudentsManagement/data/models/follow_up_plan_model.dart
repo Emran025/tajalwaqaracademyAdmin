@@ -52,12 +52,12 @@ final class FollowUpPlanModel {
   }
 
   // Factory from multiple database maps (Plan + Details)
-  factory FollowUpPlanModel.fromDbMaps({
+  factory FollowUpPlanModel.fromMaps({
     required Map<String, dynamic> planMap,
     required List<Map<String, dynamic>> detailsMaps,
   }) {
     final details = detailsMaps
-        .map((map) => PlanDetailModel.fromDbMap(map))
+        .map((map) => PlanDetailModel.fromMap(map))
         .toList();
     return FollowUpPlanModel(
       planId: planMap['uuid'] as String,

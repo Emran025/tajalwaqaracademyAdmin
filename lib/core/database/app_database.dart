@@ -41,7 +41,7 @@ class AppDatabase {
 
   // --- Database & Table Constants ---
   static const String _dbName = 'app_main.db';
-  static const int _dbVersion = 2;
+  static const int _dbVersion = 1;
 
   // Table Names
   static const String _kRolesTable = 'roles';
@@ -125,7 +125,7 @@ class AppDatabase {
         last_updated INTEGER NOT NULL,
         tenant_id TEXT NOT NULL,
 
-        UNIQUE(entity_type, date),
+        UNIQUE(tenant_id, entity_type, date),
         FOREIGN KEY(entity_type) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
       )
     ''');
@@ -137,7 +137,7 @@ class AppDatabase {
         last_updated INTEGER NOT NULL,
         tenant_id TEXT NOT NULL,
 
-        UNIQUE(entity_type, date),
+        UNIQUE(tenant_id, entity_type, date),
         FOREIGN KEY(entity_type) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
       )
     ''');
@@ -147,24 +147,26 @@ class AppDatabase {
   /// These tables track local changes and the sync state for different data entities.
   Future<void> _createSyncInfrastructureTables(Transaction txn) async {
     await txn.execute('''
-  CREATE TABLE $_kSyncMetadataTable (
-    entity_type TEXT PRIMARY KEY,       -- 'teachers', 'students', etc.
-    last_server_sync_timestamp INTEGER NOT NULL DEFAULT 0,
-    tenant_id TEXT NOT NULL
-  )
-''');
+    CREATE TABLE $_kSyncMetadataTable (
+        entity_type                 TEXT,       -- 'teachers', 'students', etc.
+        last_server_sync_timestamp  INTEGER NOT NULL DEFAULT 0,
+        tenant_id                   TEXT NOT NULL,
+        UNIQUE(tenant_id, entity_type)
+      )
+    ''');
+
     await txn.execute('''
-  CREATE TABLE $_kPendingOperationsTable (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    entity_uuid TEXT NOT NULL,
-    entity_type TEXT NOT NULL,      -- e.g., 'teacher'
-    operation_type TEXT NOT NULL,   -- 'create', 'update', 'delete'
-    payload TEXT,                   -- JSON string of the data for create/update
-    created_at INTEGER NOT NULL,
-    status TEXT NOT NULL DEFAULT 'pending', -- 'pending', 'in_progress', 'failed'
-    tenant_id TEXT NOT NULL
-  )
-''');
+      CREATE TABLE $_kPendingOperationsTable (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        entity_uuid TEXT NOT NULL,
+        entity_type TEXT NOT NULL,      -- e.g., 'teacher'
+        operation_type TEXT NOT NULL,   -- 'create', 'update', 'delete'
+        payload TEXT,                   -- JSON string of the data for create/update
+        created_at INTEGER NOT NULL,
+        status TEXT NOT NULL DEFAULT 'pending', -- 'pending', 'in_progress', 'failed'
+        tenant_id TEXT NOT NULL
+      )
+    ''');
   }
 
   Future<void> _createLookupTables(Transaction txn) async {
@@ -317,7 +319,7 @@ class AppDatabase {
         name              TEXT    NOT NULL,
         gender            INTEGER NOT NULL DEFAULT 1,
         birthDate         TEXT,
-        email             TEXT    NOT NULL UNIQUE,
+        email             TEXT    NOT NULL,
         avatar            TEXT,
         phoneZone         TEXT,
         bio               TEXT,
@@ -335,9 +337,10 @@ class AppDatabase {
         createdAt         INTEGER NOT NULL,
         lastModified      INTEGER NOT NULL,
         isDeleted         INTEGER NOT NULL DEFAULT 0,
-        tenant_id TEXT NOT NULL,
+        tenant_id         TEXT NOT NULL,
         
-        UNIQUE(roleId, uuid),
+        UNIQUE(email, tenant_id),
+        UNIQUE(roleId, uuid, tenant_id),
         FOREIGN KEY(roleId) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
       )
     ''');
@@ -365,11 +368,11 @@ class AppDatabase {
         status            TEXT    NOT NULL DEFAULT 'new',
         note              TEXT,
         lastModified      INTEGER NOT NULL,
-        tenant_id TEXT NOT NULL,
+        tenant_id         TEXT NOT NULL,
 
-        UNIQUE(email),
-        UNIQUE(uuid, type),
-        UNIQUE(phoneZone, phone)
+        UNIQUE(tenant_id, email),
+        UNIQUE(tenant_id, uuid, type),
+        UNIQUE(tenant_id, phoneZone, phone)
       )
     ''');
   }
@@ -379,7 +382,7 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kHalqasTable (
         id                INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid              TEXT    NOT NULL UNIQUE,
+        uuid              TEXT    NOT NULL,
         name              TEXT    NOT NULL,
         isActive          INTEGER NOT NULL DEFAULT 1,
         sumOfStudents     INTEGER NOT NULL DEFAULT 1,
@@ -391,20 +394,23 @@ class AppDatabase {
         createdAt         INTEGER NOT NULL,
         lastModified      INTEGER NOT NULL,
         isDeleted         INTEGER NOT NULL DEFAULT 0,
-        tenant_id TEXT NOT NULL
+        tenant_id         TEXT NOT NULL,
+
+        UNIQUE(tenant_id, uuid)
       )
     ''');
 
     await txn.execute('''
       CREATE TABLE $_kTeacherHalqasTable (
-        uuid         TEXT    NOT NULL UNIQUE,
+        uuid         TEXT    NOT NULL,
         teacherId    INTEGER NOT NULL,
         halqaId      INTEGER NOT NULL,
         lastModified INTEGER NOT NULL,
         isDeleted    INTEGER NOT NULL DEFAULT 0,
         tenant_id TEXT NOT NULL,
         
-        PRIMARY KEY (teacherId, halqaId),
+        PRIMARY KEY (tenant_id, teacherId, halqaId),
+        UNIQUE(tenant_id, uuid),
         FOREIGN KEY(teacherId) REFERENCES $_kUsersTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(halqaId)   REFERENCES $_kHalqasTable(id) ON DELETE CASCADE ON UPDATE CASCADE
       )
@@ -412,15 +418,16 @@ class AppDatabase {
 
     await txn.execute('''
       CREATE TABLE $_kHalqaStudentsTable (
-        id           INTEGER    PRIMARY KEY AUTOINCREMENT,
-        uuid         TEXT       NOT NULL ,
-        halqaId      INTEGER    NOT NULL,
-        studentId    INTEGER    NOT NULL,
-        assignedAt   TEXT       NOT NULL,
-        playloud     TEXT,
-        lastModified INTEGER NOT NULL,
-        isDeleted    INTEGER NOT NULL DEFAULT 0 ,
-        tenant_id TEXT NOT NULL,
+        id            INTEGER    PRIMARY KEY AUTOINCREMENT,
+        uuid          TEXT       NOT NULL ,
+        halqaId       INTEGER    NOT NULL,
+        studentId     INTEGER    NOT NULL,
+        assignedAt    TEXT       NOT NULL,
+        playloud      TEXT,
+        lastModified  INTEGER NOT NULL,
+        isDeleted     INTEGER NOT NULL DEFAULT 0,
+        tenant_id     TEXT NOT NULL,
+
         FOREIGN KEY(studentId) REFERENCES $_kUsersTable(id) ON DELETE CASCADE ON UPDATE CASCADE
       )
     ''');
@@ -431,7 +438,7 @@ class AppDatabase {
     await txn.execute('''
       CREATE TABLE $_kFollowUpPlansTable (
         id              INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid            TEXT    NOT NULL UNIQUE,
+        uuid            TEXT    NOT NULL,
         server_plan_id  TEXT NOT NULL,
         enrollmentId    INTEGER NOT NULL,
         frequency       INTEGER NOT NULL DEFAULT 1,
@@ -441,6 +448,8 @@ class AppDatabase {
         isDeleted       INTEGER NOT NULL DEFAULT 0,
         tenant_id TEXT NOT NULL,
 
+        UNIQUE(tenant_id, uuid),
+
         FOREIGN KEY(frequency) REFERENCES $_kFrequenciesTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(enrollmentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE
       )
@@ -448,16 +457,16 @@ class AppDatabase {
 
     await txn.execute('''
       CREATE TABLE $_kPlanDetailsTable (
-        id           INTEGER PRIMARY KEY,
+        id           INTEGER PRIMARY KEY AUTOINCREMENT,
         planUuid     TEXT    NOT NULL,
         type         TEXT    NOT NULL,
         unit         TEXT    NOT NULL,
         amount       INTEGER NOT NULL,
         lastModified INTEGER NOT NULL,
         isDeleted    INTEGER NOT NULL DEFAULT 0,
-        tenant_id TEXT NOT NULL,
+        tenant_id    TEXT NOT NULL,
         
-        FOREIGN KEY(planUuid) REFERENCES $_kFollowUpPlansTable(uuid) ON DELETE CASCADE ON UPDATE CASCADE
+        FOREIGN KEY(tenant_id, planUuid) REFERENCES $_kFollowUpPlansTable(tenant_id, uuid) ON DELETE CASCADE ON UPDATE CASCADE
       )
     ''');
 
@@ -473,9 +482,9 @@ class AppDatabase {
         note             TEXT,
         lastModified     INTEGER NOT NULL,
         isDeleted        INTEGER NOT NULL DEFAULT 0,
-        tenant_id TEXT NOT NULL,
+        tenant_id        TEXT NOT NULL,
 
-        UNIQUE(enrollmentId, trackDate , status),
+        UNIQUE(tenant_id, enrollmentId, trackDate , status),
         FOREIGN KEY(enrollmentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(attendanceTypeId) REFERENCES $_kAttendanceTypesTable(id) ON DELETE RESTRICT ON UPDATE CASCADE
       )
@@ -496,17 +505,18 @@ class AppDatabase {
         status             TEXT    NOT NULL DEFAULT 'draft',
         lastModified       INTEGER NOT NULL,
         isDeleted          INTEGER NOT NULL DEFAULT 0,
-        tenant_id TEXT NOT NULL,
+        tenant_id          TEXT NOT NULL,
         
-        UNIQUE(trackingId, typeId),
+        UNIQUE(tenant_id, trackingId, typeId),
         FOREIGN KEY(trackingId) REFERENCES $_kDailyTrackingTable(id)   ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY(typeId)     REFERENCES $_kTrackingTypesTable(id)   ON DELETE RESTRICT ON UPDATE CASCADE        )
-      ''');
+        FOREIGN KEY(typeId)     REFERENCES $_kTrackingTypesTable(id)   ON DELETE RESTRICT ON UPDATE CASCADE
+      )
+    ''');
 
     await txn.execute('''
       CREATE TABLE $_kMistakesTable (
         id                 INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid               TEXT    NOT NULL UNIQUE,
+        uuid               TEXT    NOT NULL,
         trackingDetailId   INTEGER NOT NULL, -- FOREIGN KEY to daily_tracking_detail.id
         
         ayahId_quran       INTEGER NOT NULL, -- The ID of the ayah in the static Quran DB
@@ -515,7 +525,9 @@ class AppDatabase {
         
         lastModified       INTEGER NOT NULL,
         isDeleted          INTEGER NOT NULL DEFAULT 0,
-        tenant_id TEXT NOT NULL,
+        tenant_id          TEXT NOT NULL,
+        
+        UNIQUE(tenant_id, uuid),
 
         FOREIGN KEY(trackingDetailId) REFERENCES $_kDailyTrackingDetailTable(id) ON DELETE CASCADE
       )
@@ -548,27 +560,12 @@ class AppDatabase {
   /// Called when the database needs to be upgraded.
   /// Use this to alter tables and add new features in future app versions.
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 2) {
-      final tables = [
-        _kUsersTable,
-        _kRegistrationRequestsTable,
-        _kHalqasTable,
-        _kTeacherHalqasTable,
-        _kHalqaStudentsTable,
-        _kFollowUpPlansTable,
-        _kPlanDetailsTable,
-        _kDailyTrackingTable,
-        _kDailyTrackingDetailTable,
-        _kMistakesTable,
-        _kPendingOperationsTable,
-        _kSyncMetadataTable,
-        _kEntityDailySummary,
-        _kEntityCount,
-      ];
-
-      for (final table in tables) {
-        await db.execute('ALTER TABLE $table ADD COLUMN tenant_id TEXT NOT NULL DEFAULT ""');
-      }
-    }
+    // Example for a future migration:
+    // if (oldVersion < 2) {
+    //   await db.execute("ALTER TABLE $_kUsersTable ADD COLUMN someNewField TEXT;");
+    // }
+    // if (oldVersion < 3) {
+    //   await db.execute("CREATE TABLE new_awesome_table (...)");
+    // }
   }
 }

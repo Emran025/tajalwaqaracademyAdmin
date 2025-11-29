@@ -57,7 +57,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     try {
       final String? jsonString = await _secureStorage.read(key: key);
       if (jsonString == null) return [];
-      
+
       final List<dynamic> decoded = json.decode(jsonString);
       return decoded.map((e) => Map<String, String>.from(e)).toList();
     } catch (e) {
@@ -66,22 +66,25 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   /// Helper: Saves a specific token list to Secure Storage.
-  Future<void> _saveTokenList(String key, List<Map<String, String>> list) async {
+  Future<void> _saveTokenList(
+    String key,
+    List<Map<String, String>> list,
+  ) async {
     await _secureStorage.write(key: key, value: json.encode(list));
   }
 
   @override
   Future<void> cacheUser(UserModel userToCache) async {
     try {
-      final userMap = userToCache.toDbMap();
+      final userMap = userToCache.toMap();
       final String userId = userMap['id'].toString();
 
       // 1. Update users list in SharedPreferences
       List<Map<String, dynamic>> usersList = _getUsersListFromPrefs();
       usersList.removeWhere((u) => u['id'].toString() == userId);
-      
+
       // Insert at top (Index 0)
-      usersList.insert(0, userMap); 
+      usersList.insert(0, userMap);
 
       await _sharedPreferences.setString(
         _kUsersListKey,
@@ -90,7 +93,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
       // 2. Set active user pointer
       await _sharedPreferences.setString(_kCurrentUserIdKey, userId);
-      
+
       switchCurrentScreen('home');
     } catch (e) {
       throw CacheException(
@@ -113,8 +116,12 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       }
 
       // 1. Retrieve both lists
-      List<Map<String, String>> accessList = await _getTokenList(_kAccessTokensListKey);
-      List<Map<String, String>> refreshList = await _getTokenList(_kRefreshTokensListKey);
+      List<Map<String, String>> accessList = await _getTokenList(
+        _kAccessTokensListKey,
+      );
+      List<Map<String, String>> refreshList = await _getTokenList(
+        _kRefreshTokensListKey,
+      );
 
       // 2. Remove existing entries for this user (to update)
       accessList.removeWhere((t) => t['uid'] == userId);
@@ -127,7 +134,6 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       // 4. Save both lists
       await _saveTokenList(_kAccessTokensListKey, accessList);
       await _saveTokenList(_kRefreshTokensListKey, refreshList);
-
     } catch (e) {
       throw CacheException(
         message: 'Failed to cache auth tokens: ${e.toString()}',
@@ -141,7 +147,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       // Get the list, return the first element's token (Current User)
       final accessList = await _getTokenList(_kAccessTokensListKey);
       if (accessList.isEmpty) return null;
-      
+
       return accessList.first['token'];
     } catch (e) {
       throw CacheException(
@@ -156,7 +162,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       // Get the list, return the first element's token (Current User)
       final refreshList = await _getTokenList(_kRefreshTokensListKey);
       if (refreshList.isEmpty) return null;
-      
+
       return refreshList.first['token'];
     } catch (e) {
       throw CacheException(
@@ -180,7 +186,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
       if (currentUserMap.isEmpty) return null;
 
-      return UserModel.fromDbMap(currentUserMap);
+      return UserModel.fromMap(currentUserMap);
     } catch (e) {
       throw CacheException(
         message: 'Failed to decode cached user: ${e.toString()}',
@@ -197,7 +203,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     if (!userExists) {
       throw CacheException(message: 'User with ID $userId not found in cache.');
     }
-    
+
     // 2. Update SharedPrefs Pointer
     await _sharedPreferences.setString(_kCurrentUserIdKey, userId);
     switchCurrentScreen('home');
@@ -205,7 +211,9 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     // 3. Reorder BOTH Secure Token Lists (Move selected user to Index 0)
     try {
       // --- Handle Access Tokens ---
-      List<Map<String, String>> accessList = await _getTokenList(_kAccessTokensListKey);
+      List<Map<String, String>> accessList = await _getTokenList(
+        _kAccessTokensListKey,
+      );
       int accessIndex = accessList.indexWhere((t) => t['uid'] == userId);
       if (accessIndex != -1) {
         final item = accessList.removeAt(accessIndex);
@@ -214,16 +222,19 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       }
 
       // --- Handle Refresh Tokens ---
-      List<Map<String, String>> refreshList = await _getTokenList(_kRefreshTokensListKey);
+      List<Map<String, String>> refreshList = await _getTokenList(
+        _kRefreshTokensListKey,
+      );
       int refreshIndex = refreshList.indexWhere((t) => t['uid'] == userId);
       if (refreshIndex != -1) {
         final item = refreshList.removeAt(refreshIndex);
         refreshList.insert(0, item);
         await _saveTokenList(_kRefreshTokensListKey, refreshList);
       }
-
     } catch (e) {
-      throw CacheException(message: 'Failed to switch token order: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to switch token order: ${e.toString()}',
+      );
     }
   }
 
@@ -231,23 +242,30 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   Future<void> clear() async {
     try {
       final currentUserId = _getCurrentUserId();
-      
+
       if (currentUserId != null) {
         // 1. Remove from Access Tokens List
-        List<Map<String, String>> accessList = await _getTokenList(_kAccessTokensListKey);
+        List<Map<String, String>> accessList = await _getTokenList(
+          _kAccessTokensListKey,
+        );
         accessList.removeWhere((t) => t['uid'] == currentUserId);
         await _saveTokenList(_kAccessTokensListKey, accessList);
 
         // 2. Remove from Refresh Tokens List
-        List<Map<String, String>> refreshList = await _getTokenList(_kRefreshTokensListKey);
+        List<Map<String, String>> refreshList = await _getTokenList(
+          _kRefreshTokensListKey,
+        );
         refreshList.removeWhere((t) => t['uid'] == currentUserId);
         await _saveTokenList(_kRefreshTokensListKey, refreshList);
 
         // 3. Remove User Profile
         List<Map<String, dynamic>> usersList = _getUsersListFromPrefs();
         usersList.removeWhere((u) => u['id'].toString() == currentUserId);
-        await _sharedPreferences.setString(_kUsersListKey, json.encode(usersList));
-        
+        await _sharedPreferences.setString(
+          _kUsersListKey,
+          json.encode(usersList),
+        );
+
         // 4. Clear pointer
         await _sharedPreferences.remove(_kCurrentUserIdKey);
 
@@ -256,7 +274,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
           final nextUserId = usersList.first['id'].toString();
           await switchUser(nextUserId);
         } else {
-           switchCurrentScreen('login');
+          switchCurrentScreen('login');
         }
       }
     } catch (e) {
@@ -283,7 +301,7 @@ final class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<List<UserModel>> getAllCachedUsers() async {
     final usersList = _getUsersListFromPrefs();
-    return usersList.map((map) => UserModel.fromDbMap(map)).toList();
+    return usersList.map((map) => UserModel.fromMap(map)).toList();
   }
 
   @override

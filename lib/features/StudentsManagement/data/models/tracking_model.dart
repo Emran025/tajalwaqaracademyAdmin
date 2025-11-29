@@ -64,7 +64,7 @@ final class TrackingModel {
 
   /// Creates a [TrackingModel] from a database map.
   /// The `details` list is populated separately.
-  factory TrackingModel.fromDbMap(
+  factory TrackingModel.fromMap(
     Map<String, dynamic> map,
     List<TrackingDetailModel> details,
   ) {
@@ -104,7 +104,7 @@ final class TrackingModel {
 
   /// Converts the model to a map suitable for the `daily_tracking` table.
   /// Requires the `enrollmentId` foreign key. Note this map does NOT include the details.
-  Map<String, dynamic> toDbMap(int enrollmentId) {
+  Map<String, dynamic> toMap(int enrollmentId) {
     return {
       // BEST PRACTICE: Convert the integer ID to a string to match the 'TEXT' schema.
       'uuid': id.toString(),

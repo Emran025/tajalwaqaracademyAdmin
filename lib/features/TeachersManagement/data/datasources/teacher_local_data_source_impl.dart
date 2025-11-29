@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../../../core/error/exceptions.dart';
@@ -51,8 +48,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   /// It returns a list of [TeacherModel] objects.
   /// Throws a [CacheException] if the database query fails.
   Future<List<TeacherModel>> _fetchCachedTeachers() async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       final maps = await _db.query(
         _kUsersTable,
@@ -116,8 +113,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
     required List<TeacherModel> updatedTeachers,
     required List<TeacherModel> deletedTeachers,
   }) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       // Execute all database modifications within a single atomic transaction
       // to ensure data consistency. If any part fails, all changes are rolled back.
@@ -169,8 +166,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
     required String operation,
     Map<String, dynamic>? payload,
   }) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       await _db.insert(_kPendingOperationsTable, {
         'entity_uuid': uuid,
@@ -189,8 +186,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<int> getLastSyncTimestampFor() async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final result = await _db.query(
       _kSyncMetadataTable,
       columns: ['last_server_sync_timestamp'],
@@ -205,8 +202,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> updateLastSyncTimestampFor(int timestamp) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     await _db.insert(
         _kSyncMetadataTable,
         {
@@ -225,8 +222,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> upsertTeacher(TeacherModel teacher) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       final teacherMap = teacher.toMap();
       teacherMap['tenant_id'] = tenantId;
@@ -244,8 +241,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> deleteTeacher(String teacherId) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       // Perform a "soft delete" by marking the record as deleted.
       final rowsAffected = await _db.update(
@@ -271,8 +268,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<List<SyncQueueModel>> getPendingSyncOperations() async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       final maps = await _db.query(
         _kPendingOperationsTable,
@@ -290,8 +287,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> deleteCompletedOperation(int operationId) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       await _db.delete(
         _kPendingOperationsTable,
@@ -309,8 +306,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   /// Returns a [TeacherModel] if found, or throws a [CacheException] if   not.
   @override
   Future<TeacherModel> getTeacherById(String teacherId) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       final maps = await _db.query(
         _kUsersTable,

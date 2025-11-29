@@ -40,8 +40,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
 
   @override
   Future<List<Record>> getAllEntitysWithTimestamps(UserRole entityType) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final String table;
     final String whereCondation;
     if (entityType == UserRole.halaqa) {
@@ -67,8 +67,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
 
   @override
   Future<List<DateTime>> getStartEndTimes(UserRole entityType) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final String table;
     final String whereCondation;
     if (entityType == UserRole.halaqa) {
@@ -101,8 +101,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
 
   @override
   Future<void> insertDailySummary(SummaryDelta summary) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final summaryMap = summary.toMap();
     summaryMap['tenant_id'] = tenantId;
     await _db.insert(
@@ -114,8 +114,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
 
   @override
   Future<List<SummaryDelta>> getAllDailySummaries(UserRole entityType) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final List<Map<String, dynamic>> maps = await _db.query(
       _kEntityDailySummary,
       orderBy: 'date DESC',
@@ -128,8 +128,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
 
   @override
   Future<int> getEntitesCount(UserRole entityType) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final String table;
     final List<dynamic> whereArgs = [0, tenantId]; // isDeleted = 0
 
@@ -159,8 +159,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   }
 
   Future<CountDelta> _getCount(UserRole entityType) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final List<Map<String, dynamic>> maps = await _db.query(
       _kEntityCount,
       orderBy: 'date DESC',
@@ -199,8 +199,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   // );
   @override
   Future<void> insertCount(CountDelta count) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final countMap = count.toMap();
     countMap['tenant_id'] = tenantId;
     await _db.insert(
@@ -221,8 +221,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
     DateTime endDate,
     UserRole entityType,
   ) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final List<Map<String, dynamic>> maps = await _db.query(
       _kEntityDailySummary,
       where: 'date BETWEEN ? AND ? AND entity_type = ? AND tenant_id = ?',
@@ -241,8 +241,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   ///
   @override
   Future<int> getLastSyncTimestampFor(String entityType) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     final result = await _db.query(
       _kSyncMetadataTable,
       columns: ['last_server_sync_timestamp'],
@@ -268,8 +268,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
     String entityType,
     int timestamp,
   ) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     await _db.insert(
         _kSyncMetadataTable,
         {

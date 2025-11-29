@@ -82,8 +82,8 @@ final class TrackingDetailModel {
   }
 
   /// A factory for creating a [TrackingDetailModel] from a Db Map.
-  /// 4. Update fromDbMap to accept the associated mistakes list.
-  factory TrackingDetailModel.fromDbMap(
+  /// 4. Update fromMap to accept the associated mistakes list.
+  factory TrackingDetailModel.fromMap(
     Map<String, dynamic> map,
     List<MistakeModel> mistakes,
   ) {
@@ -132,7 +132,7 @@ final class TrackingDetailModel {
 
   /// This map aligns with the schema of the `daily_tracking_detail` table.
   /// NOTE: This does NOT include the mistakes, as they are saved to a separate table.
-  Map<String, dynamic> toDbMap(int parentTrackingId) {
+  Map<String, dynamic> toMap(int parentTrackingId) {
     return {
       'uuid': uuid.isEmpty ? const Uuid().v4() : uuid,
       'trackingId': parentTrackingId,

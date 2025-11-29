@@ -30,7 +30,7 @@ class UserModel {
   }
 
   /// Factory constructor لإنشاء نسخة UserModel من Map قادم من قاعدة البيانات المحلية
-  factory UserModel.fromDbMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       // لاحظ أن أسماء الأعمدة في قاعدة البيانات المحلية تختلف (camelCase)
       id: map['id'],
@@ -52,7 +52,7 @@ class UserModel {
     };
   }
 
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,

@@ -100,7 +100,7 @@ class PrivacyPolicyModel {
   /// This factory is crucial for hydrating the model from a local SQLite database,
   /// where nested lists are stored as JSON-encoded strings. It deserializes
   /// `summaryJson` and `sectionsJson` text fields into structured Dart lists.
-  factory PrivacyPolicyModel.fromDbMap(Map<String, dynamic> map) {
+  factory PrivacyPolicyModel.fromMap(Map<String, dynamic> map) {
     return PrivacyPolicyModel(
       version: map['version'],
       lastUpdated: map['lastUpdated'],
@@ -120,7 +120,7 @@ class PrivacyPolicyModel {
   /// This method serializes the `summary` and `sections` lists into JSON strings
   /// (`summaryJson` and `sectionsJson` respectively) to be stored in single `TEXT`
   /// columns in the SQLite database.
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'version': version,
       'lastUpdated': lastUpdated,

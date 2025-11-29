@@ -1,9 +1,7 @@
 // path: lib/features/settings/data/models/user_session_model.dart
 
-
 import '../../../auth/data/models/device_info_model.dart';
 import '../../domain/entities/user_session_entity.dart';
-
 
 /// Represents a single user session as structured for API communication.
 ///
@@ -81,14 +79,15 @@ class UserSessionModel {
       id: dbMap['id'] as String,
       isCurrentDevice: dbMap['is_current_device'] == 1,
       lastAccessedAt: DateTime.parse(dbMap['last_accessed_at'] as String),
-      deviceInfo: DeviceInfoModel.fromJson(dbMap['device_info'] as Map<String, dynamic>),
+      deviceInfo: DeviceInfoModel.fromJson(
+        dbMap['device_info'] as Map<String, dynamic>,
+      ),
     );
   }
 
-
   /// Converts this model to a Db Map.
   /// This is useful when saving data to a local database.
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'is_current_device': isCurrentDevice ? 1 : 0,

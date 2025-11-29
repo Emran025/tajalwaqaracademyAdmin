@@ -63,14 +63,15 @@ final class HalaqaRepositoryImpl implements HalaqaRepository {
       return Left(NetworkFailure(message: 'Failed to load more halaqas.'));
     }
   }
-  @override
 
   @override
-  Future<Either<Failure, List<HalaqaListItemEntity>>> getHalaqasByStudentCriteria({
+  @override
+  Future<Either<Failure, List<HalaqaListItemEntity>>>
+  getHalaqasByStudentCriteria({
     ActiveStatus? studentStatus,
     DateTime? trackDate,
     Frequency? frequencyCode,
-   }) async {
+  }) async {
     // This method would typically fetch from the local data source first,
     // then potentially trigger a targeted remote fetch if needed.
     try {
@@ -103,7 +104,7 @@ final class HalaqaRepositoryImpl implements HalaqaRepository {
       await _localDataSource.queueSyncOperation(
         uuid: halaqa.id,
         operation: 'upsert',
-        payload: model.toDbMap(),
+        payload: model.toMap(),
       );
 
       // 4. Trigger a sync attempt in the background.

@@ -25,8 +25,8 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
 
   @override
   Future<List<StudentModel>> getStudentsForExport() async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       final List<Map<String, dynamic>> maps = await database.query(
         _kUsersTable,
@@ -43,8 +43,8 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
 
   @override
   Future<List<TeacherModel>> getTeachersForExport() async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       final List<Map<String, dynamic>> maps = await database.query(
         _kUsersTable,
@@ -62,8 +62,8 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   @override
   Future<int> importStudents(List<StudentModel> students,
       [String conflictResolution = 'replace']) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       final batch = database.batch();
       for (final student in students) {
@@ -84,8 +84,8 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   @override
   Future<int> importTeachers(List<TeacherModel> teachers,
       [String conflictResolution = 'replace']) async {
-    final user = await _authLocalDataSource.getCachedUser();
-    final tenantId = user.id;
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
     try {
       final batch = database.batch();
       for (final teacher in teachers) {

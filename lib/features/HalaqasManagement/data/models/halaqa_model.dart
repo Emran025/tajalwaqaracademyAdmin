@@ -73,7 +73,7 @@ final class HalaqaModel {
   }
 
   /// Creates a [HalaqaModel] from a JSON map received from an API.
-  factory HalaqaModel.fromDbMap(Map<String, dynamic> map) {
+  factory HalaqaModel.fromMap(Map<String, dynamic> map) {
     return HalaqaModel(
       id: map['uuid'] as String? ?? (map['id'] as int? ?? 0).toString(), //
       name: map['name'] as String? ?? 'Unknown Name', //
@@ -150,7 +150,7 @@ final class HalaqaModel {
     };
   }
 
-  Map<String, dynamic> toDbMap() {
+  Map<String, dynamic> toMap() {
     return {
       'uuid': id,
       'name': name,

@@ -23,9 +23,9 @@ final class PlanDetailModel {
       amount: json['amount'] as int? ?? 0,
     );
   }
-  
+
   // Factory from Database Map
-  factory PlanDetailModel.fromDbMap(Map<String, dynamic> map) {
+  factory PlanDetailModel.fromMap(Map<String, dynamic> map) {
     return PlanDetailModel(
       type: TrackingType.fromLabel(map['type'] as String),
       unit: TrackingUnit.fromLabel(map['unit'] as String),
