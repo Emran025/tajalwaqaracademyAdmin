@@ -17,13 +17,21 @@ class ForgetPasswordRequested extends AuthEvent {
 
 class AppStarted extends AuthEvent {}
 
+/// Triggered when the user wants to view all saved accounts (e.g., opening the "Switch Account" modal).
+class GetAllUsersRequested extends AuthEvent {}
+
 class LogOutRequested extends AuthEvent {
   final String message;
+  final bool deleteCredentials;
 
-  LogOutRequested({required this.message});
+  LogOutRequested({required this.message, required this.deleteCredentials});
 }
+/// Triggered when the user taps on a specific account in the list to switch to it.
+class SwitchUserRequested extends AuthEvent {
+  final String userId;
 
-
+  SwitchUserRequested({required this.userId});
+}
 class ChangePasswordRequested extends AuthEvent {
   final String currentPassword;
   final String newPassword;

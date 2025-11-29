@@ -33,6 +33,11 @@ abstract interface class AuthLocalDataSource {
   /// Returns `null` if no user is cached.
   Future<UserModel?> getUser();
 
+  /// Retrieves the list cached users profiles.
+  /// Returns `null` if no user is cached.
+
+  Future<List<UserModel>> getAllCachedUsers();
+
   /// Checks if there is a user session currently cached.
   ///
   /// Returns `true` if a user is cached, `false` otherwise. This is often
@@ -43,4 +48,14 @@ abstract interface class AuthLocalDataSource {
   /// This is typically called during logOut.
   /// Throws a [CacheException] if the operation fails.
   Future<void> clear();
+
+  /// Clears **ALL** authentication data from the device.
+  ///
+  /// This is a "hard reset" that:
+  /// 1. Wipes all data from Secure Storage (all tokens for all users).
+  /// 2. Removes the list of cached users.
+  /// 3. Removes the current user pointer.
+  Future<void> clearAll();
+
+  Future<void> switchUser(String userId);
 }

@@ -470,41 +470,41 @@ class AppDatabase {
     ''');
 
     await txn.execute('''
-        CREATE TABLE $_kDailyTrackingDetailTable (
-          id                 INTEGER PRIMARY KEY AUTOINCREMENT,
-          uuid               TEXT    NOT NULL,
-          trackingId         INTEGER NOT NULL,
-          typeId             INTEGER NOT NULL,
-          actualAmount       INTEGER,
-          fromTrackingUnitId INTEGER,
-          toTrackingUnitId   INTEGER,
-          comment            TEXT,
-          score              INTEGER,
-          gap                REAL NOT NULL DEFAULT 0.0,
-          status             TEXT    NOT NULL DEFAULT 'draft',
-          lastModified       INTEGER NOT NULL,
-          isDeleted          INTEGER NOT NULL DEFAULT 0,
-          
-          UNIQUE(trackingId, typeId),
-          FOREIGN KEY(trackingId) REFERENCES $_kDailyTrackingTable(id)   ON DELETE CASCADE ON UPDATE CASCADE,
-          FOREIGN KEY(typeId)     REFERENCES $_kTrackingTypesTable(id)   ON DELETE RESTRICT ON UPDATE CASCADE        )
+      CREATE TABLE $_kDailyTrackingDetailTable (
+        id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+        uuid               TEXT    NOT NULL,
+        trackingId         INTEGER NOT NULL,
+        typeId             INTEGER NOT NULL,
+        actualAmount       INTEGER,
+        fromTrackingUnitId INTEGER,
+        toTrackingUnitId   INTEGER,
+        comment            TEXT,
+        score              INTEGER,
+        gap                REAL NOT NULL DEFAULT 0.0,
+        status             TEXT    NOT NULL DEFAULT 'draft',
+        lastModified       INTEGER NOT NULL,
+        isDeleted          INTEGER NOT NULL DEFAULT 0,
+        
+        UNIQUE(trackingId, typeId),
+        FOREIGN KEY(trackingId) REFERENCES $_kDailyTrackingTable(id)   ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY(typeId)     REFERENCES $_kTrackingTypesTable(id)   ON DELETE RESTRICT ON UPDATE CASCADE        )
       ''');
 
     await txn.execute('''
-    CREATE TABLE $_kMistakesTable (
-      id                 INTEGER PRIMARY KEY AUTOINCREMENT,
-      uuid               TEXT    NOT NULL UNIQUE,
-      trackingDetailId   INTEGER NOT NULL, -- FOREIGN KEY to daily_tracking_detail.id
-      
-      ayahId_quran       INTEGER NOT NULL, -- The ID of the ayah in the static Quran DB
-      wordIndex          INTEGER NOT NULL, -- The index of the character/word
-      mistakeTypeId      INTEGER NOT NULL, -- The ID from the MistakeType enum
-      
-      lastModified       INTEGER NOT NULL,
-      isDeleted          INTEGER NOT NULL DEFAULT 0,
+      CREATE TABLE $_kMistakesTable (
+        id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+        uuid               TEXT    NOT NULL UNIQUE,
+        trackingDetailId   INTEGER NOT NULL, -- FOREIGN KEY to daily_tracking_detail.id
+        
+        ayahId_quran       INTEGER NOT NULL, -- The ID of the ayah in the static Quran DB
+        wordIndex          INTEGER NOT NULL, -- The index of the character/word
+        mistakeTypeId      INTEGER NOT NULL, -- The ID from the MistakeType enum
+        
+        lastModified       INTEGER NOT NULL,
+        isDeleted          INTEGER NOT NULL DEFAULT 0,
 
-      FOREIGN KEY(trackingDetailId) REFERENCES $_kDailyTrackingDetailTable(id) ON DELETE CASCADE
-    )
+        FOREIGN KEY(trackingDetailId) REFERENCES $_kDailyTrackingDetailTable(id) ON DELETE CASCADE
+      )
   ''');
   }
 

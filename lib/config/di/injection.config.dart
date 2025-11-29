@@ -54,10 +54,14 @@ import 'package:tajalwaqaracademy/features/auth/domain/usecases/check_login_usec
     as _i306;
 import 'package:tajalwaqaracademy/features/auth/domain/usecases/forget_password_usecase.dart'
     as _i912;
+import 'package:tajalwaqaracademy/features/auth/domain/usecases/get_all_users_use_case.dart'
+    as _i705;
 import 'package:tajalwaqaracademy/features/auth/domain/usecases/login_usecase.dart'
     as _i432;
 import 'package:tajalwaqaracademy/features/auth/domain/usecases/logout_usecase.dart'
     as _i4;
+import 'package:tajalwaqaracademy/features/auth/domain/usecases/switch_user_usecase.dart'
+    as _i559;
 import 'package:tajalwaqaracademy/features/auth/presentation/bloc/auth_bloc.dart'
     as _i1019;
 import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran_local_data_source.dart'
@@ -101,7 +105,7 @@ import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_su
 import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/save_task_progress.dart'
     as _i348;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/error_analysis_chart_bloc.dart'
-    as _i17;
+    as _i897;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/quran_reader_bloc.dart'
     as _i1010;
 import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/tracking_session_bloc.dart'
@@ -387,15 +391,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i664.GetAllMistakes>(
       () => _i664.GetAllMistakes(gh<_i125.TrackingRepository>()),
     );
+    gh.lazySingleton<_i1005.GetErrorAnalysisChartData>(
+      () => _i1005.GetErrorAnalysisChartData(gh<_i125.TrackingRepository>()),
+    );
     gh.lazySingleton<_i829.GetOrCreateTodayTrackingDetails>(
       () =>
           _i829.GetOrCreateTodayTrackingDetails(gh<_i125.TrackingRepository>()),
     );
     gh.lazySingleton<_i348.SaveTaskProgress>(
       () => _i348.SaveTaskProgress(gh<_i125.TrackingRepository>()),
-    );
-    gh.lazySingleton<_i1005.GetErrorAnalysisChartData>(
-      () => _i1005.GetErrorAnalysisChartData(gh<_i125.TrackingRepository>()),
     );
     gh.lazySingleton<_i479.QuranRepository>(
       () => _i288.QuranRepositoryImpl(
@@ -431,7 +435,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i825.HalaqaLocalDataSource>(
       () => _i721.HalaqaLocalDataSourceImpl(database: gh<_i779.Database>()),
     );
-    gh.factory<_i17.ErrorAnalysisChartBloc>(
+    gh.factory<_i897.ErrorAnalysisChartBloc>(
       () => blocModule.errorAnalysisChartBloc(
         gh<_i1005.GetErrorAnalysisChartData>(),
       ),
@@ -598,14 +602,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i632.ExportDataUseCase>(
       () => _i632.ExportDataUseCase(gh<_i17.SettingsRepository>()),
     );
-    gh.lazySingleton<_i16.ImportDataUseCase>(
-      () => _i16.ImportDataUseCase(gh<_i17.SettingsRepository>()),
-    );
     gh.lazySingleton<_i860.GetFaqsUseCase>(
       () => _i860.GetFaqsUseCase(gh<_i17.SettingsRepository>()),
     );
     gh.lazySingleton<_i962.GetTermsOfUseUseCase>(
       () => _i962.GetTermsOfUseUseCase(gh<_i17.SettingsRepository>()),
+    );
+    gh.lazySingleton<_i16.ImportDataUseCase>(
+      () => _i16.ImportDataUseCase(gh<_i17.SettingsRepository>()),
     );
     gh.lazySingleton<_i5.SubmitSupportTicketUseCase>(
       () => _i5.SubmitSupportTicketUseCase(gh<_i17.SettingsRepository>()),
@@ -651,6 +655,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i4.LogOutUseCase>(
       () => _i4.LogOutUseCase(gh<_i879.AuthRepository>()),
+    );
+    gh.lazySingleton<_i705.GetAllUsersUseCase>(
+      () => _i705.GetAllUsersUseCase(gh<_i879.AuthRepository>()),
+    );
+    gh.lazySingleton<_i559.SwitchUserUseCase>(
+      () => _i559.SwitchUserUseCase(gh<_i879.AuthRepository>()),
     );
     gh.lazySingleton<_i358.SetStudentStatusUseCase>(
       () => _i358.SetStudentStatusUseCase(gh<_i847.StudentRepository>()),
@@ -698,6 +708,17 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i167.WatchStudentsUseCase(repository: gh<_i847.StudentRepository>()),
     );
+    gh.factory<_i1019.AuthBloc>(
+      () => blocModule.authBloc(
+        gh<_i432.LogInUseCase>(),
+        gh<_i306.CheckLogInUseCase>(),
+        gh<_i4.LogOutUseCase>(),
+        gh<_i912.ForgetPasswordUseCase>(),
+        gh<_i566.ChangePasswordUseCase>(),
+        gh<_i705.GetAllUsersUseCase>(),
+        gh<_i559.SwitchUserUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i825.SetTeacherStatusUseCase>(
       () => _i825.SetTeacherStatusUseCase(gh<_i567.TeacherRepository>()),
     );
@@ -736,15 +757,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i45.GetApplicantProfileUseCase>(),
         gh<_i674.ApproveApplicantUseCase>(),
         gh<_i403.RejectApplicantUseCase>(),
-      ),
-    );
-    gh.factory<_i1019.AuthBloc>(
-      () => blocModule.authBloc(
-        gh<_i432.LogInUseCase>(),
-        gh<_i306.CheckLogInUseCase>(),
-        gh<_i4.LogOutUseCase>(),
-        gh<_i912.ForgetPasswordUseCase>(),
-        gh<_i566.ChangePasswordUseCase>(),
       ),
     );
     gh.factory<_i294.StudentBloc>(

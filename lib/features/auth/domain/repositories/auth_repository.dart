@@ -21,5 +21,15 @@ abstract class AuthRepository {
     required String newPassword,
   });
   Future<bool> isLoggedIn();
-  Future<Either<Failure, SuccessEntity>> logOut();
+  Future<Either<Failure, SuccessEntity>> logOut({
+    required bool deleteCredentials,
+  });
+
+  /// Retrieves a list of all locally cached users.
+  Future<Either<Failure, List<UserEntity>>> getAllUsers();
+
+  /// Switches the active session to the user identified by [userId].
+  ///
+  /// Returns the [UserEntity] of the newly selected user upon success.
+  Future<Either<Failure, UserEntity>> switchUser({required String userId});
 }

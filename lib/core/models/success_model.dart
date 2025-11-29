@@ -3,7 +3,7 @@ import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
 import '../entities/success_entity.dart';
 
 class SuccessModel extends SuccessEntity {
-  SuccessModel({required super.status, required super.message});
+  SuccessModel({super.status, super.message});
 
   factory SuccessModel.fromJson(Map<String, dynamic> jsonData) {
     return SuccessModel(

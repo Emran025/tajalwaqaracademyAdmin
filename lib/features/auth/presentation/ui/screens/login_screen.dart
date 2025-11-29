@@ -6,6 +6,9 @@ import 'package:tajalwaqaracademy/features/auth/presentation/ui/screens/forget_p
 
 import '../../../../../shared/widgets/custom_button.dart';
 import '../../bloc/auth_bloc.dart';
+// تأكد من مسار الكائن UserEntity
+import 'package:tajalwaqaracademy/features/auth/domain/entities/user_entity.dart';
+
 // import '../../../../../core/constants/app_colors.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -16,12 +19,18 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
-
   bool _obscurePassword = true;
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isPasswordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // جلب قائمة المستخدمين المخزنين عند فتح الشاشة
+    context.read<AuthBloc>().add(GetAllUsersRequested());
+  }
 
   void _submitLogIn(BuildContext context) {
     if (_formKey.currentState!.validate()) {
@@ -34,6 +43,23 @@ class _LogInScreenState extends State<LogInScreen> {
     }
   }
 
+  // دالة لمعالجة تبديل المستخدم عند الضغط على الأيقونة
+  void _onUserTapped(UserEntity user) {
+    // يمكنك هنا الاختيار بين أمرين:
+    // 1. ملء الحقول فقط (إذا أردت منه إدخال كلمة المرور مرة أخرى).
+    // emailController.text = user.email ?? '';
+
+    // 2. أو التبديل المباشر وتسجيل الدخول (وهو ما تم بناء الـ Logic عليه سابقاً)
+    // نفترض أن UserEntity يحتوي على حقل id
+    // تأكد من أن الـ id موجود، هنا سنفترض أنه String
+    // إذا كان الـ id في الـ Entity رقم (int) قم بتحويله: user.id.toString()
+
+    // سنستخدم التبديل المباشر كما طلب في الـ Logic السابق
+    context.read<AuthBloc>().add(
+      SwitchUserRequested(userId: user.id.toString()),
+    );
+  }
+
   InputDecoration _inputDecoration(
     String label,
     IconData icon, {
@@ -41,7 +67,6 @@ class _LogInScreenState extends State<LogInScreen> {
   }) {
     return InputDecoration(
       labelText: label,
-
       prefixIcon: Icon(icon, color: AppColors.lightCream70),
       suffixIcon: isPassword
           ? IconButton(
@@ -71,21 +96,114 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 
-  bool isPasswordType = true;
+  // ودجت لعرض قائمة المستخدمين السابقين
+  Widget _buildCachedUsersList(BuildContext context, AuthState state) {
+    // إذا كانت الحالة تحميل للقائمة، نعرض مؤشر صغير
+    if (state.usersListStatus == GetUserStatus.loading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Center(
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: AppColors.lightCream,
+            ),
+          ),
+        ),
+      );
+    }
 
-  bool isEmail(String text) {
-    const pattern = r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9]+\.)+[a-zA-Z]{2,7}$';
-    final regex = RegExp(pattern);
-    return regex.hasMatch(text);
+    // إذا لم يكن هناك مستخدمين، نخفي القسم
+    if (state.usersList.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(bottom: 12.0),
+          child: Text(
+            "تغيير الحساب",
+            style: TextStyle(color: AppColors.lightCream70, fontSize: 12),
+          ),
+        ),
+        SizedBox(
+          height: 90,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemCount: state.usersList.length,
+            separatorBuilder: (c, i) => const SizedBox(width: 16),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final user = state.usersList[index];
+              final isSelected = state.selectedUser?.id == user.id;
+
+              return GestureDetector(
+                onTap: () => _onUserTapped(user),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(2), // Border width
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isSelected
+                              ? AppColors.accent
+                              : AppColors.lightCream26,
+                          width: 2,
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        radius: 26,
+                        backgroundColor: AppColors.lightCream,
+                        child: Text(
+                          user.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.mediumDark,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    SizedBox(
+                      width: 70,
+                      child: Text(
+                        user.name,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: isSelected
+                              ? AppColors.accent
+                              : AppColors.lightCream,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+        const Divider(color: AppColors.lightCream12, endIndent: 40, indent: 40),
+        const SizedBox(height: 16),
+      ],
+    );
   }
-
-  bool isDidNotUploded = true;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Directionality(
-      textDirection: TextDirection.ltr,
+      textDirection: TextDirection.ltr, // أو TextDirection.rtl حسب لغة التطبيق
       child: Scaffold(
         body: Stack(
           children: [
@@ -113,11 +231,11 @@ class _LogInScreenState extends State<LogInScreen> {
                       color: AppColors.lightCream12,
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(color: AppColors.lightCream26),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: AppColors.darkBackground26,
                           blurRadius: 12,
-                          offset: const Offset(0, 4),
+                          offset: Offset(0, 4),
                         ),
                       ],
                     ),
@@ -147,11 +265,24 @@ class _LogInScreenState extends State<LogInScreen> {
                               color: AppColors.lightCream,
                             ),
                           ),
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 24),
+
+                          // --- إضافة قائمة المستخدمين هنا ---
+                          BlocBuilder<AuthBloc, AuthState>(
+                            buildWhen: (previous, current) =>
+                                previous.usersList != current.usersList ||
+                                previous.usersListStatus !=
+                                    current.usersListStatus ||
+                                previous.selectedUser != current.selectedUser,
+                            builder: (context, state) {
+                              return _buildCachedUsersList(context, state);
+                            },
+                          ),
+
+                          // -------------------------------
                           TextFormField(
                             controller: emailController,
                             keyboardType: TextInputType.emailAddress,
-
                             style: const TextStyle(color: AppColors.lightCream),
                             validator: (val) =>
                                 val!.trim().contains('@') ||
@@ -192,7 +323,9 @@ class _LogInScreenState extends State<LogInScreen> {
                               } else if (state.status == LogInStatus.failure) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(state.failure!.message),
+                                    content: Text(
+                                      state.failure?.message ?? 'حدث خطأ ما',
+                                    ),
                                   ),
                                 );
                               }
@@ -214,7 +347,8 @@ class _LogInScreenState extends State<LogInScreen> {
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => ForgetPasswordScreen(),
+                                  builder: (context) =>
+                                      const ForgetPasswordScreen(),
                                 ),
                               );
                             },

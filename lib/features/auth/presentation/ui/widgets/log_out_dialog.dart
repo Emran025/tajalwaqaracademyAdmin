@@ -76,7 +76,6 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
               ),
               const SizedBox(height: 16),
 
-              // خيار حذف بيانات الاعتماد
               Row(
                 children: [
                   Checkbox(
@@ -105,7 +104,6 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
               ),
               const SizedBox(height: 8),
 
-              // شرح الخيار
               Padding(
                 padding: const EdgeInsets.only(left: 48),
                 child: Text(
@@ -119,10 +117,8 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
               ),
               const SizedBox(height: 24),
 
-              // أزرار التحكم
               Row(
                 children: [
-                  // زر الإلغاء
                   Expanded(
                     child: OutlinedButton(
                       onPressed: _isLoggingOut
@@ -167,6 +163,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                               });
                               context.read<AuthBloc>().add(
                                 LogOutRequested(
+                                  deleteCredentials: _deleteCredentials,
                                   message: _deleteCredentials
                                       ? 'تم تسجيل الخروج وحذف بيانات الاعتماد'
                                       : 'تم تسجيل الخروج',

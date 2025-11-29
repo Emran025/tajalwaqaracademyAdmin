@@ -69,11 +69,12 @@ final class AuthRepositoryImpl implements AuthRepository {
       );
 
       // 4. Perform side effects: Cache the tokens and user data upon successful logIn.
+      await _localDataSource.cacheUser(authResponseModel.user);
+
       await _localDataSource.cacheAuthTokens(
         accessToken: authResponseModel.accessToken,
         refreshToken: authResponseModel.refreshToken,
       );
-      await _localDataSource.cacheUser(authResponseModel.user);
 
       // 5. Convert the result model back to a domain entity to return success.
       return authResponseModel.user.toUserEntity();
@@ -121,23 +122,34 @@ final class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, SuccessEntity>> logOut() async {
+  Future<Either<Failure, SuccessEntity>> logOut({
+    required bool deleteCredentials,
+  }) async {
     // LogOut is primarily a local operation. It clears all session data.
     // We don't need the _executeApiCall wrapper unless the API requires
     // an explicit "invalidate token" call. For now, we assume it's local.
     try {
-      final either = await _executeAuthOperation(
-        () => _remoteDataSource.logOut(),
-      );
-      either.fold((failure) => null, (user) => null);
-      // We call the `clear` method to remove all authentication data,
-      // including tokens and the cached user profile.
-      await _localDataSource.clear();
-      return either.map((successModel) {
-        final successEntity = successModel.toEntity();
+      if (deleteCredentials) {
+        final either = await _executeAuthOperation(
+          () => _remoteDataSource.logOut(),
+        );
+        either.fold((failure) => null, (user) => null);
+        // We call the `clear` method to remove all authentication data,
+        // including tokens and the cached user profile.
+        await _localDataSource.clear();
+        return either.map((successModel) {
+          final successEntity = successModel.toEntity();
 
-        return successEntity;
-      });
+          return successEntity;
+        });
+      } else {
+        try {
+          return Right(SuccessEntity());
+        } on CacheException catch (e) {
+          // If clearing the cache fails, we return a CacheFailure.
+          return Left(CacheFailure(message: e.message));
+        }
+      }
     } on CacheException catch (e) {
       // If clearing the cache fails, we return a CacheFailure.
       return Left(CacheFailure(message: e.message));
@@ -150,13 +162,36 @@ final class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, UserEntity>> getUserProfile() async {
     bool isLoggedin = await isLoggedIn();
-    if (!isLoggedin)
+    if (!isLoggedin) {
       return Left(CacheFailure(message: 'Failed to get User Profile.'));
+    }
     final user = await _localDataSource.getUser();
     if (user == null) {
       throw CacheException(message: 'Failed to get User Profile.');
     }
     return Right(user.toUserEntity());
+  }
+
+  @override
+  Future<Either<Failure, List<UserEntity>>> getAllUsers() async {
+    try {
+      // 1. Fetch user models from the local data source.
+      // Ensure your AuthLocalDataSource has the 'getAllCachedUsers' method.
+      final userModels = await _localDataSource.getAllCachedUsers();
+
+      // 2. Map the models to domain entities.
+      final userEntities = userModels
+          .map((userModel) => userModel.toUserEntity())
+          .toList();
+
+      return Right(userEntities);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } catch (e) {
+      return Left(
+        CacheFailure(message: 'Failed to load users list: ${e.toString()}'),
+      );
+    }
   }
 
   @override
@@ -172,14 +207,31 @@ final class AuthRepositoryImpl implements AuthRepository {
       return successModel.toEntity();
     });
   }
+@override
+  Future<Either<Failure, UserEntity>> switchUser({required String userId}) async {
+    try {
+      // 1. Update the 'Current User' pointer in local storage.
+      // Ensure AuthLocalDataSource has the 'switchUser' method.
+      await _localDataSource.switchUser(userId);
 
+      // 2. Retrieve the full profile of the newly selected user.
+      final userModel = await _localDataSource.getUser();
+      
+      if (userModel == null) {
+        return Left(CacheFailure(message: 'User switched, but profile data is missing.'));
+      }
+
+      // 3. Return the new user entity so the UI can update immediately.
+      return Right(userModel.toUserEntity());
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } catch (e) {
+      return Left(CacheFailure(message: 'Failed to switch user: ${e.toString()}'));
+    }
+  }
   /// Checks if the user is logged in by verifying if a user exists in the cache.
   /// This method is used to determine if the user has an active session.
   /// - Returns: `true` if the user is logged in, `false` otherwise.
   @override
-  Future<bool> isLoggedIn() {
-    // The session is considered active if the user key exists.
-
-    return _localDataSource.isLoggedIn();
-  }
+  Future<bool> isLoggedIn() => _localDataSource.isLoggedIn();
 }

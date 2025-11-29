@@ -39,6 +39,15 @@ final class AuthState extends Equatable {
   final ChangePasswordStatus changePasswordStatus;
   final Failure? changePasswordFailure;
 
+  /// The list of all users currently cached on the device.
+  /// Used for the "Switch Account" feature.
+  final List<UserEntity> usersList;
+
+  /// The status of the operation to retrieve [usersList].
+  final GetUserStatus usersListStatus;
+
+  /// Holds the failure details if retrieving the [usersList] fails.
+  final Failure? usersListFailure;
   const AuthState({
     this.authStatus = AuthStatus.initializing,
     this.status = LogInStatus.initial,
@@ -60,6 +69,11 @@ final class AuthState extends Equatable {
     // New
     this.changePasswordStatus = ChangePasswordStatus.initial,
     this.changePasswordFailure,
+
+    // Initialize new fields
+    this.usersList = const [],
+    this.usersListStatus = GetUserStatus.initial,
+    this.usersListFailure,
   });
 
   AuthState copyWith({
@@ -84,6 +98,10 @@ final class AuthState extends Equatable {
     // New
     ChangePasswordStatus? changePasswordStatus,
     Failure? changePasswordFailure,
+    // Add new parameters
+    List<UserEntity>? usersList,
+    GetUserStatus? usersListStatus,
+    Failure? usersListFailure,
   }) {
     return AuthState(
       authStatus: authStatus ?? this.authStatus,
@@ -106,6 +124,10 @@ final class AuthState extends Equatable {
       changePasswordStatus: changePasswordStatus ?? this.changePasswordStatus,
       changePasswordFailure:
           changePasswordFailure ?? this.changePasswordFailure,
+      // Assign new fields
+      usersList: usersList ?? this.usersList,
+      usersListStatus: usersListStatus ?? this.usersListStatus,
+      usersListFailure: usersListFailure ?? this.usersListFailure,
     );
   }
 
@@ -125,5 +147,9 @@ final class AuthState extends Equatable {
 
     changePasswordStatus,
     changePasswordFailure,
+
+    usersList,
+    usersListStatus,
+    usersListFailure,
   ];
 }

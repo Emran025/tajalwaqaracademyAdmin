@@ -33,8 +33,10 @@ import '../../features/app/cubit/app_setup_cubit.dart';
 import '../../features/auth/domain/usecases/change_password_usecase.dart';
 import '../../features/auth/domain/usecases/check_login_usecase.dart';
 import '../../features/auth/domain/usecases/forget_password_usecase.dart';
+import '../../features/auth/domain/usecases/get_all_users_use_case.dart';
 import '../../features/auth/domain/usecases/login_usecase.dart';
 import '../../features/auth/domain/usecases/logout_usecase.dart';
+import '../../features/auth/domain/usecases/switch_user_usecase.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/daily_tracking/domain/usecases/finalize_session.dart';
 import '../../features/daily_tracking/domain/usecases/get_all_mistakes.dart';
@@ -89,6 +91,10 @@ abstract class BlocModule {
     ForgetPasswordUseCase forgetPasswordUC,
 
     ChangePasswordUseCase changePasswordUC,
+
+    GetAllUsersUseCase getAllUsersUC,
+
+    SwitchUserUseCase switchUserUC,
   ) {
     // The cascade operator (..) allows us to call a method on the new instance
     // before returning it, making initial event dispatching clean.
@@ -98,6 +104,8 @@ abstract class BlocModule {
       logOutUC,
       forgetPasswordUC,
       changePasswordUC,
+      switchUserUC,
+      getAllUsersUC,
     );
   }
 
