@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tajalwaqaracademy/features/app/pages/app_navigation_manager.dart';
 import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 
 import '../../../core/models/user_role.dart';
@@ -24,6 +25,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final AppNavigationManager _appNavigationManager = AppNavigationManager();
   @override
   void initState() {
     super.initState();
@@ -52,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
       listenWhen: (previous, current) =>
           (previous.authStatus != current.authStatus ||
           current.authStatus == AuthStatus.authenticated),
-      listener: (context, authState) {
+      listener: (context, authState) async {
         if (authState.authStatus == AuthStatus.authenticated) {
           print("المستخدم مسجل الدخول - التوجيه إلى الصفحة الرئيسية");
           final userRole = authState.user?.role;
@@ -63,8 +65,14 @@ class _SplashScreenState extends State<SplashScreen> {
             context.go('/home');
           }
         } else if (authState.authStatus == AuthStatus.unauthenticated) {
-          print("المستخدم غير مسجل الدخول - التوجيه إلى صفحة الترحيب");
-          context.go('/welcome');
+           final hasSeenWelcome =
+              await _appNavigationManager.hasSeenWelcomeScreen();
+          if (hasSeenWelcome) {
+            context.go('/login');
+          } else {
+            print("المستخدم غير مسجل الدخول - التوجيه إلى صفحة الترحيب");
+            context.go('/welcome');
+          }
         }
       },
       child: Scaffold(

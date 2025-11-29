@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tajalwaqaracademy/features/app/pages/app_navigation_manager.dart';
 import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -73,7 +74,11 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 48),
                       ElevatedButton(
-                        onPressed: () => context.go('/login'),
+                        onPressed: () async {
+                          final appNavigationManager = AppNavigationManager();
+                          await appNavigationManager.setHasSeenWelcomeScreen();
+                          context.go('/login');
+                        },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
                           shape: RoundedRectangleBorder(
