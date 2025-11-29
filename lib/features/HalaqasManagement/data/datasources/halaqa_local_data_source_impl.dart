@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tajalwaqaracademy/core/error/exceptions.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
 import '../../../../core/models/active_status.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/models/sync_queue_model.dart';
@@ -32,13 +33,18 @@ const String _kFollowUpPlansTable = 'follow_up_plans';
 @LazySingleton(as: HalaqaLocalDataSource)
 final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
   final Database _db;
+  final AuthLocalDataSource _authLocalDataSource;
 
   /// A broadcast StreamController that acts as a simple notification bus.
   /// When data in the halaqas table changes (e.g., after a sync), we add an
   /// event to this controller to trigger all active listeners to re-fetch.
   final _dbChangeNotifier = StreamController<void>.broadcast();
 
-  HalaqaLocalDataSourceImpl({required Database database}) : _db = database;
+  HalaqaLocalDataSourceImpl(
+      {required Database database,
+      required AuthLocalDataSource authLocalDataSource})
+      : _db = database,
+        _authLocalDataSource = authLocalDataSource;
 
   // =========================================================================
   //                             Data Access Methods
@@ -49,11 +55,13 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
   /// It returns a list of [HalaqaModel] objects.
   /// Throws a [CacheException] if the database query fails.
   Future<List<HalaqaModel>> _fetchCachedHalaqas() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kHalqasTable,
-        where: 'isDeleted = ?',
-        whereArgs: [ 0],
+        where: 'isDeleted = ? AND tenant_id = ?',
+        whereArgs: [0, tenantId],
         orderBy: 'name ASC',
       );
       print(maps);
@@ -108,6 +116,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
     required List<HalaqaModel> updatedHalaqas,
     required List<HalaqaModel> deletedHalaqas,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       // Execute all database modifications within a single atomic transaction
       // to ensure data consistency. If any part fails, all changes are rolled back.
@@ -117,9 +127,11 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
         // --- Handle Upserts ---
         // Insert new records or replace existing ones with fresh data.
         for (final halaqa in updatedHalaqas) {
+          final halaqaMap = halaqa.toDbMap();
+          halaqaMap['tenant_id'] = tenantId;
           batch.insert(
             _kHalqasTable,
-            halaqa.toDbMap(),
+            halaqaMap,
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
         }
@@ -132,8 +144,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
               'isDeleted': 1,
               'lastModified': DateTime.now().millisecondsSinceEpoch,
             },
-            where: 'uuid = ?',
-            whereArgs: [halaqa.id],
+            where: 'uuid = ? AND tenant_id = ?',
+            whereArgs: [halaqa.id, tenantId],
           );
         }
         // Commit all operations in the batch at once.
@@ -157,6 +169,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
     required String operation,
     Map<String, dynamic>? payload,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await _db.insert(_kPendingOperationsTable, {
         'entity_uuid': uuid,
@@ -164,6 +178,7 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
         'operation_type': operation,
         'payload': payload != null ? json.encode(payload) : null,
         'created_at': DateTime.now().millisecondsSinceEpoch,
+        'tenant_id': tenantId,
       });
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -174,11 +189,13 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
 
   @override
   Future<int> getLastSyncTimestampFor() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final result = await _db.query(
       _kSyncMetadataTable,
       columns: ['last_server_sync_timestamp'],
-      where: 'entity_type = ?',
-      whereArgs: [UserRole.halaqa.label],
+      where: 'entity_type = ? AND tenant_id = ?',
+      whereArgs: [UserRole.halaqa.label, tenantId],
     );
     if (result.isNotEmpty) {
       return result.first['last_server_sync_timestamp'] as int;
@@ -188,10 +205,16 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
 
   @override
   Future<void> updateLastSyncTimestampFor(int timestamp) async {
-    await _db.insert(_kSyncMetadataTable, {
-      'entity_type': UserRole.halaqa.label,
-      'last_server_sync_timestamp': timestamp,
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
+    await _db.insert(
+        _kSyncMetadataTable,
+        {
+          'entity_type': UserRole.halaqa.label,
+          'last_server_sync_timestamp': timestamp,
+          'tenant_id': tenantId,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   @override
@@ -202,16 +225,20 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
 
   @override
   Future<void> upsertHalaqa(HalaqaModel halaqa) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await _db.update(
         _kHalqasTable,
         {'isDeleted': 1, 'lastModified': DateTime.now().millisecondsSinceEpoch},
-        where: 'uuid = ?',
-        whereArgs: [halaqa.id],
+        where: 'uuid = ? AND tenant_id = ?',
+        whereArgs: [halaqa.id, tenantId],
       );
+      final halaqaMap = halaqa.toDbMap();
+      halaqaMap['tenant_id'] = tenantId;
       await _db.insert(
         _kHalqasTable,
-        halaqa.toDbMap(),
+        halaqaMap,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
@@ -223,13 +250,15 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
 
   @override
   Future<void> deleteHalaqa(String halaqaId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       // Perform a "soft delete" by marking the record as deleted.
       final rowsAffected = await _db.update(
         _kHalqasTable,
         {'isDeleted': 1, 'lastModified': DateTime.now().millisecondsSinceEpoch},
-        where: 'uuid = ?',
-        whereArgs: [halaqaId],
+        where: 'uuid = ? AND tenant_id = ?',
+        whereArgs: [halaqaId, tenantId],
       );
 
       if (rowsAffected == 0) {
@@ -248,11 +277,13 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
 
   @override
   Future<List<SyncQueueModel>> getPendingSyncOperations() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kPendingOperationsTable,
-        where: 'entity_type = ? AND status = ?',
-        whereArgs: [UserRole.halaqa.label, 'pending'],
+        where: 'entity_type = ? AND status = ? AND tenant_id = ?',
+        whereArgs: [UserRole.halaqa.label, 'pending', tenantId],
         orderBy: 'created_at ASC',
       );
       return maps.map(SyncQueueModel.fromMap).toList();
@@ -265,11 +296,13 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
 
   @override
   Future<void> deleteCompletedOperation(int operationId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await _db.delete(
         _kPendingOperationsTable,
-        where: 'id = ?',
-        whereArgs: [operationId],
+        where: 'id = ? AND tenant_id = ?',
+        whereArgs: [operationId, tenantId],
       );
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -282,11 +315,13 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
   /// Returns a [HalaqaModel] if found, or throws a [CacheException] if   not.
   @override
   Future<HalaqaModel> getHalaqaById(String halaqaId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kHalqasTable,
-        where: 'uuid = ? AND isDeleted = ?',
-        whereArgs: [halaqaId, 0],
+        where: 'uuid = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [halaqaId, 0, tenantId],
       );
 
       if (maps.isEmpty) {
@@ -311,6 +346,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
     DateTime? trackDate,
     Frequency? frequencyCode,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final query = StringBuffer('SELECT DISTINCT H.* FROM $_kHalqasTable H');
 
     final joins = <String>{
@@ -322,8 +359,10 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
       'H.isDeleted = 0',
       'U.roleId = ?',
       'U.isDeleted = 0',
+      'H.tenant_id = ?',
+      'U.tenant_id = ?'
     ];
-    final whereArgs = <Object?>[UserRole.student.id];
+    final whereArgs = <Object?>[UserRole.student.id, tenantId, tenantId];
 
     if (studentStatus != null) {
       whereClauses.add('U.status = ?');

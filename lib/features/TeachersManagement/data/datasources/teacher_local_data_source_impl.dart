@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../../../core/error/exceptions.dart';
 import '../../../../../core/models/user_role.dart';
 import '../../../../core/models/sync_queue_model.dart';
+import '../../../auth/data/datasources/auth_local_data_source.dart';
 import '../models/teacher_model.dart';
 import 'teacher_local_data_source.dart';
 
@@ -25,13 +29,18 @@ const String _kSyncMetadataTable = 'sync_metadata';
 @LazySingleton(as: TeacherLocalDataSource)
 final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   final Database _db;
+  final AuthLocalDataSource _authLocalDataSource;
 
   /// A broadcast StreamController that acts as a simple notification bus.
   /// When data in the teachers table changes (e.g., after a sync), we add an
   /// event to this controller to trigger all active listeners to re-fetch.
   final _dbChangeNotifier = StreamController<void>.broadcast();
 
-  TeacherLocalDataSourceImpl({required Database database}) : _db = database;
+  TeacherLocalDataSourceImpl(
+      {required Database database,
+      required AuthLocalDataSource authLocalDataSource})
+      : _db = database,
+        _authLocalDataSource = authLocalDataSource;
 
   // =========================================================================
   //                             Data Access Methods
@@ -42,17 +51,17 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   /// It returns a list of [TeacherModel] objects.
   /// Throws a [CacheException] if the database query fails.
   Future<List<TeacherModel>> _fetchCachedTeachers() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kUsersTable,
-        where: 'roleId = ? AND isDeleted = ?',
-        whereArgs: [UserRole.teacher.id, 0],
+        where: 'roleId = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [UserRole.teacher.id, 0, tenantId],
         orderBy: 'name ASC',
       );
       // print(maps);
-      return maps.map((map) =>
-         TeacherModel.fromMap(map)
-      ).toList();
+      return maps.map((map) => TeacherModel.fromMap(map)).toList();
     } on DatabaseException catch (e) {
       throw CacheException(
         message: 'Failed to fetch teachers from cache: ${e.toString()}',
@@ -107,6 +116,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
     required List<TeacherModel> updatedTeachers,
     required List<TeacherModel> deletedTeachers,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       // Execute all database modifications within a single atomic transaction
       // to ensure data consistency. If any part fails, all changes are rolled back.
@@ -116,9 +127,11 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         // --- Handle Upserts ---
         // Insert new records or replace existing ones with fresh data.
         for (final teacher in updatedTeachers) {
+          final teacherMap = teacher.toMap();
+          teacherMap['tenant_id'] = tenantId;
           batch.insert(
             _kUsersTable,
-            teacher.toMap(),
+            teacherMap,
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
         }
@@ -131,8 +144,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
               'isDeleted': 1,
               'lastModified': DateTime.now().millisecondsSinceEpoch,
             },
-            where: 'roleId = ? AND uuid = ?',
-            whereArgs: [UserRole.teacher.id, teacher.id],
+            where: 'roleId = ? AND uuid = ? AND tenant_id = ?',
+            whereArgs: [UserRole.teacher.id, teacher.id, tenantId],
           );
         }
         // Commit all operations in the batch at once.
@@ -156,6 +169,8 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
     required String operation,
     Map<String, dynamic>? payload,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await _db.insert(_kPendingOperationsTable, {
         'entity_uuid': uuid,
@@ -163,6 +178,7 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
         'operation_type': operation,
         'payload': payload != null ? json.encode(payload) : null,
         'created_at': DateTime.now().millisecondsSinceEpoch,
+        'tenant_id': tenantId,
       });
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -173,11 +189,13 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<int> getLastSyncTimestampFor() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final result = await _db.query(
       _kSyncMetadataTable,
       columns: ['last_server_sync_timestamp'],
-      where: 'entity_type = ?',
-      whereArgs: [UserRole.teacher.label],
+      where: 'entity_type = ? AND tenant_id = ?',
+      whereArgs: [UserRole.teacher.label, tenantId],
     );
     if (result.isNotEmpty) {
       return result.first['last_server_sync_timestamp'] as int;
@@ -187,10 +205,16 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> updateLastSyncTimestampFor(int timestamp) async {
-    await _db.insert(_kSyncMetadataTable, {
-      'entity_type': UserRole.teacher.label,
-      'last_server_sync_timestamp': timestamp,
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
+    await _db.insert(
+        _kSyncMetadataTable,
+        {
+          'entity_type': UserRole.teacher.label,
+          'last_server_sync_timestamp': timestamp,
+          'tenant_id': tenantId,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   @override
@@ -201,10 +225,14 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> upsertTeacher(TeacherModel teacher) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
+      final teacherMap = teacher.toMap();
+      teacherMap['tenant_id'] = tenantId;
       await _db.insert(
         _kUsersTable,
-        teacher.toMap(),
+        teacherMap,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
@@ -216,13 +244,15 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> deleteTeacher(String teacherId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       // Perform a "soft delete" by marking the record as deleted.
       final rowsAffected = await _db.update(
         _kUsersTable,
         {'isDeleted': 1, 'lastModified': DateTime.now().millisecondsSinceEpoch},
-        where: 'uuid = ?',
-        whereArgs: [teacherId],
+        where: 'uuid = ? AND tenant_id = ?',
+        whereArgs: [teacherId, tenantId],
       );
 
       if (rowsAffected == 0) {
@@ -241,11 +271,13 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<List<SyncQueueModel>> getPendingSyncOperations() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kPendingOperationsTable,
-        where: 'entity_type = ? AND status = ?',
-        whereArgs: [UserRole.teacher.label, 'pending'],
+        where: 'entity_type = ? AND status = ? AND tenant_id = ?',
+        whereArgs: [UserRole.teacher.label, 'pending', tenantId],
         orderBy: 'created_at ASC',
       );
       return maps.map(SyncQueueModel.fromMap).toList();
@@ -258,11 +290,13 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
 
   @override
   Future<void> deleteCompletedOperation(int operationId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await _db.delete(
         _kPendingOperationsTable,
-        where: 'id = ?',
-        whereArgs: [operationId],
+        where: 'id = ? AND tenant_id = ?',
+        whereArgs: [operationId, tenantId],
       );
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -275,11 +309,13 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   /// Returns a [TeacherModel] if found, or throws a [CacheException] if   not.
   @override
   Future<TeacherModel> getTeacherById(String teacherId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kUsersTable,
-        where: 'uuid = ? AND roleId = ? AND isDeleted = ?',
-        whereArgs: [teacherId, UserRole.teacher.id, 0],
+        where: 'uuid = ? AND roleId = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [teacherId, UserRole.teacher.id, 0, tenantId],
       );
 
       if (maps.isEmpty) {

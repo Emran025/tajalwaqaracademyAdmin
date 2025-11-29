@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
 
 import '../models/count_delta.dart';
 import '../models/student_summaray_record.dart';
@@ -29,18 +30,25 @@ const String _kEntityCount = 'entity_count';
 @LazySingleton(as: SupervisorLocalDataSource)
 final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   final Database _db;
+  final AuthLocalDataSource _authLocalDataSource;
 
-  SupervisorLocalDataSourceImpl({required Database database}) : _db = database;
+  SupervisorLocalDataSourceImpl(
+      {required Database database,
+      required AuthLocalDataSource authLocalDataSource})
+      : _db = database,
+        _authLocalDataSource = authLocalDataSource;
 
   @override
   Future<List<Record>> getAllEntitysWithTimestamps(UserRole entityType) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final String table;
     final String whereCondation;
     if (entityType == UserRole.halaqa) {
       table = _kHalqasTable;
-      whereCondation = "";
+      whereCondation = "WHERE tenant_id = ?";
     } else {
-      whereCondation = "WHERE roleId = ?";
+      whereCondation = "WHERE roleId = ? AND tenant_id = ?";
       table = _kUsersTable;
     }
     final result = await _db.rawQuery('''
@@ -52,20 +60,22 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
       FROM $table
       $whereCondation
       ORDER BY createdAt
-    ''', (entityType == UserRole.halaqa) ? null : [entityType.id]);
+    ''', (entityType == UserRole.halaqa) ? [tenantId] : [entityType.id, tenantId]);
 
     return result.map((map) => Record.fromMap(map)).toList();
   }
 
   @override
   Future<List<DateTime>> getStartEndTimes(UserRole entityType) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final String table;
     final String whereCondation;
     if (entityType == UserRole.halaqa) {
       table = _kHalqasTable;
-      whereCondation = "";
+      whereCondation = "WHERE tenant_id = ?";
     } else {
-      whereCondation = "WHERE roleId = ?";
+      whereCondation = "WHERE roleId = ? AND tenant_id = ?";
       table = _kUsersTable;
     }
     final result = await _db.rawQuery('''
@@ -74,7 +84,7 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
         max(lastModified) as endTime
       FROM $table
       $whereCondation
-    ''', (entityType == UserRole.halaqa) ? null : [entityType.id]);
+    ''', (entityType == UserRole.halaqa) ? [tenantId] : [entityType.id, tenantId]);
 
     if (result.isEmpty ||
         result.first['startTime'] == null ||
@@ -91,20 +101,26 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
 
   @override
   Future<void> insertDailySummary(SummaryDelta summary) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
+    final summaryMap = summary.toMap();
+    summaryMap['tenant_id'] = tenantId;
     await _db.insert(
       _kEntityDailySummary,
-      summary.toMap(),
+      summaryMap,
       conflictAlgorithm: ConflictAlgorithm.replace, // هذا السطر المهم
     );
   }
 
   @override
   Future<List<SummaryDelta>> getAllDailySummaries(UserRole entityType) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final List<Map<String, dynamic>> maps = await _db.query(
       _kEntityDailySummary,
       orderBy: 'date DESC',
-      where: 'entity_type = ?',
-      whereArgs: [entityType.id],
+      where: 'entity_type = ? AND tenant_id = ?',
+      whereArgs: [entityType.id, tenantId],
     );
 
     return maps.map((map) => SummaryDelta.fromMap(map)).toList();
@@ -112,10 +128,12 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
 
   @override
   Future<int> getEntitesCount(UserRole entityType) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final String table;
-    final List<dynamic> whereArgs = [0]; // isDeleted = 0
+    final List<dynamic> whereArgs = [0, tenantId]; // isDeleted = 0
 
-    String whereCondition = "WHERE isDeleted = ?";
+    String whereCondition = "WHERE isDeleted = ? AND tenant_id = ?";
 
     if (entityType == UserRole.halaqa) {
       table = _kHalqasTable;
@@ -141,11 +159,13 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   }
 
   Future<CountDelta> _getCount(UserRole entityType) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final List<Map<String, dynamic>> maps = await _db.query(
       _kEntityCount,
       orderBy: 'date DESC',
-      where: 'entity_type = ?',
-      whereArgs: [entityType.id],
+      where: 'entity_type = ? AND tenant_id = ?',
+      whereArgs: [entityType.id, tenantId],
     );
     print("$entityType result : ========================$maps");
 
@@ -179,9 +199,13 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   // );
   @override
   Future<void> insertCount(CountDelta count) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
+    final countMap = count.toMap();
+    countMap['tenant_id'] = tenantId;
     await _db.insert(
       _kEntityCount,
-      count.toMap(),
+      countMap,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
@@ -197,13 +221,16 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
     DateTime endDate,
     UserRole entityType,
   ) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final List<Map<String, dynamic>> maps = await _db.query(
       _kEntityDailySummary,
-      where: 'date BETWEEN ? AND ? AND entity_type = ?',
+      where: 'date BETWEEN ? AND ? AND entity_type = ? AND tenant_id = ?',
       whereArgs: [
         startDate.toIso8601String().split('T').first,
         endDate.toIso8601String().split('T').first,
         entityType.id,
+        tenantId,
       ],
       orderBy: 'date ASC',
     );
@@ -214,11 +241,13 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   ///
   @override
   Future<int> getLastSyncTimestampFor(String entityType) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final result = await _db.query(
       _kSyncMetadataTable,
       columns: ['last_server_sync_timestamp'],
-      where: 'entity_type = ?',
-      whereArgs: [entityType],
+      where: 'entity_type = ? AND tenant_id = ?',
+      whereArgs: [entityType, tenantId],
     );
 
     if (result.isNotEmpty) {
@@ -239,10 +268,16 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
     String entityType,
     int timestamp,
   ) async {
-    await _db.insert(_kSyncMetadataTable, {
-      'entity_type': entityType,
-      'last_server_sync_timestamp': timestamp, // Store as int
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
+    await _db.insert(
+        _kSyncMetadataTable,
+        {
+          'entity_type': entityType,
+          'last_server_sync_timestamp': timestamp, // Store as int
+          'tenant_id': tenantId,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }
 

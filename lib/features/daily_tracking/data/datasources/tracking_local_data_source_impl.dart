@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:uuid/uuid.dart';
 
 // Core imports
@@ -43,8 +45,10 @@ const String _kTrackingEntityType = 'tracking';
 final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   final AppDatabase _appDb;
   final QuranLocalDataSource _quranDataSource;
+  final AuthLocalDataSource _authLocalDataSource;
 
-  TrackingLocalDataSourceImpl(this._appDb, this._quranDataSource);
+  TrackingLocalDataSourceImpl(
+      this._appDb, this._quranDataSource, this._authLocalDataSource);
 
   // =========================================================================
   //                             Core Public Methods
@@ -52,12 +56,15 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
 
   @override
   Future<Map<TrackingType, TrackingDetailModel>>
-  getOrCreateTodayDraftTrackingDetails({required int enrollmentId}) async {
+      getOrCreateTodayDraftTrackingDetails({required int enrollmentId}) async {
     final db = await _appDb.database;
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final trackingRecord = await _findOrCreateParentDraftTracking(
         db,
         enrollmentId,
+        tenantId,
       );
       final trackingId = trackingRecord['id'] as int;
 
@@ -67,8 +74,10 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         whereArgs: [trackingId],
       );
       if (detailMaps.length < 3) {
-        final lastUnitsMap = await _getLastCompletedUnitIds(db, enrollmentId);
-        await _createMissingDetails(db, trackingId, startUnits: lastUnitsMap);
+        final lastUnitsMap =
+            await _getLastCompletedUnitIds(db, enrollmentId, tenantId);
+        await _createMissingDetails(db, trackingId, tenantId,
+            startUnits: lastUnitsMap);
         detailMaps = await db.query(
           _kDailyTrackingDetailTable,
           where: 'trackingId = ?',
@@ -92,6 +101,8 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   ) async {
     if (details.isEmpty) return;
     final db = await _appDb.database;
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await db.transaction((txn) async {
         final batch = txn.batch();
@@ -108,7 +119,9 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
             whereArgs: [detail.id],
           );
           for (final mistake in detail.mistakes) {
-            batch.insert(_kMistakesTable, mistake.toDbMap(detail.id));
+            final mistakeMap = mistake.toDbMap(detail.id);
+            mistakeMap['tenant_id'] = tenantId;
+            batch.insert(_kMistakesTable, mistakeMap);
           }
         }
         await batch.commit(noResult: true);
@@ -117,10 +130,10 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
           details.first.trackingId,
         );
         await _queueSyncOperation(
-          dbExecutor: txn,
-          uuid: parentTrackingUuid,
-          operation: 'update',
-        );
+            dbExecutor: txn,
+            uuid: parentTrackingUuid,
+            operation: 'update',
+            tenantId: tenantId);
       });
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -136,6 +149,8 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     required int behaviorScore,
   }) async {
     final db = await _appDb.database;
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await db.transaction((txn) async {
         // 1. Retrieve the current record data (Draft) to find the date and student
@@ -159,8 +174,14 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         final oldCompletedRecord = await txn.query(
           _kDailyTrackingTable,
           where:
-              'enrollmentId = ? AND trackDate = ? AND status = ? AND id != ?',
-          whereArgs: [enrollmentId, trackDate, 'completed', trackingId],
+              'enrollmentId = ? AND trackDate = ? AND status = ? AND id != ? AND tenant_id = ?',
+          whereArgs: [
+            enrollmentId,
+            trackDate,
+            'completed',
+            trackingId,
+            tenantId
+          ],
         );
 
         if (oldCompletedRecord.isNotEmpty) {
@@ -246,10 +267,10 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
 
           // And. Adding the synchronization process to the old record (because it is the one that remained and was modified)
           await _queueSyncOperation(
-            dbExecutor: txn,
-            uuid: oldRecordUuid, // We use the old record UUID
-            operation: 'update',
-          );
+              dbExecutor: txn,
+              uuid: oldRecordUuid, // We use the old record UUID
+              operation: 'update',
+              tenantId: tenantId);
         } else {
           // =============================================================
           // Normal scenario: No previous record, current converted to Completed
@@ -280,10 +301,10 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
           );
 
           await _queueSyncOperation(
-            dbExecutor: txn,
-            uuid: currentUuid,
-            operation: 'update',
-          );
+              dbExecutor: txn,
+              uuid: currentUuid,
+              operation: 'update',
+              tenantId: tenantId);
         }
       });
     } on DatabaseException catch (e) {
@@ -301,19 +322,20 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     int? toPage,
   }) async {
     final db = await _appDb.database;
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
-      String baseQuery =
-          '''
+      String baseQuery = '''
       SELECT m.*
       FROM $_kMistakesTable AS m
       INNER JOIN $_kDailyTrackingDetailTable AS tdt ON m.trackingDetailId = tdt.id
       INNER JOIN $_kDailyTrackingTable AS dt ON tdt.trackingId = dt.id
       INNER JOIN quran AS q ON m.ayahId_quran = q.id 
-      WHERE dt.enrollmentId = ? 
+      WHERE dt.enrollmentId = ? AND dt.tenant_id = ?
         -- AND tdt.status = 'completed'
     ''';
 
-      List<dynamic> arguments = [enrollmentId];
+      List<dynamic> arguments = [enrollmentId, tenantId];
 
       // ================== DYNAMIC TYPE FILTERING ==================
       if (type != null) {
@@ -353,11 +375,13 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     required ChartFilter filter,
   }) async {
     final db = await _appDb.database;
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       if (filter.dimension == FilterDimension.time) {
-        return _fetchDataByTime(db, enrollmentId, filter);
+        return _fetchDataByTime(db, enrollmentId, tenantId, filter);
       } else {
-        return _fetchDataByQuantity(db, enrollmentId, filter);
+        return _fetchDataByQuantity(db, enrollmentId, tenantId, filter);
       }
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -369,6 +393,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   Future<List<BarChartDatas>> _fetchDataByTime(
     Database db,
     int enrollmentId,
+    String tenantId,
     ChartFilter filter,
   ) async {
     String dateFormat;
@@ -398,7 +423,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       FROM $_kMistakesTable AS m
       JOIN $_kDailyTrackingDetailTable AS dtd ON m.trackingDetailId = dtd.id
       JOIN $_kDailyTrackingTable AS dt ON dtd.trackingId = dt.id
-      WHERE dt.enrollmentId = ? AND dtd.typeId = ?
+      WHERE dt.enrollmentId = ? AND dtd.typeId = ? AND dt.tenant_id = ?
       GROUP BY period, m.mistakeTypeId
       ORDER BY period ASC;
     ''';
@@ -406,7 +431,8 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     final trackingType = TrackingType.values.firstWhere(
       (e) => e.toString().endsWith(filter.trackingType),
     );
-    final results = await db.rawQuery(query, [enrollmentId, trackingType.id]);
+    final results =
+        await db.rawQuery(query, [enrollmentId, trackingType.id, tenantId]);
     if (results.isEmpty) return [];
 
     if (isQuarter) {
@@ -503,23 +529,21 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   Future<List<BarChartDatas>> _fetchDataByQuantity(
     Database db,
     int enrollmentId,
+    String tenantId,
     ChartFilter filter,
   ) async {
     final trackingType = TrackingType.values.firstWhere(
       (e) => e.toString().endsWith(filter.trackingType),
     );
-    final allMistakesQuery =
-        '''
+    final allMistakesQuery = '''
       SELECT m.mistakeTypeId, m.ayahId_quran
       FROM $_kMistakesTable AS m
       JOIN $_kDailyTrackingDetailTable AS dtd ON m.trackingDetailId = dtd.id
       JOIN $_kDailyTrackingTable AS dt ON dtd.trackingId = dt.id
-      WHERE dt.enrollmentId = ? AND dtd.typeId = ?;
+      WHERE dt.enrollmentId = ? AND dtd.typeId = ? AND dt.tenant_id = ?;
     ''';
-    final mistakeResults = await db.rawQuery(allMistakesQuery, [
-      enrollmentId,
-      trackingType.id,
-    ]);
+    final mistakeResults = await db.rawQuery(
+        allMistakesQuery, [enrollmentId, trackingType.id, tenantId]);
     if (mistakeResults.isEmpty) return [];
 
     // 2. Get Ayah details from Quran DB
@@ -602,11 +626,13 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   @override
   Future<List<SyncQueueModel>> getPendingSyncOperations() async {
     final db = await _appDb.database;
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await db.query(
         _kPendingOperationsTable,
-        where: 'entity_type = ? AND status = ?',
-        whereArgs: [_kTrackingEntityType, 'pending'],
+        where: 'entity_type = ? AND status = ? AND tenant_id = ?',
+        whereArgs: [_kTrackingEntityType, 'pending', tenantId],
         orderBy: 'created_at ASC',
       );
       return maps.map(SyncQueueModel.fromMap).toList();
@@ -636,12 +662,14 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   @override
   Future<int> getLastSyncTimestamp() async {
     final db = await _appDb.database;
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final result = await db.query(
         _kSyncMetadataTable,
         columns: ['last_server_sync_timestamp'],
-        where: 'entity_type = ?',
-        whereArgs: [_kTrackingEntityType],
+        where: 'entity_type = ? AND tenant_id = ?',
+        whereArgs: [_kTrackingEntityType, tenantId],
       );
       return result.isNotEmpty
           ? result.first['last_server_sync_timestamp'] as int? ?? 0
@@ -657,11 +685,17 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   @override
   Future<void> updateLastSyncTimestamp(int timestamp) async {
     final db = await _appDb.database;
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
-      await db.insert(_kSyncMetadataTable, {
-        'entity_type': _kTrackingEntityType,
-        'last_server_sync_timestamp': timestamp,
-      }, conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert(
+          _kSyncMetadataTable,
+          {
+            'entity_type': _kTrackingEntityType,
+            'last_server_sync_timestamp': timestamp,
+            'tenant_id': tenantId,
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace);
     } on DatabaseException catch (e) {
       throw CacheException(
         message:
@@ -678,11 +712,12 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   Future<Map<String, dynamic>> _findOrCreateParentDraftTracking(
     Database db,
     int enrollmentId,
+    String tenantId,
   ) async {
     final lastDraft = await db.query(
       _kDailyTrackingTable,
-      where: 'enrollmentId = ? AND status = ?',
-      whereArgs: [enrollmentId, 'draft'],
+      where: 'enrollmentId = ? AND status = ? AND tenant_id = ?',
+      whereArgs: [enrollmentId, 'draft', tenantId],
       orderBy: 'trackDate DESC',
       limit: 1,
     );
@@ -697,6 +732,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       'trackDate': today,
       'status': 'draft',
       'lastModified': DateTime.now().millisecondsSinceEpoch,
+      'tenant_id': tenantId,
     };
     final newId = await db.insert(_kDailyTrackingTable, newRecord);
     return (await db.query(
@@ -709,7 +745,8 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   /// Creates default detail rows for a new parent tracking record, intelligently setting the start point for each.
   Future<void> _createMissingDetails(
     Database db,
-    int trackingId, {
+    int trackingId,
+    String tenantId, {
     required Map<TrackingType, StopPoint> startUnits,
   }) async {
     final batch = db.batch();
@@ -726,6 +763,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         'toTrackingUnitId': startUnitId,
         'gap': startUnitGap,
         'lastModified': DateTime.now().millisecondsSinceEpoch,
+        'tenant_id': tenantId,
       });
     }
     await batch.commit(noResult: true);
@@ -735,6 +773,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   Future<Map<TrackingType, StopPoint>> _getLastCompletedUnitIds(
     Database db,
     int enrollmentId,
+    String tenantId,
   ) async {
     final List<Map<String, dynamic>> results = await db.rawQuery(
       '''
@@ -744,13 +783,13 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
           SELECT tdt_inner.typeId, MAX(dt_inner.trackDate) AS max_date
           FROM $_kDailyTrackingDetailTable AS tdt_inner
           INNER JOIN $_kDailyTrackingTable AS dt_inner ON tdt_inner.trackingId = dt_inner.id
-          WHERE dt_inner.enrollmentId = ? AND tdt_inner.status = 'completed' AND tdt_inner.toTrackingUnitId IS NOT NULL
+          WHERE dt_inner.enrollmentId = ? AND tdt_inner.status = 'completed' AND tdt_inner.toTrackingUnitId IS NOT NULL AND dt_inner.tenant_id = ?
           GROUP BY tdt_inner.typeId
       ) AS max_dates ON tdt.typeId = max_dates.typeId
       INNER JOIN $_kDailyTrackingTable AS dt ON tdt.trackingId = dt.id AND dt.trackDate = max_dates.max_date
-      WHERE dt.enrollmentId = ? -- AND tdt.status = 'completed'
+      WHERE dt.enrollmentId = ? AND dt.tenant_id = ? -- AND tdt.status = 'completed'
     ''',
-      [enrollmentId, enrollmentId],
+      [enrollmentId, tenantId, enrollmentId, tenantId],
     );
 
     if (results.isEmpty) return {};
@@ -786,12 +825,12 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   }
 
   /// (Internal Helper) Queues a sync operation within an existing transaction.
-  Future<void> _queueSyncOperation({
-    required DatabaseExecutor dbExecutor,
-    required String uuid,
-    required String operation,
-    Map<String, dynamic>? payload,
-  }) async {
+  Future<void> _queueSyncOperation(
+      {required DatabaseExecutor dbExecutor,
+      required String uuid,
+      required String operation,
+      required String tenantId,
+      Map<String, dynamic>? payload}) async {
     await dbExecutor.insert(_kPendingOperationsTable, {
       'entity_uuid': uuid,
       'entity_type': _kTrackingEntityType,
@@ -799,6 +838,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       'payload': payload != null ? json.encode(payload) : null,
       'created_at': DateTime.now().millisecondsSinceEpoch,
       'status': 'pending',
+      'tenant_id': tenantId
     });
   }
 

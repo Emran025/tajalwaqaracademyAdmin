@@ -2,6 +2,7 @@
 
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../StudentsManagement/data/models/student_model.dart';
@@ -16,16 +17,21 @@ const String _kUsersTable = 'users';
 @LazySingleton(as: CoreDataLocalDataSource)
 class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   final Database database;
+  final AuthLocalDataSource _authLocalDataSource;
 
-  CoreDataLocalDataSourceImpl({required this.database});
+  CoreDataLocalDataSourceImpl(
+      {required this.database, required AuthLocalDataSource authLocalDataSource})
+      : _authLocalDataSource = authLocalDataSource;
 
   @override
   Future<List<StudentModel>> getStudentsForExport() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final List<Map<String, dynamic>> maps = await database.query(
         _kUsersTable,
-        where: 'roleId = ? AND isDeleted = ?',
-        whereArgs: [UserRole.student.id, 0],
+        where: 'roleId = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [UserRole.student.id, 0, tenantId],
       );
       return List.generate(maps.length, (i) {
         return StudentModel.fromMap(maps[i]);
@@ -37,11 +43,13 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
 
   @override
   Future<List<TeacherModel>> getTeachersForExport() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final List<Map<String, dynamic>> maps = await database.query(
         _kUsersTable,
-        where: 'roleId = ? AND isDeleted = ?',
-        whereArgs: [UserRole.teacher.id, 0],
+        where: 'roleId = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [UserRole.teacher.id, 0, tenantId],
       );
       return List.generate(maps.length, (i) {
         return TeacherModel.fromMap(maps[i]);
@@ -54,10 +62,14 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   @override
   Future<int> importStudents(List<StudentModel> students,
       [String conflictResolution = 'replace']) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final batch = database.batch();
       for (final student in students) {
-        batch.insert(_kUsersTable, student.toMap(),
+        final studentMap = student.toMap();
+        studentMap['tenant_id'] = tenantId;
+        batch.insert(_kUsersTable, studentMap,
             conflictAlgorithm: conflictResolution == 'skip'
                 ? ConflictAlgorithm.ignore
                 : ConflictAlgorithm.replace);
@@ -72,10 +84,14 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   @override
   Future<int> importTeachers(List<TeacherModel> teachers,
       [String conflictResolution = 'replace']) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final batch = database.batch();
       for (final teacher in teachers) {
-        batch.insert(_kUsersTable, teacher.toMap(),
+        final teacherMap = teacher.toMap();
+        teacherMap['tenant_id'] = tenantId;
+        batch.insert(_kUsersTable, teacherMap,
             conflictAlgorithm: conflictResolution == 'skip'
                 ? ConflictAlgorithm.ignore
                 : ConflictAlgorithm.replace);

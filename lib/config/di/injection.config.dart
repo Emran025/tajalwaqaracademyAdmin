@@ -345,6 +345,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i390.TrackingLocalDataSourceImpl(
         gh<_i788.AppDatabase>(),
         gh<_i1040.QuranLocalDataSource>(),
+        gh<_i1057.AuthLocalDataSource>(),
       ),
     );
     gh.lazySingleton<_i281.SettingsLocalDataSource>(
@@ -358,13 +359,19 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i395.StudentLocalDataSource>(
-      () => _i937.StudentLocalDataSourceImpl(database: gh<_i779.Database>()),
+      () => _i937.StudentLocalDataSourceImpl(
+          database: gh<_i779.Database>(),
+          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.lazySingleton<_i325.SupervisorLocalDataSource>(
-      () => _i414.SupervisorLocalDataSourceImpl(database: gh<_i779.Database>()),
+      () => _i414.SupervisorLocalDataSourceImpl(
+          database: gh<_i779.Database>(),
+          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.lazySingleton<_i830.CoreDataLocalDataSource>(
-      () => _i1010.CoreDataLocalDataSourceImpl(database: gh<_i779.Database>()),
+      () => _i1010.CoreDataLocalDataSourceImpl(
+          database: gh<_i779.Database>(),
+          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.lazySingleton<_i1.NetworkInfo>(
       () => _i81.NetworkInfoImpl(
@@ -377,7 +384,9 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.lazySingleton<_i946.TeacherLocalDataSource>(
-      () => _i216.TeacherLocalDataSourceImpl(database: gh<_i779.Database>()),
+      () => _i216.TeacherLocalDataSourceImpl(
+          database: gh<_i779.Database>(),
+          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.lazySingleton<_i361.Dio>(
       () => registerModule.dio(
@@ -433,7 +442,9 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.lazySingleton<_i825.HalaqaLocalDataSource>(
-      () => _i721.HalaqaLocalDataSourceImpl(database: gh<_i779.Database>()),
+      () => _i721.HalaqaLocalDataSourceImpl(
+          database: gh<_i779.Database>(),
+          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.factory<_i897.ErrorAnalysisChartBloc>(
       () => blocModule.errorAnalysisChartBloc(

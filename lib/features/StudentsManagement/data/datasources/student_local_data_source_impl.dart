@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tajalwaqaracademy/core/error/exceptions.dart';
+import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:tajalwaqaracademy/core/models/active_status.dart';
 import 'package:tajalwaqaracademy/core/models/user_role.dart';
 // import '../../../../core/models/user_role.dart';
@@ -45,13 +49,18 @@ const String _kFrequenciesTable = 'frequencies';
 @LazySingleton(as: StudentLocalDataSource)
 final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   final Database _db;
+  final AuthLocalDataSource _authLocalDataSource;
 
   /// A broadcast StreamController that acts as a simple notification bus.
   /// When data in the students table changes (e.g., after a sync), we add an
   /// event to this controller to trigger all active listeners to re-fetch.
   final _dbChangeNotifier = StreamController<void>.broadcast();
 
-  StudentLocalDataSourceImpl({required Database database}) : _db = database;
+  StudentLocalDataSourceImpl(
+      {required Database database,
+      required AuthLocalDataSource authLocalDataSource})
+      : _db = database,
+        _authLocalDataSource = authLocalDataSource;
 
   // =========================================================================
   //                             Generic Data Helpers
@@ -320,11 +329,13 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   /// It returns a list of [StudentModel] objects.
   /// Throws a [CacheException] if the database query fails.
   Future<List<StudentModel>> _fetchCachedStudents() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kUsersTable,
-        where: 'roleId = ? AND isDeleted = ?',
-        whereArgs: [UserRole.student.id, 0],
+        where: 'roleId = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [UserRole.student.id, 0, tenantId],
         orderBy: 'name ASC',
       );
 
@@ -381,22 +392,25 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     required List<StudentInfoModel> updatedStudents,
     required List<StudentInfoModel> deletedStudents,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await _db.transaction((txn) async {
         if (updatedStudents.isNotEmpty) {
           final usersBatch = txn.batch();
           for (final studentInfo in updatedStudents) {
+            final studentMap = studentInfo.studentModel.toMap();
+            studentMap['tenant_id'] = tenantId;
             usersBatch.insert(
               _kUsersTable,
-              studentInfo.studentModel.toMap(),
+              studentMap,
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
           await usersBatch.commit(noResult: true);
 
-          final updatedStudentUuids = updatedStudents
-              .map((s) => s.studentModel.id)
-              .toList();
+          final updatedStudentUuids =
+              updatedStudents.map((s) => s.studentModel.id).toList();
           final updatedStudentIds = await _fetchStudentIdsByUuids(
             dbExecutor: txn,
             uuids: updatedStudentUuids,
@@ -404,9 +418,12 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
           final halqaBatch = txn.batch();
           for (int i = 0; i < updatedStudents.length; i++) {
+            final assignedHalaqaMap =
+                updatedStudents[i].assignedHalaqa.toDbMap(updatedStudentIds[i]);
+            assignedHalaqaMap['tenant_id'] = tenantId;
             halqaBatch.insert(
               _kHalqaStudentsTable,
-              updatedStudents[i].assignedHalaqa.toDbMap(updatedStudentIds[i]),
+              assignedHalaqaMap,
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
@@ -425,10 +442,11 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
             final studentInfo = updatedStudents[i];
             final followUpPlan = studentInfo.followUpPlan;
             final enrollmentId = enrollmentIds[i];
-
+            final followUpPlanMap = followUpPlan.toPlanDbMap(enrollmentId);
+            followUpPlanMap['tenant_id'] = tenantId;
             planBatch.insert(
               _kFollowUpPlansTable,
-              followUpPlan.toPlanDbMap(enrollmentId),
+              followUpPlanMap,
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
             planBatch.update(
@@ -442,9 +460,11 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
             );
 
             for (final detail in followUpPlan.details) {
+              final detailMap = detail.toMap(planUuid: followUpPlan.planId);
+              detailMap['tenant_id'] = tenantId;
               planBatch.insert(
                 _kPlanDetailsTable,
-                detail.toMap(planUuid: followUpPlan.planId),
+                detailMap,
                 conflictAlgorithm: ConflictAlgorithm.replace,
               );
             }
@@ -496,6 +516,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     required String operation,
     Map<String, dynamic>? payload,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await _db.insert(_kPendingOperationsTable, {
         'entity_uuid': uuid,
@@ -503,6 +525,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
         'operation_type': operation,
         'payload': payload != null ? json.encode(payload) : null,
         'created_at': DateTime.now().millisecondsSinceEpoch,
+        'tenant_id': tenantId,
       });
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -513,11 +536,13 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
   @override
   Future<int> getLastSyncTimestampFor(String entityType) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     final result = await _db.query(
       _kSyncMetadataTable,
       columns: ['last_server_sync_timestamp'],
-      where: 'entity_type = ?',
-      whereArgs: [entityType],
+      where: 'entity_type = ? AND tenant_id = ?',
+      whereArgs: [entityType, tenantId],
     );
     if (result.isNotEmpty) {
       return result.first['last_server_sync_timestamp'] as int;
@@ -530,10 +555,16 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     String entityType,
     int timestamp,
   ) async {
-    await _db.insert(_kSyncMetadataTable, {
-      'entity_type': entityType,
-      'last_server_sync_timestamp': timestamp,
-    }, conflictAlgorithm: ConflictAlgorithm.replace);
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
+    await _db.insert(
+        _kSyncMetadataTable,
+        {
+          'entity_type': entityType,
+          'last_server_sync_timestamp': timestamp,
+          'tenant_id': tenantId,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   @override
@@ -544,10 +575,14 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
   @override
   Future<void> upsertStudent(StudentModel student) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
+      final studentMap = student.toMap();
+      studentMap['tenant_id'] = tenantId;
       _db.insert(
         _kUsersTable,
-        student.toMap(),
+        studentMap,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
@@ -562,15 +597,19 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     AssignedHalaqasModel student,
     String studentId,
   ) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final studentDbId = (await _fetchStudentIdsByUuids(
         dbExecutor: _db,
         uuids: [studentId],
-      )).first;
-
+      ))
+          .first;
+      final studentMap = student.toDbMap(studentDbId);
+      studentMap['tenant_id'] = tenantId;
       _db.insert(
         _kHalqaStudentsTable,
-        student.toDbMap(studentDbId),
+        studentMap,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
@@ -586,17 +625,21 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     FollowUpPlanModel followUpPlan,
     String studentId,
   ) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     // , int enrollmentId
     try {
       await _db.transaction((txn) async {
         final studentEnrollmentDbId = (await _fetchEnrollmentIdbyStudentUuids(
           dbExecutor: _db,
           uuids: [studentId],
-        )).first;
-
+        ))
+            .first;
+        final followUpPlanMap = followUpPlan.toPlanDbMap(studentEnrollmentDbId);
+        followUpPlanMap['tenant_id'] = tenantId;
         await txn.insert(
           _kFollowUpPlansTable,
-          followUpPlan.toPlanDbMap(studentEnrollmentDbId),
+          followUpPlanMap,
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
         await txn.update(
@@ -610,9 +653,11 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
         );
 
         for (final detail in followUpPlan.details) {
+          final detailMap = detail.toMap(planUuid: followUpPlan.planId);
+          detailMap['tenant_id'] = tenantId;
           await txn.insert(
             _kPlanDetailsTable, // جدول التفاصيل
-            detail.toMap(planUuid: followUpPlan.planId), // تمرير planId للربط
+            detailMap, // تمرير planId للربط
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
           print(detail);
@@ -731,11 +776,13 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
   @override
   Future<List<SyncQueueModel>> getPendingSyncOperations() async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kPendingOperationsTable,
-        where: 'entity_type = ? AND status = ?',
-        whereArgs: [UserRole.student.label, 'pending'],
+        where: 'entity_type = ? AND status = ? AND tenant_id = ?',
+        whereArgs: [UserRole.student.label, 'pending', tenantId],
         orderBy: 'created_at ASC',
       );
       return maps.map(SyncQueueModel.fromMap).toList();
@@ -748,11 +795,13 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
   @override
   Future<void> deleteCompletedOperation(int operationId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       await _db.delete(
         _kPendingOperationsTable,
-        where: 'id = ?',
-        whereArgs: [operationId],
+        where: 'id = ? AND tenant_id = ?',
+        whereArgs: [operationId, tenantId],
       );
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -765,11 +814,13 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   /// Returns a [StudentModel] if found, or throws a [CacheException] if   not.
   @override
   Future<StudentModel> getStudentById(String studentId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final maps = await _db.query(
         _kUsersTable,
-        where: 'uuid = ? AND roleId = ? AND isDeleted = ?',
-        whereArgs: [studentId, UserRole.student.id, 0],
+        where: 'uuid = ? AND roleId = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [studentId, UserRole.student.id, 0, tenantId],
       );
       print("getStudentById: $studentId");
       print(maps);
@@ -790,16 +841,19 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   /// Returns a [StudentModel] if found, or throws a [CacheException] if   not.
   @override
   Future<AssignedHalaqasModel> getAssignedHalaqa(String studentId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final studentDbId = (await _fetchStudentIdsByUuids(
         dbExecutor: _db,
         uuids: [studentId],
-      )).first;
+      ))
+          .first;
 
       final maps = await _db.query(
         _kHalqaStudentsTable,
-        where: 'studentId = ? AND isDeleted = ?',
-        whereArgs: [studentDbId, 0],
+        where: 'studentId = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [studentDbId, 0, tenantId],
       );
       print(maps);
 
@@ -819,16 +873,19 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   /// Returns a [StudentModel] if found, or throws a [CacheException] if   not.
   @override
   Future<FollowUpPlanModel> getFollowUpPlan(String studentId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       final studentnrollmentDbId = (await _fetchEnrollmentIdbyStudentUuids(
         dbExecutor: _db,
         uuids: [studentId],
-      )).first;
+      ))
+          .first;
 
       final planMaps = await _db.query(
         _kFollowUpPlansTable,
-        where: 'enrollmentId = ? AND isDeleted = ?',
-        whereArgs: [studentnrollmentDbId, 0],
+        where: 'enrollmentId = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [studentnrollmentDbId, 0, tenantId],
       );
 
       if (planMaps.isEmpty) {
@@ -838,8 +895,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
       final detailsMaps = await _db.query(
         _kPlanDetailsTable,
-        where: 'planUuid = ? AND isDeleted = ?',
-        whereArgs: [planUuid, 0],
+        where: 'planUuid = ? AND isDeleted = ? AND tenant_id = ?',
+        whereArgs: [planUuid, 0, tenantId],
       );
 
       return FollowUpPlanModel.fromDbMaps(
@@ -880,6 +937,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   /// {@macro get_local_follow_up_trackings}
   @override
   Future<List<TrackingModel>> getFollowUpTrackings(String studentId) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     try {
       // 1. Fetch the parent enrollment ID first.
       final enrollmentIds = await _fetchEnrollmentIdbyStudentUuids(
@@ -896,8 +955,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
       // 2. Fetch all parent tracking records for the given enrollment.
       final trackingMaps = await _db.query(
         _kDailyTrackingTable,
-        where: 'enrollmentId = ?',
-        whereArgs: [enrollmentId],
+        where: 'enrollmentId = ? AND tenant_id = ?',
+        whereArgs: [enrollmentId, tenantId],
         orderBy: 'trackDate DESC',
       );
 
@@ -935,6 +994,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     required String studentId,
     required List<TrackingModel> trackings,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     await _db.delete(_kDailyTrackingTable);
     await _db.delete(_kDailyTrackingDetailTable);
 
@@ -960,9 +1021,11 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
         // Step 2: Iterate through the new tracking data from the server.
         for (final trackingModel in trackings) {
           // 2a. Insert the parent `daily_tracking` record and get its new local ID.
+          final trackingMap = trackingModel.toDbMap(enrollmentId);
+          trackingMap['tenant_id'] = tenantId;
           final newParentTrackingId = await txn.insert(
             _kDailyTrackingTable,
-            trackingModel.toDbMap(enrollmentId),
+            trackingMap,
           );
 
           if (trackingModel.details.isNotEmpty) {
@@ -971,18 +1034,22 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
             for (final detailModel in trackingModel.details) {
               // 2b. Insert the `daily_tracking_detail` record and get its new local ID.
+              final detailMap = detailModel.toDbMap(newParentTrackingId);
+              detailMap['tenant_id'] = tenantId;
               final newDetailId = await txn.insert(
                 _kDailyTrackingDetailTable,
-                detailModel.toDbMap(newParentTrackingId),
+                detailMap,
               );
 
               // 2c. If this detail has mistakes, add them to the batch.
               if (detailModel.mistakes.isNotEmpty) {
                 for (final mistakeModel in detailModel.mistakes) {
                   // The `toDbMap` function needs the LOCAL ID of its parent detail.
+                  final mistakeMap = mistakeModel.toDbMap(newDetailId);
+                  mistakeMap['tenant_id'] = tenantId;
                   mistakesBatch.insert(
                     _kMistakesTable,
-                    mistakeModel.toDbMap(newDetailId),
+                    mistakeMap,
                   );
                 }
               }
@@ -1008,12 +1075,14 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   Future<List<TrackingModel>> getFollowUpTrackingsByUuids({
     required List<String> uuids,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     if (uuids.isEmpty) return [];
 
     final trackingMaps = await _db.query(
       _kDailyTrackingTable,
-      where: 'uuid IN (${List.filled(uuids.length, '?').join(',')})',
-      whereArgs: uuids,
+      where: 'uuid IN (${List.filled(uuids.length, '?').join(',')}) AND tenant_id = ?',
+      whereArgs: [...uuids, tenantId],
     );
 
     if (trackingMaps.isEmpty) return [];
@@ -1080,6 +1149,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     DateTime? trackDate,
     Frequency? frequencyCode,
   }) async {
+    final user = await _authLocalDataSource.getCachedUser();
+    final tenantId = user.id;
     if (status == null &&
         halaqaId == null &&
         trackDate == null &&
@@ -1089,8 +1160,12 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
     final query = StringBuffer('SELECT DISTINCT U.* FROM $_kUsersTable U');
     final joins = <String>{};
-    final whereClauses = <String>['U.roleId = ?', 'U.isDeleted = ?'];
-    final whereArgs = <Object?>[UserRole.student.id, 0];
+    final whereClauses = <String>[
+      'U.roleId = ?',
+      'U.isDeleted = ?',
+      'U.tenant_id = ?'
+    ];
+    final whereArgs = <Object?>[UserRole.student.id, 0, tenantId];
 
     if (status != null) {
       whereClauses.add('U.status = ?');
