@@ -144,6 +144,7 @@ final class AuthRepositoryImpl implements AuthRepository {
         });
       } else {
         try {
+          await _localDataSource.switchCurrentScreen('login');
           return Right(SuccessEntity());
         } on CacheException catch (e) {
           // If clearing the cache fails, we return a CacheFailure.
@@ -161,7 +162,7 @@ final class AuthRepositoryImpl implements AuthRepository {
   /// - Returns: The cached [UserModel] if available.
   @override
   Future<Either<Failure, UserEntity>> getUserProfile() async {
-    bool isLoggedin = await isLoggedIn();
+    bool isLoggedin = await isLoggedIn() == "home";
     if (!isLoggedin) {
       return Left(CacheFailure(message: 'Failed to get User Profile.'));
     }
@@ -207,8 +208,11 @@ final class AuthRepositoryImpl implements AuthRepository {
       return successModel.toEntity();
     });
   }
-@override
-  Future<Either<Failure, UserEntity>> switchUser({required String userId}) async {
+
+  @override
+  Future<Either<Failure, UserEntity>> switchUser({
+    required String userId,
+  }) async {
     try {
       // 1. Update the 'Current User' pointer in local storage.
       // Ensure AuthLocalDataSource has the 'switchUser' method.
@@ -216,9 +220,11 @@ final class AuthRepositoryImpl implements AuthRepository {
 
       // 2. Retrieve the full profile of the newly selected user.
       final userModel = await _localDataSource.getUser();
-      
+
       if (userModel == null) {
-        return Left(CacheFailure(message: 'User switched, but profile data is missing.'));
+        return Left(
+          CacheFailure(message: 'User switched, but profile data is missing.'),
+        );
       }
 
       // 3. Return the new user entity so the UI can update immediately.
@@ -226,12 +232,15 @@ final class AuthRepositoryImpl implements AuthRepository {
     } on CacheException catch (e) {
       return Left(CacheFailure(message: e.message));
     } catch (e) {
-      return Left(CacheFailure(message: 'Failed to switch user: ${e.toString()}'));
+      return Left(
+        CacheFailure(message: 'Failed to switch user: ${e.toString()}'),
+      );
     }
   }
+
   /// Checks if the user is logged in by verifying if a user exists in the cache.
   /// This method is used to determine if the user has an active session.
   /// - Returns: `true` if the user is logged in, `false` otherwise.
   @override
-  Future<bool> isLoggedIn() => _localDataSource.isLoggedIn();
+  Future<String> isLoggedIn() => _localDataSource.isLoggedIn();
 }

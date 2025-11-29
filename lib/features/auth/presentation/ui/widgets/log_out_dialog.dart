@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../core/error/failures.dart';
 import '../../bloc/auth_bloc.dart';
 
 class LogoutConfirmationDialog extends StatefulWidget {
@@ -23,7 +22,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
       listener: (context, state) {
         if (state.authStatus == AuthStatus.unauthenticated) {
           if (mounted) {
-            context.go('/welcome');
+            context.go('/login');
           }
         } else if (state.logOutFailure != null) {
           if (mounted) {
@@ -34,7 +33,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
             final errorMessage = failure.message;
             if (errorMessage.contains('Token is invalid') ||
                 errorMessage.contains('already revoked')) {
-              context.go('/welcome');
+              context.go('/login');
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -217,5 +216,4 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
       ),
     );
   }
-
 }

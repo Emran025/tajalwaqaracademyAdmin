@@ -1,55 +1,67 @@
+import 'dart:convert'; // Required for json.decode
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:tajalwaqaracademy/core/api/end_ponits.dart'; // Required to identify the refresh endpoint
+import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
+
+// Define the key locally or import it from your constants file
+const String _kAccessTokensListKey = 'ACCESS_TOKENS_LIST';
 
 /// A Dio interceptor responsible for automatically injecting the
 /// `Authorization` header with a Bearer token into outgoing API requests.
 ///
-/// This interceptor seamlessly integrates into the Dio client's request
-/// lifecycle. It fetches the current access token from secure storage and, if
-/// available, attaches it to the request headers. This centralizes the
-/// authentication logic, ensuring that all relevant API calls are properly
-/// authenticated without manual intervention in every data source.
+/// This interceptor has been updated to support Multi-User sessions.
+/// It fetches the list of tokens from secure storage and uses the first one
+/// (Index 0), which corresponds to the currently active user.
 final class AuthInterceptor extends Interceptor {
   /// The secure storage mechanism used to persist and retrieve authentication tokens.
   final FlutterSecureStorage _secureStorage;
 
   /// Constructs an [AuthInterceptor].
-  ///
-  /// Requires a [_secureStorage] instance, which will be provided by a
-  /// dependency injection container.
   AuthInterceptor({required FlutterSecureStorage secureStorage})
     : _secureStorage = secureStorage;
 
-  /// This method is called by Dio before a request is sent.
-  ///
-  /// It intercepts the request options, reads the access token, and modifies
-  /// the headers accordingly.
   @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Strategically skip token injection for the token refresh endpoint.
-    // This is a critical guard to prevent the refresh request itself from
-    // being sent with an (potentially expired) access token, which could
-    // cause issues or be redundant.
+    // 1. Skip token injection for endpoints that don't need auth or handle it differently.
     if (options.path.contains(EndPoint.refreshToken) ||
         options.path.contains(EndPoint.logIn) ||
         options.path.contains(EndPoint.forgetPassword)) {
       return handler.next(options);
     }
 
-    // Attempt to retrieve the access token from secure storage.
-    final String? token = await _secureStorage.read(key: 'ACCESS_TOKEN');
+    try {
+      // 2. Read the JSON string list using the new key.
+      final String? jsonString = await _secureStorage.read(
+        key: _kAccessTokensListKey,
+      );
 
-    // If a token exists, add it to the request headers as a Bearer token.
-    if (token != null) {
-      options.headers['Authorization'] = 'Bearer $token';
+      if (jsonString != null) {
+        // 3. Decode the JSON string into a List.
+        final List<dynamic> tokensList = json.decode(jsonString);
+
+        // 4. Check if the list is valid and not empty.
+        // We always take the FIRST element (Index 0) as it represents the CURRENT USER.
+        if (tokensList.isNotEmpty) {
+          final currentTokenMap = tokensList.first;
+
+          // 5. Extract the 'token' field.
+          final String? token = currentTokenMap['token'];
+
+          // 6. Inject the token into the header.
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+        }
+      }
+    } catch (e) {
+      // Fails silently if JSON is corrupted or storage fails,
+      // allowing the request to proceed (it will likely return 401).
     }
 
-    // Continue the request lifecycle by passing the (potentially modified)
-    // options to the next handler in the chain.
+    // Continue the request lifecycle.
     return handler.next(options);
   }
 }

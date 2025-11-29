@@ -1,6 +1,6 @@
 class ConstantsKeys {
   static const String baseUrl =
-      "http://192.168.43.92/tag-al-waqar/public/api/v1/";
+      "http://192.168.124.7/tag-al-waqar/public/api/v1/";
 }
 
 abstract class ConstantsKey {

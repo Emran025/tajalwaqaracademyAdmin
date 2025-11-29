@@ -120,82 +120,90 @@ class _LogInScreenState extends State<LogInScreen> {
       return const SizedBox.shrink();
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 12.0),
-          child: Text(
-            "تغيير الحساب",
-            style: TextStyle(color: AppColors.lightCream70, fontSize: 12),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: 12.0),
+            child: Text(
+              "تغيير الحساب",
+              style: TextStyle(color: AppColors.lightCream70, fontSize: 12),
+            ),
           ),
-        ),
-        SizedBox(
-          height: 90,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            itemCount: state.usersList.length,
-            separatorBuilder: (c, i) => const SizedBox(width: 16),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              final user = state.usersList[index];
-              final isSelected = state.selectedUser?.id == user.id;
+          SizedBox(
+            height: 90,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemCount: state.usersList.length,
+              separatorBuilder: (c, i) => const SizedBox(width: 16),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                final user = state.usersList[index];
+                final isSelected = state.selectedUser?.id == user.id;
 
-              return GestureDetector(
-                onTap: () => _onUserTapped(user),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(2), // Border width
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: isSelected
-                              ? AppColors.accent
-                              : AppColors.lightCream26,
-                          width: 2,
+                return GestureDetector(
+                  onTap: () => _onUserTapped(user),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(2), // Border width
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.accent
+                                : AppColors.lightCream26,
+                            width: 2,
+                          ),
                         ),
-                      ),
-                      child: CircleAvatar(
-                        radius: 26,
-                        backgroundColor: AppColors.lightCream,
-                        child: Text(
-                          user.name,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.mediumDark,
+                        child: CircleAvatar(
+                          radius: 26,
+                          backgroundColor: AppColors.lightCream,
+                          child: Text(
+                            user.name.split('').first,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.mediumDark,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                    SizedBox(
-                      width: 70,
-                      child: Text(
-                        user.name,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: isSelected
-                              ? AppColors.accent
-                              : AppColors.lightCream,
-                          fontSize: 11,
+                      const SizedBox(width: 6),
+                      SizedBox(
+                        width: 70,
+                        child: Text(
+                          user.name,
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: isSelected
+                                ? AppColors.accent
+                                : AppColors.lightCream,
+                            fontSize: 11,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-        const Divider(color: AppColors.lightCream12, endIndent: 40, indent: 40),
-        const SizedBox(height: 16),
-      ],
+          const SizedBox(height: 16),
+          const Divider(
+            color: AppColors.lightCream12,
+            endIndent: 40,
+            indent: 40,
+          ),
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 

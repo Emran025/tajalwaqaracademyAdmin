@@ -20,7 +20,7 @@ abstract class AuthRepository {
     required String currentPassword,
     required String newPassword,
   });
-  Future<bool> isLoggedIn();
+  Future<String> isLoggedIn();
   Future<Either<Failure, SuccessEntity>> logOut({
     required bool deleteCredentials,
   });
