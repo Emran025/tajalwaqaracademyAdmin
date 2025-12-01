@@ -19,9 +19,10 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
   final Database database;
   final AuthLocalDataSource _authLocalDataSource;
 
-  CoreDataLocalDataSourceImpl(
-      {required this.database, required AuthLocalDataSource authLocalDataSource})
-      : _authLocalDataSource = authLocalDataSource;
+  CoreDataLocalDataSourceImpl({
+    required this.database,
+    required AuthLocalDataSource authLocalDataSource,
+  }) : _authLocalDataSource = authLocalDataSource;
 
   @override
   Future<List<StudentModel>> getStudentsForExport() async {
@@ -34,10 +35,12 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
         whereArgs: [UserRole.student.id, 0, tenantId],
       );
       return List.generate(maps.length, (i) {
-        return StudentModel.fromMap(maps[i]);
+        return StudentModel.fromMap(maps[i], fromDb: true);
       });
     } catch (e) {
-      throw CacheException(message: 'Failed to export students: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to export students: ${e.toString()}',
+      );
     }
   }
 
@@ -55,13 +58,17 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
         return TeacherModel.fromMap(maps[i]);
       });
     } catch (e) {
-      throw CacheException(message: 'Failed to export teachers: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to export teachers: ${e.toString()}',
+      );
     }
   }
 
   @override
-  Future<int> importStudents(List<StudentModel> students,
-      [String conflictResolution = 'replace']) async {
+  Future<int> importStudents(
+    List<StudentModel> students, [
+    String conflictResolution = 'replace',
+  ]) async {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
     try {
@@ -69,21 +76,28 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
       for (final student in students) {
         final studentMap = student.toMap();
         studentMap['tenant_id'] = tenantId;
-        batch.insert(_kUsersTable, studentMap,
-            conflictAlgorithm: conflictResolution == 'skip'
-                ? ConflictAlgorithm.ignore
-                : ConflictAlgorithm.replace);
+        batch.insert(
+          _kUsersTable,
+          studentMap,
+          conflictAlgorithm: conflictResolution == 'skip'
+              ? ConflictAlgorithm.ignore
+              : ConflictAlgorithm.replace,
+        );
       }
       final results = await batch.commit();
       return results.where((r) => r != 0).length;
     } catch (e) {
-      throw CacheException(message: 'Failed to import students: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to import students: ${e.toString()}',
+      );
     }
   }
 
   @override
-  Future<int> importTeachers(List<TeacherModel> teachers,
-      [String conflictResolution = 'replace']) async {
+  Future<int> importTeachers(
+    List<TeacherModel> teachers, [
+    String conflictResolution = 'replace',
+  ]) async {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
     try {
@@ -91,15 +105,20 @@ class CoreDataLocalDataSourceImpl implements CoreDataLocalDataSource {
       for (final teacher in teachers) {
         final teacherMap = teacher.toMap();
         teacherMap['tenant_id'] = tenantId;
-        batch.insert(_kUsersTable, teacherMap,
-            conflictAlgorithm: conflictResolution == 'skip'
-                ? ConflictAlgorithm.ignore
-                : ConflictAlgorithm.replace);
+        batch.insert(
+          _kUsersTable,
+          teacherMap,
+          conflictAlgorithm: conflictResolution == 'skip'
+              ? ConflictAlgorithm.ignore
+              : ConflictAlgorithm.replace,
+        );
       }
       final results = await batch.commit();
       return results.where((r) => r != 0).length;
     } catch (e) {
-      throw CacheException(message: 'Failed to import teachers: ${e.toString()}');
+      throw CacheException(
+        message: 'Failed to import teachers: ${e.toString()}',
+      );
     }
   }
 }
