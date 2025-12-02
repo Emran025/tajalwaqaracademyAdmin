@@ -79,4 +79,27 @@ abstract interface class StudentRepository {
     Frequency? frequencyCode,
   });
 
+  /// Fetches all follow-up tracking records for all students.
+  ///
+  /// Returns a `Future` that completes with a `Map` where each key is a
+  /// student's UUID and the value is a list of their [TrackingEntity]s.
+  /// The map will be empty if no tracking data is found.
+  ///
+  /// Throws a [CacheException] if a database error occurs.
+  Future<Either<Failure, Map<String, List<TrackingEntity>>>>
+      getAllFollowUpTrackings();
+
+  /// Imports a list of follow-up tracking records into the local database.
+  ///
+  /// - [trackings]: A map where each key is a student's UUID and the value is a
+  ///   list of their [TrackingEntity]s.
+  /// - [conflictResolution]: The strategy to use when a record with the same
+  ///   student UUID and date already exists.
+  ///
+  /// Returns a `Future` that completes with `unit` on success, or a `Failure`
+  /// on error.
+  Future<Either<Failure, Unit>> importFollowUpTrackings({
+    required Map<String, List<TrackingEntity>> trackings,
+    required ConflictResolution conflictResolution,
+  });
 }

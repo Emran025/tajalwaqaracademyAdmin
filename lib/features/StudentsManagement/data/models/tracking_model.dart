@@ -132,4 +132,19 @@ final class TrackingModel {
       details: details.map((detailModel) => detailModel.toEntity()).toList(),
     );
   }
+
+  factory TrackingModel.fromEntity(TrackingEntity entity) {
+    return TrackingModel(
+      id: int.tryParse(entity.id) ?? 0,
+      date: entity.date.toIso8601String(),
+      note: entity.note,
+      attendanceTypeId: entity.attendanceTypeId,
+      behaviorNote: entity.behaviorNote,
+      createdAt: entity.createdAt.toIso8601String(),
+      updatedAt: entity.updatedAt.toIso8601String(),
+      details: entity.details
+          .map((detailEntity) => TrackingDetailModel.fromEntity(detailEntity))
+          .toList(),
+    );
+  }
 }

@@ -196,4 +196,44 @@ final class StudentRepositoryImpl implements StudentRepository {
   }) async {
     return const Right(unit);
   }
+
+  @override
+  Future<Either<Failure, Map<String, List<TrackingEntity>>>>
+      getAllFollowUpTrackings() async {
+    try {
+      final trackingsByStudentId =
+          await _localDataSource.getAllFollowUpTrackings();
+      final trackingsByStudentIdEntities = trackingsByStudentId.map(
+        (key, value) => MapEntry(
+          key,
+          value.map((model) => model.toEntity()).toList(),
+        ),
+      );
+      return Right(trackingsByStudentIdEntities);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> importFollowUpTrackings({
+    required Map<String, List<TrackingEntity>> trackings,
+    required ConflictResolution conflictResolution,
+  }) async {
+    try {
+      final trackingsByStudentIdModels = trackings.map(
+        (key, value) => MapEntry(
+          key,
+          value.map((entity) => TrackingModel.fromEntity(entity)).toList(),
+        ),
+      );
+      await _localDataSource.importFollowUpTrackings(
+        trackings: trackingsByStudentIdModels,
+        conflictResolution: conflictResolution,
+      );
+      return const Right(unit);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    }
+  }
 }

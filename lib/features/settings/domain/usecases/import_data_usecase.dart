@@ -13,25 +13,14 @@ import '../repositories/settings_repository.dart';
 /// Imports application data from a file.
 @lazySingleton
 
-class ImportDataUseCase implements UseCase<ImportSummary, ImportDataParams> {
+class ImportDataUseCase implements UseCase<ImportSummary, ImportConfig> {
   final SettingsRepository repository;
 
   ImportDataUseCase(this.repository);
 
   @override
-  Future<Either<Failure, ImportSummary>> call(ImportDataParams params) async {
+  Future<Either<Failure, ImportSummary>> call(ImportConfig params) async {
     return await repository.importData(
-        filePath: params.filePath, config: params.config);
+        filePath: params.filePath, config: params);
   }
-}
-
-/// The parameters for the [ImportDataUseCase].
-class ImportDataParams extends Equatable {
-  final String filePath;
-  final ImportConfig config;
-
-  const ImportDataParams({required this.filePath, required this.config});
-
-  @override
-  List<Object?> get props => [filePath, config];
 }
