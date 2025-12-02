@@ -481,6 +481,7 @@ class AppDatabase {
         behaviorNote     INTEGER NOT NULL DEFAULT 4,
         note             TEXT,
         lastModified     INTEGER NOT NULL,
+        createdAt        INTEGER NOT NULL,
         isDeleted        INTEGER NOT NULL DEFAULT 0,
         tenant_id        TEXT NOT NULL,
 

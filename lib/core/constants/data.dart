@@ -73,7 +73,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[1], // مثال: سورة البقرة
         toTrackingUnitId: trackingUnitDetail[1],
         actualAmount: 0, // لم يحفظ شيئًا
-         status: 'completed', comment:  'لم يتمكن من الحفظ بسبب الإرهاق.',
+        status: 'completed',
+        comment:  'لم يتمكن من الحفظ بسبب الإرهاق.',
         score: 2, // (من 5)
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
@@ -86,7 +87,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[40], // مثال: من صفحة 40
         toTrackingUnitId: trackingUnitDetail[48], // إلى صفحة 48
         actualAmount: 8, // المطلوب 10، أنجز 8 فقط
-         status: 'completed', comment:  'المراجعة كانت متقطعة وبها أخطاء.',
+        status: 'completed',
+        comment:  'المراجعة كانت متقطعة وبها أخطاء.',
         score: 3,
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
@@ -99,7 +101,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[100],
         toTrackingUnitId: trackingUnitDetail[110],
         actualAmount: 10, // أنجز المطلوب
-         status: 'completed', comment:  'التلاوة كانت جيدة.',
+        status: 'completed',
+        comment:  'التلاوة كانت جيدة.',
         score: 4,
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
@@ -125,7 +128,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[283],
         toTrackingUnitId: trackingUnitDetail[283],
         actualAmount: 2, // المطلوب 1، لكنه أنجز 2 لتعويض الأمس
-         status: 'completed', comment:  'حفظ متقن للصفحة المقررة وصفحة إضافية.',
+        status: 'completed',
+        comment:  'حفظ متقن للصفحة المقررة وصفحة إضافية.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
@@ -138,7 +142,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[50],
         toTrackingUnitId: trackingUnitDetail[60],
         actualAmount: 11, // تجاوز المطلوب
-         status: 'completed', comment:  'مراجعة ممتازة وثابتة.',
+        status: 'completed',
+        comment:  'مراجعة ممتازة وثابتة.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
@@ -151,7 +156,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[111],
         toTrackingUnitId: trackingUnitDetail[121],
         actualAmount: 10,
-         status: 'completed', comment:  'تلاوة خاشعة ومؤثرة.',
+        status: 'completed',
+        comment:  'تلاوة خاشعة ومؤثرة.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
@@ -177,7 +183,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[284],
         toTrackingUnitId: trackingUnitDetail[284],
         actualAmount: 1, // أنجز المطلوب بالضبط
-         status: 'completed', comment:  'حفظ جيد.',
+        status: 'completed',
+        comment:  'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-23T18:00:00Z',
         updatedAt: '2025-07-23T18:00:00Z',
@@ -190,7 +197,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[61],
         toTrackingUnitId: trackingUnitDetail[70],
         actualAmount: 10, // أنجز المطلوب بالضبط
-         status: 'completed', comment:  'مراجعة جيدة.',
+        status: 'completed',
+        comment:  'مراجعة جيدة.',
         score: 4,
         createdAt: '2025-07-23T18:00:00Z',
         updatedAt: '2025-07-23T18:00:00Z',
@@ -217,7 +225,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[285],
         toTrackingUnitId: trackingUnitDetail[285],
         actualAmount: 1, // أنجز المطلوب
-         status: 'completed', comment:  'حفظ جيد.',
+        status: 'completed',
+        comment:  'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-24T18:00:00Z',
         updatedAt: '2025-07-24T18:00:00Z',
@@ -230,7 +239,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[71],
         toTrackingUnitId: trackingUnitDetail[80],
         actualAmount: 10, // أنجز المطلوب
-         status: 'completed', comment:  'المراجعة تمت بشكل جيد.',
+        status: 'completed',
+        comment:  'المراجعة تمت بشكل جيد.',
         score: 4,
         createdAt: '2025-07-24T18:00:00Z',
         updatedAt: '2025-07-24T18:00:00Z',
@@ -256,7 +266,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[286],
         toTrackingUnitId: trackingUnitDetail[286],
         actualAmount: 1, // أنجز المطلوب
-         status: 'completed', comment:  'حفظ جيد.',
+        status: 'completed',
+        comment:  'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-25T18:00:00Z',
         updatedAt: '2025-07-25T18:00:00Z',
@@ -269,7 +280,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[81],
         toTrackingUnitId: trackingUnitDetail[88],
         actualAmount: 8, // تقصير بصفحتين
-         status: 'completed', comment:  'لم يكمل المراجعة المقررة.',
+        status: 'completed',
+        comment:  'لم يكمل المراجعة المقررة.',
         score: 3,
         createdAt: '2025-07-25T18:00:00Z',
         updatedAt: '2025-07-25T18:00:00Z',
@@ -282,7 +294,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[122],
         toTrackingUnitId: trackingUnitDetail[132],
         actualAmount: 10,
-        comment: '', status: 'completed',
+        comment: '',
+        status: 'completed',
         score: 4,
         createdAt: '2025-07-25T18:00:00Z',
         updatedAt: '2025-07-25T18:00:00Z',
@@ -309,7 +322,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[287],
         toTrackingUnitId: trackingUnitDetail[287],
         actualAmount: 1,
-         status: 'completed', comment:  'حفظ متقن.',
+        status: 'completed',
+        comment:  'حفظ متقن.',
         score: 5,
         createdAt: '2025-07-26T18:00:00Z',
         updatedAt: '2025-07-26T18:00:00Z',
@@ -322,7 +336,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[89],
         toTrackingUnitId: trackingUnitDetail[100],
         actualAmount: 12, // تعويض عن تقصير الأمس وزيادة
-         status: 'completed', comment:  'راجع المقرر وزيادة لتعويض الأمس.',
+        status: 'completed',
+        comment:  'راجع المقرر وزيادة لتعويض الأمس.',
         score: 5,
         createdAt: '2025-07-26T18:00:00Z',
         updatedAt: '2025-07-26T18:00:00Z',
@@ -361,7 +376,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[288],
         toTrackingUnitId: trackingUnitDetail[288],
         actualAmount: 0, // لم يحفظ
-         status: 'completed', comment:  'لم يستطع التركيز في الحفظ.',
+        status: 'completed',
+        comment:  'لم يستطع التركيز في الحفظ.',
         score: 1,
         createdAt: '2025-07-28T18:00:00Z',
         updatedAt: '2025-07-28T18:00:00Z',
@@ -374,7 +390,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[101],
         toTrackingUnitId: trackingUnitDetail[105],
         actualAmount: 5, // تقصير كبير
-         status: 'completed', comment:  'مراجعة ضعيفة.',
+        status: 'completed',
+        comment:  'مراجعة ضعيفة.',
         score: 2,
         createdAt: '2025-07-28T18:00:00Z',
         updatedAt: '2025-07-28T18:00:00Z',
@@ -404,7 +421,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[288],
         toTrackingUnitId: trackingUnitDetail[288],
         actualAmount: 1, // حفظ مقرر اليوم
-         status: 'completed', comment:  'تم حفظ مقرر اليوم لتعويض أمس.',
+        status: 'completed',
+        comment:  'تم حفظ مقرر اليوم لتعويض أمس.',
         score: 4,
         createdAt: '2025-07-29T18:00:00Z',
         updatedAt: '2025-07-29T18:00:00Z',
@@ -417,7 +435,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[106],
         toTrackingUnitId: trackingUnitDetail[115],
         actualAmount: 10,
-         status: 'completed', comment:  'مراجعة جيدة.',
+        status: 'completed',
+        comment:  'مراجعة جيدة.',
         score: 4,
         createdAt: '2025-07-29T18:00:00Z',
         updatedAt: '2025-07-29T18:00:00Z',
@@ -444,7 +463,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[289],
         toTrackingUnitId: trackingUnitDetail[290],
         actualAmount: 2, // تجاوز المطلوب
-         status: 'completed', comment:  'حفظ صفحتين بإتقان.',
+        status: 'completed',
+        comment:  'حفظ صفحتين بإتقان.',
         score: 5,
         createdAt: '2025-07-30T18:00:00Z',
         updatedAt: '2025-07-30T18:00:00Z',
@@ -471,7 +491,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[116],
         toTrackingUnitId: trackingUnitDetail[122],
         actualAmount: 7, // تقصير
-         status: 'completed', comment:  'مراجعة غير مكتملة.',
+        status: 'completed',
+        comment:  'مراجعة غير مكتملة.',
         score: 2,
         createdAt: '2025-07-31T18:00:00Z',
         updatedAt: '2025-07-31T18:00:00Z',
@@ -484,7 +505,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[133],
         toTrackingUnitId: trackingUnitDetail[138],
         actualAmount: 5, // تقصير
-         status: 'completed', comment:  'تلاوة سريعة.',
+        status: 'completed',
+        comment:  'تلاوة سريعة.',
         score: 3,
         createdAt: '2025-07-31T18:00:00Z',
         updatedAt: '2025-07-31T18:00:00Z',
@@ -524,7 +546,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[123],
         toTrackingUnitId: trackingUnitDetail[143],
         actualAmount: 20, // ضعف المقرر
-         status: 'completed', comment:  'مراجعة جزء كامل بإتقان.',
+        status: 'completed',
+        comment:  'مراجعة جزء كامل بإتقان.',
         score: 5,
         createdAt: '2025-08-01T18:00:00Z',
         updatedAt: '2025-08-01T18:00:00Z',
