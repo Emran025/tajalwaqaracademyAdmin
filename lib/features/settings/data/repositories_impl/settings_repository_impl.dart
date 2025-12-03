@@ -434,4 +434,6 @@ class SettingsRepositoryImpl implements SettingsRepository {
       () => remoteDataSource.getTermsOfUse().then((model) => model.toEntity()),
     );
   }
+
+
 }

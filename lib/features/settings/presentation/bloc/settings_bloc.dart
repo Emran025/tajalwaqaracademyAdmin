@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart'; // You might need this
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_latest_policy_usecase.dart';
@@ -15,7 +16,6 @@ import 'package:tajalwaqaracademy/features/settings/domain/usecases/export_data_
 import 'dart:io';
 import 'package:archive/archive_io.dart';
 import 'package:path_provider/path_provider.dart';
-import 'packagepackage:tajalwaqaracademy/features/settings/domain/usecases/export_follow_up_reports_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_user_profile.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/import_data_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/import_follow_up_reports_usecase.dart';
@@ -25,6 +25,7 @@ import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_notifica
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/submit_support_ticket_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_terms_of_use_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/update_user_profile.dart';
+import '../../domain/entities/import_export.dart';
 import '../../domain/entities/import_summary.dart';
 
 /// NEW: Dispatched to fetch the latest privacy policy document.
@@ -37,6 +38,7 @@ import '../../domain/entities/faq_entity.dart';
 import '../../domain/entities/privacy_policy_entity.dart';
 import '../../domain/entities/support_ticket_entity.dart';
 import '../../domain/entities/terms_of_use_entity.dart';
+import '../../domain/usecases/export_follow_up_reports_usecase.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
@@ -393,7 +395,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         (failure) => emit(currentState.copyWith(
             importStatus: DataImportStatus.failure, error: failure)),
         (summary) {
-          if (summary is ImportSummary && summary.failedRows > 0) {
+          if ( summary.failedRows > 0) {
             emit(currentState.copyWith(
                 importStatus: DataImportStatus.failure,
                 importSummary: summary,

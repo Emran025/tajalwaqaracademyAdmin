@@ -3,6 +3,7 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/studen
 import '../../../../core/models/active_status.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/models/sync_queue_model.dart';
+import '../../../settings/domain/entities/import_export.dart';
 import '../models/assigned_halaqas_model.dart';
 import '../models/follow_up_plan_model.dart';
 import '../models/student_info_model.dart';

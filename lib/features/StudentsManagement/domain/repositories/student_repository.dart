@@ -3,6 +3,9 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
 import '../../../../core/models/report_frequency.dart';
+import '../../../settings/domain/entities/export_config.dart';
+import '../../../settings/domain/entities/import_config.dart';
+import '../../../settings/domain/entities/import_summary.dart';
 import '../entities/follow_up_plan_entity.dart';
 import '../entities/student_entity.dart';
 import '../entities/student_info_entity.dart';
@@ -78,28 +81,10 @@ abstract interface class StudentRepository {
     DateTime? trackDate,
     Frequency? frequencyCode,
   });
-
-  /// Fetches all follow-up tracking records for all students.
-  ///
-  /// Returns a `Future` that completes with a `Map` where each key is a
-  /// student's UUID and the value is a list of their [TrackingEntity]s.
-  /// The map will be empty if no tracking data is found.
-  ///
-  /// Throws a [CacheException] if a database error occurs.
-  Future<Either<Failure, Map<String, List<TrackingEntity>>>>
-      getAllFollowUpTrackings();
-
-  /// Imports a list of follow-up tracking records into the local database.
-  ///
-  /// - [trackings]: A map where each key is a student's UUID and the value is a
-  ///   list of their [TrackingEntity]s.
-  /// - [conflictResolution]: The strategy to use when a record with the same
-  ///   student UUID and date already exists.
-  ///
-  /// Returns a `Future` that completes with `unit` on success, or a `Failure`
-  /// on error.
-  Future<Either<Failure, Unit>> importFollowUpTrackings({
-    required Map<String, List<TrackingEntity>> trackings,
-    required ConflictResolution conflictResolution,
+  Future<Either<Failure, String>> exportFollowUpReports({
+    required ExportConfig config,
+  });
+  Future<Either<Failure, ImportSummary>> importFollowUpReports({
+    required ImportConfig config,
   });
 }

@@ -77,7 +77,7 @@ class _StudentsPlanFormState extends State<StudentsPlanForm> {
                       child: _buildDropdown(
                         unitTypeControllers[type]!,
                         "وحدة ال${type.labelAr}",
-                        TrackingUnit.values
+                        TrackingUnitTyps.values
                             .map((element) => element.labelAr)
                             .toList(),
                       ),

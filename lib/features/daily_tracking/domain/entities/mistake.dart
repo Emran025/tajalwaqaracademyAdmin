@@ -22,27 +22,6 @@ class Mistake extends Equatable {
     required this.mistakeType,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'trackingDetailId': trackingDetailId,
-      'ayahIdQuran': ayahIdQuran,
-      'wordIndex': wordIndex,
-      'mistakeType': mistakeType.toString(),
-    };
-  }
-
-  factory Mistake.fromJson(Map<String, dynamic> json) {
-    return Mistake(
-      id: json['id'] as String,
-      trackingDetailId: json['trackingDetailId'] as String,
-      ayahIdQuran: json['ayahIdQuran'] as int,
-      wordIndex: json['wordIndex'] as int,
-      mistakeType: MistakeType.values
-          .firstWhere((e) => e.toString() == json['mistakeType'] as String),
-    );
-  }
-
   @override
   List<Object?> get props => [id, trackingDetailId, ayahIdQuran, wordIndex, mistakeType];
 }

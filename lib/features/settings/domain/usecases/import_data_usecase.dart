@@ -1,7 +1,6 @@
 // path: lib/features/settings/domain/usecases/import_data_usecase.dart
 
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/failures.dart';
@@ -12,7 +11,6 @@ import '../repositories/settings_repository.dart';
 
 /// Imports application data from a file.
 @lazySingleton
-
 class ImportDataUseCase implements UseCase<ImportSummary, ImportConfig> {
   final SettingsRepository repository;
 
@@ -21,6 +19,8 @@ class ImportDataUseCase implements UseCase<ImportSummary, ImportConfig> {
   @override
   Future<Either<Failure, ImportSummary>> call(ImportConfig params) async {
     return await repository.importData(
-        filePath: params.filePath, config: params);
+      filePath: params.filePath,
+      config: params,
+    );
   }
 }

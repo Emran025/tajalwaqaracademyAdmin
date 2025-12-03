@@ -1,4 +1,4 @@
-enum TrackingUnit {
+enum TrackingUnitTyps {
   juz(1, 'جزء', "juz"),
   hizb(2, 'حزب', "hizb"),
   halfHizb(3, '\u00bd حزب', "halfHizb"),
@@ -8,31 +8,31 @@ enum TrackingUnit {
   final int id;
   final String labelAr;
   final String label;
-  const TrackingUnit(this.id, this.labelAr, this.label);
+  const TrackingUnitTyps(this.id, this.labelAr, this.label);
 
-  static TrackingUnit fromLabel(String label) {
+  static TrackingUnitTyps fromLabel(String label) {
     switch (label.toLowerCase()) {
       case 'juz':
       case 'جزء':
-        return TrackingUnit.juz;
+        return TrackingUnitTyps.juz;
       case 'hizb':
       case 'حزب':
-        return TrackingUnit.hizb;
+        return TrackingUnitTyps.hizb;
       case 'halfHizb':
       case 'نصف حزب':
       case '½ حزب':
-        return TrackingUnit.halfHizb;
+        return TrackingUnitTyps.halfHizb;
       case 'quarterHizb':
       case 'ربع حزب':
       case '¼ حزب':
-        return TrackingUnit.quarterHizb;
+        return TrackingUnitTyps.quarterHizb;
       default:
-        return TrackingUnit.page;
+        return TrackingUnitTyps.page;
     }
   }
 
-  static TrackingUnit fromId(int id) {
-    return TrackingUnit.values.firstWhere(
+  static TrackingUnitTyps fromId(int id) {
+    return TrackingUnitTyps.values.firstWhere(
       (e) => e.id == id,
       orElse: () => page,
     );
