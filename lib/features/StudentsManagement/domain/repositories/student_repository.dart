@@ -3,6 +3,9 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
 import '../../../../core/models/report_frequency.dart';
+import '../../../settings/domain/entities/export_config.dart';
+import '../../../settings/domain/entities/import_config.dart';
+import '../../../settings/domain/entities/import_summary.dart';
 import '../entities/follow_up_plan_entity.dart';
 import '../entities/student_entity.dart';
 import '../entities/student_info_entity.dart';
@@ -78,5 +81,10 @@ abstract interface class StudentRepository {
     DateTime? trackDate,
     Frequency? frequencyCode,
   });
-
+  Future<Either<Failure, String>> exportFollowUpReports({
+    required ExportConfig config,
+  });
+  Future<Either<Failure, ImportSummary>> importFollowUpReports({
+    required ImportConfig config,
+  });
 }

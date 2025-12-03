@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class TrackingEntity {
   final String id;
   final DateTime date;
+  final String enrollmentId;
   final String note;
   final  AttendanceType attendanceTypeId;
   final int behaviorNote;
@@ -18,6 +19,7 @@ class TrackingEntity {
  const TrackingEntity({
     required this.id,
     required this.date,
+    required this.enrollmentId,
     required this.note,
     required this.attendanceTypeId,
     required this.behaviorNote,
@@ -25,4 +27,5 @@ class TrackingEntity {
     required this.updatedAt,
     required this.details,
   });
+
 }

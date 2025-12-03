@@ -3,6 +3,7 @@ import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/studen
 import '../../../../core/models/active_status.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/models/sync_queue_model.dart';
+import '../../../settings/domain/entities/import_export.dart';
 import '../models/assigned_halaqas_model.dart';
 import '../models/follow_up_plan_model.dart';
 import '../models/student_info_model.dart';
@@ -141,5 +142,28 @@ abstract interface class StudentLocalDataSource {
     int? halaqaId,
     DateTime? trackDate,
     Frequency? frequencyCode,
+  });
+
+  /// Fetches all follow-up tracking records for all students.
+  ///
+  /// Returns a `Future` that completes with a `Map` where each key is a
+  /// student's UUID and the value is a list of their [TrackingModel]s.
+  /// The map will be empty if no tracking data is found.
+  ///
+  /// Throws a [CacheException] if a database error occurs.
+  Future<Map<String, List<TrackingModel>>> getAllFollowUpTrackings();
+
+  /// Imports a list of follow-up tracking records into the local database.
+  ///
+  /// - [trackings]: A map where each key is a student's UUID and the value is a
+  ///   list of their [TrackingModel]s.
+  /// - [conflictResolution]: The strategy to use when a record with the same
+  ///   student UUID and date already exists.
+  ///
+  /// Returns a `Future` that completes with `unit` on success, or a `Failure`
+  /// on error.
+  Future<void> importFollowUpTrackings({
+    required Map<String, List<TrackingModel>> trackings,
+    required ConflictResolution conflictResolution,
   });
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import '../../domain/entities/tracking_detail_entity.dart';
 import 'package:tajalwaqaracademy/core/constants/tracking_unit_detail.dart';
@@ -112,14 +114,15 @@ final class TrackingDetailModel {
   }
 
   /// Converts the model to a JSON map.
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'uuid': uuid.isEmpty ? const Uuid().v4() : uuid, // Use UUID if empty
+      'uuid': uuid,
       'trackingId': trackingId,
       'trackingTypeId': trackingTypeId.toString(),
-      'fromTrackingUnitId': fromTrackingUnitId.toString(),
-      'toTrackingUnitId': toTrackingUnitId.toString(),
+      'fromTrackingUnitId': fromTrackingUnitId.toJson(),
+      'toTrackingUnitId': toTrackingUnitId.toJson(),
       'actualAmount': actualAmount,
       'comment': comment,
       'status': status,
@@ -127,9 +130,53 @@ final class TrackingDetailModel {
       'gap': gap,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'mistakes': mistakes.map((m) => m.toJson()).toList(),
     };
   }
 
+
+  factory TrackingDetailModel.fromCsvRow(Map<String, dynamic> row) {
+    final mistakesJson = row['mistakesJson'] as String;
+    final mistakes = (jsonDecode(mistakesJson) as List<dynamic>)
+        .map((m) => MistakeModel.fromJson(m as Map<String, dynamic>))
+        .toList();
+
+    return TrackingDetailModel(
+      id: 0,
+      uuid: '',
+      trackingId: row['trackingId'] as int,
+      trackingTypeId: TrackingType.values
+          .firstWhere((e) => e.toString() == row['detailType'] as String),
+      fromTrackingUnitId: TrackingUnitDetail(
+        0,
+        int.tryParse(row['from_unitId'] as String? ?? '0') ?? 0,
+        row['from_fromSurah'] as String,
+        int.tryParse(row['from_fromPage'] as String? ?? '0') ?? 0,
+        int.tryParse(row['from_fromAyah'] as String? ?? '0') ?? 0,
+        row['from_toSurah'] as String,
+        int.tryParse(row['from_toPage'] as String? ?? '0') ?? 0,
+        int.tryParse(row['from_toAyah'] as String? ?? '0') ?? 0,
+      ),
+      toTrackingUnitId: TrackingUnitDetail(
+        0,
+        int.tryParse(row['to_unitId'] as String? ?? '0') ?? 0,
+        row['to_fromSurah'] as String,
+        int.tryParse(row['to_fromPage'] as String? ?? '0') ?? 0,
+        int.tryParse(row['to_fromAyah'] as String? ?? '0') ?? 0,
+        row['to_toSurah'] as String,
+        int.tryParse(row['to_toPage'] as String? ?? '0') ?? 0,
+        int.tryParse(row['to_toAyah'] as String? ?? '0') ?? 0,
+      ),
+      actualAmount: int.tryParse(row['actualAmount'] as String? ?? '0') ?? 0,
+      comment: row['comment'] as String? ?? '',
+      status: row['status'] as String? ?? '',
+      score: int.tryParse(row['performanceScore'] as String? ?? '0') ?? 0,
+      gap: double.tryParse(row['gap'] as String? ?? '0.0') ?? 0.0,
+      createdAt: row['createdAt'] as String,
+      updatedAt: row['updatedAt'] as String,
+      mistakes: mistakes,
+    );
+  }
   /// This map aligns with the schema of the `daily_tracking_detail` table.
   /// NOTE: This does NOT include the mistakes, as they are saved to a separate table.
   Map<String, dynamic> toMap(int parentTrackingId) {
@@ -183,7 +230,7 @@ final class TrackingDetailModel {
     );
   }
 
-  /// 6. Update toEntity to convert the list of mistake models to mistake entities.
+  /// 6. Update toModel to convert the list of mistake models to mistake entities.
   TrackingDetailEntity toEntity() {
     return TrackingDetailEntity(
       id: id, // Use UUID for the entity's ID

@@ -9,6 +9,8 @@ String toDisplayString(dynamic anEnum) {
       return 'بيانات المعلمين';
     case EntityType.halaqa:
       return 'بيانات الحلقات';
+    case EntityType.followUpReport:
+      return 'تقارير المتابعة';
     case DataExportFormat.csv:
       return 'CSV';
     case DataExportFormat.json:

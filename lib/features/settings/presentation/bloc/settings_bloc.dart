@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart'; // You might need this
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_latest_policy_usecase.dart';
@@ -12,14 +13,19 @@ import 'package:tajalwaqaracademy/features/settings/domain/entities/user_profile
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_faqs_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_settings.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/export_data_usecase.dart';
+import 'dart:io';
+import 'package:archive/archive_io.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_user_profile.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/import_data_usecase.dart';
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/import_follow_up_reports_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/save_theme.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_analytics_preference.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_notifications_preference.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/submit_support_ticket_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_terms_of_use_usecase.dart';
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/update_user_profile.dart';
+import '../../domain/entities/import_export.dart';
 import '../../domain/entities/import_summary.dart';
 
 /// NEW: Dispatched to fetch the latest privacy policy document.
@@ -32,6 +38,7 @@ import '../../domain/entities/faq_entity.dart';
 import '../../domain/entities/privacy_policy_entity.dart';
 import '../../domain/entities/support_ticket_entity.dart';
 import '../../domain/entities/terms_of_use_entity.dart';
+import '../../domain/usecases/export_follow_up_reports_usecase.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
@@ -47,6 +54,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final GetLatestPolicyUseCase _getLatestPolicy;
   final ExportDataUseCase _exportDataUseCase;
   final ImportDataUseCase _importDataUseCase;
+  final ExportFollowUpReportsUseCase _exportFollowUpReportsUseCase;
+  final ImportFollowUpReportsUseCase _importFollowUpReportsUseCase;
   final GetFaqsUseCase _getFaqsUseCase;
   final SubmitSupportTicketUseCase _submitSupportTicketUseCase;
   final GetTermsOfUseUseCase _getTermsOfUseUseCase;
@@ -61,6 +70,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required GetLatestPolicyUseCase getLatestPolicy,
     required ExportDataUseCase exportDataUseCase,
     required ImportDataUseCase importDataUseCase,
+    required ExportFollowUpReportsUseCase exportFollowUpReportsUseCase,
+    required ImportFollowUpReportsUseCase importFollowUpReportsUseCase,
     required GetFaqsUseCase getFaqsUseCase,
     required SubmitSupportTicketUseCase submitSupportTicketUseCase,
     required GetTermsOfUseUseCase getTermsOfUseUseCase,
@@ -73,6 +84,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         _getLatestPolicy = getLatestPolicy,
         _exportDataUseCase = exportDataUseCase,
         _importDataUseCase = importDataUseCase,
+        _exportFollowUpReportsUseCase = exportFollowUpReportsUseCase,
+        _importFollowUpReportsUseCase = importFollowUpReportsUseCase,
         _getFaqsUseCase = getFaqsUseCase,
         _submitSupportTicketUseCase = submitSupportTicketUseCase,
         _getTermsOfUseUseCase = getTermsOfUseUseCase,
@@ -271,14 +284,54 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     if (state is! SettingsLoadSuccess) return;
     final currentState = state as SettingsLoadSuccess;
     emit(currentState.copyWith(exportStatus: DataExportStatus.loading));
-    final result =
-        await _exportDataUseCase(ExportDataParams(config: event.config));
-    result.fold(
-      (failure) => emit(currentState.copyWith(
-          exportStatus: DataExportStatus.failure, error: failure)),
-      (filePath) => emit(currentState.copyWith(
-          exportStatus: DataExportStatus.success, exportFilePath: filePath)),
-    );
+
+    final results = <String, String>{};
+    bool hasFailed = false;
+
+    for (final entityType in event.config.entityTypes) {
+      final config = event.config.copyWith(entityTypes: [entityType]);
+      final result = await (entityType == EntityType.followUpReport
+          ? _exportFollowUpReportsUseCase(config)
+          : _exportDataUseCase(ExportDataParams(config: config)));
+
+      result.fold(
+        (failure) {
+          hasFailed = true;
+          emit(currentState.copyWith(
+              exportStatus: DataExportStatus.failure, error: failure));
+        },
+        (filePath) {
+          results[entityType.toString()] = filePath;
+        },
+      );
+      if (hasFailed) break;
+    }
+
+    if (!hasFailed) {
+      if (results.length > 1) {
+        // Create a zip file
+        final archive = Archive();
+        for (final entry in results.entries) {
+          final file = File(entry.value);
+          final content = await file.readAsBytes();
+          final entityTypeString = entry.key.split('.').last;
+          archive.addFile(ArchiveFile('$entityTypeString.csv', content.length, content));
+        }
+        final zipEncoder = ZipEncoder();
+        final zipData = zipEncoder.encode(archive);
+        final tempDir = await getTemporaryDirectory();
+        final zipFile = File(
+            '${tempDir.path}/export-${DateTime.now().toIso8601String()}.zip');
+        await zipFile.writeAsBytes(zipData!);
+        emit(currentState.copyWith(
+            exportStatus: DataExportStatus.success,
+            exportFilePath: zipFile.path));
+      } else {
+        emit(currentState.copyWith(
+            exportStatus: DataExportStatus.success,
+            exportFilePath: results.values.first));
+      }
+    }
   }
 
   Future<void> _onSettingsImportDataRequested(
@@ -288,25 +341,73 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     if (state is! SettingsLoadSuccess) return;
     final currentState = state as SettingsLoadSuccess;
     emit(currentState.copyWith(importStatus: DataImportStatus.importing));
-    final result = await _importDataUseCase(
-        ImportDataParams(filePath: event.filePath, config: event.config));
-    result.fold(
-      (failure) => emit(currentState.copyWith(
-          importStatus: DataImportStatus.failure, error: failure)),
-      (summary) {
-        if (summary.failedRows > 0) {
+
+    if (event.filePath.endsWith('.zip')) {
+      final archive = ZipDecoder().decodeBytes(File(event.filePath).readAsBytesSync());
+      final tempDir = await getTemporaryDirectory();
+      var summary = const ImportSummary(totalRows: 0, successfulRows: 0, failedRows: 0);
+
+      for (final file in archive) {
+        final filename = file.name;
+        final data = file.content as List<int>;
+        final extractedFilePath = '${tempDir.path}/$filename';
+        await File(extractedFilePath).writeAsBytes(data);
+
+        final entityTypeString = filename.split('.').first;
+        final entityType = EntityType.values
+            .firstWhere((e) => e.toString().split('.').last == entityTypeString);
+
+        final useCase = entityType == EntityType.followUpReport
+            ? _importFollowUpReportsUseCase
+            : _importDataUseCase;
+        final config = event.config.copyWith(
+            entityType: entityType, filePath: extractedFilePath);
+        final result = await useCase(config);
+
+        if (result.isLeft()) {
           emit(currentState.copyWith(
               importStatus: DataImportStatus.failure,
-              importSummary: summary,
-              error:
-                  CacheFailure(message: 'Some rows failed to import.')));
+              error: (result as Left).value));
+          return;
         } else {
-          emit(currentState.copyWith(
-              importStatus: DataImportStatus.success,
-              importSummary: summary));
+          final newSummary = (result as Right).value;
+          if (newSummary is ImportSummary) {
+            summary = summary.copyWith(
+              totalRows: summary.totalRows + newSummary.totalRows,
+              successfulRows: summary.successfulRows + newSummary.successfulRows,
+              failedRows: summary.failedRows + newSummary.failedRows,
+              errorMessages: [
+                ...summary.errorMessages,
+                ...newSummary.errorMessages
+              ],
+            );
+          }
         }
-      },
-    );
+      }
+      emit(currentState.copyWith(
+          importStatus: DataImportStatus.success, importSummary: summary));
+    } else {
+      final useCase = event.config.entityType == EntityType.followUpReport
+          ? _importFollowUpReportsUseCase
+          : _importDataUseCase;
+      final result = await useCase(event.config.copyWith(filePath: event.filePath));
+      result.fold(
+        (failure) => emit(currentState.copyWith(
+            importStatus: DataImportStatus.failure, error: failure)),
+        (summary) {
+          if ( summary.failedRows > 0) {
+            emit(currentState.copyWith(
+                importStatus: DataImportStatus.failure,
+                importSummary: summary,
+                error: CacheFailure(message: 'Some rows failed to import.')));
+          } else {
+            emit(currentState.copyWith(
+                importStatus: DataImportStatus.success,
+                importSummary: summary));
+          }
+        },
+      );
+    }
   }
 
   void _onSettingsImportExportResetStatus(Emitter<SettingsState> emit) {

@@ -6,7 +6,7 @@ import '../../../../core/models/tracking_units.dart';
 @immutable
 final class PlanDetailModel {
   final TrackingType type;
-  final TrackingUnit unit;
+  final TrackingUnitTyps unit;
   final int amount;
 
   const PlanDetailModel({
@@ -19,7 +19,7 @@ final class PlanDetailModel {
   factory PlanDetailModel.fromJson(Map<String, dynamic> json) {
     return PlanDetailModel(
       type: TrackingType.fromLabel(json['type'] as String? ?? 'recitation'),
-      unit: TrackingUnit.fromLabel(json['unit'] as String? ?? 'page'),
+      unit: TrackingUnitTyps.fromLabel(json['unit'] as String? ?? 'page'),
       amount: json['amount'] as int? ?? 0,
     );
   }
@@ -28,7 +28,7 @@ final class PlanDetailModel {
   factory PlanDetailModel.fromMap(Map<String, dynamic> map) {
     return PlanDetailModel(
       type: TrackingType.fromLabel(map['type'] as String),
-      unit: TrackingUnit.fromLabel(map['unit'] as String),
+      unit: TrackingUnitTyps.fromLabel(map['unit'] as String),
       amount: map['amount'] as int,
     );
   }

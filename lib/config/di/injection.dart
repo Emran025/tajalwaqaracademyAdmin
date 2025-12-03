@@ -50,12 +50,14 @@ import '../../features/daily_tracking/presentation/bloc/error_analysis_chart_blo
 import '../../features/daily_tracking/presentation/bloc/quran_reader_bloc.dart';
 import '../../features/daily_tracking/presentation/bloc/tracking_session_bloc.dart';
 import '../../features/settings/domain/usecases/export_data_usecase.dart';
+import '../../features/settings/domain/usecases/export_follow_up_reports_usecase.dart';
 import '../../features/settings/domain/usecases/get_latest_policy_usecase.dart';
 import '../../features/settings/domain/usecases/get_settings.dart';
 import '../../features/settings/domain/usecases/get_faqs_usecase.dart';
 import '../../features/settings/domain/usecases/get_terms_of_use_usecase.dart';
 import '../../features/settings/domain/usecases/get_user_profile.dart';
 import '../../features/settings/domain/usecases/import_data_usecase.dart';
+import '../../features/settings/domain/usecases/import_follow_up_reports_usecase.dart';
 import '../../features/settings/domain/usecases/save_theme.dart';
 import '../../features/settings/domain/usecases/set_analytics_preference.dart';
 import '../../features/settings/domain/usecases/set_notifications_preference.dart';
@@ -211,6 +213,8 @@ abstract class BlocModule {
     GetFaqsUseCase getFaqsUseCase,
     SubmitSupportTicketUseCase submitSupportTicketUseCase,
     GetTermsOfUseUseCase getTermsOfUseUseCase,
+    ExportFollowUpReportsUseCase exportFollowUpReportsUseCase,
+    ImportFollowUpReportsUseCase importFollowUpReportsUseCase,
   ) {
     return SettingsBloc(
       getSettings: getSettings,
@@ -225,6 +229,8 @@ abstract class BlocModule {
       getFaqsUseCase: getFaqsUseCase,
       submitSupportTicketUseCase: submitSupportTicketUseCase,
       getTermsOfUseUseCase: getTermsOfUseUseCase,
+      exportFollowUpReportsUseCase: exportFollowUpReportsUseCase,
+      importFollowUpReportsUseCase: importFollowUpReportsUseCase,
     )..add(LoadInitialSettings());
   }
 

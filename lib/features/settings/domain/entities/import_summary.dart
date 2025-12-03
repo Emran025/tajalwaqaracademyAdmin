@@ -23,6 +23,20 @@ class ImportSummary extends Equatable {
     this.errorMessages = const [],
   });
 
+  ImportSummary copyWith({
+    int? totalRows,
+    int? successfulRows,
+    int? failedRows,
+    List<String>? errorMessages,
+  }) {
+    return ImportSummary(
+      totalRows: totalRows ?? this.totalRows,
+      successfulRows: successfulRows ?? this.successfulRows,
+      failedRows: failedRows ?? this.failedRows,
+      errorMessages: errorMessages ?? this.errorMessages,
+    );
+  }
+
   @override
   List<Object?> get props =>
       [totalRows, successfulRows, failedRows, errorMessages];

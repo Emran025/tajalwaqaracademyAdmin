@@ -12,6 +12,7 @@ import 'package:tajalwaqaracademy/core/models/user_role.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/models/sync_queue_model.dart';
 import '../../../daily_tracking/data/models/mistake_model.dart';
+import '../../../settings/domain/entities/import_export.dart';
 import '../models/assigned_halaqas_model.dart';
 import '../models/follow_up_plan_model.dart';
 import '../models/student_info_model.dart';
@@ -1221,6 +1222,131 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
       throw CacheException(
         message:
             'Failed to fetch filtered students from cache: ${e.toString()}',
+      );
+    }
+  }
+
+  @override
+  Future<Map<String, List<TrackingModel>>> getAllFollowUpTrackings() async {
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
+    try {
+      // 1. Fetch all student enrollments along with their UUIDs.
+      final enrollmentMaps = await _db.rawQuery('''
+        SELECT HS.id, U.uuid
+        FROM $_kHalqaStudentsTable HS
+        JOIN $_kUsersTable U ON HS.studentId = U.id
+        WHERE U.roleId = ? AND U.isDeleted = ? AND U.tenant_id = ?
+      ''', [UserRole.student.id, 0, tenantId]);
+
+      if (enrollmentMaps.isEmpty) {
+        return {};
+      }
+
+      final enrollmentIds = enrollmentMaps.map((map) => map['id'] as int).toList();
+      final studentUuidByEnrollmentId = {
+        for (var map in enrollmentMaps) map['id'] as int: map['uuid'] as String
+      };
+
+      // 2. Fetch all tracking records for these enrollments.
+      final trackingMaps = await _db.query(
+        _kDailyTrackingTable,
+        where: 'enrollmentId IN (${List.filled(enrollmentIds.length, '?').join(',')}) AND tenant_id = ?',
+        whereArgs: [...enrollmentIds, tenantId],
+      );
+
+      if (trackingMaps.isEmpty) {
+        return {};
+      }
+
+      // 3. Efficiently fetch all child details and group them by trackingId.
+      final trackingIds = trackingMaps.map((map) => map['id'] as int).toList();
+      final detailsByTrackingId = await _fetchAllTrackingDetailsGroupedByParentId(
+        dbExecutor: _db,
+        trackingIds: trackingIds,
+      );
+
+      // 4. Assemble the final models.
+      final allTrackings = trackingMaps.map((trackingMap) {
+        final trackingId = trackingMap['id'] as int;
+        final details = detailsByTrackingId[trackingId] ?? [];
+        return TrackingModel.fromMap(trackingMap, details);
+      }).toList();
+
+      // 5. Group the assembled models by student UUID.
+      final trackingsByStudentUuid = <String, List<TrackingModel>>{};
+      for (final tracking in allTrackings) {
+        final studentUuid = studentUuidByEnrollmentId[tracking.enrollmentId];
+        if (studentUuid != null) {
+          (trackingsByStudentUuid[studentUuid] ??= []).add(tracking);
+        }
+      }
+
+      return trackingsByStudentUuid;
+    } on DatabaseException catch (e) {
+      throw CacheException(
+        message: 'Failed to fetch all follow-up trackings: ${e.toString()}',
+      );
+    }
+  }
+
+  @override
+  Future<void> importFollowUpTrackings({
+    required Map<String, List<TrackingModel>> trackings,
+    required ConflictResolution conflictResolution,
+  }) async {
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
+    try {
+      await _db.transaction((txn) async {
+        for (final entry in trackings.entries) {
+          final studentId = entry.key;
+          final studentTrackings = entry.value;
+
+          final enrollmentIds = await _fetchEnrollmentIdbyStudentUuids(
+            dbExecutor: txn,
+            uuids: [studentId],
+          );
+          if (enrollmentIds.isEmpty) {
+            // Handle case where student is not found
+            continue;
+          }
+          final enrollmentId = enrollmentIds.first;
+
+          for (final trackingModel in studentTrackings) {
+            final trackingMap = trackingModel.toMap(enrollmentId);
+            trackingMap['tenant_id'] = tenantId;
+
+            final newParentTrackingId = await txn.insert(
+              _kDailyTrackingTable,
+              trackingMap,
+              conflictAlgorithm: conflictResolution == ConflictResolution.overwrite
+                  ? ConflictAlgorithm.replace
+                  : ConflictAlgorithm.ignore,
+            );
+
+            if (newParentTrackingId == 0) continue;
+
+            for (final detailModel in trackingModel.details) {
+              final detailMap = detailModel.toMap(newParentTrackingId);
+              detailMap['tenant_id'] = tenantId;
+              final newDetailId = await txn.insert(
+                _kDailyTrackingDetailTable,
+                detailMap,
+              );
+
+              for (final mistakeModel in detailModel.mistakes) {
+                final mistakeMap = mistakeModel.toMap(newDetailId);
+                mistakeMap['tenant_id'] = tenantId;
+                await txn.insert(_kMistakesTable, mistakeMap);
+              }
+            }
+          }
+        }
+      });
+    } on DatabaseException catch (e) {
+      throw CacheException(
+        message: 'Failed to import follow-up trackings: ${e.toString()}',
       );
     }
   }

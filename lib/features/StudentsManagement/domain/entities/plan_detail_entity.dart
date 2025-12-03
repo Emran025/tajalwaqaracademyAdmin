@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 @immutable
 class PlanDetailEntity {
   final TrackingType type;
-  final TrackingUnit unit;
+  final TrackingUnitTyps unit;
   final int amount;
 
   const PlanDetailEntity({

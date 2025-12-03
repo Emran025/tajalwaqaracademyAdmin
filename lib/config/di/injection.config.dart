@@ -160,6 +160,8 @@ import 'package:tajalwaqaracademy/features/settings/domain/repositories/settings
     as _i17;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/export_data_usecase.dart'
     as _i632;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/export_follow_up_reports_usecase.dart'
+    as _i319;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_faqs_usecase.dart'
     as _i860;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_latest_policy_usecase.dart'
@@ -172,6 +174,8 @@ import 'package:tajalwaqaracademy/features/settings/domain/usecases/get_user_pro
     as _i604;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/import_data_usecase.dart'
     as _i16;
+import 'package:tajalwaqaracademy/features/settings/domain/usecases/import_follow_up_reports_usecase.dart'
+    as _i490;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/save_theme.dart'
     as _i589;
 import 'package:tajalwaqaracademy/features/settings/domain/usecases/set_analytics_preference.dart'
@@ -341,6 +345,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i357.WatchTeachersParams>(
       () => _i357.WatchTeachersParams(forceRefresh: gh<bool>()),
     );
+    gh.lazySingleton<_i281.SettingsLocalDataSource>(
+      () => _i242.SettingsLocalDataSourceImpl(
+        sharedPreferences: gh<_i460.SharedPreferences>(),
+        appDatabase: gh<_i788.AppDatabase>(),
+      ),
+    );
     gh.lazySingleton<_i94.TrackingLocalDataSource>(
       () => _i390.TrackingLocalDataSourceImpl(
         gh<_i788.AppDatabase>(),
@@ -348,30 +358,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1057.AuthLocalDataSource>(),
       ),
     );
-    gh.lazySingleton<_i281.SettingsLocalDataSource>(
-      () => _i242.SettingsLocalDataSourceImpl(
-        sharedPreferences: gh<_i460.SharedPreferences>(),
-        appDatabase: gh<_i788.AppDatabase>(),
-      ),
-    );
     await gh.factoryAsync<_i779.Database>(
       () => registerModule.database(gh<_i788.AppDatabase>()),
       preResolve: true,
-    );
-    gh.lazySingleton<_i395.StudentLocalDataSource>(
-      () => _i937.StudentLocalDataSourceImpl(
-          database: gh<_i779.Database>(),
-          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
-    );
-    gh.lazySingleton<_i325.SupervisorLocalDataSource>(
-      () => _i414.SupervisorLocalDataSourceImpl(
-          database: gh<_i779.Database>(),
-          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
-    );
-    gh.lazySingleton<_i830.CoreDataLocalDataSource>(
-      () => _i1010.CoreDataLocalDataSourceImpl(
-          database: gh<_i779.Database>(),
-          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
     );
     gh.lazySingleton<_i1.NetworkInfo>(
       () => _i81.NetworkInfoImpl(
@@ -383,10 +372,17 @@ extension GetItInjectableX on _i174.GetIt {
         localDataSource: gh<_i94.TrackingLocalDataSource>(),
       ),
     );
-    gh.lazySingleton<_i946.TeacherLocalDataSource>(
-      () => _i216.TeacherLocalDataSourceImpl(
-          database: gh<_i779.Database>(),
-          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
+    gh.lazySingleton<_i825.HalaqaLocalDataSource>(
+      () => _i721.HalaqaLocalDataSourceImpl(
+        database: gh<_i779.Database>(),
+        authLocalDataSource: gh<_i1057.AuthLocalDataSource>(),
+      ),
+    );
+    gh.lazySingleton<_i395.StudentLocalDataSource>(
+      () => _i937.StudentLocalDataSourceImpl(
+        database: gh<_i779.Database>(),
+        authLocalDataSource: gh<_i1057.AuthLocalDataSource>(),
+      ),
     );
     gh.lazySingleton<_i361.Dio>(
       () => registerModule.dio(
@@ -433,6 +429,18 @@ extension GetItInjectableX on _i174.GetIt {
         apiConsumer: gh<_i478.ApiConsumer>(),
       ),
     );
+    gh.lazySingleton<_i830.CoreDataLocalDataSource>(
+      () => _i1010.CoreDataLocalDataSourceImpl(
+        database: gh<_i779.Database>(),
+        authLocalDataSource: gh<_i1057.AuthLocalDataSource>(),
+      ),
+    );
+    gh.lazySingleton<_i325.SupervisorLocalDataSource>(
+      () => _i414.SupervisorLocalDataSourceImpl(
+        database: gh<_i779.Database>(),
+        authLocalDataSource: gh<_i1057.AuthLocalDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i801.SettingsRemoteDataSource>(
       () => _i1060.SettingsRemoteDataSourceImpl(api: gh<_i478.ApiConsumer>()),
     );
@@ -441,10 +449,11 @@ extension GetItInjectableX on _i174.GetIt {
         localDataSource: gh<_i325.SupervisorLocalDataSource>(),
       ),
     );
-    gh.lazySingleton<_i825.HalaqaLocalDataSource>(
-      () => _i721.HalaqaLocalDataSourceImpl(
-          database: gh<_i779.Database>(),
-          authLocalDataSource: gh<_i1057.AuthLocalDataSource>()),
+    gh.lazySingleton<_i946.TeacherLocalDataSource>(
+      () => _i216.TeacherLocalDataSourceImpl(
+        database: gh<_i779.Database>(),
+        authLocalDataSource: gh<_i1057.AuthLocalDataSource>(),
+      ),
     );
     gh.factory<_i897.ErrorAnalysisChartBloc>(
       () => blocModule.errorAnalysisChartBloc(
@@ -637,6 +646,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i403.RejectApplicantUseCase>(
       () => _i403.RejectApplicantUseCase(gh<_i795.SupervisorRepository>()),
     );
+    gh.factory<_i319.ExportFollowUpReportsUseCase>(
+      () => _i319.ExportFollowUpReportsUseCase(gh<_i847.StudentRepository>()),
+    );
+    gh.factory<_i490.ImportFollowUpReportsUseCase>(
+      () => _i490.ImportFollowUpReportsUseCase(gh<_i847.StudentRepository>()),
+    );
     gh.lazySingleton<_i751.GetDateRangeUseCase>(
       () => _i751.GetDateRangeUseCase(
         repository: gh<_i795.SupervisorRepository>(),
@@ -709,6 +724,24 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i357.WatchTeachersUseCase(repository: gh<_i567.TeacherRepository>()),
     );
+    gh.factory<_i441.SettingsBloc>(
+      () => blocModule.settingsBloc(
+        gh<_i959.GetSettings>(),
+        gh<_i589.SaveTheme>(),
+        gh<_i762.SetNotificationsPreference>(),
+        gh<_i562.SetAnalyticsPreference>(),
+        gh<_i604.GetUserProfile>(),
+        gh<_i577.UpdateUserProfile>(),
+        gh<_i311.GetLatestPolicyUseCase>(),
+        gh<_i16.ImportDataUseCase>(),
+        gh<_i632.ExportDataUseCase>(),
+        gh<_i860.GetFaqsUseCase>(),
+        gh<_i5.SubmitSupportTicketUseCase>(),
+        gh<_i962.GetTermsOfUseUseCase>(),
+        gh<_i319.ExportFollowUpReportsUseCase>(),
+        gh<_i490.ImportFollowUpReportsUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i286.GenerateFollowUpReportUseCase>(
       () => _i286.GenerateFollowUpReportUseCase(
         gh<_i847.StudentRepository>(),
@@ -741,22 +774,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i280.DeleteTeacherUseCase>(),
         gh<_i94.GetTeacherById>(),
         gh<_i825.SetTeacherStatusUseCase>(),
-      ),
-    );
-    gh.factory<_i441.SettingsBloc>(
-      () => blocModule.settingsBloc(
-        gh<_i959.GetSettings>(),
-        gh<_i589.SaveTheme>(),
-        gh<_i762.SetNotificationsPreference>(),
-        gh<_i562.SetAnalyticsPreference>(),
-        gh<_i604.GetUserProfile>(),
-        gh<_i577.UpdateUserProfile>(),
-        gh<_i311.GetLatestPolicyUseCase>(),
-        gh<_i16.ImportDataUseCase>(),
-        gh<_i632.ExportDataUseCase>(),
-        gh<_i860.GetFaqsUseCase>(),
-        gh<_i5.SubmitSupportTicketUseCase>(),
-        gh<_i962.GetTermsOfUseUseCase>(),
       ),
     );
     gh.factory<_i692.SupervisorBloc>(

@@ -1,4 +1,4 @@
-enum EntityType { student, teacher , halaqa }
+enum EntityType { student, teacher , halaqa, followUpReport }
 
 enum ConflictResolution { skip, overwrite }
 

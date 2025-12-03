@@ -105,7 +105,7 @@ class FollowUpReportFactory {
               amount: planDetail.amount,
             ),
             actual: ActualProgressEntity(
-              unit: TrackingUnit
+              unit: TrackingUnitTyps
                   .page, // يجب أن تكون الوحدة ديناميكية إذا كانت تتغير
               fromTrackingUnitId: trackingDetail.fromTrackingUnitId,
               toTrackingUnitId: trackingDetail.toTrackingUnitId,
@@ -163,12 +163,12 @@ class FollowUpReportFactory {
           _normalizeToCommonUnit(
             detail.actual.fromTrackingUnitId.toPage -
                 detail.actual.fromTrackingUnitId.fromPage,
-            TrackingUnit.fromId(detail.actual.fromTrackingUnitId.unitId),
+            TrackingUnitTyps.fromId(detail.actual.fromTrackingUnitId.unitId),
           ) +
           _normalizeToCommonUnit(
             detail.actual.toTrackingUnitId.toPage -
                 detail.actual.toTrackingUnitId.fromPage,
-            TrackingUnit.fromId(detail.actual.toTrackingUnitId.unitId),
+            TrackingUnitTyps.fromId(detail.actual.toTrackingUnitId.unitId),
           ); // افتراض
       if (plannedAmount > 0) {
         totalAchievementRate += (actualAmount / plannedAmount) * 100;
@@ -197,15 +197,15 @@ class FollowUpReportFactory {
     );
   }
 
-  double _normalizeToCommonUnit(num amount, TrackingUnit unit) {
+  double _normalizeToCommonUnit(num amount, TrackingUnitTyps unit) {
     switch (unit) {
-      case TrackingUnit.hizb:
+      case TrackingUnitTyps.hizb:
         return amount * _pagesPerHizb;
-      case TrackingUnit.juz:
+      case TrackingUnitTyps.juz:
         return amount * _pagesPerJuz;
-      case TrackingUnit.halfHizb:
+      case TrackingUnitTyps.halfHizb:
         return amount * _pagesPerHalfHizb;
-      case TrackingUnit.quarterHizb:
+      case TrackingUnitTyps.quarterHizb:
         return amount * _pagesPerQuarterHizb;
       default:
         return amount.toDouble();

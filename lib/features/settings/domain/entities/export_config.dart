@@ -16,6 +16,16 @@ class ExportConfig extends Equatable {
     required this.fileFormat,
   });
 
+  ExportConfig copyWith({
+    List<EntityType>? entityTypes,
+    DataExportFormat? fileFormat,
+  }) {
+    return ExportConfig(
+      entityTypes: entityTypes ?? this.entityTypes,
+      fileFormat: fileFormat ?? this.fileFormat,
+    );
+  }
+
   @override
   List<Object?> get props => [entityTypes, fileFormat];
 }
