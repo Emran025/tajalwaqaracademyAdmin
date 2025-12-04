@@ -95,7 +95,12 @@ class FollowUpReportFactory {
             planDetail.amount,
             planDetail.unit,
           );
-          final actualAmount = trackingDetail.actualAmount.toDouble();
+          final actualAmount = _normalizeToActUnit(
+            (trackingDetail.fromTrackingUnitId.fromPage + trackingDetail.gap) -
+                trackingDetail.fromTrackingUnitId.fromPage,
+            planDetail.unit,
+          );
+
           final gap = actualAmount - plannedAmount;
 
           return FollowUpReportDetailEntity(
@@ -207,6 +212,21 @@ class FollowUpReportFactory {
         return amount * _pagesPerHalfHizb;
       case TrackingUnitTyps.quarterHizb:
         return amount * _pagesPerQuarterHizb;
+      default:
+        return amount.toDouble();
+    }
+  }
+
+  double _normalizeToActUnit(num amount, TrackingUnitTyps unit) {
+    switch (unit) {
+      case TrackingUnitTyps.hizb:
+        return amount / _pagesPerHizb;
+      case TrackingUnitTyps.juz:
+        return amount / _pagesPerJuz;
+      case TrackingUnitTyps.halfHizb:
+        return amount / _pagesPerHalfHizb;
+      case TrackingUnitTyps.quarterHizb:
+        return amount / _pagesPerQuarterHizb;
       default:
         return amount.toDouble();
     }

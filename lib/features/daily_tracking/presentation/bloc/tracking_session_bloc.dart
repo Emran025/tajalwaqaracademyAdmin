@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:collection/collection.dart'; // Import collection package for firstWhereOrNull
@@ -409,7 +408,7 @@ class TrackingSessionBloc
       trackingId: currentDetail.trackingId,
       trackingTypeId: currentDetail.trackingTypeId,
       fromTrackingUnitId: currentDetail.fromTrackingUnitId,
-      toTrackingUnitId: newToTrackingUnitId,
+      toTrackingUnitId: newToTrackingUnitId.toEntity(),
       actualAmount: currentDetail.actualAmount,
       comment: currentDetail.comment,
       status: currentDetail.status,

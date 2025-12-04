@@ -1,5 +1,6 @@
+import 'package:tajalwaqaracademy/core/entities/tracking_unit.dart';
 
-class TrackingUnitDetail {
+class TrackingUnitDetailModel {
   final int id;
   final int unitId;
   final String fromSurah;
@@ -9,8 +10,7 @@ class TrackingUnitDetail {
   final int toPage;
   final int toAyah;
 
-
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     this.id,
     this.unitId,
     this.fromSurah,
@@ -34,8 +34,28 @@ class TrackingUnitDetail {
     };
   }
 
-  factory TrackingUnitDetail.fromJson(Map<String, dynamic> json) {
-    return TrackingUnitDetail(
+  factory TrackingUnitDetailModel.fromEntity(
+    TrackingUnitDetail trackingUnitDetail,
+  ) {
+    return TrackingUnitDetailModel(
+      trackingUnitDetail.id,
+      trackingUnitDetail.unitId,
+      trackingUnitDetail.fromSurah,
+      trackingUnitDetail.fromPage,
+      trackingUnitDetail.fromAyah,
+      trackingUnitDetail.toSurah,
+      trackingUnitDetail.toPage,
+      trackingUnitDetail.toAyah,
+    );
+  }
+
+   TrackingUnitDetail toEntity(
+  ) {
+    return TrackingUnitDetail(id, unitId, fromSurah, fromPage, fromAyah, toSurah, toPage, toAyah);
+  }
+
+  factory TrackingUnitDetailModel.fromJson(Map<String, dynamic> json) {
+    return TrackingUnitDetailModel(
       json['id'] as int,
       json['unitId'] as int,
       json['fromSurah'] as String,

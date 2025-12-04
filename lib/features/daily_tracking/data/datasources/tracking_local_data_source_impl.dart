@@ -749,6 +749,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       'trackDate': today,
       'status': 'draft',
       'lastModified': DateTime.now().millisecondsSinceEpoch,
+      'createdAt': DateTime.now().millisecondsSinceEpoch,
       'tenant_id': tenantId,
     };
     final newId = await db.insert(_kDailyTrackingTable, newRecord);

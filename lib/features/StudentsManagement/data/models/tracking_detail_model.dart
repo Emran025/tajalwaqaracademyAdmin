@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import '../../../../core/models/tracking_unit_model.dart';
 import '../../domain/entities/tracking_detail_entity.dart';
 import 'package:tajalwaqaracademy/core/constants/tracking_unit_detail.dart';
 import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
@@ -8,7 +9,6 @@ import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
 import 'package:tajalwaqaracademy/features/daily_tracking/data/models/mistake_model.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../core/entities/tracking_unit.dart';
 
 /// The data model for the detailed breakdown of a daily tracking record.
 ///
@@ -21,8 +21,8 @@ final class TrackingDetailModel {
   final String uuid; // The sync-ready unique ID
   final int trackingId; // The local ID of the parent daily_tracking record
   final TrackingType trackingTypeId;
-  final TrackingUnitDetail fromTrackingUnitId;
-  final TrackingUnitDetail toTrackingUnitId;
+  final TrackingUnitDetailModel fromTrackingUnitId;
+  final TrackingUnitDetailModel toTrackingUnitId;
   final int actualAmount;
   final String comment;
   final int score;
@@ -147,7 +147,7 @@ final class TrackingDetailModel {
       trackingId: row['trackingId'] as int,
       trackingTypeId: TrackingType.values
           .firstWhere((e) => e.toString() == row['detailType'] as String),
-      fromTrackingUnitId: TrackingUnitDetail(
+      fromTrackingUnitId: TrackingUnitDetailModel(
         0,
         int.tryParse(row['from_unitId'] as String? ?? '0') ?? 0,
         row['from_fromSurah'] as String,
@@ -157,7 +157,7 @@ final class TrackingDetailModel {
         int.tryParse(row['from_toPage'] as String? ?? '0') ?? 0,
         int.tryParse(row['from_toAyah'] as String? ?? '0') ?? 0,
       ),
-      toTrackingUnitId: TrackingUnitDetail(
+      toTrackingUnitId: TrackingUnitDetailModel(
         0,
         int.tryParse(row['to_unitId'] as String? ?? '0') ?? 0,
         row['to_fromSurah'] as String,
@@ -201,8 +201,8 @@ final class TrackingDetailModel {
     String? uuid,
     int? trackingId,
     TrackingType? trackingTypeId,
-    TrackingUnitDetail? fromTrackingUnitId,
-    TrackingUnitDetail? toTrackingUnitId,
+    TrackingUnitDetailModel? fromTrackingUnitId,
+    TrackingUnitDetailModel? toTrackingUnitId,
     int? actualAmount,
     String? comment,
     String? status,
@@ -237,8 +237,8 @@ final class TrackingDetailModel {
       uuid: uuid, // Use UUID for the entity's ID
       trackingId: trackingId.toString(),
       trackingTypeId: trackingTypeId,
-      fromTrackingUnitId: fromTrackingUnitId,
-      toTrackingUnitId: toTrackingUnitId,
+      fromTrackingUnitId: fromTrackingUnitId.toEntity(),
+      toTrackingUnitId: toTrackingUnitId.toEntity(),
       actualAmount: actualAmount,
       comment: comment,
       status: status,
@@ -262,8 +262,8 @@ final class TrackingDetailModel {
       uuid: entity.uuid,
       trackingId: int.parse(entity.trackingId),
       trackingTypeId: entity.trackingTypeId,
-      fromTrackingUnitId: entity.fromTrackingUnitId,
-      toTrackingUnitId: entity.toTrackingUnitId,
+      fromTrackingUnitId: TrackingUnitDetailModel.fromEntity( entity.fromTrackingUnitId),
+      toTrackingUnitId: TrackingUnitDetailModel.fromEntity( entity.toTrackingUnitId),
       actualAmount: entity.actualAmount,
       comment: entity.comment,
       status: entity.status,

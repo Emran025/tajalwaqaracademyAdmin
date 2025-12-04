@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 class TrackingEntity {
   final String id;
   final DateTime date;
-  final String enrollmentId;
+  final int enrollmentId;
   final String note;
-  final  AttendanceType attendanceTypeId;
+  final AttendanceType attendanceTypeId;
   final int behaviorNote;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -16,7 +16,7 @@ class TrackingEntity {
   /// A list of detailed tracking items associated with this daily record.
   final List<TrackingDetailEntity> details;
 
- const TrackingEntity({
+  const TrackingEntity({
     required this.id,
     required this.date,
     required this.enrollmentId,
@@ -27,5 +27,4 @@ class TrackingEntity {
     required this.updatedAt,
     required this.details,
   });
-
 }

@@ -1,7 +1,7 @@
-import 'package:tajalwaqaracademy/core/entities/tracking_unit.dart';
+import 'package:tajalwaqaracademy/core/models/tracking_unit_model.dart';
 
-List<TrackingUnitDetail> trackingUnitDetail = [
-  TrackingUnitDetail(
+List<TrackingUnitDetailModel> trackingUnitDetail = [
+  TrackingUnitDetailModel(
     1,
     1,
     'سُورَةُ ٱلْفَاتِحَةِ',
@@ -11,7 +11,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     21,
     141,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     2,
     1,
     'سُورَةُ البَقَرَةِ',
@@ -21,7 +21,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     41,
     252,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     3,
     1,
     'سُورَةُ البَقَرَةِ',
@@ -31,7 +31,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     62,
     92,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     4,
     1,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -41,7 +41,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     81,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     5,
     1,
     'سُورَةُ النِّسَاءِ',
@@ -51,7 +51,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     101,
     147,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     6,
     1,
     'سُورَةُ النِّسَاءِ',
@@ -61,7 +61,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     121,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     7,
     1,
     'سُورَةُ المَائـِدَةِ',
@@ -71,7 +71,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     141,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     8,
     1,
     'سُورَةُ الأَنْعَامِ',
@@ -81,7 +81,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     161,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     9,
     1,
     'سُورَةُ الأَعْرَافِ',
@@ -91,7 +91,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     181,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     10,
     1,
     'سُورَةُ الأَنفَالِ',
@@ -101,7 +101,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     201,
     92,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     11,
     1,
     'سُورَةُ التَّوْبَةِ',
@@ -111,7 +111,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     221,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     12,
     1,
     'سُورَةُ هُودٍ',
@@ -121,7 +121,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     241,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     13,
     1,
     'سُورَةُ يُوسُفَ',
@@ -131,7 +131,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     261,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     14,
     1,
     'سُورَةُ الحِجۡرِ',
@@ -141,7 +141,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     281,
     128,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     15,
     1,
     'سُورَةُ الإِسْرَاءِ',
@@ -151,7 +151,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     301,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     16,
     1,
     'سُورَةُ الكَهْفِ',
@@ -161,7 +161,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     321,
     135,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     17,
     1,
     'سُورَةُ الأَنبِيَاءِ',
@@ -171,7 +171,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     341,
     78,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     18,
     1,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -181,7 +181,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     361,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     19,
     1,
     'سُورَةُ الفُرْقَانِ',
@@ -191,7 +191,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     381,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     20,
     1,
     'سُورَةُ النَّمْلِ',
@@ -201,7 +201,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     401,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     21,
     1,
     'سُورَةُ العَنكَبُوتِ',
@@ -211,7 +211,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     421,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     22,
     1,
     'سُورَةُ الأَحْزَابِ',
@@ -221,7 +221,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     441,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     23,
     1,
     'سُورَةُ يسٓ',
@@ -231,7 +231,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     461,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     24,
     1,
     'سُورَةُ الزُّمَرِ',
@@ -241,7 +241,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     481,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     25,
     1,
     'سُورَةُ فُصِّلَتۡ',
@@ -251,7 +251,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     502,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     26,
     1,
     'سُورَةُ الأَحْقَافِ',
@@ -261,7 +261,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     521,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     27,
     1,
     'سُورَةُ الذَّارِيَاتِ',
@@ -271,7 +271,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     541,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     28,
     1,
     'سُورَةُ المُجَادلَةِ',
@@ -281,7 +281,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     561,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     29,
     1,
     'سُورَةُ المُلْكِ',
@@ -291,7 +291,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     581,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     30,
     1,
     'سُورَةُ النَّبَإِ',
@@ -301,7 +301,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     604,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     31,
     2,
     'سُورَةُ ٱلْفَاتِحَةِ',
@@ -311,7 +311,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     11,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     32,
     2,
     'سُورَةُ البَقَرَةِ',
@@ -321,7 +321,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     21,
     141,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     33,
     2,
     'سُورَةُ البَقَرَةِ',
@@ -331,7 +331,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     31,
     202,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     34,
     2,
     'سُورَةُ البَقَرَةِ',
@@ -341,7 +341,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     41,
     252,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     35,
     2,
     'سُورَةُ البَقَرَةِ',
@@ -351,7 +351,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     51,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     36,
     2,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -361,7 +361,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     62,
     92,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     37,
     2,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -371,7 +371,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     72,
     170,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     38,
     2,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -381,7 +381,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     81,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     39,
     2,
     'سُورَةُ النِّسَاءِ',
@@ -391,7 +391,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     92,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     40,
     2,
     'سُورَةُ النِّسَاءِ',
@@ -401,7 +401,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     101,
     147,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     41,
     2,
     'سُورَةُ النِّسَاءِ',
@@ -411,7 +411,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     112,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     42,
     2,
     'سُورَةُ المَائـِدَةِ',
@@ -421,7 +421,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     121,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     43,
     2,
     'سُورَةُ المَائـِدَةِ',
@@ -431,7 +431,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     131,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     44,
     2,
     'سُورَةُ الأَنْعَامِ',
@@ -441,7 +441,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     141,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     45,
     2,
     'سُورَةُ الأَنْعَامِ',
@@ -451,7 +451,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     150,
     165,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     46,
     2,
     'سُورَةُ الأَعْرَافِ',
@@ -461,7 +461,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     161,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     47,
     2,
     'سُورَةُ الأَعْرَافِ',
@@ -471,7 +471,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     172,
     170,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     48,
     2,
     'سُورَةُ الأَعْرَافِ',
@@ -481,7 +481,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     181,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     49,
     2,
     'سُورَةُ الأَنفَالِ',
@@ -491,7 +491,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     192,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     50,
     2,
     'سُورَةُ التَّوْبَةِ',
@@ -501,7 +501,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     201,
     92,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     51,
     2,
     'سُورَةُ التَّوْبَةِ',
@@ -511,7 +511,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     211,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     52,
     2,
     'سُورَةُ يُونُسَ',
@@ -521,8 +521,8 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     221,
     5,
   ),
-  TrackingUnitDetail(53, 2, 'سُورَةُ هُودٍ', 222, 6, 'سُورَةُ هُودٍ', 231, 83),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(53, 2, 'سُورَةُ هُودٍ', 222, 6, 'سُورَةُ هُودٍ', 231, 83),
+  TrackingUnitDetailModel(
     54,
     2,
     'سُورَةُ هُودٍ',
@@ -532,7 +532,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     241,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     55,
     2,
     'سُورَةُ يُوسُفَ',
@@ -542,7 +542,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     251,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     56,
     2,
     'سُورَةُ الرَّعْدِ',
@@ -552,7 +552,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     261,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     57,
     2,
     'سُورَةُ الحِجۡرِ',
@@ -562,7 +562,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     272,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     58,
     2,
     'سُورَةُ النَّحْلِ',
@@ -572,7 +572,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     281,
     128,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     59,
     2,
     'سُورَةُ الإِسْرَاءِ',
@@ -582,7 +582,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     292,
     98,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     60,
     2,
     'سُورَةُ الإِسْرَاءِ',
@@ -592,7 +592,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     301,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     61,
     2,
     'سُورَةُ الكَهْفِ',
@@ -602,8 +602,8 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     312,
     98,
   ),
-  TrackingUnitDetail(62, 2, 'سُورَةُ طه', 312, 1, 'سُورَةُ طه', 321, 135),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(62, 2, 'سُورَةُ طه', 312, 1, 'سُورَةُ طه', 321, 135),
+  TrackingUnitDetailModel(
     63,
     2,
     'سُورَةُ الأَنبِيَاءِ',
@@ -613,7 +613,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     331,
     112,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     64,
     2,
     'سُورَةُ الحَجِّ',
@@ -623,7 +623,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     341,
     78,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     65,
     2,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -633,7 +633,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     351,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     66,
     2,
     'سُورَةُ النُّورِ',
@@ -643,7 +643,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     361,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     67,
     2,
     'سُورَةُ الفُرْقَانِ',
@@ -653,7 +653,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     371,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     68,
     2,
     'سُورَةُ الشُّعَرَاءِ',
@@ -663,7 +663,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     381,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     69,
     2,
     'سُورَةُ النَّمْلِ',
@@ -673,7 +673,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     391,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     70,
     2,
     'سُورَةُ القَصَصِ',
@@ -683,7 +683,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     401,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     71,
     2,
     'سُورَةُ العَنكَبُوتِ',
@@ -693,7 +693,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     413,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     72,
     2,
     'سُورَةُ لُقۡمَانَ',
@@ -703,7 +703,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     421,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     73,
     2,
     'سُورَةُ الأَحْزَابِ',
@@ -713,8 +713,8 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     431,
     23,
   ),
-  TrackingUnitDetail(74, 2, 'سُورَةُ سَبَإٍ', 431, 24, 'سُورَةُ يسٓ', 441, 27),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(74, 2, 'سُورَةُ سَبَإٍ', 431, 24, 'سُورَةُ يسٓ', 441, 27),
+  TrackingUnitDetailModel(
     75,
     2,
     'سُورَةُ يسٓ',
@@ -724,7 +724,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     451,
     144,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     76,
     2,
     'سُورَةُ الصَّافَّاتِ',
@@ -734,7 +734,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     461,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     77,
     2,
     'سُورَةُ الزُّمَرِ',
@@ -744,7 +744,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     471,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     78,
     2,
     'سُورَةُ غَافِرٍ',
@@ -754,7 +754,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     481,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     79,
     2,
     'سُورَةُ فُصِّلَتۡ',
@@ -764,7 +764,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     491,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     80,
     2,
     'سُورَةُ الزُّخْرُفِ',
@@ -774,7 +774,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     502,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     81,
     2,
     'سُورَةُ الأَحْقَافِ',
@@ -784,7 +784,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     513,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     82,
     2,
     'سُورَةُ الفَتۡحِ',
@@ -794,7 +794,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     521,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     83,
     2,
     'سُورَةُ الذَّارِيَاتِ',
@@ -804,7 +804,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     531,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     84,
     2,
     'سُورَةُ الرَّحْمَٰن',
@@ -814,7 +814,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     541,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     85,
     2,
     'سُورَةُ المُجَادلَةِ',
@@ -824,7 +824,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     552,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     86,
     2,
     'سُورَةُ الجُمُعَةِ',
@@ -834,7 +834,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     561,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     87,
     2,
     'سُورَةُ المُلْكِ',
@@ -844,7 +844,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     571,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     88,
     2,
     'سُورَةُ الجِنِّ',
@@ -854,7 +854,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     581,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     89,
     2,
     'سُورَةُ النَّبَإِ',
@@ -864,7 +864,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     591,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     90,
     2,
     'سُورَةُ الأَعْلَىٰ',
@@ -874,7 +874,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     604,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     91,
     3,
     'سُورَةُ ٱلْفَاتِحَةِ',
@@ -884,7 +884,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     7,
     43,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     92,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -894,7 +894,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     11,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     93,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -904,7 +904,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     16,
     105,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     94,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -914,7 +914,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     21,
     141,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     95,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -924,7 +924,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     26,
     176,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     96,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -934,7 +934,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     31,
     202,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     97,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -944,7 +944,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     37,
     232,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     98,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -954,7 +954,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     41,
     252,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     99,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -964,7 +964,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     46,
     271,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     100,
     3,
     'سُورَةُ البَقَرَةِ',
@@ -974,7 +974,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     51,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     101,
     3,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -984,7 +984,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     56,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     102,
     3,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -994,7 +994,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     62,
     92,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     103,
     3,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -1004,7 +1004,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     66,
     132,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     104,
     3,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -1014,7 +1014,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     72,
     170,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     105,
     3,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -1024,7 +1024,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     76,
     200,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     106,
     3,
     'سُورَةُ النِّسَاءِ',
@@ -1034,7 +1034,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     81,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     107,
     3,
     'سُورَةُ النِّسَاءِ',
@@ -1044,7 +1044,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     87,
     57,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     108,
     3,
     'سُورَةُ النِّسَاءِ',
@@ -1054,7 +1054,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     92,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     109,
     3,
     'سُورَةُ النِّسَاءِ',
@@ -1064,7 +1064,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     96,
     113,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     110,
     3,
     'سُورَةُ النِّسَاءِ',
@@ -1074,7 +1074,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     101,
     147,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     111,
     3,
     'سُورَةُ النِّسَاءِ',
@@ -1084,7 +1084,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     106,
     176,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     112,
     3,
     'سُورَةُ المَائـِدَةِ',
@@ -1094,7 +1094,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     112,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     113,
     3,
     'سُورَةُ المَائـِدَةِ',
@@ -1104,7 +1104,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     116,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     114,
     3,
     'سُورَةُ المَائـِدَةِ',
@@ -1114,7 +1114,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     121,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     115,
     3,
     'سُورَةُ المَائـِدَةِ',
@@ -1124,7 +1124,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     125,
     108,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     116,
     3,
     'سُورَةُ المَائـِدَةِ',
@@ -1134,7 +1134,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     131,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     117,
     3,
     'سُورَةُ الأَنْعَامِ',
@@ -1144,7 +1144,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     136,
     73,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     118,
     3,
     'سُورَةُ الأَنْعَامِ',
@@ -1154,7 +1154,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     141,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     119,
     3,
     'سُورَةُ الأَنْعَامِ',
@@ -1164,7 +1164,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     146,
     140,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     120,
     3,
     'سُورَةُ الأَنْعَامِ',
@@ -1174,7 +1174,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     150,
     165,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     121,
     3,
     'سُورَةُ الأَعْرَافِ',
@@ -1184,7 +1184,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     156,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     122,
     3,
     'سُورَةُ الأَعْرَافِ',
@@ -1194,7 +1194,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     161,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     123,
     3,
     'سُورَةُ الأَعْرَافِ',
@@ -1204,7 +1204,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     167,
     141,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     124,
     3,
     'سُورَةُ الأَعْرَافِ',
@@ -1214,7 +1214,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     172,
     170,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     125,
     3,
     'سُورَةُ الأَعْرَافِ',
@@ -1224,7 +1224,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     176,
     206,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     126,
     3,
     'سُورَةُ الأَنفَالِ',
@@ -1234,7 +1234,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     181,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     127,
     3,
     'سُورَةُ الأَنفَالِ',
@@ -1244,7 +1244,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     186,
     75,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     128,
     3,
     'سُورَةُ التَّوْبَةِ',
@@ -1254,7 +1254,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     192,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     129,
     3,
     'سُورَةُ التَّوْبَةِ',
@@ -1264,7 +1264,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     196,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     130,
     3,
     'سُورَةُ التَّوْبَةِ',
@@ -1274,7 +1274,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     201,
     92,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     131,
     3,
     'سُورَةُ التَّوْبَةِ',
@@ -1284,7 +1284,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     206,
     121,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     132,
     3,
     'سُورَةُ التَّوْبَةِ',
@@ -1294,7 +1294,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     211,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     133,
     3,
     'سُورَةُ يُونُسَ',
@@ -1304,7 +1304,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     216,
     70,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     134,
     3,
     'سُورَةُ يُونُسَ',
@@ -1314,8 +1314,8 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     221,
     5,
   ),
-  TrackingUnitDetail(135, 3, 'سُورَةُ هُودٍ', 222, 6, 'سُورَةُ هُودٍ', 226, 40),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(135, 3, 'سُورَةُ هُودٍ', 222, 6, 'سُورَةُ هُودٍ', 226, 40),
+  TrackingUnitDetailModel(
     136,
     3,
     'سُورَةُ هُودٍ',
@@ -1325,7 +1325,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     231,
     83,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     137,
     3,
     'سُورَةُ هُودٍ',
@@ -1335,7 +1335,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     236,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     138,
     3,
     'سُورَةُ يُوسُفَ',
@@ -1345,7 +1345,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     241,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     139,
     3,
     'سُورَةُ يُوسُفَ',
@@ -1355,7 +1355,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     247,
     100,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     140,
     3,
     'سُورَةُ يُوسُفَ',
@@ -1365,7 +1365,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     251,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     141,
     3,
     'سُورَةُ الرَّعْدِ',
@@ -1375,7 +1375,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     256,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     142,
     3,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -1385,7 +1385,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     261,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     143,
     3,
     'سُورَةُ الحِجۡرِ',
@@ -1395,7 +1395,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     267,
     99,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     144,
     3,
     'سُورَةُ النَّحْلِ',
@@ -1405,7 +1405,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     272,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     145,
     3,
     'سُورَةُ النَّحْلِ',
@@ -1415,7 +1415,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     277,
     89,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     146,
     3,
     'سُورَةُ النَّحْلِ',
@@ -1425,7 +1425,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     281,
     128,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     147,
     3,
     'سُورَةُ الإِسْرَاءِ',
@@ -1435,7 +1435,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     286,
     49,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     148,
     3,
     'سُورَةُ الإِسْرَاءِ',
@@ -1445,7 +1445,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     292,
     98,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     149,
     3,
     'سُورَةُ الإِسْرَاءِ',
@@ -1455,7 +1455,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     297,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     150,
     3,
     'سُورَةُ الكَهْفِ',
@@ -1465,7 +1465,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     301,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     151,
     3,
     'سُورَةُ الكَهْفِ',
@@ -1475,7 +1475,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     306,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     152,
     3,
     'سُورَةُ مَرْيَمَ',
@@ -1485,9 +1485,9 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     312,
     98,
   ),
-  TrackingUnitDetail(153, 3, 'سُورَةُ طه', 312, 1, 'سُورَةُ طه', 317, 82),
-  TrackingUnitDetail(154, 3, 'سُورَةُ طه', 317, 83, 'سُورَةُ طه', 321, 135),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(153, 3, 'سُورَةُ طه', 312, 1, 'سُورَةُ طه', 317, 82),
+  TrackingUnitDetailModel(154, 3, 'سُورَةُ طه', 317, 83, 'سُورَةُ طه', 321, 135),
+  TrackingUnitDetailModel(
     155,
     3,
     'سُورَةُ الأَنبِيَاءِ',
@@ -1497,7 +1497,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     326,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     156,
     3,
     'سُورَةُ الأَنبِيَاءِ',
@@ -1507,7 +1507,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     331,
     112,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     157,
     3,
     'سُورَةُ الحَجِّ',
@@ -1517,7 +1517,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     336,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     158,
     3,
     'سُورَةُ الحَجِّ',
@@ -1527,7 +1527,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     341,
     78,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     159,
     3,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -1537,7 +1537,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     346,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     160,
     3,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -1547,7 +1547,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     351,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     161,
     3,
     'سُورَةُ النُّورِ',
@@ -1557,7 +1557,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     356,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     162,
     3,
     'سُورَةُ النُّورِ',
@@ -1567,7 +1567,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     361,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     163,
     3,
     'سُورَةُ الفُرْقَانِ',
@@ -1577,7 +1577,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     366,
     77,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     164,
     3,
     'سُورَةُ الشُّعَرَاءِ',
@@ -1587,7 +1587,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     371,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     165,
     3,
     'سُورَةُ الشُّعَرَاءِ',
@@ -1597,7 +1597,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     376,
     227,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     166,
     3,
     'سُورَةُ النَّمْلِ',
@@ -1607,7 +1607,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     381,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     167,
     3,
     'سُورَةُ النَّمْلِ',
@@ -1617,7 +1617,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     386,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     168,
     3,
     'سُورَةُ القَصَصِ',
@@ -1627,7 +1627,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     391,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     169,
     3,
     'سُورَةُ القَصَصِ',
@@ -1637,7 +1637,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     396,
     88,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     170,
     3,
     'سُورَةُ العَنكَبُوتِ',
@@ -1647,7 +1647,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     401,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     171,
     3,
     'سُورَةُ العَنكَبُوتِ',
@@ -1657,7 +1657,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     407,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     172,
     3,
     'سُورَةُ الرُّومِ',
@@ -1667,7 +1667,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     413,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     173,
     3,
     'سُورَةُ لُقۡمَانَ',
@@ -1677,7 +1677,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     417,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     174,
     3,
     'سُورَةُ الأَحْزَابِ',
@@ -1687,7 +1687,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     421,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     175,
     3,
     'سُورَةُ الأَحْزَابِ',
@@ -1697,7 +1697,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     426,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     176,
     3,
     'سُورَةُ الأَحْزَابِ',
@@ -1707,7 +1707,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     431,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     177,
     3,
     'سُورَةُ سَبَإٍ',
@@ -1717,7 +1717,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     436,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     178,
     3,
     'سُورَةُ فَاطِرٍ',
@@ -1727,7 +1727,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     441,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     179,
     3,
     'سُورَةُ يسٓ',
@@ -1737,7 +1737,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     446,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     180,
     3,
     'سُورَةُ الصَّافَّاتِ',
@@ -1747,7 +1747,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     451,
     144,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     181,
     3,
     'سُورَةُ الصَّافَّاتِ',
@@ -1757,7 +1757,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     456,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     182,
     3,
     'سُورَةُ صٓ',
@@ -1767,7 +1767,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     461,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     183,
     3,
     'سُورَةُ الزُّمَرِ',
@@ -1777,7 +1777,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     467,
     75,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     184,
     3,
     'سُورَةُ غَافِرٍ',
@@ -1787,7 +1787,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     471,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     185,
     3,
     'سُورَةُ غَافِرٍ',
@@ -1797,7 +1797,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     477,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     186,
     3,
     'سُورَةُ فُصِّلَتۡ',
@@ -1807,7 +1807,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     481,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     187,
     3,
     'سُورَةُ فُصِّلَتۡ',
@@ -1817,7 +1817,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     486,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     188,
     3,
     'سُورَةُ الشُّورَىٰ',
@@ -1827,7 +1827,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     491,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     189,
     3,
     'سُورَةُ الزُّخْرُفِ',
@@ -1837,7 +1837,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     496,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     190,
     3,
     'سُورَةُ الدُّخَانِ',
@@ -1847,7 +1847,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     502,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     191,
     3,
     'سُورَةُ الأَحْقَافِ',
@@ -1857,7 +1857,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     507,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     192,
     3,
     'سُورَةُ مُحَمَّدٍ',
@@ -1867,7 +1867,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     513,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     193,
     3,
     'سُورَةُ الفَتۡحِ',
@@ -1877,7 +1877,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     517,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     194,
     3,
     'سُورَةُ الحُجُرَاتِ',
@@ -1887,7 +1887,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     521,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     195,
     3,
     'سُورَةُ الذَّارِيَاتِ',
@@ -1897,7 +1897,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     526,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     196,
     3,
     'سُورَةُ النَّجۡمِ',
@@ -1907,7 +1907,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     531,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     197,
     3,
     'سُورَةُ الرَّحْمَٰن',
@@ -1917,7 +1917,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     536,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     198,
     3,
     'سُورَةُ الوَاقِعَةِ',
@@ -1927,7 +1927,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     541,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     199,
     3,
     'سُورَةُ المُجَادلَةِ',
@@ -1937,7 +1937,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     547,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     200,
     3,
     'سُورَةُ الحَشْرِ',
@@ -1947,7 +1947,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     552,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     201,
     3,
     'سُورَةُ الجُمُعَةِ',
@@ -1957,7 +1957,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     557,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     202,
     3,
     'سُورَةُ الطَّلَاقِ',
@@ -1967,7 +1967,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     561,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     203,
     3,
     'سُورَةُ المُلْكِ',
@@ -1977,7 +1977,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     566,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     204,
     3,
     'سُورَةُ الحَاقَّةِ',
@@ -1987,7 +1987,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     571,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     205,
     3,
     'سُورَةُ الجِنِّ',
@@ -1997,7 +1997,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     577,
     56,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     206,
     3,
     'سُورَةُ القِيَامَةِ',
@@ -2007,7 +2007,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     581,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     207,
     3,
     'سُورَةُ النَّبَإِ',
@@ -2017,7 +2017,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     586,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     208,
     3,
     'سُورَةُ الانفِطَارِ',
@@ -2027,7 +2027,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     591,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     209,
     3,
     'سُورَةُ الأَعْلَىٰ',
@@ -2037,7 +2037,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     596,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     210,
     3,
     'سُورَةُ الشَّرْحِ',
@@ -2047,7 +2047,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     604,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     211,
     4,
     'سُورَةُ ٱلْفَاتِحَةِ',
@@ -2057,7 +2057,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     5,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     212,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2067,7 +2067,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     7,
     43,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     213,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2077,7 +2077,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     9,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     214,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2087,7 +2087,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     11,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     215,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2097,7 +2097,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     14,
     91,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     216,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2107,7 +2107,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     16,
     105,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     217,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2117,7 +2117,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     19,
     123,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     218,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2127,7 +2127,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     21,
     141,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     219,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2137,7 +2137,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     24,
     157,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     220,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2147,7 +2147,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     26,
     176,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     221,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2157,7 +2157,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     29,
     188,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     222,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2167,7 +2167,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     31,
     202,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     223,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2177,7 +2177,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     34,
     218,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     224,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2187,7 +2187,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     37,
     232,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     225,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2197,7 +2197,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     39,
     242,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     226,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2207,7 +2207,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     41,
     252,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     227,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2217,7 +2217,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     44,
     262,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     228,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2227,7 +2227,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     46,
     271,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     229,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2237,7 +2237,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     48,
     282,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     230,
     4,
     'سُورَةُ البَقَرَةِ',
@@ -2247,7 +2247,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     51,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     231,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2257,7 +2257,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     54,
     32,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     232,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2267,7 +2267,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     56,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     233,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2277,7 +2277,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     59,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     234,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2287,7 +2287,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     62,
     92,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     235,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2297,7 +2297,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     64,
     112,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     236,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2307,7 +2307,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     66,
     132,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     237,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2317,7 +2317,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     69,
     152,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     238,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2327,7 +2327,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     72,
     170,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     239,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2337,7 +2337,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     74,
     185,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     240,
     4,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -2347,7 +2347,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     76,
     200,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     241,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2357,7 +2357,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     78,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     242,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2367,7 +2367,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     81,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     243,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2377,7 +2377,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     84,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     244,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2387,7 +2387,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     87,
     57,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     245,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2397,7 +2397,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     89,
     73,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     246,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2407,7 +2407,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     92,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     247,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2417,7 +2417,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     94,
     99,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     248,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2427,7 +2427,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     96,
     113,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     249,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2437,7 +2437,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     99,
     134,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     250,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2447,7 +2447,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     101,
     147,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     251,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2457,7 +2457,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     103,
     162,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     252,
     4,
     'سُورَةُ النِّسَاءِ',
@@ -2467,7 +2467,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     106,
     176,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     253,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2477,7 +2477,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     109,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     254,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2487,7 +2487,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     112,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     255,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2497,7 +2497,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     114,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     256,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2507,7 +2507,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     116,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     257,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2517,7 +2517,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     119,
     66,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     258,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2527,7 +2527,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     121,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     259,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2537,7 +2537,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     124,
     96,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     260,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2547,7 +2547,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     125,
     108,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     261,
     4,
     'سُورَةُ المَائـِدَةِ',
@@ -2557,7 +2557,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     129,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     262,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2567,7 +2567,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     131,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     263,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2577,7 +2577,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     134,
     58,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     264,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2587,7 +2587,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     136,
     73,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     265,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2597,7 +2597,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     139,
     94,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     266,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2607,7 +2607,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     141,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     267,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2617,7 +2617,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     144,
     126,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     268,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2627,7 +2627,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     146,
     140,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     269,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2637,7 +2637,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     148,
     150,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     270,
     4,
     'سُورَةُ الأَنْعَامِ',
@@ -2647,7 +2647,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     150,
     165,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     271,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2657,7 +2657,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     153,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     272,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2667,7 +2667,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     156,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     273,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2677,7 +2677,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     158,
     64,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     274,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2687,7 +2687,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     161,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     275,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2697,7 +2697,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     164,
     116,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     276,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2707,7 +2707,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     167,
     141,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     277,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2717,7 +2717,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     169,
     155,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     278,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2727,7 +2727,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     172,
     170,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     279,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2737,7 +2737,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     175,
     188,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     280,
     4,
     'سُورَةُ الأَعْرَافِ',
@@ -2747,7 +2747,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     176,
     206,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     281,
     4,
     'سُورَةُ الأَنفَالِ',
@@ -2757,7 +2757,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     179,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     282,
     4,
     'سُورَةُ الأَنفَالِ',
@@ -2767,7 +2767,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     181,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     283,
     4,
     'سُورَةُ الأَنفَالِ',
@@ -2777,7 +2777,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     184,
     60,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     284,
     4,
     'سُورَةُ الأَنفَالِ',
@@ -2787,7 +2787,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     186,
     75,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     285,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2797,7 +2797,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     189,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     286,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2807,7 +2807,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     192,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     287,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2817,7 +2817,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     194,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     288,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2827,7 +2827,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     196,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     289,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2837,7 +2837,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     199,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     290,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2847,7 +2847,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     201,
     92,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     291,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2857,7 +2857,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     204,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     292,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2867,7 +2867,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     206,
     121,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     293,
     4,
     'سُورَةُ التَّوْبَةِ',
@@ -2877,7 +2877,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     209,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     294,
     4,
     'سُورَةُ يُونُسَ',
@@ -2887,7 +2887,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     211,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     295,
     4,
     'سُورَةُ يُونُسَ',
@@ -2897,7 +2897,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     214,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     296,
     4,
     'سُورَةُ يُونُسَ',
@@ -2907,7 +2907,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     216,
     70,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     297,
     4,
     'سُورَةُ يُونُسَ',
@@ -2917,7 +2917,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     219,
     89,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     298,
     4,
     'سُورَةُ يُونُسَ',
@@ -2927,8 +2927,8 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     221,
     5,
   ),
-  TrackingUnitDetail(299, 4, 'سُورَةُ هُودٍ', 222, 6, 'سُورَةُ هُودٍ', 224, 23),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(299, 4, 'سُورَةُ هُودٍ', 222, 6, 'سُورَةُ هُودٍ', 224, 23),
+  TrackingUnitDetailModel(
     300,
     4,
     'سُورَةُ هُودٍ',
@@ -2938,7 +2938,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     226,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     301,
     4,
     'سُورَةُ هُودٍ',
@@ -2948,7 +2948,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     228,
     60,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     302,
     4,
     'سُورَةُ هُودٍ',
@@ -2958,7 +2958,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     231,
     83,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     303,
     4,
     'سُورَةُ هُودٍ',
@@ -2968,7 +2968,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     233,
     107,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     304,
     4,
     'سُورَةُ هُودٍ',
@@ -2978,7 +2978,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     236,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     305,
     4,
     'سُورَةُ يُوسُفَ',
@@ -2988,7 +2988,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     238,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     306,
     4,
     'سُورَةُ يُوسُفَ',
@@ -2998,7 +2998,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     241,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     307,
     4,
     'سُورَةُ يُوسُفَ',
@@ -3008,7 +3008,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     244,
     76,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     308,
     4,
     'سُورَةُ يُوسُفَ',
@@ -3018,7 +3018,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     247,
     100,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     309,
     4,
     'سُورَةُ يُوسُفَ',
@@ -3028,7 +3028,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     249,
     4,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     310,
     4,
     'سُورَةُ الرَّعْدِ',
@@ -3038,7 +3038,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     251,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     311,
     4,
     'سُورَةُ الرَّعْدِ',
@@ -3048,7 +3048,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     253,
     34,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     312,
     4,
     'سُورَةُ الرَّعْدِ',
@@ -3058,7 +3058,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     256,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     313,
     4,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -3068,7 +3068,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     259,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     314,
     4,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -3078,7 +3078,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     261,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     315,
     4,
     'سُورَةُ الحِجۡرِ',
@@ -3088,7 +3088,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     264,
     49,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     316,
     4,
     'سُورَةُ الحِجۡرِ',
@@ -3098,7 +3098,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     267,
     99,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     317,
     4,
     'سُورَةُ النَّحْلِ',
@@ -3108,7 +3108,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     270,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     318,
     4,
     'سُورَةُ النَّحْلِ',
@@ -3118,7 +3118,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     272,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     319,
     4,
     'سُورَةُ النَّحْلِ',
@@ -3128,7 +3128,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     275,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     320,
     4,
     'سُورَةُ النَّحْلِ',
@@ -3138,7 +3138,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     277,
     89,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     321,
     4,
     'سُورَةُ النَّحْلِ',
@@ -3148,7 +3148,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     279,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     322,
     4,
     'سُورَةُ النَّحْلِ',
@@ -3158,7 +3158,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     281,
     128,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     323,
     4,
     'سُورَةُ الإِسْرَاءِ',
@@ -3168,7 +3168,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     284,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     324,
     4,
     'سُورَةُ الإِسْرَاءِ',
@@ -3178,7 +3178,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     286,
     49,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     325,
     4,
     'سُورَةُ الإِسْرَاءِ',
@@ -3188,7 +3188,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     289,
     69,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     326,
     4,
     'سُورَةُ الإِسْرَاءِ',
@@ -3198,7 +3198,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     292,
     98,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     327,
     4,
     'سُورَةُ الإِسْرَاءِ',
@@ -3208,7 +3208,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     295,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     328,
     4,
     'سُورَةُ الكَهْفِ',
@@ -3218,7 +3218,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     297,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     329,
     4,
     'سُورَةُ الكَهْفِ',
@@ -3228,7 +3228,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     299,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     330,
     4,
     'سُورَةُ الكَهْفِ',
@@ -3238,7 +3238,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     301,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     331,
     4,
     'سُورَةُ الكَهْفِ',
@@ -3248,7 +3248,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     304,
     98,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     332,
     4,
     'سُورَةُ الكَهْفِ',
@@ -3258,7 +3258,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     306,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     333,
     4,
     'سُورَةُ مَرْيَمَ',
@@ -3268,7 +3268,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     309,
     58,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     334,
     4,
     'سُورَةُ مَرْيَمَ',
@@ -3278,11 +3278,11 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     312,
     98,
   ),
-  TrackingUnitDetail(335, 4, 'سُورَةُ طه', 312, 1, 'سُورَةُ طه', 315, 54),
-  TrackingUnitDetail(336, 4, 'سُورَةُ طه', 315, 55, 'سُورَةُ طه', 317, 82),
-  TrackingUnitDetail(337, 4, 'سُورَةُ طه', 317, 83, 'سُورَةُ طه', 319, 110),
-  TrackingUnitDetail(338, 4, 'سُورَةُ طه', 319, 111, 'سُورَةُ طه', 321, 135),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(335, 4, 'سُورَةُ طه', 312, 1, 'سُورَةُ طه', 315, 54),
+  TrackingUnitDetailModel(336, 4, 'سُورَةُ طه', 315, 55, 'سُورَةُ طه', 317, 82),
+  TrackingUnitDetailModel(337, 4, 'سُورَةُ طه', 317, 83, 'سُورَةُ طه', 319, 110),
+  TrackingUnitDetailModel(338, 4, 'سُورَةُ طه', 319, 111, 'سُورَةُ طه', 321, 135),
+  TrackingUnitDetailModel(
     339,
     4,
     'سُورَةُ الأَنبِيَاءِ',
@@ -3292,7 +3292,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     324,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     340,
     4,
     'سُورَةُ الأَنبِيَاءِ',
@@ -3302,7 +3302,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     326,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     341,
     4,
     'سُورَةُ الأَنبِيَاءِ',
@@ -3312,7 +3312,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     329,
     82,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     342,
     4,
     'سُورَةُ الأَنبِيَاءِ',
@@ -3322,7 +3322,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     331,
     112,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     343,
     4,
     'سُورَةُ الحَجِّ',
@@ -3332,7 +3332,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     334,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     344,
     4,
     'سُورَةُ الحَجِّ',
@@ -3342,7 +3342,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     336,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     345,
     4,
     'سُورَةُ الحَجِّ',
@@ -3352,7 +3352,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     339,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     346,
     4,
     'سُورَةُ الحَجِّ',
@@ -3362,7 +3362,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     341,
     78,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     347,
     4,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -3372,7 +3372,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     344,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     348,
     4,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -3382,7 +3382,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     346,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     349,
     4,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -3392,7 +3392,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     349,
     118,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     350,
     4,
     'سُورَةُ النُّورِ',
@@ -3402,7 +3402,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     351,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     351,
     4,
     'سُورَةُ النُّورِ',
@@ -3412,7 +3412,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     354,
     34,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     352,
     4,
     'سُورَةُ النُّورِ',
@@ -3422,7 +3422,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     356,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     353,
     4,
     'سُورَةُ النُّورِ',
@@ -3432,7 +3432,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     359,
     64,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     354,
     4,
     'سُورَةُ الفُرْقَانِ',
@@ -3442,7 +3442,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     361,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     355,
     4,
     'سُورَةُ الفُرْقَانِ',
@@ -3452,7 +3452,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     364,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     356,
     4,
     'سُورَةُ الفُرْقَانِ',
@@ -3462,7 +3462,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     366,
     77,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     357,
     4,
     'سُورَةُ الشُّعَرَاءِ',
@@ -3472,7 +3472,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     369,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     358,
     4,
     'سُورَةُ الشُّعَرَاءِ',
@@ -3482,7 +3482,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     371,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     359,
     4,
     'سُورَةُ الشُّعَرَاءِ',
@@ -3492,7 +3492,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     374,
     180,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     360,
     4,
     'سُورَةُ الشُّعَرَاءِ',
@@ -3502,7 +3502,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     376,
     227,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     361,
     4,
     'سُورَةُ النَّمْلِ',
@@ -3512,7 +3512,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     379,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     362,
     4,
     'سُورَةُ النَّمْلِ',
@@ -3522,7 +3522,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     381,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     363,
     4,
     'سُورَةُ النَّمْلِ',
@@ -3532,7 +3532,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     384,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     364,
     4,
     'سُورَةُ النَّمْلِ',
@@ -3542,7 +3542,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     386,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     365,
     4,
     'سُورَةُ القَصَصِ',
@@ -3552,7 +3552,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     388,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     366,
     4,
     'سُورَةُ القَصَصِ',
@@ -3562,7 +3562,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     391,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     367,
     4,
     'سُورَةُ القَصَصِ',
@@ -3572,7 +3572,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     394,
     75,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     368,
     4,
     'سُورَةُ القَصَصِ',
@@ -3582,7 +3582,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     396,
     88,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     369,
     4,
     'سُورَةُ العَنكَبُوتِ',
@@ -3592,7 +3592,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     399,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     370,
     4,
     'سُورَةُ العَنكَبُوتِ',
@@ -3602,7 +3602,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     401,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     371,
     4,
     'سُورَةُ العَنكَبُوتِ',
@@ -3612,7 +3612,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     404,
     69,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     372,
     4,
     'سُورَةُ الرُّومِ',
@@ -3622,7 +3622,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     407,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     373,
     4,
     'سُورَةُ الرُّومِ',
@@ -3632,7 +3632,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     410,
     53,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     374,
     4,
     'سُورَةُ الرُّومِ',
@@ -3642,7 +3642,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     413,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     375,
     4,
     'سُورَةُ لُقۡمَانَ',
@@ -3652,7 +3652,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     415,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     376,
     4,
     'سُورَةُ السَّجۡدَةِ',
@@ -3662,7 +3662,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     417,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     377,
     4,
     'سُورَةُ الأَحْزَابِ',
@@ -3672,7 +3672,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     420,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     378,
     4,
     'سُورَةُ الأَحْزَابِ',
@@ -3682,7 +3682,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     421,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     379,
     4,
     'سُورَةُ الأَحْزَابِ',
@@ -3692,7 +3692,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     424,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     380,
     4,
     'سُورَةُ الأَحْزَابِ',
@@ -3702,7 +3702,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     426,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     381,
     4,
     'سُورَةُ الأَحْزَابِ',
@@ -3712,7 +3712,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     429,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     382,
     4,
     'سُورَةُ سَبَإٍ',
@@ -3722,7 +3722,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     431,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     383,
     4,
     'سُورَةُ سَبَإٍ',
@@ -3732,7 +3732,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     433,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     384,
     4,
     'سُورَةُ سَبَإٍ',
@@ -3742,7 +3742,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     436,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     385,
     4,
     'سُورَةُ فَاطِرٍ',
@@ -3752,7 +3752,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     439,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     386,
     4,
     'سُورَةُ فَاطِرٍ',
@@ -3762,8 +3762,8 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     441,
     27,
   ),
-  TrackingUnitDetail(387, 4, 'سُورَةُ يسٓ', 442, 28, 'سُورَةُ يسٓ', 444, 59),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(387, 4, 'سُورَةُ يسٓ', 442, 28, 'سُورَةُ يسٓ', 444, 59),
+  TrackingUnitDetailModel(
     388,
     4,
     'سُورَةُ يسٓ',
@@ -3773,7 +3773,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     446,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     389,
     4,
     'سُورَةُ الصَّافَّاتِ',
@@ -3783,7 +3783,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     449,
     82,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     390,
     4,
     'سُورَةُ الصَّافَّاتِ',
@@ -3793,7 +3793,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     451,
     144,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     391,
     4,
     'سُورَةُ الصَّافَّاتِ',
@@ -3803,8 +3803,8 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     454,
     20,
   ),
-  TrackingUnitDetail(392, 4, 'سُورَةُ صٓ', 454, 21, 'سُورَةُ صٓ', 456, 51),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(392, 4, 'سُورَةُ صٓ', 454, 21, 'سُورَةُ صٓ', 456, 51),
+  TrackingUnitDetailModel(
     393,
     4,
     'سُورَةُ صٓ',
@@ -3814,7 +3814,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     459,
     7,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     394,
     4,
     'سُورَةُ الزُّمَرِ',
@@ -3824,7 +3824,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     461,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     395,
     4,
     'سُورَةُ الزُّمَرِ',
@@ -3834,7 +3834,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     464,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     396,
     4,
     'سُورَةُ الزُّمَرِ',
@@ -3844,7 +3844,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     467,
     75,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     397,
     4,
     'سُورَةُ غَافِرٍ',
@@ -3854,7 +3854,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     469,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     398,
     4,
     'سُورَةُ غَافِرٍ',
@@ -3864,7 +3864,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     471,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     399,
     4,
     'سُورَةُ غَافِرٍ',
@@ -3874,7 +3874,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     474,
     65,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     400,
     4,
     'سُورَةُ غَافِرٍ',
@@ -3884,7 +3884,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     477,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     401,
     4,
     'سُورَةُ فُصِّلَتۡ',
@@ -3894,7 +3894,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     479,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     402,
     4,
     'سُورَةُ فُصِّلَتۡ',
@@ -3904,7 +3904,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     481,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     403,
     4,
     'سُورَةُ فُصِّلَتۡ',
@@ -3914,7 +3914,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     484,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     404,
     4,
     'سُورَةُ الشُّورَىٰ',
@@ -3924,7 +3924,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     486,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     405,
     4,
     'سُورَةُ الشُّورَىٰ',
@@ -3934,7 +3934,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     488,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     406,
     4,
     'سُورَةُ الشُّورَىٰ',
@@ -3944,7 +3944,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     491,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     407,
     4,
     'سُورَةُ الزُّخْرُفِ',
@@ -3954,7 +3954,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     493,
     56,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     408,
     4,
     'سُورَةُ الزُّخْرُفِ',
@@ -3964,7 +3964,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     496,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     409,
     4,
     'سُورَةُ الدُّخَانِ',
@@ -3974,7 +3974,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     499,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     410,
     4,
     'سُورَةُ الجَاثِيَةِ',
@@ -3984,7 +3984,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     502,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     411,
     4,
     'سُورَةُ الأَحْقَافِ',
@@ -3994,7 +3994,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     504,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     412,
     4,
     'سُورَةُ الأَحْقَافِ',
@@ -4004,7 +4004,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     507,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     413,
     4,
     'سُورَةُ مُحَمَّدٍ',
@@ -4014,7 +4014,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     510,
     32,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     414,
     4,
     'سُورَةُ مُحَمَّدٍ',
@@ -4024,7 +4024,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     513,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     415,
     4,
     'سُورَةُ الفَتۡحِ',
@@ -4034,7 +4034,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     515,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     416,
     4,
     'سُورَةُ الحُجُرَاتِ',
@@ -4044,7 +4044,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     517,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     417,
     4,
     'سُورَةُ الحُجُرَاتِ',
@@ -4054,7 +4054,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     519,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     418,
     4,
     'سُورَةُ قٓ',
@@ -4064,7 +4064,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     521,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     419,
     4,
     'سُورَةُ الذَّارِيَاتِ',
@@ -4074,7 +4074,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     524,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     420,
     4,
     'سُورَةُ الطُّورِ',
@@ -4084,7 +4084,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     526,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     421,
     4,
     'سُورَةُ النَّجۡمِ',
@@ -4094,7 +4094,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     529,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     422,
     4,
     'سُورَةُ القَمَرِ',
@@ -4104,7 +4104,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     531,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     423,
     4,
     'سُورَةُ الرَّحْمَٰن',
@@ -4114,7 +4114,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     534,
     78,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     424,
     4,
     'سُورَةُ الوَاقِعَةِ',
@@ -4124,7 +4124,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     536,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     425,
     4,
     'سُورَةُ الوَاقِعَةِ',
@@ -4134,7 +4134,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     539,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     426,
     4,
     'سُورَةُ الحَدِيدِ',
@@ -4144,7 +4144,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     541,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     427,
     4,
     'سُورَةُ المُجَادلَةِ',
@@ -4154,7 +4154,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     544,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     428,
     4,
     'سُورَةُ المُجَادلَةِ',
@@ -4164,7 +4164,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     547,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     429,
     4,
     'سُورَةُ الحَشْرِ',
@@ -4174,7 +4174,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     550,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     430,
     4,
     'سُورَةُ المُمْتَحنَةِ',
@@ -4184,7 +4184,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     552,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     431,
     4,
     'سُورَةُ الجُمُعَةِ',
@@ -4194,7 +4194,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     554,
     3,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     432,
     4,
     'سُورَةُ المُنَافِقُونَ',
@@ -4204,7 +4204,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     557,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     433,
     4,
     'سُورَةُ الطَّلَاقِ',
@@ -4214,7 +4214,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     559,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     434,
     4,
     'سُورَةُ التَّحْرِيمِ',
@@ -4224,7 +4224,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     561,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     435,
     4,
     'سُورَةُ المُلْكِ',
@@ -4234,7 +4234,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     564,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     436,
     4,
     'سُورَةُ القَلَمِ',
@@ -4244,7 +4244,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     566,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     437,
     4,
     'سُورَةُ الحَاقَّةِ',
@@ -4254,7 +4254,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     569,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     438,
     4,
     'سُورَةُ المَعَارِجِ',
@@ -4264,7 +4264,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     571,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     439,
     4,
     'سُورَةُ الجِنِّ',
@@ -4274,7 +4274,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     574,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     440,
     4,
     'سُورَةُ المُزَّمِّلِ',
@@ -4284,7 +4284,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     577,
     56,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     441,
     4,
     'سُورَةُ القِيَامَةِ',
@@ -4294,7 +4294,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     579,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     442,
     4,
     'سُورَةُ الإِنسَانِ',
@@ -4304,7 +4304,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     581,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     443,
     4,
     'سُورَةُ النَّبَإِ',
@@ -4314,7 +4314,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     584,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     444,
     4,
     'سُورَةُ عَبَسَ',
@@ -4324,7 +4324,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     586,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     445,
     4,
     'سُورَةُ الانفِطَارِ',
@@ -4334,7 +4334,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     589,
     36,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     446,
     4,
     'سُورَةُ الانشِقَاقِ',
@@ -4344,7 +4344,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     591,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     447,
     4,
     'سُورَةُ الأَعْلَىٰ',
@@ -4354,7 +4354,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     594,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     448,
     4,
     'سُورَةُ البَلَدِ',
@@ -4364,7 +4364,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     596,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     449,
     4,
     'سُورَةُ الشَّرْحِ',
@@ -4374,7 +4374,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     600,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     450,
     4,
     'سُورَةُ العَادِيَاتِ',
@@ -4384,7 +4384,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     604,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     451,
     5,
     'سُورَةُ ٱلْفَاتِحَةِ',
@@ -4394,7 +4394,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     1,
     7,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     452,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4404,7 +4404,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     2,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     453,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4414,7 +4414,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     3,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     454,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4424,7 +4424,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     4,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     455,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4434,7 +4434,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     5,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     456,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4444,7 +4444,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     6,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     457,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4454,7 +4454,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     7,
     48,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     458,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4464,7 +4464,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     8,
     57,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     459,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4474,7 +4474,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     9,
     61,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     460,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4484,7 +4484,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     10,
     69,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     461,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4494,7 +4494,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     11,
     76,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     462,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4504,7 +4504,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     12,
     83,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     463,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4514,7 +4514,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     13,
     88,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     464,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4524,7 +4524,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     14,
     93,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     465,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4534,7 +4534,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     15,
     101,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     466,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4544,7 +4544,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     16,
     105,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     467,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4554,7 +4554,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     17,
     112,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     468,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4564,7 +4564,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     18,
     119,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     469,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4574,7 +4574,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     19,
     126,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     470,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4584,7 +4584,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     20,
     134,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     471,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4594,7 +4594,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     21,
     141,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     472,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4604,7 +4604,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     22,
     145,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     473,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4614,7 +4614,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     23,
     153,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     474,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4624,7 +4624,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     24,
     163,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     475,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4634,7 +4634,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     25,
     169,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     476,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4644,7 +4644,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     26,
     176,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     477,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4654,7 +4654,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     27,
     181,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     478,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4664,7 +4664,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     28,
     186,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     479,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4674,7 +4674,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     29,
     190,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     480,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4684,7 +4684,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     30,
     196,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     481,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4694,7 +4694,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     31,
     202,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     482,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4704,7 +4704,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     32,
     210,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     483,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4714,7 +4714,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     33,
     215,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     484,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4724,7 +4724,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     34,
     219,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     485,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4734,7 +4734,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     35,
     224,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     486,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4744,7 +4744,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     36,
     230,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     487,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4754,7 +4754,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     37,
     233,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     488,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4764,7 +4764,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     38,
     237,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     489,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4774,7 +4774,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     39,
     245,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     490,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4784,7 +4784,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     40,
     248,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     491,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4794,7 +4794,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     41,
     252,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     492,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4804,7 +4804,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     42,
     256,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     493,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4814,7 +4814,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     43,
     259,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     494,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4824,7 +4824,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     44,
     264,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     495,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4834,7 +4834,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     45,
     269,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     496,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4844,7 +4844,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     46,
     274,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     497,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4854,7 +4854,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     47,
     281,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     498,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4864,7 +4864,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     48,
     282,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     499,
     5,
     'سُورَةُ البَقَرَةِ',
@@ -4874,7 +4874,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     49,
     286,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     500,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4884,7 +4884,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     50,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     501,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4894,7 +4894,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     51,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     502,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4904,7 +4904,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     52,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     503,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4914,7 +4914,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     53,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     504,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4924,7 +4924,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     54,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     505,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4934,7 +4934,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     55,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     506,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4944,7 +4944,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     56,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     507,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4954,7 +4954,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     57,
     61,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     508,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4964,7 +4964,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     58,
     70,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     509,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4974,7 +4974,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     59,
     77,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     510,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4984,7 +4984,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     60,
     83,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     511,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -4994,7 +4994,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     61,
     91,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     512,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5004,7 +5004,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     62,
     100,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     513,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5014,7 +5014,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     63,
     108,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     514,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5024,7 +5024,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     64,
     115,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     515,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5034,7 +5034,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     65,
     121,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     516,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5044,7 +5044,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     66,
     132,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     517,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5054,7 +5054,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     67,
     140,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     518,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5064,7 +5064,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     68,
     148,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     519,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5074,7 +5074,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     69,
     153,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     520,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5084,7 +5084,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     70,
     157,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     521,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5094,7 +5094,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     71,
     165,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     522,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5104,7 +5104,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     72,
     173,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     523,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5114,7 +5114,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     73,
     180,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     524,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5124,7 +5124,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     74,
     186,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     525,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5134,7 +5134,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     75,
     194,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     526,
     5,
     'سُورَةُ آلِ عِمْرَانَ',
@@ -5144,7 +5144,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     76,
     200,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     527,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5154,7 +5154,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     77,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     528,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5164,7 +5164,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     78,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     529,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5174,7 +5174,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     79,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     530,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5184,7 +5184,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     80,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     531,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5194,7 +5194,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     81,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     532,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5204,7 +5204,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     82,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     533,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5214,7 +5214,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     83,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     534,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5224,7 +5224,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     84,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     535,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5234,7 +5234,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     85,
     44,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     536,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5244,7 +5244,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     86,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     537,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5254,7 +5254,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     87,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     538,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5264,7 +5264,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     88,
     65,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     539,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5274,7 +5274,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     89,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     540,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5284,7 +5284,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     90,
     79,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     541,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5294,7 +5294,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     91,
     86,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     542,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5304,7 +5304,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     92,
     91,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     543,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5314,7 +5314,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     93,
     94,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     544,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5324,7 +5324,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     94,
     101,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     545,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5334,7 +5334,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     95,
     105,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     546,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5344,7 +5344,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     96,
     113,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     547,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5354,7 +5354,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     97,
     121,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     548,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5364,7 +5364,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     98,
     127,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     549,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5374,7 +5374,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     99,
     134,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     550,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5384,7 +5384,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     100,
     140,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     551,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5394,7 +5394,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     101,
     147,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     552,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5404,7 +5404,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     102,
     154,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     553,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5414,7 +5414,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     103,
     162,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     554,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5424,7 +5424,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     104,
     170,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     555,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5434,7 +5434,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     105,
     175,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     556,
     5,
     'سُورَةُ النِّسَاءِ',
@@ -5444,7 +5444,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     106,
     2,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     557,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5454,7 +5454,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     107,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     558,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5464,7 +5464,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     108,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     559,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5474,7 +5474,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     109,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     560,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5484,7 +5484,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     110,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     561,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5494,7 +5494,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     111,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     562,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5504,7 +5504,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     112,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     563,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5514,7 +5514,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     113,
     36,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     564,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5524,7 +5524,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     114,
     41,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     565,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5534,7 +5534,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     115,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     566,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5544,7 +5544,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     116,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     567,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5554,7 +5554,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     117,
     57,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     568,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5564,7 +5564,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     118,
     64,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     569,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5574,7 +5574,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     119,
     70,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     570,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5584,7 +5584,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     120,
     77,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     571,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5594,7 +5594,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     121,
     83,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     572,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5604,7 +5604,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     122,
     90,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     573,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5614,7 +5614,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     123,
     95,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     574,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5624,7 +5624,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     124,
     103,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     575,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5634,7 +5634,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     125,
     108,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     576,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5644,7 +5644,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     126,
     113,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     577,
     5,
     'سُورَةُ المَائـِدَةِ',
@@ -5654,7 +5654,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     127,
     120,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     578,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5664,7 +5664,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     128,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     579,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5674,7 +5674,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     129,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     580,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5684,7 +5684,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     130,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     581,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5694,7 +5694,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     131,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     582,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5704,7 +5704,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     132,
     44,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     583,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5714,7 +5714,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     133,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     584,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5724,7 +5724,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     134,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     585,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5734,7 +5734,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     135,
     68,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     586,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5744,7 +5744,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     136,
     73,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     587,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5754,7 +5754,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     137,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     588,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5764,7 +5764,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     138,
     90,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     589,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5774,7 +5774,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     139,
     94,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     590,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5784,7 +5784,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     140,
     101,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     591,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5794,7 +5794,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     141,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     592,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5804,7 +5804,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     142,
     118,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     593,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5814,7 +5814,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     143,
     124,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     594,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5824,7 +5824,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     144,
     130,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     595,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5834,7 +5834,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     145,
     137,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     596,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5844,7 +5844,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     146,
     142,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     597,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5854,7 +5854,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     147,
     146,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     598,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5864,7 +5864,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     148,
     151,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     599,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5874,7 +5874,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     149,
     157,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     600,
     5,
     'سُورَةُ الأَنْعَامِ',
@@ -5884,7 +5884,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     150,
     165,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     601,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5894,7 +5894,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     151,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     602,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5904,7 +5904,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     152,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     603,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5914,7 +5914,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     153,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     604,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5924,7 +5924,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     154,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     605,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5934,7 +5934,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     155,
     43,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     606,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5944,7 +5944,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     156,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     607,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5954,7 +5954,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     157,
     57,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     608,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5964,7 +5964,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     158,
     67,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     609,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5974,7 +5974,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     159,
     73,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     610,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5984,7 +5984,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     160,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     611,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -5994,7 +5994,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     161,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     612,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6004,7 +6004,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     162,
     95,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     613,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6014,7 +6014,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     163,
     104,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     614,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6024,7 +6024,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     164,
     120,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     615,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6034,7 +6034,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     165,
     130,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     616,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6044,7 +6044,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     166,
     137,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     617,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6054,7 +6054,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     167,
     143,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     618,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6064,7 +6064,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     168,
     149,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     619,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6074,7 +6074,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     169,
     155,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     620,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6084,7 +6084,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     170,
     159,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     621,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6094,7 +6094,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     171,
     163,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     622,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6104,7 +6104,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     172,
     170,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     623,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6114,7 +6114,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     173,
     178,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     624,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6124,7 +6124,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     174,
     187,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     625,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6134,7 +6134,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     175,
     195,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     626,
     5,
     'سُورَةُ الأَعْرَافِ',
@@ -6144,7 +6144,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     176,
     206,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     627,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6154,7 +6154,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     177,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     628,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6164,7 +6164,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     178,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     629,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6174,7 +6174,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     179,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     630,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6184,7 +6184,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     180,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     631,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6194,7 +6194,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     181,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     632,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6204,7 +6204,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     182,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     633,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6214,7 +6214,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     183,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     634,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6224,7 +6224,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     184,
     61,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     635,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6234,7 +6234,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     185,
     69,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     636,
     5,
     'سُورَةُ الأَنفَالِ',
@@ -6244,7 +6244,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     186,
     75,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     637,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6254,7 +6254,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     187,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     638,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6264,7 +6264,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     188,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     639,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6274,7 +6274,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     189,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     640,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6284,7 +6284,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     190,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     641,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6294,7 +6294,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     191,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     642,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6304,7 +6304,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     192,
     36,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     643,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6314,7 +6314,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     193,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     644,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6324,7 +6324,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     194,
     47,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     645,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6334,7 +6334,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     195,
     54,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     646,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6344,7 +6344,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     196,
     61,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     647,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6354,7 +6354,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     197,
     68,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     648,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6364,7 +6364,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     198,
     72,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     649,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6374,7 +6374,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     199,
     79,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     650,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6384,7 +6384,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     200,
     86,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     651,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6394,7 +6394,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     201,
     93,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     652,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6404,7 +6404,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     202,
     99,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     653,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6414,7 +6414,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     203,
     106,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     654,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6424,7 +6424,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     204,
     111,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     655,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6434,7 +6434,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     205,
     117,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     656,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6444,7 +6444,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     206,
     122,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     657,
     5,
     'سُورَةُ التَّوْبَةِ',
@@ -6454,7 +6454,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     207,
     129,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     658,
     5,
     'سُورَةُ يُونُسَ',
@@ -6464,7 +6464,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     208,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     659,
     5,
     'سُورَةُ يُونُسَ',
@@ -6474,7 +6474,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     209,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     660,
     5,
     'سُورَةُ يُونُسَ',
@@ -6484,7 +6484,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     210,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     661,
     5,
     'سُورَةُ يُونُسَ',
@@ -6494,7 +6494,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     211,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     662,
     5,
     'سُورَةُ يُونُسَ',
@@ -6504,7 +6504,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     212,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     663,
     5,
     'سُورَةُ يُونُسَ',
@@ -6514,7 +6514,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     213,
     42,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     664,
     5,
     'سُورَةُ يُونُسَ',
@@ -6524,7 +6524,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     214,
     53,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     665,
     5,
     'سُورَةُ يُونُسَ',
@@ -6534,7 +6534,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     215,
     61,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     666,
     5,
     'سُورَةُ يُونُسَ',
@@ -6544,7 +6544,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     216,
     70,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     667,
     5,
     'سُورَةُ يُونُسَ',
@@ -6554,7 +6554,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     217,
     78,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     668,
     5,
     'سُورَةُ يُونُسَ',
@@ -6564,7 +6564,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     218,
     88,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     669,
     5,
     'سُورَةُ يُونُسَ',
@@ -6574,7 +6574,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     219,
     97,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     670,
     5,
     'سُورَةُ يُونُسَ',
@@ -6584,7 +6584,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     220,
     106,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     671,
     5,
     'سُورَةُ يُونُسَ',
@@ -6594,8 +6594,8 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     221,
     5,
   ),
-  TrackingUnitDetail(672, 5, 'سُورَةُ هُودٍ', 222, 6, 'سُورَةُ هُودٍ', 222, 12),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(672, 5, 'سُورَةُ هُودٍ', 222, 6, 'سُورَةُ هُودٍ', 222, 12),
+  TrackingUnitDetailModel(
     673,
     5,
     'سُورَةُ هُودٍ',
@@ -6605,7 +6605,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     223,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     674,
     5,
     'سُورَةُ هُودٍ',
@@ -6615,7 +6615,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     224,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     675,
     5,
     'سُورَةُ هُودٍ',
@@ -6625,7 +6625,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     225,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     676,
     5,
     'سُورَةُ هُودٍ',
@@ -6635,7 +6635,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     226,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     677,
     5,
     'سُورَةُ هُودٍ',
@@ -6645,7 +6645,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     227,
     53,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     678,
     5,
     'سُورَةُ هُودٍ',
@@ -6655,7 +6655,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     228,
     62,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     679,
     5,
     'سُورَةُ هُودٍ',
@@ -6665,7 +6665,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     229,
     71,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     680,
     5,
     'سُورَةُ هُودٍ',
@@ -6675,7 +6675,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     230,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     681,
     5,
     'سُورَةُ هُودٍ',
@@ -6685,7 +6685,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     231,
     88,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     682,
     5,
     'سُورَةُ هُودٍ',
@@ -6695,7 +6695,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     232,
     97,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     683,
     5,
     'سُورَةُ هُودٍ',
@@ -6705,7 +6705,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     233,
     108,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     684,
     5,
     'سُورَةُ هُودٍ',
@@ -6715,7 +6715,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     234,
     117,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     685,
     5,
     'سُورَةُ هُودٍ',
@@ -6725,7 +6725,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     235,
     4,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     686,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6735,7 +6735,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     236,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     687,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6745,7 +6745,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     237,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     688,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6755,7 +6755,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     238,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     689,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6765,7 +6765,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     239,
     37,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     690,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6775,7 +6775,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     240,
     43,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     691,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6785,7 +6785,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     241,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     692,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6795,7 +6795,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     242,
     63,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     693,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6805,7 +6805,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     243,
     69,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     694,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6815,7 +6815,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     244,
     78,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     695,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6825,7 +6825,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     245,
     86,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     696,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6835,7 +6835,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     246,
     95,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     697,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6845,7 +6845,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     247,
     103,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     698,
     5,
     'سُورَةُ يُوسُفَ',
@@ -6855,7 +6855,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     248,
     111,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     699,
     5,
     'سُورَةُ الرَّعْدِ',
@@ -6865,7 +6865,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     249,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     700,
     5,
     'سُورَةُ الرَّعْدِ',
@@ -6875,7 +6875,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     250,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     701,
     5,
     'سُورَةُ الرَّعْدِ',
@@ -6885,7 +6885,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     251,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     702,
     5,
     'سُورَةُ الرَّعْدِ',
@@ -6895,7 +6895,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     252,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     703,
     5,
     'سُورَةُ الرَّعْدِ',
@@ -6905,7 +6905,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     253,
     34,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     704,
     5,
     'سُورَةُ الرَّعْدِ',
@@ -6915,7 +6915,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     254,
     42,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     705,
     5,
     'سُورَةُ الرَّعْدِ',
@@ -6925,7 +6925,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     255,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     706,
     5,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -6935,7 +6935,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     256,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     707,
     5,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -6945,7 +6945,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     257,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     708,
     5,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -6955,7 +6955,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     258,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     709,
     5,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -6965,7 +6965,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     259,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     710,
     5,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -6975,7 +6975,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     260,
     42,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     711,
     5,
     'سُورَةُ إِبْرَاهِيمَ',
@@ -6985,7 +6985,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     261,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     712,
     5,
     'سُورَةُ الحِجۡرِ',
@@ -6995,7 +6995,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     262,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     713,
     5,
     'سُورَةُ الحِجۡرِ',
@@ -7005,7 +7005,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     263,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     714,
     5,
     'سُورَةُ الحِجۡرِ',
@@ -7015,7 +7015,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     264,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     715,
     5,
     'سُورَةُ الحِجۡرِ',
@@ -7025,7 +7025,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     265,
     70,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     716,
     5,
     'سُورَةُ الحِجۡرِ',
@@ -7035,7 +7035,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     266,
     90,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     717,
     5,
     'سُورَةُ الحِجۡرِ',
@@ -7045,7 +7045,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     267,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     718,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7055,7 +7055,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     268,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     719,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7065,7 +7065,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     269,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     720,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7075,7 +7075,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     270,
     34,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     721,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7085,7 +7085,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     271,
     42,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     722,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7095,7 +7095,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     272,
     54,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     723,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7105,7 +7105,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     273,
     64,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     724,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7115,7 +7115,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     274,
     72,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     725,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7125,7 +7125,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     275,
     79,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     726,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7135,7 +7135,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     276,
     87,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     727,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7145,7 +7145,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     277,
     93,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     728,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7155,7 +7155,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     278,
     102,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     729,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7165,7 +7165,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     279,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     730,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7175,7 +7175,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     280,
     118,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     731,
     5,
     'سُورَةُ النَّحْلِ',
@@ -7185,7 +7185,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     281,
     128,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     732,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7195,7 +7195,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     282,
     7,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     733,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7205,7 +7205,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     283,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     734,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7215,7 +7215,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     284,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     735,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7225,7 +7225,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     285,
     38,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     736,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7235,7 +7235,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     286,
     49,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     737,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7245,7 +7245,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     287,
     58,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     738,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7255,7 +7255,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     288,
     66,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     739,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7265,7 +7265,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     289,
     75,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     740,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7275,7 +7275,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     290,
     86,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     741,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7285,7 +7285,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     291,
     96,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     742,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7295,7 +7295,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     292,
     104,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     743,
     5,
     'سُورَةُ الإِسْرَاءِ',
@@ -7305,7 +7305,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     293,
     4,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     744,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7315,7 +7315,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     294,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     745,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7325,7 +7325,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     295,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     746,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7335,7 +7335,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     296,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     747,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7345,7 +7345,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     297,
     34,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     748,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7355,7 +7355,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     298,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     749,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7365,7 +7365,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     299,
     53,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     750,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7375,7 +7375,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     300,
     61,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     751,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7385,7 +7385,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     301,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     752,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7395,7 +7395,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     302,
     83,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     753,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7405,7 +7405,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     303,
     97,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     754,
     5,
     'سُورَةُ الكَهْفِ',
@@ -7415,7 +7415,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     304,
     110,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     755,
     5,
     'سُورَةُ مَرْيَمَ',
@@ -7425,7 +7425,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     305,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     756,
     5,
     'سُورَةُ مَرْيَمَ',
@@ -7435,7 +7435,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     306,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     757,
     5,
     'سُورَةُ مَرْيَمَ',
@@ -7445,7 +7445,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     307,
     38,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     758,
     5,
     'سُورَةُ مَرْيَمَ',
@@ -7455,7 +7455,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     308,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     759,
     5,
     'سُورَةُ مَرْيَمَ',
@@ -7465,7 +7465,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     309,
     64,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     760,
     5,
     'سُورَةُ مَرْيَمَ',
@@ -7475,7 +7475,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     310,
     76,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     761,
     5,
     'سُورَةُ مَرْيَمَ',
@@ -7485,7 +7485,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     311,
     95,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     762,
     5,
     'سُورَةُ مَرْيَمَ',
@@ -7495,16 +7495,16 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     312,
     12,
   ),
-  TrackingUnitDetail(763, 5, 'سُورَةُ طه', 313, 13, 'سُورَةُ طه', 313, 37),
-  TrackingUnitDetail(764, 5, 'سُورَةُ طه', 314, 38, 'سُورَةُ طه', 314, 51),
-  TrackingUnitDetail(765, 5, 'سُورَةُ طه', 315, 52, 'سُورَةُ طه', 315, 64),
-  TrackingUnitDetail(766, 5, 'سُورَةُ طه', 316, 65, 'سُورَةُ طه', 316, 76),
-  TrackingUnitDetail(767, 5, 'سُورَةُ طه', 317, 77, 'سُورَةُ طه', 317, 87),
-  TrackingUnitDetail(768, 5, 'سُورَةُ طه', 318, 88, 'سُورَةُ طه', 318, 98),
-  TrackingUnitDetail(769, 5, 'سُورَةُ طه', 319, 99, 'سُورَةُ طه', 319, 113),
-  TrackingUnitDetail(770, 5, 'سُورَةُ طه', 320, 114, 'سُورَةُ طه', 320, 125),
-  TrackingUnitDetail(771, 5, 'سُورَةُ طه', 321, 126, 'سُورَةُ طه', 321, 135),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(763, 5, 'سُورَةُ طه', 313, 13, 'سُورَةُ طه', 313, 37),
+  TrackingUnitDetailModel(764, 5, 'سُورَةُ طه', 314, 38, 'سُورَةُ طه', 314, 51),
+  TrackingUnitDetailModel(765, 5, 'سُورَةُ طه', 315, 52, 'سُورَةُ طه', 315, 64),
+  TrackingUnitDetailModel(766, 5, 'سُورَةُ طه', 316, 65, 'سُورَةُ طه', 316, 76),
+  TrackingUnitDetailModel(767, 5, 'سُورَةُ طه', 317, 77, 'سُورَةُ طه', 317, 87),
+  TrackingUnitDetailModel(768, 5, 'سُورَةُ طه', 318, 88, 'سُورَةُ طه', 318, 98),
+  TrackingUnitDetailModel(769, 5, 'سُورَةُ طه', 319, 99, 'سُورَةُ طه', 319, 113),
+  TrackingUnitDetailModel(770, 5, 'سُورَةُ طه', 320, 114, 'سُورَةُ طه', 320, 125),
+  TrackingUnitDetailModel(771, 5, 'سُورَةُ طه', 321, 126, 'سُورَةُ طه', 321, 135),
+  TrackingUnitDetailModel(
     772,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7514,7 +7514,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     322,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     773,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7524,7 +7524,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     323,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     774,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7534,7 +7534,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     324,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     775,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7544,7 +7544,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     325,
     44,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     776,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7554,7 +7554,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     326,
     57,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     777,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7564,7 +7564,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     327,
     72,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     778,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7574,7 +7574,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     328,
     81,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     779,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7584,7 +7584,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     329,
     90,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     780,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7594,7 +7594,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     330,
     101,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     781,
     5,
     'سُورَةُ الأَنبِيَاءِ',
@@ -7604,7 +7604,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     331,
     112,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     782,
     5,
     'سُورَةُ الحَجِّ',
@@ -7614,7 +7614,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     332,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     783,
     5,
     'سُورَةُ الحَجِّ',
@@ -7624,7 +7624,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     333,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     784,
     5,
     'سُورَةُ الحَجِّ',
@@ -7634,7 +7634,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     334,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     785,
     5,
     'سُورَةُ الحَجِّ',
@@ -7644,7 +7644,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     335,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     786,
     5,
     'سُورَةُ الحَجِّ',
@@ -7654,7 +7654,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     336,
     38,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     787,
     5,
     'سُورَةُ الحَجِّ',
@@ -7664,7 +7664,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     337,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     788,
     5,
     'سُورَةُ الحَجِّ',
@@ -7674,7 +7674,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     338,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     789,
     5,
     'سُورَةُ الحَجِّ',
@@ -7684,7 +7684,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     339,
     64,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     790,
     5,
     'سُورَةُ الحَجِّ',
@@ -7694,7 +7694,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     340,
     72,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     791,
     5,
     'سُورَةُ الحَجِّ',
@@ -7704,7 +7704,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     341,
     78,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     792,
     5,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -7714,7 +7714,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     342,
     17,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     793,
     5,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -7724,7 +7724,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     343,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     794,
     5,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -7734,7 +7734,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     344,
     42,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     795,
     5,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -7744,7 +7744,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     345,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     796,
     5,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -7754,7 +7754,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     346,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     797,
     5,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -7764,7 +7764,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     347,
     89,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     798,
     5,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -7774,7 +7774,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     348,
     104,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     799,
     5,
     'سُورَةُ المُؤۡمِنُونَ',
@@ -7784,7 +7784,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     349,
     118,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     800,
     5,
     'سُورَةُ النُّورِ',
@@ -7794,7 +7794,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     350,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     801,
     5,
     'سُورَةُ النُّورِ',
@@ -7804,7 +7804,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     351,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     802,
     5,
     'سُورَةُ النُّورِ',
@@ -7814,7 +7814,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     352,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     803,
     5,
     'سُورَةُ النُّورِ',
@@ -7824,7 +7824,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     353,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     804,
     5,
     'سُورَةُ النُّورِ',
@@ -7834,7 +7834,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     354,
     36,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     805,
     5,
     'سُورَةُ النُّورِ',
@@ -7844,7 +7844,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     355,
     43,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     806,
     5,
     'سُورَةُ النُّورِ',
@@ -7854,7 +7854,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     356,
     53,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     807,
     5,
     'سُورَةُ النُّورِ',
@@ -7864,7 +7864,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     357,
     58,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     808,
     5,
     'سُورَةُ النُّورِ',
@@ -7874,7 +7874,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     358,
     61,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     809,
     5,
     'سُورَةُ النُّورِ',
@@ -7884,7 +7884,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     359,
     2,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     810,
     5,
     'سُورَةُ الفُرْقَانِ',
@@ -7894,7 +7894,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     360,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     811,
     5,
     'سُورَةُ الفُرْقَانِ',
@@ -7904,7 +7904,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     361,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     812,
     5,
     'سُورَةُ الفُرْقَانِ',
@@ -7914,7 +7914,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     362,
     32,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     813,
     5,
     'سُورَةُ الفُرْقَانِ',
@@ -7924,7 +7924,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     363,
     43,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     814,
     5,
     'سُورَةُ الفُرْقَانِ',
@@ -7934,7 +7934,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     364,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     815,
     5,
     'سُورَةُ الفُرْقَانِ',
@@ -7944,7 +7944,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     365,
     67,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     816,
     5,
     'سُورَةُ الفُرْقَانِ',
@@ -7954,7 +7954,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     366,
     77,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     817,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -7964,7 +7964,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     367,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     818,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -7974,7 +7974,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     368,
     39,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     819,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -7984,7 +7984,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     369,
     60,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     820,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -7994,7 +7994,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     370,
     83,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     821,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -8004,7 +8004,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     371,
     111,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     822,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -8014,7 +8014,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     372,
     136,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     823,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -8024,7 +8024,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     373,
     159,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     824,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -8034,7 +8034,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     374,
     183,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     825,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -8044,7 +8044,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     375,
     206,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     826,
     5,
     'سُورَةُ الشُّعَرَاءِ',
@@ -8054,7 +8054,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     376,
     227,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     827,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8064,7 +8064,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     377,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     828,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8074,7 +8074,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     378,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     829,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8084,7 +8084,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     379,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     830,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8094,7 +8094,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     380,
     44,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     831,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8104,7 +8104,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     381,
     55,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     832,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8114,7 +8114,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     382,
     63,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     833,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8124,7 +8124,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     383,
     76,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     834,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8134,7 +8134,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     384,
     88,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     835,
     5,
     'سُورَةُ النَّمْلِ',
@@ -8144,7 +8144,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     385,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     836,
     5,
     'سُورَةُ القَصَصِ',
@@ -8154,7 +8154,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     386,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     837,
     5,
     'سُورَةُ القَصَصِ',
@@ -8164,7 +8164,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     387,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     838,
     5,
     'سُورَةُ القَصَصِ',
@@ -8174,7 +8174,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     388,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     839,
     5,
     'سُورَةُ القَصَصِ',
@@ -8184,7 +8184,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     389,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     840,
     5,
     'سُورَةُ القَصَصِ',
@@ -8194,7 +8194,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     390,
     43,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     841,
     5,
     'سُورَةُ القَصَصِ',
@@ -8204,7 +8204,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     391,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     842,
     5,
     'سُورَةُ القَصَصِ',
@@ -8214,7 +8214,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     392,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     843,
     5,
     'سُورَةُ القَصَصِ',
@@ -8224,7 +8224,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     393,
     70,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     844,
     5,
     'سُورَةُ القَصَصِ',
@@ -8234,7 +8234,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     394,
     77,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     845,
     5,
     'سُورَةُ القَصَصِ',
@@ -8244,7 +8244,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     395,
     84,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     846,
     5,
     'سُورَةُ القَصَصِ',
@@ -8254,7 +8254,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     396,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     847,
     5,
     'سُورَةُ العَنكَبُوتِ',
@@ -8264,7 +8264,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     397,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     848,
     5,
     'سُورَةُ العَنكَبُوتِ',
@@ -8274,7 +8274,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     398,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     849,
     5,
     'سُورَةُ العَنكَبُوتِ',
@@ -8284,7 +8284,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     399,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     850,
     5,
     'سُورَةُ العَنكَبُوتِ',
@@ -8294,7 +8294,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     400,
     38,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     851,
     5,
     'سُورَةُ العَنكَبُوتِ',
@@ -8304,7 +8304,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     401,
     45,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     852,
     5,
     'سُورَةُ العَنكَبُوتِ',
@@ -8314,7 +8314,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     402,
     52,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     853,
     5,
     'سُورَةُ العَنكَبُوتِ',
@@ -8324,7 +8324,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     403,
     63,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     854,
     5,
     'سُورَةُ العَنكَبُوتِ',
@@ -8334,7 +8334,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     404,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     855,
     5,
     'سُورَةُ الرُّومِ',
@@ -8344,7 +8344,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     405,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     856,
     5,
     'سُورَةُ الرُّومِ',
@@ -8354,7 +8354,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     406,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     857,
     5,
     'سُورَةُ الرُّومِ',
@@ -8364,7 +8364,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     407,
     32,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     858,
     5,
     'سُورَةُ الرُّومِ',
@@ -8374,7 +8374,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     408,
     41,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     859,
     5,
     'سُورَةُ الرُّومِ',
@@ -8384,7 +8384,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     409,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     860,
     5,
     'سُورَةُ الرُّومِ',
@@ -8394,7 +8394,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     410,
     60,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     861,
     5,
     'سُورَةُ لُقۡمَانَ',
@@ -8404,7 +8404,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     411,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     862,
     5,
     'سُورَةُ لُقۡمَانَ',
@@ -8414,7 +8414,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     412,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     863,
     5,
     'سُورَةُ لُقۡمَانَ',
@@ -8424,7 +8424,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     413,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     864,
     5,
     'سُورَةُ لُقۡمَانَ',
@@ -8434,7 +8434,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     414,
     34,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     865,
     5,
     'سُورَةُ السَّجۡدَةِ',
@@ -8444,7 +8444,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     415,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     866,
     5,
     'سُورَةُ السَّجۡدَةِ',
@@ -8454,7 +8454,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     416,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     867,
     5,
     'سُورَةُ السَّجۡدَةِ',
@@ -8464,7 +8464,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     417,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     868,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8474,7 +8474,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     418,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     869,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8484,7 +8484,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     419,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     870,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8494,7 +8494,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     420,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     871,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8504,7 +8504,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     421,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     872,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8514,7 +8514,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     422,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     873,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8524,7 +8524,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     423,
     43,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     874,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8534,7 +8534,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     424,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     875,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8544,7 +8544,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     425,
     54,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     876,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8554,7 +8554,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     426,
     62,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     877,
     5,
     'سُورَةُ الأَحْزَابِ',
@@ -8564,7 +8564,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     427,
     73,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     878,
     5,
     'سُورَةُ سَبَإٍ',
@@ -8574,7 +8574,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     428,
     7,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     879,
     5,
     'سُورَةُ سَبَإٍ',
@@ -8584,7 +8584,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     429,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     880,
     5,
     'سُورَةُ سَبَإٍ',
@@ -8594,7 +8594,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     430,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     881,
     5,
     'سُورَةُ سَبَإٍ',
@@ -8604,7 +8604,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     431,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     882,
     5,
     'سُورَةُ سَبَإٍ',
@@ -8614,7 +8614,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     432,
     39,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     883,
     5,
     'سُورَةُ سَبَإٍ',
@@ -8624,7 +8624,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     433,
     48,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     884,
     5,
     'سُورَةُ سَبَإٍ',
@@ -8634,7 +8634,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     434,
     3,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     885,
     5,
     'سُورَةُ فَاطِرٍ',
@@ -8644,7 +8644,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     435,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     886,
     5,
     'سُورَةُ فَاطِرٍ',
@@ -8654,7 +8654,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     436,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     887,
     5,
     'سُورَةُ فَاطِرٍ',
@@ -8664,7 +8664,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     437,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     888,
     5,
     'سُورَةُ فَاطِرٍ',
@@ -8674,7 +8674,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     438,
     38,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     889,
     5,
     'سُورَةُ فَاطِرٍ',
@@ -8684,7 +8684,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     439,
     44,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     890,
     5,
     'سُورَةُ فَاطِرٍ',
@@ -8694,12 +8694,12 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     440,
     12,
   ),
-  TrackingUnitDetail(891, 5, 'سُورَةُ يسٓ', 441, 13, 'سُورَةُ يسٓ', 441, 27),
-  TrackingUnitDetail(892, 5, 'سُورَةُ يسٓ', 442, 28, 'سُورَةُ يسٓ', 442, 40),
-  TrackingUnitDetail(893, 5, 'سُورَةُ يسٓ', 443, 41, 'سُورَةُ يسٓ', 443, 54),
-  TrackingUnitDetail(894, 5, 'سُورَةُ يسٓ', 444, 55, 'سُورَةُ يسٓ', 444, 70),
-  TrackingUnitDetail(895, 5, 'سُورَةُ يسٓ', 445, 71, 'سُورَةُ يسٓ', 445, 83),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(891, 5, 'سُورَةُ يسٓ', 441, 13, 'سُورَةُ يسٓ', 441, 27),
+  TrackingUnitDetailModel(892, 5, 'سُورَةُ يسٓ', 442, 28, 'سُورَةُ يسٓ', 442, 40),
+  TrackingUnitDetailModel(893, 5, 'سُورَةُ يسٓ', 443, 41, 'سُورَةُ يسٓ', 443, 54),
+  TrackingUnitDetailModel(894, 5, 'سُورَةُ يسٓ', 444, 55, 'سُورَةُ يسٓ', 444, 70),
+  TrackingUnitDetailModel(895, 5, 'سُورَةُ يسٓ', 445, 71, 'سُورَةُ يسٓ', 445, 83),
+  TrackingUnitDetailModel(
     896,
     5,
     'سُورَةُ الصَّافَّاتِ',
@@ -8709,7 +8709,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     446,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     897,
     5,
     'سُورَةُ الصَّافَّاتِ',
@@ -8719,7 +8719,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     447,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     898,
     5,
     'سُورَةُ الصَّافَّاتِ',
@@ -8729,7 +8729,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     448,
     76,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     899,
     5,
     'سُورَةُ الصَّافَّاتِ',
@@ -8739,7 +8739,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     449,
     102,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     900,
     5,
     'سُورَةُ الصَّافَّاتِ',
@@ -8749,7 +8749,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     450,
     126,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     901,
     5,
     'سُورَةُ الصَّافَّاتِ',
@@ -8759,7 +8759,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     451,
     153,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     902,
     5,
     'سُورَةُ الصَّافَّاتِ',
@@ -8769,12 +8769,12 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     452,
     182,
   ),
-  TrackingUnitDetail(903, 5, 'سُورَةُ صٓ', 453, 1, 'سُورَةُ صٓ', 453, 16),
-  TrackingUnitDetail(904, 5, 'سُورَةُ صٓ', 454, 17, 'سُورَةُ صٓ', 454, 26),
-  TrackingUnitDetail(905, 5, 'سُورَةُ صٓ', 455, 27, 'سُورَةُ صٓ', 455, 42),
-  TrackingUnitDetail(906, 5, 'سُورَةُ صٓ', 456, 43, 'سُورَةُ صٓ', 456, 61),
-  TrackingUnitDetail(907, 5, 'سُورَةُ صٓ', 457, 62, 'سُورَةُ صٓ', 457, 83),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(903, 5, 'سُورَةُ صٓ', 453, 1, 'سُورَةُ صٓ', 453, 16),
+  TrackingUnitDetailModel(904, 5, 'سُورَةُ صٓ', 454, 17, 'سُورَةُ صٓ', 454, 26),
+  TrackingUnitDetailModel(905, 5, 'سُورَةُ صٓ', 455, 27, 'سُورَةُ صٓ', 455, 42),
+  TrackingUnitDetailModel(906, 5, 'سُورَةُ صٓ', 456, 43, 'سُورَةُ صٓ', 456, 61),
+  TrackingUnitDetailModel(907, 5, 'سُورَةُ صٓ', 457, 62, 'سُورَةُ صٓ', 457, 83),
+  TrackingUnitDetailModel(
     908,
     5,
     'سُورَةُ صٓ',
@@ -8784,7 +8784,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     458,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     909,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8794,7 +8794,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     459,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     910,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8804,7 +8804,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     460,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     911,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8814,7 +8814,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     461,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     912,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8824,7 +8824,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     462,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     913,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8834,7 +8834,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     463,
     47,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     914,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8844,7 +8844,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     464,
     56,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     915,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8854,7 +8854,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     465,
     67,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     916,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8864,7 +8864,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     466,
     74,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     917,
     5,
     'سُورَةُ الزُّمَرِ',
@@ -8874,7 +8874,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     467,
     7,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     918,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8884,7 +8884,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     468,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     919,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8894,7 +8894,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     469,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     920,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8904,7 +8904,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     470,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     921,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8914,7 +8914,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     471,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     922,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8924,7 +8924,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     472,
     49,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     923,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8934,7 +8934,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     473,
     58,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     924,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8944,7 +8944,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     474,
     66,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     925,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8954,7 +8954,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     475,
     77,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     926,
     5,
     'سُورَةُ غَافِرٍ',
@@ -8964,7 +8964,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     476,
     85,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     927,
     5,
     'سُورَةُ فُصِّلَتۡ',
@@ -8974,7 +8974,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     477,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     928,
     5,
     'سُورَةُ فُصِّلَتۡ',
@@ -8984,7 +8984,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     478,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     929,
     5,
     'سُورَةُ فُصِّلَتۡ',
@@ -8994,7 +8994,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     479,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     930,
     5,
     'سُورَةُ فُصِّلَتۡ',
@@ -9004,7 +9004,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     480,
     38,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     931,
     5,
     'سُورَةُ فُصِّلَتۡ',
@@ -9014,7 +9014,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     481,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     932,
     5,
     'سُورَةُ فُصِّلَتۡ',
@@ -9024,7 +9024,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     482,
     54,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     933,
     5,
     'سُورَةُ الشُّورَىٰ',
@@ -9034,7 +9034,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     483,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     934,
     5,
     'سُورَةُ الشُّورَىٰ',
@@ -9044,7 +9044,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     484,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     935,
     5,
     'سُورَةُ الشُّورَىٰ',
@@ -9054,7 +9054,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     485,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     936,
     5,
     'سُورَةُ الشُّورَىٰ',
@@ -9064,7 +9064,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     486,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     937,
     5,
     'سُورَةُ الشُّورَىٰ',
@@ -9074,7 +9074,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     487,
     44,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     938,
     5,
     'سُورَةُ الشُّورَىٰ',
@@ -9084,7 +9084,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     488,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     939,
     5,
     'سُورَةُ الشُّورَىٰ',
@@ -9094,7 +9094,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     489,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     940,
     5,
     'سُورَةُ الزُّخْرُفِ',
@@ -9104,7 +9104,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     490,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     941,
     5,
     'سُورَةُ الزُّخْرُفِ',
@@ -9114,7 +9114,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     491,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     942,
     5,
     'سُورَةُ الزُّخْرُفِ',
@@ -9124,7 +9124,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     492,
     47,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     943,
     5,
     'سُورَةُ الزُّخْرُفِ',
@@ -9134,7 +9134,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     493,
     60,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     944,
     5,
     'سُورَةُ الزُّخْرُفِ',
@@ -9144,7 +9144,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     494,
     73,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     945,
     5,
     'سُورَةُ الزُّخْرُفِ',
@@ -9154,7 +9154,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     495,
     89,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     946,
     5,
     'سُورَةُ الدُّخَانِ',
@@ -9164,7 +9164,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     496,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     947,
     5,
     'سُورَةُ الدُّخَانِ',
@@ -9174,7 +9174,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     497,
     39,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     948,
     5,
     'سُورَةُ الدُّخَانِ',
@@ -9184,7 +9184,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     498,
     59,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     949,
     5,
     'سُورَةُ الجَاثِيَةِ',
@@ -9194,7 +9194,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     499,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     950,
     5,
     'سُورَةُ الجَاثِيَةِ',
@@ -9204,7 +9204,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     500,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     951,
     5,
     'سُورَةُ الجَاثِيَةِ',
@@ -9214,7 +9214,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     501,
     32,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     952,
     5,
     'سُورَةُ الجَاثِيَةِ',
@@ -9224,7 +9224,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     502,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     953,
     5,
     'سُورَةُ الأَحْقَافِ',
@@ -9234,7 +9234,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     503,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     954,
     5,
     'سُورَةُ الأَحْقَافِ',
@@ -9244,7 +9244,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     504,
     20,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     955,
     5,
     'سُورَةُ الأَحْقَافِ',
@@ -9254,7 +9254,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     505,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     956,
     5,
     'سُورَةُ الأَحْقَافِ',
@@ -9264,7 +9264,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     506,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     957,
     5,
     'سُورَةُ مُحَمَّدٍ',
@@ -9274,7 +9274,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     507,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     958,
     5,
     'سُورَةُ مُحَمَّدٍ',
@@ -9284,7 +9284,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     508,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     959,
     5,
     'سُورَةُ مُحَمَّدٍ',
@@ -9294,7 +9294,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     509,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     960,
     5,
     'سُورَةُ مُحَمَّدٍ',
@@ -9304,7 +9304,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     510,
     38,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     961,
     5,
     'سُورَةُ الفَتۡحِ',
@@ -9314,7 +9314,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     511,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     962,
     5,
     'سُورَةُ الفَتۡحِ',
@@ -9324,7 +9324,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     512,
     15,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     963,
     5,
     'سُورَةُ الفَتۡحِ',
@@ -9334,7 +9334,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     513,
     23,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     964,
     5,
     'سُورَةُ الفَتۡحِ',
@@ -9344,7 +9344,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     514,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     965,
     5,
     'سُورَةُ الفَتۡحِ',
@@ -9354,7 +9354,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     515,
     4,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     966,
     5,
     'سُورَةُ الحُجُرَاتِ',
@@ -9364,7 +9364,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     516,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     967,
     5,
     'سُورَةُ الحُجُرَاتِ',
@@ -9374,9 +9374,9 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     517,
     18,
   ),
-  TrackingUnitDetail(968, 5, 'سُورَةُ قٓ', 518, 1, 'سُورَةُ قٓ', 518, 15),
-  TrackingUnitDetail(969, 5, 'سُورَةُ قٓ', 519, 16, 'سُورَةُ قٓ', 519, 35),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(968, 5, 'سُورَةُ قٓ', 518, 1, 'سُورَةُ قٓ', 518, 15),
+  TrackingUnitDetailModel(969, 5, 'سُورَةُ قٓ', 519, 16, 'سُورَةُ قٓ', 519, 35),
+  TrackingUnitDetailModel(
     970,
     5,
     'سُورَةُ قٓ',
@@ -9386,7 +9386,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     520,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     971,
     5,
     'سُورَةُ الذَّارِيَاتِ',
@@ -9396,7 +9396,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     521,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     972,
     5,
     'سُورَةُ الذَّارِيَاتِ',
@@ -9406,7 +9406,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     522,
     51,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     973,
     5,
     'سُورَةُ الذَّارِيَاتِ',
@@ -9416,7 +9416,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     523,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     974,
     5,
     'سُورَةُ الطُّورِ',
@@ -9426,7 +9426,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     524,
     31,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     975,
     5,
     'سُورَةُ الطُّورِ',
@@ -9436,7 +9436,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     525,
     49,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     976,
     5,
     'سُورَةُ النَّجۡمِ',
@@ -9446,7 +9446,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     526,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     977,
     5,
     'سُورَةُ النَّجۡمِ',
@@ -9456,7 +9456,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     527,
     44,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     978,
     5,
     'سُورَةُ النَّجۡمِ',
@@ -9466,7 +9466,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     528,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     979,
     5,
     'سُورَةُ القَمَرِ',
@@ -9476,7 +9476,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     529,
     27,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     980,
     5,
     'سُورَةُ القَمَرِ',
@@ -9486,7 +9486,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     530,
     49,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     981,
     5,
     'سُورَةُ القَمَرِ',
@@ -9496,7 +9496,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     531,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     982,
     5,
     'سُورَةُ الرَّحْمَٰن',
@@ -9506,7 +9506,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     532,
     41,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     983,
     5,
     'سُورَةُ الرَّحْمَٰن',
@@ -9516,7 +9516,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     533,
     69,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     984,
     5,
     'سُورَةُ الرَّحْمَٰن',
@@ -9526,7 +9526,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     534,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     985,
     5,
     'سُورَةُ الوَاقِعَةِ',
@@ -9536,7 +9536,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     535,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     986,
     5,
     'سُورَةُ الوَاقِعَةِ',
@@ -9546,7 +9546,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     536,
     76,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     987,
     5,
     'سُورَةُ الوَاقِعَةِ',
@@ -9556,7 +9556,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     537,
     3,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     988,
     5,
     'سُورَةُ الحَدِيدِ',
@@ -9566,7 +9566,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     538,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     989,
     5,
     'سُورَةُ الحَدِيدِ',
@@ -9576,7 +9576,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     539,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     990,
     5,
     'سُورَةُ الحَدِيدِ',
@@ -9586,7 +9586,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     540,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     991,
     5,
     'سُورَةُ الحَدِيدِ',
@@ -9596,7 +9596,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     541,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     992,
     5,
     'سُورَةُ المُجَادلَةِ',
@@ -9606,7 +9606,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     542,
     6,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     993,
     5,
     'سُورَةُ المُجَادلَةِ',
@@ -9616,7 +9616,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     543,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     994,
     5,
     'سُورَةُ المُجَادلَةِ',
@@ -9626,7 +9626,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     544,
     21,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     995,
     5,
     'سُورَةُ المُجَادلَةِ',
@@ -9636,7 +9636,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     545,
     3,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     996,
     5,
     'سُورَةُ الحَشْرِ',
@@ -9646,7 +9646,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     546,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     997,
     5,
     'سُورَةُ الحَشْرِ',
@@ -9656,7 +9656,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     547,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     998,
     5,
     'سُورَةُ الحَشْرِ',
@@ -9666,7 +9666,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     548,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     999,
     5,
     'سُورَةُ المُمْتَحنَةِ',
@@ -9676,7 +9676,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     549,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1000,
     5,
     'سُورَةُ المُمْتَحنَةِ',
@@ -9686,7 +9686,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     550,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1001,
     5,
     'سُورَةُ المُمْتَحنَةِ',
@@ -9696,7 +9696,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     551,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1002,
     5,
     'سُورَةُ الصَّفِّ',
@@ -9706,7 +9706,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     552,
     14,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1003,
     5,
     'سُورَةُ الجُمُعَةِ',
@@ -9716,7 +9716,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     553,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1004,
     5,
     'سُورَةُ الجُمُعَةِ',
@@ -9726,7 +9726,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     554,
     4,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1005,
     5,
     'سُورَةُ المُنَافِقُونَ',
@@ -9736,7 +9736,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     555,
     11,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1006,
     5,
     'سُورَةُ التَّغَابُنِ',
@@ -9746,7 +9746,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     556,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1007,
     5,
     'سُورَةُ التَّغَابُنِ',
@@ -9756,7 +9756,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     557,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1008,
     5,
     'سُورَةُ الطَّلَاقِ',
@@ -9766,7 +9766,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     558,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1009,
     5,
     'سُورَةُ الطَّلَاقِ',
@@ -9776,7 +9776,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     559,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1010,
     5,
     'سُورَةُ التَّحْرِيمِ',
@@ -9786,7 +9786,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     560,
     7,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1011,
     5,
     'سُورَةُ التَّحْرِيمِ',
@@ -9796,7 +9796,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     561,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1012,
     5,
     'سُورَةُ المُلْكِ',
@@ -9806,7 +9806,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     562,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1013,
     5,
     'سُورَةُ المُلْكِ',
@@ -9816,7 +9816,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     563,
     26,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1014,
     5,
     'سُورَةُ المُلْكِ',
@@ -9826,7 +9826,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     564,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1015,
     5,
     'سُورَةُ القَلَمِ',
@@ -9836,7 +9836,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     565,
     42,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1016,
     5,
     'سُورَةُ القَلَمِ',
@@ -9846,7 +9846,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     566,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1017,
     5,
     'سُورَةُ الحَاقَّةِ',
@@ -9856,7 +9856,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     567,
     35,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1018,
     5,
     'سُورَةُ الحَاقَّةِ',
@@ -9866,7 +9866,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     568,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1019,
     5,
     'سُورَةُ المَعَارِجِ',
@@ -9876,7 +9876,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     569,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1020,
     5,
     'سُورَةُ المَعَارِجِ',
@@ -9886,7 +9886,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     570,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1021,
     5,
     'سُورَةُ نُوحٍ',
@@ -9896,7 +9896,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     571,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1022,
     5,
     'سُورَةُ الجِنِّ',
@@ -9906,7 +9906,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     572,
     13,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1023,
     5,
     'سُورَةُ الجِنِّ',
@@ -9916,7 +9916,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     573,
     28,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1024,
     5,
     'سُورَةُ المُزَّمِّلِ',
@@ -9926,7 +9926,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     574,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1025,
     5,
     'سُورَةُ المُزَّمِّلِ',
@@ -9936,7 +9936,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     575,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1026,
     5,
     'سُورَةُ المُدَّثِّرِ',
@@ -9946,7 +9946,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     576,
     47,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1027,
     5,
     'سُورَةُ المُدَّثِّرِ',
@@ -9956,7 +9956,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     577,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1028,
     5,
     'سُورَةُ القِيَامَةِ',
@@ -9966,7 +9966,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     578,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1029,
     5,
     'سُورَةُ الإِنسَانِ',
@@ -9976,7 +9976,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     579,
     25,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1030,
     5,
     'سُورَةُ الإِنسَانِ',
@@ -9986,7 +9986,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     580,
     19,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1031,
     5,
     'سُورَةُ المُرْسَلَاتِ',
@@ -9996,7 +9996,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     581,
     50,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1032,
     5,
     'سُورَةُ النَّبَإِ',
@@ -10006,7 +10006,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     582,
     30,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1033,
     5,
     'سُورَةُ النَّبَإِ',
@@ -10016,7 +10016,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     583,
     16,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1034,
     5,
     'سُورَةُ النَّازِعَاتِ',
@@ -10026,7 +10026,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     584,
     46,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1035,
     5,
     'سُورَةُ عَبَسَ',
@@ -10036,7 +10036,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     585,
     40,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1036,
     5,
     'سُورَةُ عَبَسَ',
@@ -10046,7 +10046,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     586,
     29,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1037,
     5,
     'سُورَةُ الانفِطَارِ',
@@ -10056,7 +10056,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     587,
     4,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1038,
     5,
     'سُورَةُ المُطَفِّفِينَ',
@@ -10066,7 +10066,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     588,
     33,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1039,
     5,
     'سُورَةُ المُطَفِّفِينَ',
@@ -10076,7 +10076,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     589,
     24,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1040,
     5,
     'سُورَةُ الانشِقَاقِ',
@@ -10086,7 +10086,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     590,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1041,
     5,
     'سُورَةُ الطَّارِقِ',
@@ -10096,7 +10096,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     591,
     10,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1042,
     5,
     'سُورَةُ الأَعْلَىٰ',
@@ -10106,7 +10106,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     592,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1043,
     5,
     'سُورَةُ الغَاشِيَةِ',
@@ -10116,7 +10116,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     593,
     22,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1044,
     5,
     'سُورَةُ الفَجۡرِ',
@@ -10126,7 +10126,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     594,
     18,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1045,
     5,
     'سُورَةُ البَلَدِ',
@@ -10136,7 +10136,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     595,
     9,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1046,
     5,
     'سُورَةُ اللَّيۡلِ',
@@ -10146,7 +10146,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     596,
     2,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1047,
     5,
     'سُورَةُ الشَّرْحِ',
@@ -10156,7 +10156,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     597,
     12,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1048,
     5,
     'سُورَةُ العَلَقِ',
@@ -10166,7 +10166,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     598,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1049,
     5,
     'سُورَةُ البَيِّنَةِ',
@@ -10176,7 +10176,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     599,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1050,
     5,
     'سُورَةُ العَادِيَاتِ',
@@ -10186,7 +10186,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     600,
     8,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1051,
     5,
     'سُورَةُ العَصْرِ',
@@ -10196,7 +10196,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     601,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1052,
     5,
     'سُورَةُ قُرَيۡشٍ',
@@ -10206,7 +10206,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     602,
     3,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1053,
     5,
     'سُورَةُ الكَافِرُونَ',
@@ -10216,7 +10216,7 @@ List<TrackingUnitDetail> trackingUnitDetail = [
     603,
     5,
   ),
-  TrackingUnitDetail(
+  TrackingUnitDetailModel(
     1054,
     5,
     'سُورَةُ الإِخْلَاصِ',

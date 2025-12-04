@@ -61,7 +61,7 @@ final List<TrackingModel> studentTrackings = [
     id: 1001,
     date: '2025-07-21',
     note: 'بداية أسبوع غير موفقة، كان الطالب مشتتاً.',
-    enrollmentId: "1" , behaviorNote: 3, // (من 5)
+    enrollmentId: 1 , behaviorNote: 3, // (من 5)
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-21T18:00:00Z',
     updatedAt: '2025-07-21T18:00:00Z',
@@ -116,7 +116,7 @@ final List<TrackingModel> studentTrackings = [
     id: 1002,
     date: '2025-07-22',
     note: 'يوم استثنائي، أظهر الطالب تركيزًا عاليًا.',
-    enrollmentId: "1" , behaviorNote: 5,
+    enrollmentId: 1 , behaviorNote: 5,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-22T18:00:00Z',
     updatedAt: '2025-07-22T18:00:00Z',
@@ -172,7 +172,7 @@ final List<TrackingModel> studentTrackings = [
     attendanceTypeId: AttendanceType.present,
     date: '2025-07-23',
     note: 'أداء مستقر، التزم بالخطة المحددة.',
-    enrollmentId: "1" , behaviorNote: 4,
+    enrollmentId: 1 , behaviorNote: 4,
     createdAt: '2025-07-23T18:00:00Z',
     updatedAt: '2025-07-23T18:00:00Z',
     details: [
@@ -214,7 +214,7 @@ final List<TrackingModel> studentTrackings = [
     attendanceTypeId: AttendanceType.present,
     date: '2025-07-24',
     note: 'يوم مستقر، تم الالتزام بالخطة.',
-    enrollmentId: "1" , behaviorNote: 4,
+    enrollmentId: 1 , behaviorNote: 4,
     createdAt: '2025-07-24T18:00:00Z',
     updatedAt: '2025-07-24T18:00:00Z',
     details: [
@@ -255,7 +255,7 @@ final List<TrackingModel> studentTrackings = [
     attendanceTypeId: AttendanceType.present,
     date: '2025-07-25',
     note: 'كان الطالب متعباً قليلاً.',
-    enrollmentId: "1" , behaviorNote: 3,
+    enrollmentId: 1 , behaviorNote: 3,
     createdAt: '2025-07-25T18:00:00Z',
     updatedAt: '2025-07-25T18:00:00Z',
     details: [
@@ -310,7 +310,7 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-26',
     note: 'تركيز عالٍ ورغبة في تعويض الأمس.',
-    enrollmentId: "1" , behaviorNote: 5,
+    enrollmentId: 1 , behaviorNote: 5,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-26T18:00:00Z',
     updatedAt: '2025-07-26T18:00:00Z',
@@ -351,7 +351,7 @@ final List<TrackingModel> studentTrackings = [
     id: 1007,
     date: '2025-07-27',
     note: 'غياب الطالب لظرف طارئ.',
-    enrollmentId: "1" , behaviorNote: 1, // سلوك منخفض لأنه لم يحضر
+    enrollmentId: 1 , behaviorNote: 1, // سلوك منخفض لأنه لم يحضر
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-27T18:00:00Z',
     updatedAt: '2025-07-27T18:00:00Z',
@@ -364,7 +364,7 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-28',
     note: 'العقل ما زال متأثراً بالغياب.',
-    enrollmentId: "1" , behaviorNote: 2,
+    enrollmentId: 1 , behaviorNote: 2,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-28T18:00:00Z',
     updatedAt: '2025-07-28T18:00:00Z',
@@ -409,7 +409,7 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-29',
     note: 'بدأ يستعيد تركيزه.',
-    enrollmentId: "1" , behaviorNote: 4,
+    enrollmentId: 1 , behaviorNote: 4,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-29T18:00:00Z',
     updatedAt: '2025-07-29T18:00:00Z',
@@ -451,7 +451,7 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-30',
     note: 'يوم رائع، حماس عالي.',
-    enrollmentId: "1" , behaviorNote: 5,
+    enrollmentId: 1 , behaviorNote: 5,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-30T18:00:00Z',
     updatedAt: '2025-07-30T18:00:00Z',
@@ -479,7 +479,7 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-31',
     note: 'عانى من التشتت الذهني.',
-    enrollmentId: "1" , behaviorNote: 3,
+    enrollmentId: 1 , behaviorNote: 3,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-31T18:00:00Z',
     updatedAt: '2025-07-31T18:00:00Z',
@@ -521,7 +521,7 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-08-01',
     note: 'أداء قياسي لتعويض كل التقصير السابق.',
-    enrollmentId: "1" , behaviorNote: 5,
+    enrollmentId: 1 , behaviorNote: 5,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-08-01T18:00:00Z',
     updatedAt: '2025-08-01T18:00:00Z',
@@ -562,7 +562,7 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-08-02',
     note: 'عودة إلى المسار الصحيح.',
-    enrollmentId: "1" , behaviorNote: 4,
+    enrollmentId: 1 , behaviorNote: 4,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-08-02T18:00:00Z',
     updatedAt: '2025-08-02T18:00:00Z',

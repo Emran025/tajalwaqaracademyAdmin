@@ -14,7 +14,7 @@ import '../../domain/entities/tracking_entity.dart';
 final class TrackingModel {
   final int id;
   final String date;
-  final String enrollmentId;
+  final int enrollmentId;
   final String note;
   final AttendanceType attendanceTypeId;
   final int behaviorNote;
@@ -52,7 +52,7 @@ final class TrackingModel {
     return TrackingModel(
       id: json['id'] as int? ?? 0,
       date: json['date'] as String? ?? '',
-      enrollmentId: json['enrollmentId'] as String? ?? '',
+      enrollmentId: json['enrollmentId'] as int? ?? 0,
       note: json['note'] as String? ?? '',
       attendanceTypeId: detailsList.isEmpty
           ? AttendanceType.absent
@@ -75,7 +75,7 @@ final class TrackingModel {
       // The local 'uuid' column stores the server's integer ID as a string.
       id: int.tryParse(map['uuid'] as String? ?? '0') ?? 0,
       date: map['trackDate'] as String? ?? '',
-      enrollmentId: map['enrollmentId'] as String? ?? '',
+      enrollmentId: map['enrollmentId'] as int? ?? 0,
       note: map['note'] as String? ?? '',
       attendanceTypeId: AttendanceType.fromId(
         map['attendanceTypeId'] as int? ?? 1,
@@ -168,7 +168,7 @@ final class TrackingModel {
       id: row['trackingId'] as int,
       date: row['date'] as String,
       note: row['note'] as String? ?? '',
-      enrollmentId: row['note'] as String? ?? '',
+      enrollmentId: row['note'] as int? ?? 0,
       attendanceTypeId: AttendanceType.values.firstWhere(
         (e) => e.toString() == row['attendance'] as String,
       ),
